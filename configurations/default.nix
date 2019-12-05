@@ -21,9 +21,9 @@ let
           system = "x86_64-linux";
 
           modules = let
-            coreConfig = ../profiles/core.nix;
+            core = ../profiles/core.nix;
 
-            globalConfig = {
+            global = {
               system.configurationRevision = flake.rev;
 
               networking.hostName = "${this}";
@@ -31,13 +31,13 @@ let
               nix.package = nix.defaultPackage."${system}";
             };
 
-            thisConfig = ./. + "/${this}.nix";
+            local = ./. + "/${this}.nix";
 
           in
             [
-              coreConfig
-              globalConfig
-              thisConfig
+              core
+              global
+              local
             ];
 
         };

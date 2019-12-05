@@ -3,7 +3,7 @@
 
   imports = [
     ./locale.nix
-    ../../local/file-systems.nix
+    ../local/file-systems.nix
   ];
 
 
