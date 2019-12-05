@@ -1,16 +1,19 @@
 {
+  description = "DevOS";
+
   epoch = 201909;
-  description = "NixOS Configuration";
 
-  outputs = { self, nixpkgs }: {
-    nixosConfigurations.gaze12 = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+  outputs = { self, nixpkgs, nix }: {
+    nixosConfigurations =
+      let
+        configs = import ./configurations {
+          inherit nix nixpkgs;
+          flake = self;
+        };
 
-      modules = [
-        {
-          system.configurationRevision = self.rev;
-        }
-      ];
-    };
+      in
+        configs;
+
   };
+
 }
