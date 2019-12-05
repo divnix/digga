@@ -1,5 +1,5 @@
 {
-  description = "DevOS";
+  description = "A highly structured configuration database.";
 
   epoch = 201909;
 

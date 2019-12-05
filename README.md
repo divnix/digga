@@ -1,27 +1,36 @@
-## ⚠W️arning: Highly experimental, API __will__ break!
 # Introduction
 
-Welcome to DevOS. This project is under construction as a rewrite of my current
-NixOS configuration files available [here][old].
+This project is under construction as a rewrite of my [legacy][old]
+NixOS configuration, using the [experimental][rfc] _flakes_ mechanism.
 
-The goal is to make everything as general, modular and *maintainable* as possible
-to encourage contributions. The ambitious end game is to create a central repository
-of useful NixOS modules and device configurations which are more opinionated than
-those found in [nixpkgs][nixpkgs], but are applicable/useful to the wider
-[NixOS][NixOS] and [Linux][kernel] communities. The hope is to ease the transition
-to NixOS and encourage adoption by allowing common hardware and software to be
-automatically configured with sane defaults, enabling iteration instead of
-starting from scratch with each new device.
 
-This coupled with a strong notion of an *abstract* machine, e.g. `laptop.nix`
-or `mobile.nix`. Will allow devices of all types to be up and running with
-Linux "right out of the box"!
+#### [Flake Talk][video]
 
-No more weekends spent working out the kinks in `INSERT_DISTRO_OF_CHOICE`
-on every machine aquiry/transition! Just pull in a database containing an
-optimal/optimized NixOS "configuration.nix" for your specific hardware
-and software. Then customize it to your needs and contribute back any
-improvements!
+
+
+
+## [setup][pr]:
+```nix
+  {
+
+    nix.package = nixFlakes;
+
+    nix.extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+
+  }
+```
+
+### sans [NixOS][nixos]:
+```
+  # nix-env -f '<nixpkgs>' -iA nixFlakes
+
+  # echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
+```
+
+
+
 
 # License
 
@@ -34,7 +43,8 @@ included here, which may be derivative works of the packages to
 which they apply. The aforementioned artifacts are all covered by the
 licenses of the respective packages.
 
-[nixpkgs]: https://github.com/NixOS/nixpkgs
+[rfc]: https://github.com/tweag/rfcs/blob/flakes/rfcs/0049-flakes.md
+[pr]:  https://github.com/NixOS/nixpkgs/pull/68897
+[video]: https://www.youtube.com/watch?v=UeBX7Ide5a0
 [NixOS]: https://nixos.org
-[kernel]: https://kernel.org
 [old]: https://github.com/nrdxp/nixos
