@@ -21,7 +21,7 @@ let
           system = "x86_64-linux";
 
           modules = let
-            coreConfig = ../modules/profiles/core.nix;
+            coreConfig = ../profiles/core.nix;
 
             globalConfig = {
               system.configurationRevision = flake.rev;
