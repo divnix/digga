@@ -10,9 +10,4 @@ in
     enable = true;
     editor = false;
   };
-
-
-  users.users.root.hashedPassword =
-    readFile
-      ../secrets/root;
 }
