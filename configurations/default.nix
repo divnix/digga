@@ -1,72 +1,37 @@
-{ nix, nixpkgs, flake, ... }:
+{ nix, nixpkgs, flake, utils, ... }:
 let
-  inherit (builtins)
-    isAttrs
-    readDir
-    ;
-
-  inherit (nixpkgs.lib)
-    filterAttrs
-    hasSuffix
-    mapAttrs'
-    nameValuePair
-    removeSuffix
+  inherit (utils)
+    reqImport
+    vimport
     ;
 
 
-  configs = let
-    configs' = let
-      config = this:
-        nixpkgs.lib.nixosSystem rec {
-          system = "x86_64-linux";
+  config = self:
+    nixpkgs.lib.nixosSystem rec {
+      system = "x86_64-linux";
 
-          modules = let
-            core = ../profiles/core.nix;
+      modules = let
+        core = ../profiles/core.nix;
 
-            global = {
-              system.configurationRevision = flake.rev;
+        global = {
+          _module.args.utils = utils;
 
-              networking.hostName = "${this}";
+          system.configurationRevision = flake.rev;
 
-              nix.package = nix.defaultPackage."${system}";
-            };
+          networking.hostName = self;
 
-            local = ./. + "/${this}.nix";
-
-          in
-            [
-              core
-              global
-              local
-            ];
-
+          nix.package = nix.defaultPackage."${system}";
         };
 
-      dot = readDir ./.;
+        local = vimport ./. "${self}.nix";
 
-    in
-      mapAttrs'
-        (
-          name: value:
-            if
-              name != "default.nix"
-              && hasSuffix ".nix" name
-              && value == "regular"
+      in
+        [
+          core
+          global
+          local
+        ];
 
-            then let
-              name' = removeSuffix ".nix" name;
-            in
-              nameValuePair (name') (config name')
-
-            else
-              nameValuePair ("") (null)
-        )
-        dot;
-
-    removeInvalid =
-      filterAttrs (_: value: isAttrs value);
-  in
-    removeInvalid configs';
-
+    };
 in
-configs
+  reqImport { dir = ./.; _import = config; }
