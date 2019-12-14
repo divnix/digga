@@ -2,7 +2,7 @@
 {
 
   imports = [
-    ./locale.nix
+    ../local/locale.nix
     ../local/file-systems.nix
   ];
 
