@@ -3,6 +3,8 @@
 
   epoch = 201909;
 
+  inputs.nixpkgs.url = "github:nrdxp/nixpkgs/fork";
+
   outputs = { self, nixpkgs, nix }: {
     nixosConfigurations =
       let
