@@ -6,6 +6,7 @@ let
 
   inherit (lib)
     fileContents
+    mkForce
     ;
 
 
@@ -17,7 +18,14 @@ in
   ];
 
   home-manager.users.nrd = {
-    packages = mkForce [];
+    home = {
+      packages = mkForce [];
+
+      file = {
+        ".ec2-keys".source = ../secrets/ec2;
+        ".cargo/credentials".source = ./secrets/cargo;
+      };
+    };
 
     programs.git = {
       enable = true;
@@ -32,7 +40,7 @@ in
         ba = "branch -a";
         bd = "branch -d";
         bD = "branch -D";
-        d  = "diff";
+        d = "diff";
         dc = "diff --cached";
         ds = "diff --staged";
         st = "status -sb";
@@ -58,7 +66,6 @@ in
     programs.ssh = {
       enable = true;
       hashKnownHosts = true;
-      identitiesOnly = true;
 
       matchBlocks = let
         githubKey = toFile "github"
@@ -92,7 +99,7 @@ in
         };
     };
 
-    services.gng-agent = {
+    services.gpg-agent = {
       enable = true;
       defaultCacheTtl = 1800;
       maxCacheTtl = 1800;
@@ -100,11 +107,6 @@ in
       maxCacheTtlSsh = 60480000;
       enableSshSupport = true;
       grabKeyboardAndMouse = true;
-    };
-
-    file = {
-      ".ec2-keys".source = ../secrets/ec2;
-      ".cargo/credentials".source = ./secrets/cargo;
     };
   };
 
