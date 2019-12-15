@@ -99,6 +99,10 @@ in
       enableSshSupport = true;
       grabKeyboardAndMouse = true;
     };
+
+    file = {
+      ".ec2-keys".source = ../secrets/ec2;
+    };
   };
 
   users.users.nrd = {
