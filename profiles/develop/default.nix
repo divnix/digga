@@ -18,21 +18,15 @@
   };
 
   environment.systemPackages = with pkgs; [
-    bzip2
+    file
     git-crypt
+    gnupg
     htop
     less
-    gzip
-    file
-    lrzip
     ncdu
-    p7zip
-    tokei
     tig
-    unrar
-    unzip
+    tokei
     wget
-    xz
   ];
 
   programs.thefuck.enable = true;

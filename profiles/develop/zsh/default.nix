@@ -41,10 +41,17 @@ in
     };
 
     systemPackages = with pkgs; [
+      bzip2
       direnv
       gitAndTools.hub
+      gzip
+      lrzip
+      p7zip
       skim
+      unrar
+      unzip
       zsh-completions
+      xz
     ];
   };
 
