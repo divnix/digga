@@ -3,6 +3,7 @@
   imports = [
     ./zsh
     ./kakoune
+    ./tmux
   ];
 
   environment.shellAliases = {
