@@ -32,7 +32,9 @@ in
         ba = "branch -a";
         bd = "branch -d";
         bD = "branch -D";
+        d  = "diff";
         dc = "diff --cached";
+        ds = "diff --staged";
         st = "status -sb";
 
         # logging
