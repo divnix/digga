@@ -1,5 +1,18 @@
 {
     "inputs": {
+        "home": {
+            "inputs": {
+                "nixpkgs": {
+                    "inputs": {},
+                    "narHash": "sha256-Y5ZOTgInrYYoas3vM8uTPLA2DvFI9YoI6haftIKl9go=",
+                    "originalUrl": "nixpkgs",
+                    "url": "github:edolstra/nixpkgs/015c9ec3372e328ea6742b409a1e9aa26dab2b31"
+                }
+            },
+            "narHash": "sha256-hd2noIXKZHe8bzoVhZUz8fwCnYKxVFLjS3s3UpVE9Hs=",
+            "originalUrl": "github:nrdxp/home-manager/flakes",
+            "url": "github:nrdxp/home-manager/4aed75b903140a3e7f5ccc4528f1748391543475"
+        },
         "nix": {
             "inputs": {
                 "nixpkgs": {

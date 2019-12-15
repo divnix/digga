@@ -1,4 +1,4 @@
-{ nix, nixpkgs, flake, ... }:
+{ home, nix, nixpkgs, flake, ... }:
 let
   utils = import ../lib/utils.nix { lib = nixpkgs.lib; };
 
@@ -28,6 +28,7 @@ let
           core
           global
           local
+          home
         ];
 
     };
