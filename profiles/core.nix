@@ -1,4 +1,10 @@
 { config, lib, pkgs, ... }:
+let
+  inherit (lib)
+    fileContents
+    ;
+
+in
 {
 
   imports = [
@@ -44,6 +50,10 @@
         "..." = "cd ../..";
         "...." = "cd ../../..";
         "....." = "cd ../../../..";
+
+        # grep
+        grep = "rg";
+        gi = "grep -i";
 
         # internet ip
         myip = "dig +short myip.opendns.com @208.67.222.222 2>&1";
@@ -127,8 +137,7 @@
   users = {
     mutableUsers = false;
 
-    users.root.hashedPassword = readFile
-      ../secrets/root;
+    users.root.hashedPassword = fileContents ../secrets/root;
   };
 
 }

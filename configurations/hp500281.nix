@@ -3,7 +3,9 @@ let
   inherit (builtins) readFile;
 in
 {
-  imports = [];
+  imports = [
+    ../profiles/develop
+  ];
 
 
   boot.loader.systemd-boot = {

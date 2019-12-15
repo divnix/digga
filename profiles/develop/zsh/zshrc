@@ -1,0 +1,111 @@
+hash -d \
+  nixos=/etc/nixos \
+  dl=~/Downloads \
+  git=~/git
+
+hash -d \
+  github=~git/github.com \
+  gitlab=~git/gitlab.com
+
+# hub setup
+eval $(hub alias -s)
+
+# Zsh options
+setopt extendedglob
+setopt incappendhistory
+setopt sharehistory
+setopt histignoredups
+setopt histreduceblanks
+setopt histignorespace
+setopt histallowclobber
+setopt autocd
+setopt cdablevars
+setopt nomultios
+setopt pushdignoredups
+setopt autocontinue
+setopt promptsubst
+
+# Environment
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=$HOME/.history
+DIRSTACKSIZE=5
+
+# user defined functions
+if [[ -d $HOME/.zfunctions ]]; then
+  typeset -U fpath
+  fpath=($HOME/.zfunctions $fpath)
+
+  for file in $HOME/.zfunctions/*; do
+    autoload -Uz $file
+  done
+fi
+
+# source local config not synced to git repo
+if [[ -f $HOME/.zshlocal ]]; then
+. $HOME/.zshlocal
+fi
+
+# create local zshrc if it does not exist
+[[ -f $HOME/.zshrc ]] \
+  || printf "#" > $HOME/.zshrc
+
+# history substring search keybinds
+bindkey '^[OA' history-substring-search-up
+bindkey '^[OB' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
+zle -N zle-line-init
+
+# if in tmux launch skim in tmux pane
+[[ ${+TMUX} == 1 ]] \
+  && SKIM_TMUX=1
+
+#load compinit
+autoload -Uz compinit
+typeset -i updated_at=$(date +'%j' -r ~/.zcompdump ||
+stat -f '%Sm' -t '%j' ~/.zcompdump)
+if [ $(date +'%j') != $updated_at ]; then
+compinit
+else
+compinit -C
+fi
+
+# Case insens only when no case match; after all completions loaded
+zstyle ':completion:*' matcher-list \
+"" 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+# Auto rehash for new binaries
+zstyle ':completion:*' rehash true
+
+# Key binds
+bindkey "jj" vi-cmd-mode
+bindkey -v '^?' backward-delete-char
+
+# keep shell state frozen
+ttyctl -f
+
+# colorful man pages
+man () {
+  LESS_TERMCAP_md=$'\e[01;31m' \
+  LESS_TERMCAP_me=$'\e[0m' \
+  LESS_TERMCAP_se=$'\e[0m' \
+  LESS_TERMCAP_so=$'\e[01;44;33m' \
+  LESS_TERMCAP_ue=$'\e[0m' \
+  LESS_TERMCAP_us=$'\e[01;32m' \
+  man "$@"
+}
+
+# pipe rg into less with colors
+rgl () {
+  rg --color=always $@ | less
+}
+
+# mkdir & cd to it
+function mcd() {
+  mkdir -p "$1" && cd "$1";
+}
+
+# direnv setup
+eval "$(direnv hook zsh)"
