@@ -17,15 +17,15 @@ in
     sessionVariables = let
       fd = "${pkgs.fd}/bin/fd -H";
     in
-    {
-      BAT_PAGER = "less";
-      SKIM_ALT_C_COMMAND =
-        "while read line; do "
-        + "line=\"'\${(Q)line}'\"; [[ -d \"'$line'\" ]] && echo \"'$line'\"; "
-        + "done < $HOME/.cache/zsh-cdr/recent-dirs";
-      SKIM_DEFAULT_COMMAND = fd;
-      SKIM_CTRL_T_COMMAND = fd;
-    };
+      {
+        BAT_PAGER = "less";
+        SKIM_ALT_C_COMMAND =
+          "while read line; do "
+          + "line=\"'\${(Q)line}'\"; [[ -d \"'$line'\" ]] && echo \"'$line'\"; "
+          + "done < $HOME/.cache/zsh-cdr/recent-dirs";
+        SKIM_DEFAULT_COMMAND = fd;
+        SKIM_CTRL_T_COMMAND = fd;
+      };
 
     shellAliases = {
       cat = "${pkgs.bat}/bin/bat";
@@ -58,9 +58,9 @@ in
 
   nixpkgs.overlays = let
     purs = self: super:
-    { purs = super.callPackage ../../../pkgs/shells/zsh/purs {}; };
+      { purs = super.callPackage ../../../pkgs/shells/zsh/purs {}; };
   in
-  [ purs ];
+    [ purs ];
 
 
   programs.zsh = {
@@ -86,12 +86,11 @@ in
         paths;
 
       plugins = concatStringsSep "\n"
-      (
-        [
-          "${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin"
-        ] ++
-        source
-      );
+        (
+          [
+            "${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin"
+          ] ++ source
+        );
 
 
 

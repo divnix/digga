@@ -15,16 +15,12 @@ let
 
         global = {
           _module.args.utils = utils;
-
-          system.configurationRevision = flake.rev;
-
           networking.hostName = self;
-
           nix.package = nix.defaultPackage."${system}";
+          system.configurationRevision = flake.rev;
         };
 
         local = vimport ./. "${self}.nix";
-
       in
         [
           core
@@ -34,4 +30,4 @@ let
 
     };
 in
-  reqImport { dir = ./.; _import = config; }
+reqImport { dir = ./.; _import = config; }

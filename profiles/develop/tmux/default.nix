@@ -12,14 +12,14 @@ let
 
   pluginConf = plugins:
     concatStringsSep "\n\n"
-    (
-      map (
-        plugin: let
-          name = removePrefix "tmuxplugin-" plugin.name;
-        in
-          "run-shell ${plugin}/share/tmux-plugins/${name}/${name}.tmux"
-      ) plugins
-    );
+      (
+        map (
+          plugin: let
+            name = removePrefix "tmuxplugin-" plugin.name;
+          in
+            "run-shell ${plugin}/share/tmux-plugins/${name}/${name}.tmux"
+        ) plugins
+      );
 
   plugins = with pkgs.tmuxPlugins; [
     copycat

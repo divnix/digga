@@ -26,26 +26,26 @@ rec {
 
   vimport = path: name: import (path + "/${name}");
 
-  reqImport = {
-    dir,
-    _import ? base: vimport dir (base + ".nix")
-  }:
-    mapFilterAttrs
-      (_: v: v != null)
-      (
-        n: v:
-          if
-            n != "default.nix"
-            && hasSuffix ".nix" n
-            && v == "regular"
+  reqImport =
+    { dir
+    , _import ? base: vimport dir (base + ".nix")
+    }:
+      mapFilterAttrs
+        (_: v: v != null)
+        (
+          n: v:
+            if
+              n != "default.nix"
+              && hasSuffix ".nix" n
+              && v == "regular"
 
-          then let
-            name = removeSuffix ".nix" n;
-          in
-            nameValuePair (name) (_import name)
+            then let
+              name = removeSuffix ".nix" n;
+            in
+              nameValuePair (name) (_import name)
 
-          else
-            nameValuePair ("") (null)
-      )
-      (readDir dir);
+            else
+              nameValuePair ("") (null)
+        )
+        (readDir dir);
 }
