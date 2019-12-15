@@ -47,6 +47,16 @@ in
         signByDefault = true;
       };
     };
+
+    services.gng-agent = {
+      enable = true;
+      defaultCacheTtl = 1800;
+      maxCacheTtl = 1800;
+      defaultCacheTtlSsh = 60480000;
+      maxCacheTtlSsh = 60480000;
+      enableSshSupport = true;
+      grabKeyboardAndMouse = true;
+    };
   };
 
   users.users.nrd = {
