@@ -104,6 +104,7 @@ in
 
     file = {
       ".ec2-keys".source = ../secrets/ec2;
+      ".cargo/credentials".source = ./secrets/cargo;
     };
   };
 
