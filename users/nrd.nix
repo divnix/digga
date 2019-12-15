@@ -3,15 +3,55 @@ let
   inherit (lib)
     fileContents
     ;
+
+  name = "Timothy DeHerrera";
 in
 {
   imports = [
     ../profiles/develop
   ];
 
+  home-manager.users.nrd = {
+    packages = mkForce [];
+
+    programs.git = {
+      enable = true;
+
+      aliases = {
+        a = "add -p";
+        co = "checkout";
+        cob = "checkout -b";
+        f = "fetch -p";
+        c = "commit";
+        p = "push";
+        ba = "branch -a";
+        bd = "branch -d";
+        bD = "branch -D";
+        dc = "diff --cached";
+        st = "status -sb";
+
+        # logging
+        lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+        plog = "log --graph --pretty='format:%C(red)%d%C(reset) %C(yellow)%h%C(reset) %ar %C(green)%aN%C(reset) %s'";
+        tlog = "log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative";
+        rank = "shortlog -sn --no-merges";
+
+        # delete merged branches
+        bdm = "!git branch --merged | grep -v '*' | xargs -n 1 git branch -d";
+      };
+
+      userName = name;
+      userEmail = "tim.deh@pm.me";
+      signing = {
+        key = "8985725DB5B0C122";
+        signByDefault = true;
+      };
+    };
+  };
+
   users.users.nrd = {
     uid = 1000;
-    description = "Timothy DeHerrera";
+    description = name;
     isNormalUser = true;
     hashedPassword = fileContents ../secrets/nrd;
     extraGroups = [
