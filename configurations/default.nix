@@ -1,5 +1,7 @@
-{ nix, nixpkgs, flake, utils, ... }:
+{ nix, nixpkgs, flake, ... }:
 let
+  utils = import ../lib/utils.nix { lib = nixpkgs.lib; };
+
   inherit (utils)
     reqImport
     vimport
