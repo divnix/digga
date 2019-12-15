@@ -30,6 +30,10 @@ let
   ];
 in
 {
+  environment.shellAliases = {
+    tx = "tmux new-session -A -s $USER";
+  };
+
   programs.tmux = {
     enable = true;
     aggressiveResize = true;
