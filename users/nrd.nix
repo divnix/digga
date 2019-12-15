@@ -1,8 +1,13 @@
 { lib, ... }:
 let
+  inherit (builtins)
+    toFile
+    ;
+
   inherit (lib)
     fileContents
     ;
+
 
   name = "Timothy DeHerrera";
 in
@@ -46,6 +51,43 @@ in
         key = "8985725DB5B0C122";
         signByDefault = true;
       };
+    };
+
+    programs.ssh = {
+      enable = true;
+      hashKnownHosts = true;
+      identitiesOnly = true;
+
+      matchBlocks = let
+        githubKey = toFile "github"
+          (fileContents ../secrets/github);
+
+        gitlabKey = toFile "gitlab"
+          (fileContents ../secrets/gitlab);
+      in
+        {
+          github = {
+            host = "github.com";
+            identityFile = githubKey;
+            extraOptions = {
+              AddKeysToAgent = "yes";
+            };
+          };
+          gitlab = {
+            host = "gitlab.com";
+            identityFile = gitlabKey;
+            extraOptions = {
+              AddKeysToAgent = "yes";
+            };
+          };
+          "gitlab.company" = {
+            host = "gitlab.company.com";
+            identityFile = gitlabKey;
+            extraOptions = {
+              AddKeysToAgent = "yes";
+            };
+          };
+        };
     };
 
     services.gng-agent = {
