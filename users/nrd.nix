@@ -12,23 +12,20 @@ let
 
 
   name = "Timothy DeHerrera";
-
-  gpgEnableSsh = true;
 in
 {
   imports = [
     ../profiles/develop
   ];
 
-  environment.shellInit = ''
-    # gpg
-    export GPG_TTY="$(tty)"
-  '' + lib.optionalString gpgEnableSsh
-    "${pkgs.gnupg}/bin/gpg-connect-agent updatestartuptty /bye > /dev/null";
-
-  environment.sessionVariables = {
-    SSH_AUTH_SOCK = "$(${pkgs.gnupg}/bin/gpgconf --list-dirs agent-ssh-socket)";
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
   };
+
+  environment.systemPackages = with pkgs; [
+    pinentry_gnome
+  ];
 
   home-manager.users.nrd = {
     home = {
@@ -118,18 +115,6 @@ in
             };
           };
         };
-    };
-
-    services.gpg-agent = {
-      enable = true;
-      defaultCacheTtl = 1800;
-      maxCacheTtl = 1800;
-      defaultCacheTtlSsh = 60480000;
-      maxCacheTtlSsh = 60480000;
-      enableSshSupport = gpgEnableSsh;
-      extraConfig = ''
-        pinentry-program ${pkgs.pinentry.tty}/bin/pinentry-tty
-      '';
     };
   };
 
