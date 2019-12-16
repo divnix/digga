@@ -73,7 +73,7 @@ in
     interactiveShellInit = let
       zshrc = fileContents ./zshrc;
 
-      paths = with pkgs; [
+      sources = with pkgs; [
         "${skim}/share/skim/completion.zsh"
         "${oh-my-zsh}/share/oh-my-zsh/plugins/sudo/sudo.plugin.zsh"
         "${oh-my-zsh}/share/oh-my-zsh/plugins/extract/extract.plugin.zsh"
@@ -82,8 +82,28 @@ in
       ];
 
       source = map
-        (source: "source " + source)
-        paths;
+        (source: "source ${source}")
+        sources;
+
+      functions = pkgs.stdenv.mkDerivation {
+        name = "zsh-functions";
+        src = ./functions;
+
+        ripgrep = "${pkgs.ripgrep}";
+        man = "${pkgs.man}";
+
+        installPhase = let
+          basename = "\${file##*/}";
+        in
+          ''
+            mkdir $out
+
+            for file in $src/*; do
+              substituteAll $file $out/${basename}
+              chmod 755 $out/${basename}
+            done
+          '';
+      };
 
       plugins = concatStringsSep "\n"
         (
@@ -98,8 +118,13 @@ in
       ''
         ${plugins}
 
+        fpath+=( ${functions} )
+        autoload -Uz ${functions}/*(:t)
+
         ${zshrc}
 
+        eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
+        eval $(${pkgs.gitAndTools.hub}/bin/hub alias -s)
         source ${pkgs.skim}/share/skim/key-bindings.zsh
       '';
   };

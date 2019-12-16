@@ -1,0 +1,6 @@
+# pipe rg into less with colors
+if [[ -t 1 && -n $PAGER ]]; then
+  @ripgrep@/bin/rg -p $@ | $PAGER
+else
+  @ripgrep@/bin/rg $@
+fi
