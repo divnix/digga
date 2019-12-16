@@ -25,6 +25,7 @@
     htop
     less
     ncdu
+    pass
     tig
     tokei
     wget
