@@ -1,0 +1,6 @@
+{ ... }:
+{
+  imports = [
+    ./stubby.nix
+  ];
+}
