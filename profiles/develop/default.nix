@@ -7,7 +7,7 @@
   ];
 
   environment.shellAliases = {
-    v = "XDG_CONFIG_HOME=/etc/xdg $EDITOR";
+    v = "$EDITOR";
   };
 
   environment.sessionVariables = {

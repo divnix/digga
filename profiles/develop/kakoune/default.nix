@@ -3,7 +3,7 @@
   environment.systemPackages = with pkgs; [
     cquery
     kak-lsp
-    kakoune
+    kakoune-config
     kakoune-unwrapped
     nixpkgs-fmt
     python3Packages.python-language-server
@@ -28,6 +28,10 @@
           kak-powerline
         ];
       };
+
+      kakoune-config = super.writeShellScriptBin "kak" ''
+        XDG_CONFIG_HOME=/etc/xdg ${self.kakoune}/bin/kak "$@"
+      '';
 
       kakoune-unwrapped = super.kakoune-unwrapped.overrideAttrs (
         o: rec {
