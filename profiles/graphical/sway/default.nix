@@ -49,9 +49,12 @@ in
     "xdg/waybar".source = ./waybar;
   };
 
+  programs.tmux.extraTmuxConf = lib.mkBefore ''
+    set -g @override_copy_command 'wl-copy'
+  '';
+
   services.redshift = {
     enable = true;
-    brightness.night = "0.7";
     temperature.night = 3200;
   };
 
