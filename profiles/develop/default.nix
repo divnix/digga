@@ -11,6 +11,7 @@
   };
 
   environment.sessionVariables = {
+    PAGER = "less";
     LESS = "-iFJMRWX -z-4 -x4";
     LESSOPEN = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
     EDITOR = "kak";
