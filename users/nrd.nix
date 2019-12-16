@@ -1,7 +1,8 @@
-{ lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   inherit (builtins)
     toFile
+    readFile
     ;
 
   inherit (lib)
@@ -11,11 +12,23 @@ let
 
 
   name = "Timothy DeHerrera";
+
+  gpgEnableSsh = true;
 in
 {
   imports = [
     ../profiles/develop
   ];
+
+  environment.shellInit = ''
+    # gpg
+    export GPG_TTY="$(tty)"
+  '' + lib.optionalString gpgEnableSsh
+    "${pkgs.gnupg}/bin/gpg-connect-agent updatestartuptty /bye > /dev/null";
+
+  environment.sessionVariables = {
+    SSH_AUTH_SOCK = "$(${pkgs.gnupg}/bin/gpgconf --list-dirs agent-ssh-socket)";
+  };
 
   home-manager.users.nrd = {
     home = {
@@ -70,10 +83,10 @@ in
 
       matchBlocks = let
         githubKey = toFile "github"
-          (fileContents ../secrets/github);
+          (readFile ../secrets/github);
 
         gitlabKey = toFile "gitlab"
-          (fileContents ../secrets/gitlab);
+          (readFile ../secrets/gitlab);
       in
         {
           github = {
@@ -106,8 +119,10 @@ in
       maxCacheTtl = 1800;
       defaultCacheTtlSsh = 60480000;
       maxCacheTtlSsh = 60480000;
-      enableSshSupport = true;
-      grabKeyboardAndMouse = true;
+      enableSshSupport = gpgEnableSsh;
+      extraConfig = ''
+        pinentry-program ${pkgs.pinentry.curses}/bin/pinentry-curses
+      '';
     };
   };
 
