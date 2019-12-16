@@ -121,7 +121,7 @@ in
       maxCacheTtlSsh = 60480000;
       enableSshSupport = gpgEnableSsh;
       extraConfig = ''
-        pinentry-program ${pkgs.pinentry.curses}/bin/pinentry-curses
+        pinentry-program ${pkgs.pinentry.tty}/bin/pinentry-tty
       '';
     };
   };
