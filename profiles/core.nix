@@ -62,7 +62,8 @@ in
         myip = "dig +short myip.opendns.com @208.67.222.222 2>&1";
 
         # nix
-        ni = "nix profile install";
+        n = "nix";
+        ni = "n profile install";
         nrb = ifSudo "sudo nixos-rebuild";
 
         # sudo
