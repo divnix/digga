@@ -33,6 +33,7 @@ in
       dnsutils
       fd
       git
+      procs
       iputils
       manpages
       moreutils
@@ -63,8 +64,14 @@ in
 
         # nix
         n = "nix";
-        ni = "n profile install";
+        np = "n profile";
+        ni = "np install";
+        nr = "np remove";
+        ns = "n search";
         nrb = ifSudo "sudo nixos-rebuild";
+
+        # ps
+        ps = "${pkgs.procs}/bin/procs";
 
         # sudo
         si = ifSudo "env sudo -i";
