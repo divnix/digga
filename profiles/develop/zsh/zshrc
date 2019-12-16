@@ -29,7 +29,8 @@ SAVEHIST=10000
 HISTFILE=$HOME/.history
 DIRSTACKSIZE=5
 
-# history substring search keybinds
+# key binds
+bindkey -v '^?' backward-delete-char
 bindkey '^[OA' history-substring-search-up
 bindkey '^[OB' history-substring-search-down
 bindkey -M vicmd 'k' history-substring-search-up
@@ -59,9 +60,6 @@ zstyle ':completion:*' matcher-list \
 # Auto rehash for new binaries
 zstyle ':completion:*' rehash true
 
-# Key binds
-bindkey "jj" vi-cmd-mode
-bindkey -v '^?' backward-delete-char
 
 # remove duplicates from paths
 typeset -U path

@@ -127,6 +127,9 @@ in
         eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
         eval $(${pkgs.gitAndTools.hub}/bin/hub alias -s)
         source ${pkgs.skim}/share/skim/key-bindings.zsh
+
+        # needs to remain at bottom so as not to be overwritten
+        bindkey jj vi-cmd-mode
       '';
   };
 }
