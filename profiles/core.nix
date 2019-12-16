@@ -61,6 +61,10 @@ in
         # internet ip
         myip = "dig +short myip.opendns.com @208.67.222.222 2>&1";
 
+        # nix
+        ni = "nix profile install";
+        nrb = ifSudo "sudo nixos-rebuild";
+
         # sudo
         si = ifSudo "env sudo -i";
         sudo = ifSudo "sudo -E ";
