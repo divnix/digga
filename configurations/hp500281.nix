@@ -5,6 +5,7 @@ in
 {
   imports = [
     ../users/nrd.nix
+    ../profiles/graphical
   ];
 
 
