@@ -19,6 +19,10 @@ let
           _module.args.utils = utils;
           networking.hostName = self;
           nix.package = nix.defaultPackage."${system}";
+          nix.nixPath = [
+            "nixpkgs=${nixpkgs}"
+            "nixos-config=/etc/nixos/configuration.nix"
+          ];
           system.configurationRevision = flake.rev;
         };
 
