@@ -97,3 +97,5 @@ if %[ "$(command git status 2>/dev/null)" ] %{
   hook global BufWritePost .* %{ git show-diff }
   hook global ModeChange insert:normal %{ git show-diff }
 }
+
+hook global WinCreate .* %{ kakboard-enable  }
