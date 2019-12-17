@@ -6,6 +6,7 @@ let
 
 in
 {
+  nix.package = pkgs.nixFlakes;
 
   imports = [
     ../local/locale.nix

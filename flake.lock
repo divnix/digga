@@ -13,19 +13,6 @@
             "originalUrl": "github:nrdxp/home-manager/flakes",
             "url": "github:nrdxp/home-manager/4aed75b903140a3e7f5ccc4528f1748391543475"
         },
-        "nix": {
-            "inputs": {
-                "nixpkgs": {
-                    "inputs": {},
-                    "narHash": "sha256-ZzR2l1dovxeZ555KXxz7SAXrC72BfaR4BeqvJzRdmwQ=",
-                    "originalUrl": "nixpkgs/release-19.09",
-                    "url": "github:edolstra/nixpkgs/d37927a77e70a2b3408ceaa2e763b6df1f4d941a"
-                }
-            },
-            "narHash": "sha256-8Y2swdV7/T7jjhGAKVrMRkAn7y4qTSjKNIW7NUe7V5s=",
-            "originalUrl": "nix",
-            "url": "github:NixOS/nix/90d2cf6ff98fc970c9abeae6c37dd323fd0ef953"
-        },
         "nixpkgs": {
             "inputs": {},
             "narHash": "sha256-rw7iL71iTpzgKfXGiRRGDHkbjtpK8N6+Pt0Ur00PphQ=",

@@ -1,4 +1,4 @@
-{ home, nix, nixpkgs, flake, ... }:
+{ home, nixpkgs, flake, ... }:
 let
   utils = import ../lib/utils.nix { lib = nixpkgs.lib; };
 
@@ -17,7 +17,6 @@ let
 
         global = {
           networking.hostName = self;
-          nix.package = nix.defaultPackage."${system}";
           nix.nixPath = [
             "nixpkgs=${nixpkgs}"
             "nixos-config=/etc/nixos/configuration.nix"

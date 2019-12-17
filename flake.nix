@@ -6,18 +6,17 @@
   inputs.nixpkgs.url = "github:nrdxp/nixpkgs/fork";
   inputs.home.url = "github:nrdxp/home-manager/flakes";
 
-  outputs = { self, home, nixpkgs, nix }: {
+  outputs = { self, home, nixpkgs }: {
     nixosConfigurations =
       let
         configs = import ./configurations {
-          inherit nix nixpkgs;
+          inherit nixpkgs;
           flake = self;
           home = home.nixosModules.home-manager;
         };
 
       in
         configs;
-
   };
 
 }
