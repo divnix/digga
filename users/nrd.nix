@@ -61,6 +61,8 @@ in
         d = "diff";
         dc = "diff --cached";
         ds = "diff --staged";
+        r = "restore";
+        rs = "restore --staged";
         st = "status -sb";
 
         # logging
