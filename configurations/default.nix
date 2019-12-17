@@ -34,5 +34,8 @@ let
         ];
 
     };
+
+  configurations =
+    reqImport { dir = ./.; _import = config; };
 in
-reqImport { dir = ./.; _import = config; }
+configurations
