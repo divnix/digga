@@ -48,7 +48,7 @@ typeset -i updated_at=$(date +'%j' -r ~/.zcompdump \
 
 # save time if completion cache has been update recently
 if [ $(date +'%j') != $updated_at ]; then
-  compinit
+  compinit -u
 else
   compinit -C
 fi
