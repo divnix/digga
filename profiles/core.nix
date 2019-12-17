@@ -30,9 +30,11 @@ in
       binutils
       coreutils
       curl
+      dosfstools
       dnsutils
       fd
       git
+      gptfdisk
       procs
       iputils
       manpages
