@@ -4,9 +4,9 @@ NC='\033[0m'
 # needs one arguement or exit
 [[ -n $2 || -z $1 ]] && {
   print -u2 \
-    "${RED}takes one arguement${NC}"
+    "${RED}error:${NC} takes exactly one package as an arguement"
 
-  exit 1
+  return 1
 }
 
 nix profile install "nixpkgs#$1"
