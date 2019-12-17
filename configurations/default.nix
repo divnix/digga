@@ -16,7 +16,6 @@ let
         core = ../profiles/core.nix;
 
         global = {
-          _module.args.utils = utils;
           networking.hostName = self;
           nix.package = nix.defaultPackage."${system}";
           nix.nixPath = [
