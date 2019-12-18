@@ -43,7 +43,6 @@ in
       fd
       git
       gptfdisk
-      procs
       iputils
       manpages
       moreutils
@@ -79,9 +78,6 @@ in
         nr = "np remove";
         ns = "n search";
         nrb = ifSudo "sudo nixos-rebuild";
-
-        # ps
-        ps = "${pkgs.procs}/bin/procs";
 
         # sudo
         si = ifSudo "env sudo -i";

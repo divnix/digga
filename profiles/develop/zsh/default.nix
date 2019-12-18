@@ -34,24 +34,29 @@ in
       du = "du -h";
 
       ls = "${pkgs.exa}/bin/exa";
-      l = "ls -lh --git";
+      l = "ls -lhg --git";
       la = "l -a";
+
+      ps = "${pkgs.procs}/bin/procs";
 
       rz = "exec zsh";
     };
 
     systemPackages = with pkgs; [
+      bat
       bzip2
       direnv
+      exa
       gitAndTools.hub
       gzip
       lrzip
       p7zip
+      procs
       skim
       unrar
       unzip
-      zsh-completions
       xz
+      zsh-completions
     ];
   };
 
