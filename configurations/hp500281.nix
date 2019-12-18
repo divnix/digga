@@ -4,7 +4,7 @@ let
 in
 {
   imports = [
-    ../users/nrd.nix
+    ../users/nrd
     ../profiles/graphical
     ../profiles/misc
   ];

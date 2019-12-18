@@ -15,7 +15,7 @@ let
 in
 {
   imports = [
-    ../profiles/develop
+    ../../profiles/develop
   ];
 
   programs.gnupg.agent = {
@@ -24,6 +24,7 @@ in
   };
 
   environment.systemPackages = with pkgs; [
+    nrd-logo
     pinentry_gnome
   ];
 
@@ -32,8 +33,8 @@ in
       packages = mkForce [];
 
       file = {
-        ".ec2-keys".source = ../secrets/ec2;
-        ".cargo/credentials".source = ../secrets/cargo;
+        ".ec2-keys".source = ../../secrets/ec2;
+        ".cargo/credentials".source = ../../secrets/cargo;
         ".zshrc".text = "#";
       };
     };
@@ -135,10 +136,10 @@ in
 
       matchBlocks = let
         githubKey = toFile "github"
-          (readFile ../secrets/github);
+          (readFile ../../secrets/github);
 
         gitlabKey = toFile "gitlab"
-          (readFile ../secrets/gitlab);
+          (readFile ../../secrets/gitlab);
       in
         {
           github = {
@@ -170,7 +171,7 @@ in
     uid = 1000;
     description = name;
     isNormalUser = true;
-    hashedPassword = fileContents ../secrets/nrd;
+    hashedPassword = fileContents ../../secrets/nrd;
     extraGroups = [
       "wheel"
       "input"
@@ -178,4 +179,19 @@ in
       "adbusers"
     ];
   };
+
+  nixpkgs.overlays = let
+    overlay = self: super: {
+      nrd-logo = super.stdenv.mkDerivation {
+        name = "nrdxp-logo";
+        src = ./logo.png;
+        dontUnpack = true;
+        installPhase = ''
+          mkdir -p $out/share/sddm/faces
+          cp $src $out/share/sddm/faces/nrd.face.icon
+        '';
+      };
+    };
+  in
+    [ overlay ];
 }
