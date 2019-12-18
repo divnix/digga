@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
   inherit (builtins) readFile;
 in
@@ -18,6 +18,19 @@ in
   ];
 
   boot.kernelModules = [ "kvm-intel" ];
+
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "iHD";
+  };
+
+  hardware.cpu.intel.updateMicrocode = true;
+
+  hardware.opengl.extraPackages = with pkgs; [
+    vaapiIntel
+    vaapiVdpau
+    libvdpau-va-gl
+    intel-media-driver
+  ];
 
   networking.networkmanager = {
     enable = true;

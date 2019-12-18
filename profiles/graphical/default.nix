@@ -9,6 +9,9 @@ in
     ./sway
   ];
 
+  hardware.opengl.enable = true;
+  hardware.opengl.driSupport = true;
+
   sound.enable = true;
 
   environment = {
