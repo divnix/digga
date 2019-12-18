@@ -8,6 +8,7 @@ in
     ../profiles/graphical
     ../profiles/misc
     ../profiles/misc/plex.nix
+    ../profiles/misc/torrent.nix
   ];
 
   boot.initrd.availableKernelModules = [
