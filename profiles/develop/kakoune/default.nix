@@ -29,7 +29,7 @@
         ];
       };
 
-      kakoune-config = super.writeShellScriptBin "kak" ''
+      kakoune-config = super.writeShellScriptBin "k" ''
         XDG_CONFIG_HOME=/etc/xdg ${self.kakoune}/bin/kak "$@"
       '';
 
