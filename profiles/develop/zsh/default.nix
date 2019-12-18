@@ -98,6 +98,7 @@ in
 
         ripgrep = "${pkgs.ripgrep}";
         man = "${pkgs.man}";
+        exa = "${pkgs.exa}";
 
         installPhase = let
           basename = "\${file##*/}";
