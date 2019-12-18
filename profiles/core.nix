@@ -8,6 +8,13 @@ in
 {
   nix.package = pkgs.nixFlakes;
 
+  nix.systemFeatures = [
+    "nixos-test"
+    "benchmark"
+    "big-parallel"
+    "kvm"
+  ];
+
   imports = [
     ../local/locale.nix
     ../local/file-systems.nix

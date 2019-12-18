@@ -24,6 +24,7 @@ in
   };
 
   nix.maxJobs = lib.mkDefault 4;
+  nix.systemFeatures = [ "gccarch-haswell" ];
 
   boot.loader.systemd-boot = {
     enable = true;
