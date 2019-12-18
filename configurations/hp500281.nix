@@ -7,6 +7,7 @@ in
     ../users/nrd
     ../profiles/graphical
     ../profiles/misc
+    ../profiles/misc/plex.nix
   ];
 
   boot.initrd.availableKernelModules = [
