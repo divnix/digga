@@ -62,6 +62,7 @@ in
       dzen2
       feh
       ffmpeg_4
+      firefox
       gnome3.adwaita-icon-theme
       gnome-themes-extra
       imagemagick
