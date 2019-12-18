@@ -30,7 +30,7 @@
       };
 
       kakoune-config = super.writeShellScriptBin "k" ''
-        XDG_CONFIG_HOME=/etc/xdg ${self.kakoune}/bin/kak "$@"
+        XDG_CONFIG_HOME=/etc/xdg exec ${self.kakoune}/bin/kak "$@"
       '';
 
       kakoune-unwrapped = super.kakoune-unwrapped.overrideAttrs (

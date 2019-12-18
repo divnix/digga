@@ -81,9 +81,9 @@ in
   };
 
   nixpkgs.overlays = let
-    qutebrowser = self: super: {
+    overlay = self: super: {
       qute = super.writeShellScriptBin "qute" ''
-        ${super.qutebrowser}/bin/qutebrowser -C /etc/xdg/qutebrowser/config.py "$@"
+        exec ${super.qutebrowser}/bin/qutebrowser -C /etc/xdg/qutebrowser/config.py "$@"
       '';
 
       cursor = super.writeTextDir "share/icons/default/index.theme" ''
@@ -92,5 +92,5 @@ in
       '';
     };
   in
-    [ qutebrowser ];
+    [ overlay ];
 }
