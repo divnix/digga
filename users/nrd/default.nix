@@ -167,6 +167,8 @@ in
     };
   };
 
+  users.groups.media.members = [ "nrd" ];
+
   users.users.nrd = {
     uid = 1000;
     description = name;

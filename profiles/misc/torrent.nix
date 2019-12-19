@@ -5,9 +5,13 @@ let
 in
 {
   imports = [ ../../modules/services/torrent/qbittorrent.nix ];
-  services.qbittorrent.enable = true;
-  users.users.nrd.extraGroups = [ "qbittorrent" ];
 
+  services.qbittorrent = {
+    enable = true;
+    group = "media";
+  };
+
+  users.groups.media.members = [ "qbittorrent" ];
 
   environment.etc."xdg/qutebrowser/config.py".text = mkAfter ''
     c.url.searchengines['to'] = 'https://torrentz2.eu/search?f={}'
