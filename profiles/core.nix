@@ -80,19 +80,19 @@ in
         nrb = ifSudo "sudo nixos-rebuild";
 
         # sudo
-        si = ifSudo "env sudo -i";
-        sudo = ifSudo "sudo -E ";
+        s = ifSudo "sudo -E ";
+        si = ifSudo "sudo -i";
         se = ifSudo "sudoedit";
 
         # systemd
         ctl = "systemctl";
-        stl = ifSudo "sudo systemctl";
+        stl = ifSudo "s systemctl";
         utl = "systemctl --user";
         ut = "systemctl --user start";
         un = "systemctl --user stop";
-        up = ifSudo "sudo systemctl start";
-        dn = ifSudo "sudo systemctl stop";
-        jctl = "journalctl";
+        up = ifSudo "s systemctl start";
+        dn = ifSudo "s systemctl stop";
+        jtl = "journalctl";
 
       };
 
