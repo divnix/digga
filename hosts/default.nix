@@ -3,8 +3,7 @@ let
   utils = import ../lib/utils.nix { lib = nixpkgs.lib; };
 
   inherit (utils)
-    reqImport
-    vimport
+    recImport
     ;
 
 
@@ -24,7 +23,7 @@ let
           system.configurationRevision = flake.rev;
         };
 
-        local = vimport ./. "${self}.nix";
+        local = import "${toString ./.}/${self}.nix";
       in
         [
           core
@@ -36,6 +35,6 @@ let
     };
 
   hosts =
-    reqImport { dir = ./.; _import = config; };
+    recImport { dir = ./.; _import = config; };
 in
 hosts
