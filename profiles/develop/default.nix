@@ -31,5 +31,7 @@
     wget
   ];
 
+  documentation.dev.enable = true;
+
   programs.thefuck.enable = true;
 }
