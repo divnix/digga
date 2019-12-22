@@ -9,7 +9,7 @@
   outputs = { self, home, nixpkgs }: {
     nixosConfigurations =
       let
-        configs = import ./configurations {
+        configs = import ./hosts {
           inherit nixpkgs;
           flake = self;
           home = home.nixosModules.home-manager;

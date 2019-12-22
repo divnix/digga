@@ -35,7 +35,7 @@ let
 
     };
 
-  configurations =
+  hosts =
     reqImport { dir = ./.; _import = config; };
 in
-configurations
+hosts

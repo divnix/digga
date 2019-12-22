@@ -9,7 +9,7 @@ in
   imports = [
     "${builtins.fetchTarball https://github.com/rycee/home-manager/archive/master.tar.gz}/nixos"
     /etc/nixos/profiles/core.nix
-    "/etc/nixos/configurations/${host}.nix"
+    "/etc/nixos/hosts/${host}.nix"
   ];
 
   networking.hostName = host;
