@@ -15,7 +15,7 @@ let
 in
 {
   imports = [
-    ../../profiles/develop
+    ../../profiles/graphical
   ];
 
   programs.gnupg.agent = {

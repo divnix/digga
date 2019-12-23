@@ -7,6 +7,7 @@ in
 {
   imports = [
     ./sway
+    ../develop
   ];
 
   hardware.opengl.enable = true;

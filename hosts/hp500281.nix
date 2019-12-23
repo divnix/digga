@@ -5,7 +5,6 @@ in
 {
   imports = [
     ../users/nrd
-    ../profiles/graphical
     ../profiles/misc
     ../profiles/misc/plex.nix
     ../profiles/misc/torrent.nix
