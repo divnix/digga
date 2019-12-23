@@ -33,9 +33,11 @@ in
       df = "df -h";
       du = "du -h";
 
-      ls = "${pkgs.exa}/bin/exa";
+      ls = "exa";
       l = "ls -lhg --git";
       la = "l -a";
+      t = "l -T";
+      ta = "la -T";
 
       ps = "${pkgs.procs}/bin/procs";
 
