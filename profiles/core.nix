@@ -42,6 +42,7 @@ in
       dnsutils
       fd
       git
+      gotop
       gptfdisk
       iputils
       manpages
@@ -83,6 +84,9 @@ in
         s = ifSudo "sudo -E ";
         si = ifSudo "sudo -i";
         se = ifSudo "sudoedit";
+
+        # top
+        top = "gotop";
 
         # systemd
         ctl = "systemctl";
