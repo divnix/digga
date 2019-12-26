@@ -22,7 +22,6 @@
     file
     git-crypt
     gnupg
-    htop
     less
     ncdu
     pass
