@@ -4,10 +4,11 @@ let
 in
 {
   imports = [
-    ../users/nrd
+    ../profiles/games
     ../profiles/misc
     ../profiles/misc/plex.nix
     ../profiles/misc/torrent.nix
+    ../users/nrd
   ];
 
   boot.initrd.availableKernelModules = [
