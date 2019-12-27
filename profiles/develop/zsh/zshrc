@@ -8,26 +8,6 @@ hash -d \
   github=~git/github.com \
   gitlab=~git/gitlab.com
 
-# Zsh options
-setopt extendedglob
-setopt incappendhistory
-setopt sharehistory
-setopt histignoredups
-setopt histreduceblanks
-setopt histignorespace
-setopt histallowclobber
-setopt autocd
-setopt cdablevars
-setopt nomultios
-setopt pushdignoredups
-setopt autocontinue
-setopt promptsubst
-
-# Environment
-HISTSIZE=10000
-SAVEHIST=10000
-HISTFILE=$HOME/.history
-DIRSTACKSIZE=5
 
 # key binds
 bindkey -v '^?' backward-delete-char

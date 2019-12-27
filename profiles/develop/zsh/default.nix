@@ -66,6 +66,27 @@ in
   programs.zsh = {
     enable = true;
 
+    enableGlobalCompInit = false;
+
+    histSize = 10000;
+
+    setOptions = [
+      "extendedglob"
+      "incappendhistory"
+      "sharehistory"
+      "histignoredups"
+      "histfcntllock"
+      "histreduceblanks"
+      "histignorespace"
+      "histallowclobber"
+      "autocd"
+      "cdablevars"
+      "nomultios"
+      "pushdignoredups"
+      "autocontinue"
+      "promptsubst"
+    ];
+
     promptInit = ''
       source ${pkgs.purs}/share/zsh/plugins/purs/purs.zsh
     '';
