@@ -142,6 +142,11 @@ in
 
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.overlays = let
+    overlay = import ../pkgs;
+  in
+    [ overlay ];
+
 
 
   programs.mtr.enable = true;

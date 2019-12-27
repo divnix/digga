@@ -102,8 +102,6 @@ in
         [icon theme]
         Inherits=Adwaita
       '';
-
-      sddm-chili = super.callPackage ../../pkgs/applications/display-managers/sddm/themes/chili {};
     };
   in
     [ overlay ];

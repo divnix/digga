@@ -31,18 +31,11 @@
   ];
 
   fonts = {
-    fonts = [ pkgs.dejaVuNerdFont ];
+    fonts = [ pkgs.dejavu_nerdfont ];
     fontconfig.defaultFonts.monospace = [
       "DejaVu Sans Mono Nerd Font Complete Mono"
     ];
   };
-
-  nixpkgs.overlays = let
-    font = self: super: {
-      dejaVuNerdFont = super.callPackage ../../pkgs/data/fonts/dejavu-nerdfont {};
-    };
-  in
-    [ font ];
 
   documentation.dev.enable = true;
 

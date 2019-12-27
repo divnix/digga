@@ -63,13 +63,6 @@ in
   };
 
 
-  nixpkgs.overlays = let
-    purs = self: super:
-      { purs = super.callPackage ../../../pkgs/shells/zsh/purs {}; };
-  in
-    [ purs ];
-
-
   programs.zsh = {
     enable = true;
 
