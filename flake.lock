@@ -15,9 +15,9 @@
         },
         "nixpkgs": {
             "inputs": {},
-            "narHash": "sha256-vfnroGiwCme9ZTTj5AtIOQI4rleXj9Mrm42l56Az5EA=",
+            "narHash": "sha256-PeLSxF3XnIgfKajyh9ZrUsmtqH8wN3RGuInR01ErCeE=",
             "originalUrl": "github:nrdxp/nixpkgs/fork",
-            "url": "github:nrdxp/nixpkgs/cb5ad1cfacfc85206ea46c6b67df6642c705c471"
+            "url": "github:nrdxp/nixpkgs/0b14bcbf4de7797c39b26b29352ab0978f54db50"
         }
     },
     "version": 3
