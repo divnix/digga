@@ -8,7 +8,7 @@ set $down j
 set $up k
 set $right l
 # preferred terminal emulator
-set $term alacritty -e tmux new-session -A -snrd
+set $term alacritty
 
 # preferred browser
 set $browser qute
@@ -33,8 +33,7 @@ set $media "mpv|retroarch"
 # launch browser and tmux session in $terminal on launch
 
 for_window [app_id="Alacritty"] resize set width $φ
-exec $browser
-exec $term
+exec $term -e tmux new-session -A -s$$USER
 
 ### idle configuration
 
