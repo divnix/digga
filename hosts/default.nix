@@ -21,6 +21,8 @@ let
             "nixos-config=/etc/nixos/configuration.nix"
           ];
           system.configurationRevision = flake.rev;
+
+          nixpkgs.overlays = flake.overlays;
         };
 
         local = import "${toString ./.}/${self}.nix";
