@@ -6,6 +6,10 @@ let
     recImport
     ;
 
+  inherit (builtins)
+    attrValues
+    ;
+
 
   config = self:
     nixpkgs.lib.nixosSystem rec {
@@ -27,7 +31,7 @@ let
 
         local = import "${toString ./.}/${self}.nix";
       in
-        [
+        attrValues flake.nixosModules ++ [
           core
           global
           local

@@ -21,6 +21,8 @@
       pkgs = import ./pkgs;
     in
       [ pkgs ];
+
+    nixosModules = import ./modules;
   };
 
 }
