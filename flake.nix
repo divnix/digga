@@ -17,10 +17,9 @@
     in
       configs;
 
-    overlays = let
-      pkgs = import ./pkgs;
-    in
-      [ pkgs ];
+    overlay = import ./pkgs;
+
+    overlays = [ self.overlay ];
 
     nixosModules = import ./modules;
   };
