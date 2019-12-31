@@ -62,7 +62,7 @@ in
       cursor
       dzen2
       feh
-      ffmpeg_4
+      ffmpeg-full
       firefox
       gnome3.adwaita-icon-theme
       gnome-themes-extra
@@ -102,6 +102,14 @@ in
         [icon theme]
         Inherits=Adwaita
       '';
+
+      ffmpeg-full = super.ffmpeg-full.override {
+        svt-av1 = super.svt-av1;
+        dav1d = super.dav1d;
+        libaom = null;
+        opencore-amr = null;
+        libopus = super.libopus;
+      };
     };
   in
     [ overlay ];
