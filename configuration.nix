@@ -6,7 +6,7 @@ let
   host = lib.fileContents /etc/hostname;
 in
 {
-  imports = [
+  imports = builtins.attrValues (import ./modules) ++ [
     "${builtins.fetchTarball https://github.com/rycee/home-manager/archive/master.tar.gz}/nixos"
     /etc/nixos/profiles/core.nix
     "/etc/nixos/hosts/${host}.nix"
@@ -17,4 +17,6 @@ in
     "nixpkgs=${<nixpkgs>}"
     "nixos-config=/etc/nixos/configuration.nix"
   ];
+
+  nixpkgs.overlays = lib.singleton (import ./pkgs);
 }
