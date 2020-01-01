@@ -47,6 +47,14 @@ in
       '';
     };
 
+    openFirewall = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Open services.qBittorrent.port to the outside network.
+      '';
+    };
+
     openFilesLimit = mkOption {
       default = openFilesLimit;
       description = ''
@@ -66,6 +74,11 @@ in
         }
       )
     ];
+
+    networking.firewall = mkIf cfg.openFirewall {
+      allowedTCPPorts = [ cfg.port ];
+      allowedUDPPorts = [ cfg.port ];
+    };
 
     systemd.services.qbittorrent = {
       after = [ "network.target" ];

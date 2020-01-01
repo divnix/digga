@@ -7,6 +7,7 @@ in
   services.qbittorrent = {
     enable = true;
     group = "media";
+    openFirewall = true;
   };
 
   users.groups.media.members = [ "qbittorrent" ];
