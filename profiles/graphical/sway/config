@@ -186,9 +186,10 @@ for_window [app_id=".*"] inhibit_idle fullscreen
     # Swap focus between the tiling area and the floating area
     bindsym $mod+Shift+t focus mode_toggle
 
-    # resize window to approximately φ ratio of screen
+    # resize window to φ ratio of screen or ½
     bindsym $mod+Shift+space exec swaymsg resize set width $φ
     bindsym $mod+space exec swaymsg resize set width $Φ
+    bindsym $mod+Ctrl+space exec swaymsg resize set width 50
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
