@@ -1,3 +1,8 @@
+# useful functions
+autoload -Uz zmv zcalc zargs url-quote-magic bracketed-paste-magic
+zle -N self-insert url-quote-magic
+zle -N bracketed-paste bracketed-paste-magic
+
 # tilde directories
 hash -d \
   nixos=/etc/nixos \
