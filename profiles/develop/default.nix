@@ -40,4 +40,5 @@
   documentation.dev.enable = true;
 
   programs.thefuck.enable = true;
+  programs.firejail.enable = true;
 }
