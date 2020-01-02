@@ -3,16 +3,21 @@
 # flake support (e.g `nixos-option`), can work as expected.
 { lib, ... }:
 let
-  host = lib.fileContents /etc/hostname;
+  hostname = lib.fileContents /etc/hostname;
+  host = "/etc/nixos/hosts/${hostname}.nix";
+  config =
+    if (builtins.pathExists host)
+    then [ host ]
+    else [ /etc/nixos/hosts/NixOS.nix ];
 in
 {
   imports = builtins.attrValues (import ./modules) ++ [
     "${builtins.fetchTarball https://github.com/rycee/home-manager/archive/master.tar.gz}/nixos"
     /etc/nixos/profiles/core.nix
-    "/etc/nixos/hosts/${host}.nix"
-  ];
+  ] ++ config;
 
-  networking.hostName = host;
+
+  networking.hostName = hostname;
   nix.nixPath = [
     "nixpkgs=${<nixpkgs>}"
     "nixos-config=/etc/nixos/configuration.nix"
