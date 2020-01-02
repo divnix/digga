@@ -30,12 +30,16 @@ let
         };
 
         local = import "${toString ./.}/${self}.nix";
+
+        iso = nixpkgs.lib.optionalAttrs (self == "niximg")
+          (import "${nixpkgs}/nixos/modules/installer/cd-dvd/iso-image.nix");
       in
         attrValues flake.nixosModules ++ [
           core
           global
           local
           home
+          iso
         ];
 
     };
