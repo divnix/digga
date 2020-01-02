@@ -11,6 +11,21 @@ in
     ../users/nrd
   ];
 
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/5c0bf17c-6df1-4618-88f8-48a4249adb30";
+    fsType = "xfs";
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/B361-1241";
+    fsType = "vfat";
+  };
+
+  fileSystems."/srv" = {
+    device = "/dev/disk/by-uuid/2a21bc0b-f30a-4001-8976-f39adf805daa";
+    fsType = "xfs";
+  };
+
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "ehci_pci"
