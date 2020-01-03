@@ -161,7 +161,7 @@ in
   users = {
     mutableUsers = false;
 
-    users.root.hashedPassword = fileContents ../secrets/root;
+    users.root.hashedPassword = lib.mkDefault "";
   };
 
 }

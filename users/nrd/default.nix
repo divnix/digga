@@ -14,9 +14,12 @@ let
   name = "Timothy DeHerrera";
 in
 {
+
   imports = [
     ../../profiles/graphical
   ];
+
+  users.users.root.hashedPassword = fileContents ../../secrets/root;
 
   programs.gnupg.agent = {
     enable = true;
