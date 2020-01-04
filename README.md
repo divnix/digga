@@ -15,7 +15,7 @@ support.
 # Usage
 
 Enter a nix-shell either manually or automatically using [direnv][direnv]. This
-will set up the exerimental nix features that need to be available to use
+will set up the experimental nix features that need to be available to use
 [flakes][pr].
 
 Start a new branch based on the template branch:
@@ -68,7 +68,7 @@ nix profile install ".#packages.x86_64-linux.purs"
 ```
 
 A similar mechanism exists to import the modules and overlays declared in the
-flake to allow for seemless sharing between configurations.
+flake to allow for seamless sharing between configurations.
 
 # Contributing
 
@@ -77,7 +77,7 @@ for NixOS machine expressions, thus enabling simpler sharing and reuse of nix
 expressions.
 
 Say your friend and you are using this repository, each with your own unique
-nix epxpressions. By simply importing your friends flake from `flake.nix` as an
+nix expressions. By simply importing your friends flake from `flake.nix` as an
 input, you can have access to all of the packages, modules, overlays, and even
 entire system configurations your friend has defined!
 
@@ -90,7 +90,7 @@ the `nixosConfigurations` flake output. See the
 ## Profiles
 More abstract configurations suitable for reuse by multiple machines should
 go in the [profiles](profiles) directory. A distinction is made between a module
-and profile, in that a profile is simly a regular NixOS module, without any new
+and profile, in that a profile is simply a regular NixOS module, without any new
 option declarations. If you want to declare new
 [options](https://nixos.org/nixos/manual/options.html), create an expression
 under the [modules](modules) directory instead.
@@ -100,7 +100,7 @@ stick things in the profile's subdirectory which are not automatically
 imported, but are meant to be manually imported from a host (useful for less
 common, or specialized configurations).
 
-Importantly, every subdirectory in a profile should be independantly importable.
+Importantly, every subdirectory in a profile should be independently importable.
 For example, a zsh directory lives under [profiles/develop](profiles/develop/zsh).
 It's written in a generic way to allow in to be imported without the entire
 [develop](profiles/develop) if one so wished. This provides a wonderful level of
@@ -130,7 +130,7 @@ Be sure to check out git-crypts [documentation](https://github.com/AGWA/git-cryp
 if your not familiar. The filter is already set up to encrypt everything in this
 folder by default.
 
-To keep [profiles](profiles) resuable across configurations, secrets should
+To keep [profiles](profiles) reusable across configurations, secrets should
 only be imported from the `users` directory.
 
 ## Modules and Packages
@@ -153,7 +153,7 @@ these guidelines:
 
 * format your code with [`nixfmt`][nixfmt]
 * The commit message follows the same semantics as [nixpkgs][nixpkgs].
-  * You can use a `#` symbol to specify abiguities. For example,
+  * You can use a `#` symbol to specify ambiguities. For example,
   `develop#zsh: <rest of commit message>` would tell me that your updating the
   `zsh` subprofile living under the `develop` profile.
 
