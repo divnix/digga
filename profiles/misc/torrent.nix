@@ -2,8 +2,7 @@
 let
   inherit (config.services.qbittorrent) port;
   inherit (lib) mkAfter;
-in
-{
+in {
   services.qbittorrent = {
     enable = true;
     group = "media";

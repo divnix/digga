@@ -2,15 +2,10 @@
 
 with rustPlatform;
 let
-  inherit (builtins)
-    readFile
-    toFile
-    ;
-
+  inherit (builtins) readFile toFile;
 
   init = toFile "init.sh" "${readFile ./init.sh}";
-in
-buildRustPackage rec {
+in buildRustPackage rec {
   pname = "purs";
   version = "0.1.0";
 
@@ -21,10 +16,7 @@ buildRustPackage rec {
     hash = "sha256-QwkbqNROksRo+QmRrgkWuoPzPb2XBwavEtlR9oqAXDQ=";
   };
 
-  buildInputs = [
-    openssl
-    pkgconfig
-  ];
+  buildInputs = [ openssl pkgconfig ];
 
   cargoSha256 = "sha256-vyO2JRRA7FCNVmIeN1xybQXkdgoHbhMGT2AhUJEnp0s=";
 
@@ -37,7 +29,7 @@ buildRustPackage rec {
 
   meta = with stdenv.lib; {
     description = "A Pure-inspired prompt in Rust";
-    homepage = https://github.com/xcambar/purs;
+    homepage = "https://github.com/xcambar/purs";
     maintainers = [ maintainers.nrdxp ];
     license = licenses.mit;
     inherit version;

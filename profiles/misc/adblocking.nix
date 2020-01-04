@@ -29,17 +29,14 @@ let
     '';
   };
 
-  whitelist = concatStringsSep "|" [
-    ".*pirate(bay|proxy).*"
-  ];
+  whitelist = concatStringsSep "|" [ ".*pirate(bay|proxy).*" ];
 
-  blacklist = concatStringsSep "\n0.0.0.0 " [
-    "# auto-generated: must be first"
+  blacklist = concatStringsSep ''
 
-    # starts here
-  ];
+    0.0.0.0 '' [
+      "# auto-generated: must be first"
 
-in
-{
-  networking.extraHosts = readFile "${hosts}/etc/hosts";
-}
+      # starts here
+    ];
+
+in { networking.extraHosts = readFile "${hosts}/etc/hosts"; }

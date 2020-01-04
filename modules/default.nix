@@ -1,3 +1,1 @@
-{
-  qbittorrent-nox = import ./services/torrent/qbittorrent.nix;
-}
+{ qbittorrent-nox = import ./services/torrent/qbittorrent.nix; }

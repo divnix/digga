@@ -1,14 +1,7 @@
-{ pkgs, ... }:
-{
-  imports = [
-    ./zsh
-    ./kakoune
-    ./tmux
-  ];
+{ pkgs, ... }: {
+  imports = [ ./zsh ./kakoune ./tmux ];
 
-  environment.shellAliases = {
-    v = "$EDITOR";
-  };
+  environment.shellAliases = { v = "$EDITOR"; };
 
   environment.sessionVariables = {
     PAGER = "less";
@@ -32,9 +25,8 @@
 
   fonts = {
     fonts = [ pkgs.dejavu_nerdfont ];
-    fontconfig.defaultFonts.monospace = [
-      "DejaVu Sans Mono Nerd Font Complete Mono"
-    ];
+    fontconfig.defaultFonts.monospace =
+      [ "DejaVu Sans Mono Nerd Font Complete Mono" ];
   };
 
   documentation.dev.enable = true;

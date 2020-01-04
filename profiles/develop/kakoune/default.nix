@@ -1,11 +1,10 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   environment.systemPackages = with pkgs; [
     cquery
     kak-lsp
     kakoune-config
     kakoune-unwrapped
-    nixpkgs-fmt
+    nixfmt
     python3Packages.python-language-server
     rustup
   ];
@@ -15,7 +14,8 @@
     "xdg/kak/autoload/plugins".source = ./plugins;
     "xdg/kak/autoload/lint".source = ./lint;
     "xdg/kak/autoload/lsp".source = ./lsp;
-    "xdg/kak/autoload/default".source = "${pkgs.kakoune-unwrapped}/share/kak/rc";
+    "xdg/kak/autoload/default".source =
+      "${pkgs.kakoune-unwrapped}/share/kak/rc";
   };
 
   nixpkgs.overlays = let
@@ -33,18 +33,15 @@
         XDG_CONFIG_HOME=/etc/xdg exec ${self.kakoune}/bin/kak "$@"
       '';
 
-      kakoune-unwrapped = super.kakoune-unwrapped.overrideAttrs (
-        o: rec {
-          version = "2019.12.10";
-          src = super.fetchFromGitHub {
-            repo = "kakoune";
-            owner = "mawww";
-            rev = "v${version}";
-            hash = "sha256-TnRQ73bIQGavXNp+wrKtYHgGem+R6JDWt333z2izYzE=";
-          };
-        }
-      );
+      kakoune-unwrapped = super.kakoune-unwrapped.overrideAttrs (o: rec {
+        version = "2019.12.10";
+        src = super.fetchFromGitHub {
+          repo = "kakoune";
+          owner = "mawww";
+          rev = "v${version}";
+          hash = "sha256-TnRQ73bIQGavXNp+wrKtYHgGem+R6JDWt333z2izYzE=";
+        };
+      });
     };
-  in
-    [ kak ];
+  in [ kak ];
 }

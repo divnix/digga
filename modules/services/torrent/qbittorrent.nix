@@ -4,8 +4,7 @@ let
   cfg = config.services.qbittorrent;
   configDir = "${cfg.dataDir}/.config";
   openFilesLimit = 4096;
-in
-{
+in {
   options.services.qbittorrent = {
     enable = mkOption {
       type = types.bool;
@@ -68,11 +67,9 @@ in
     environment.systemPackages = [ pkgs.qbittorrent ];
 
     nixpkgs.overlays = [
-      (
-        self: super: {
-          qbittorrent = super.qbittorrent.override { guiSupport = false; };
-        }
-      )
+      (self: super: {
+        qbittorrent = super.qbittorrent.override { guiSupport = false; };
+      })
     ];
 
     networking.firewall = mkIf cfg.openFirewall {
@@ -110,10 +107,7 @@ in
       };
     };
 
-    users.groups = mkIf (cfg.group == "qbittorrent") {
-      qbittorrent = {
-        gid = null;
-      };
-    };
+    users.groups =
+      mkIf (cfg.group == "qbittorrent") { qbittorrent = { gid = null; }; };
   };
 }

@@ -1,24 +1,12 @@
 { config, lib, pkgs, ... }:
-let
-  inherit (lib)
-    fileContents
-    ;
+let inherit (lib) fileContents;
 
-in
-{
+in {
   nix.package = pkgs.nixFlakes;
 
-  nix.systemFeatures = [
-    "nixos-test"
-    "benchmark"
-    "big-parallel"
-    "kvm"
-  ];
+  nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
-  imports = [
-    ../local/locale.nix
-  ];
-
+  imports = [ ../local/locale.nix ];
 
   boot = {
 
@@ -29,7 +17,6 @@ in
     kernel.sysctl."kernel.sysrq" = 1;
 
   };
-
 
   environment = {
 
@@ -51,10 +38,9 @@ in
       utillinux
     ];
 
-    shellAliases = let
-      ifSudo = string: lib.mkIf config.security.sudo.enable string;
-    in
-      {
+    shellAliases =
+      let ifSudo = string: lib.mkIf config.security.sudo.enable string;
+      in {
         # quick cd
         ".." = "cd ..";
         "..." = "cd ../..";
@@ -101,13 +87,8 @@ in
 
   };
 
-
   fonts = {
-    fonts = with pkgs; [
-      powerline-fonts
-      dejavu_fonts
-    ];
-
+    fonts = with pkgs; [ powerline-fonts dejavu_fonts ];
 
     fontconfig.defaultFonts = {
 
@@ -117,7 +98,6 @@ in
 
     };
   };
-
 
   nix = {
 
@@ -139,9 +119,7 @@ in
 
   };
 
-
   nixpkgs.config.allowUnfree = true;
-
 
   security = {
 
@@ -151,9 +129,7 @@ in
 
   };
 
-
   services.earlyoom.enable = true;
-
 
   users = {
     mutableUsers = false;

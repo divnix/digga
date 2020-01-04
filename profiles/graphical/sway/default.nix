@@ -1,17 +1,10 @@
 { lib, config, options, pkgs, ... }:
 let
-  inherit (builtins)
-    readFile
-    ;
+  inherit (builtins) readFile;
 
-  inherit (config.hardware)
-    pulseaudio
-    ;
-in
-{
-  imports = [
-    ../qutebrowser
-  ];
+  inherit (config.hardware) pulseaudio;
+in {
+  imports = [ ../qutebrowser ];
 
   sound.enable = true;
 
@@ -28,31 +21,30 @@ in
       export _JAVA_AWT_WM_NONREPARENTING=1
     '';
 
-    extraPackages = with pkgs; options.programs.sway.extraPackages.default
-    ++ [
-      dmenu
-      networkmanager_dmenu
-      qt5.qtwayland
-      alacritty
-      volnoti
-      wl-clipboard
-      (waybar.override { pulseSupport = pulseaudio.enable; })
-    ]
-    ;
+    extraPackages = with pkgs;
+      options.programs.sway.extraPackages.default ++ [
+        dmenu
+        networkmanager_dmenu
+        qt5.qtwayland
+        alacritty
+        volnoti
+        wl-clipboard
+        (waybar.override { pulseSupport = pulseaudio.enable; })
+      ];
   };
 
   environment.etc = {
     "sway/config".text = let
-      volnoti = pkgs.writeScript "volnoti.sh" (import ./volnoti.nix { inherit pkgs; });
-    in
-      ''
-        set $volume ${volnoti}
+      volnoti =
+        pkgs.writeScript "volnoti.sh" (import ./volnoti.nix { inherit pkgs; });
+    in ''
+      set $volume ${volnoti}
 
-        # set background
-        output * bg ${pkgs.adapta-backgrounds}/share/backgrounds/adapta/tri-fadeno.jpg fill
+      # set background
+      output * bg ${pkgs.adapta-backgrounds}/share/backgrounds/adapta/tri-fadeno.jpg fill
 
-        ${readFile ./config}
-      '';
+      ${readFile ./config}
+    '';
 
     "xdg/waybar".source = ./waybar;
   };
@@ -88,7 +80,7 @@ in
     documentation = [ "volnoti --help" ];
     wantedBy = [ "sway-session.target" ];
 
-    script = ''${pkgs.volnoti}/bin/volnoti -n'';
+    script = "${pkgs.volnoti}/bin/volnoti -n";
 
     serviceConfig = {
       Restart = "always";
@@ -98,27 +90,22 @@ in
 
   nixpkgs.overlays = let
     overlay = self: super: {
-      redshift = super.redshift.overrideAttrs (
-        o: {
-          src = super.fetchFromGitHub {
-            owner = "CameronNemo";
-            repo = "redshift";
-            rev = "39c162ca487a59857c2eac231318f4b28855798b";
-            sha256 = "1in27draskwwi097wiam26bx2szcf58297am3gkyng1ms3rz6i58";
-          };
-        }
-      );
-      wl-clipboard = super.wl-clipboard.overrideAttrs (
-        o: {
-          src = super.fetchFromGitHub {
-            owner = "bugaevc";
-            repo = "wl-clipboard";
-            rev = "c010972e6b0d2eb3002c49a6a1b5620ff5f7c910";
-            sha256 = "020l3jy9gsj6gablwdfzp1wfa8yblay3axdjc56i9q8pbhz7g12j";
-          };
-        }
-      );
+      redshift = super.redshift.overrideAttrs (o: {
+        src = super.fetchFromGitHub {
+          owner = "CameronNemo";
+          repo = "redshift";
+          rev = "39c162ca487a59857c2eac231318f4b28855798b";
+          sha256 = "1in27draskwwi097wiam26bx2szcf58297am3gkyng1ms3rz6i58";
+        };
+      });
+      wl-clipboard = super.wl-clipboard.overrideAttrs (o: {
+        src = super.fetchFromGitHub {
+          owner = "bugaevc";
+          repo = "wl-clipboard";
+          rev = "c010972e6b0d2eb3002c49a6a1b5620ff5f7c910";
+          sha256 = "020l3jy9gsj6gablwdfzp1wfa8yblay3axdjc56i9q8pbhz7g12j";
+        };
+      });
     };
-  in
-    [ overlay ];
+  in [ overlay ];
 }

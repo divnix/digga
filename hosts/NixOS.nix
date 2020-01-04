@@ -1,6 +1,1 @@
-{
-  imports = [
-    ../profiles/develop
-    ../profiles/misc
-  ];
-}
+{ imports = [ ../profiles/develop ../profiles/misc ]; }

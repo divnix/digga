@@ -1,5 +1,4 @@
-{ ... }:
-{
+{ ... }: {
   services.stubby = {
     enable = true;
     upstreamServers = ''
@@ -21,7 +20,6 @@
       mode = "444";
     };
   };
-
 
   networking = {
     networkmanager.dns = "none";

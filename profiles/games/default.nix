@@ -1,8 +1,6 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   imports = [ ../graphical ./udev.nix ];
-  environment.systemPackages = with pkgs;
-    [ retroarchBare steam steam-run ];
+  environment.systemPackages = with pkgs; [ retroarchBare steam steam-run ];
 
   # fps games on laptop need this
   services.xserver.libinput.disableWhileTyping = false;
@@ -15,7 +13,5 @@
   systemd.extraConfig = "DefaultLimitNOFILE=1048576";
 
   # improve wine performance
-  environment.sessionVariables = {
-    WINEDEBUG = "-all";
-  };
+  environment.sessionVariables = { WINEDEBUG = "-all"; };
 }

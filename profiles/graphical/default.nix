@@ -1,14 +1,7 @@
 { config, pkgs, ... }:
-let
-  inherit (builtins)
-    readFile
-    ;
-in
-{
-  imports = [
-    ./sway
-    ../develop
-  ];
+let inherit (builtins) readFile;
+in {
+  imports = [ ./sway ../develop ];
 
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
@@ -35,12 +28,11 @@ in
           gtk-icon-theme-name="Papirus-Adapta"
           gtk-cursor-theme-name="Adwaita"
         '';
-      in
-        [
-          (''${ pkgs.writeText "iconrc" "${gtk}" }'')
-          "${pkgs.adapta-gtk-theme}/share/themes/Adapta/gtk-2.0/gtkrc"
-          "${pkgs.gnome3.gnome-themes-extra}/share/themes/Adwaita/gtk-2.0/gtkrc"
-        ];
+      in [
+        ("${pkgs.writeText "iconrc" "${gtk}"}")
+        "${pkgs.adapta-gtk-theme}/share/themes/Adapta/gtk-2.0/gtkrc"
+        "${pkgs.gnome3.gnome-themes-extra}/share/themes/Adwaita/gtk-2.0/gtkrc"
+      ];
     };
 
     systemPackages = with pkgs; [
@@ -88,6 +80,5 @@ in
         libopus = prev.libopus;
       };
     };
-  in
-    [ overlay ];
+  in [ overlay ];
 }

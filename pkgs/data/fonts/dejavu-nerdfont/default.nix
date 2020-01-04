@@ -5,7 +5,8 @@ stdenv.mkDerivation rec {
   version = "2.0.0";
 
   src = fetchzip {
-    url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v${version}/DejaVuSansMono.zip";
+    url =
+      "https://github.com/ryanoasis/nerd-fonts/releases/download/v${version}/DejaVuSansMono.zip";
     hash = "sha256-yMvKzt5CKpK1bThT25lqSyRvZRCFvo6HHbTj+ripdCo=";
     stripRoot = false;
   };
@@ -15,7 +16,7 @@ stdenv.mkDerivation rec {
 
   meta = with stdenv.lib; {
     description = "Nerdfont version of DejaVu";
-    homepage = https://github.com/ryanoasis/nerd-fonts;
+    homepage = "https://github.com/ryanoasis/nerd-fonts";
     license = licenses.mit;
     maintainers = [ maintainers.nrdxp ];
     inherit version;

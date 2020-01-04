@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { } }:
 let
   configs = "${toString ./.}#nixosConfigurations";
   hostname = pkgs.lib.fileContents /etc/hostname;
@@ -15,14 +15,8 @@ let
       nix run -vv ${configs}.$1.${build}.toplevel -c switch-to-configuration $2
     fi
   '';
-in
-pkgs.mkShell {
-  nativeBuildInputs = with pkgs; [
-    git
-    git-crypt
-    nixFlakes
-    rebuild
-  ];
+in pkgs.mkShell {
+  nativeBuildInputs = with pkgs; [ git git-crypt nixFlakes rebuild ];
 
   shellHook = ''
     mkdir -p secrets
@@ -37,6 +31,5 @@ pkgs.mkShell {
       ${current}
       experimental-features = nix-command flakes ca-references
     '';
-  in
-    "${nixConf}/opt";
+  in "${nixConf}/opt";
 }

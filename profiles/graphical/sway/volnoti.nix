@@ -1,8 +1,6 @@
 { pkgs, ... }:
-let
-  inherit (pkgs) alsaUtils bash gnugrep volnoti;
-in
-''
+let inherit (pkgs) alsaUtils bash gnugrep volnoti;
+in ''
   #!${bash}/bin/bash
 
   declare -i current=$(${alsaUtils}/bin/amixer get Master | ${gnugrep}/bin/grep -m1 -Po "[0-9]+(?=%)")

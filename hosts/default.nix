@@ -2,15 +2,9 @@ args@{ home, nixpkgs, self, ... }:
 let
   utils = import ../lib/utils.nix { lib = nixpkgs.lib; };
 
-  inherit (utils)
-    recImport
-    ;
+  inherit (utils) recImport;
 
-  inherit (builtins)
-    attrValues
-    removeAttrs
-    ;
-
+  inherit (builtins) attrValues removeAttrs;
 
   config = this:
     nixpkgs.lib.nixosSystem rec {
@@ -32,20 +26,15 @@ let
 
         local = import "${toString ./.}/${this}.nix";
 
-        flakeModules = removeAttrs self.nixosModules
-          [ "profiles" ];
+        flakeModules = removeAttrs self.nixosModules [ "profiles" ];
 
-      in
-        attrValues flakeModules ++ [
-          core
-          global
-          local
-          home.nixosModules.home-manager
-        ];
+      in attrValues flakeModules
+      ++ [ core global local home.nixosModules.home-manager ];
 
     };
 
-  hosts =
-    recImport { dir = ./.; _import = config; };
-in
-hosts
+  hosts = recImport {
+    dir = ./.;
+    _import = config;
+  };
+in hosts

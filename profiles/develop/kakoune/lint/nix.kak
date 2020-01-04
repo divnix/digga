@@ -12,7 +12,7 @@ hook -group lint global WinSetOption filetype=nix %{
     } && run \
   '
   lint-enable
-  set buffer formatcmd "nixpkgs-fmt"
+  set buffer formatcmd "nixfmt"
   hook buffer BufWritePre .* %{
     format
     lint
