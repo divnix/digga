@@ -8,6 +8,7 @@ let
 
   inherit (builtins)
     attrValues
+    removeAttrs
     ;
 
 
@@ -31,8 +32,11 @@ let
 
         local = import "${toString ./.}/${this}.nix";
 
+        flakeModules = removeAttrs self.nixosModules
+          [ "profiles" ];
+
       in
-        attrValues self.nixosModules ++ [
+        attrValues flakeModules ++ [
           core
           global
           local

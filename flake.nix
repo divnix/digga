@@ -27,6 +27,8 @@
         inherit (pkgs) sddm-chili dejavu_nerdfont purs;
       };
 
-      nixosModules = import ./modules;
+      nixosModules = (import ./modules) // {
+        profiles = import ./profiles;
+      };
     };
 }
