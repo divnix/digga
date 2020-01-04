@@ -126,7 +126,7 @@ Anything you wish to keep encrypted goes in the `secrets` directory, which is
 created on first entering a `nix-shell`.
 
 Be sure to run `git crypt init`, before committing anything to this directory.
-Be sure to check out git-crypts [documentation](https://github.com/AGWA/git-crypt)
+Be sure to check out git-crypt's [documentation](https://github.com/AGWA/git-crypt)
 if your not familiar. The filter is already set up to encrypt everything in this
 folder by default.
 
