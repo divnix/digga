@@ -5,7 +5,7 @@ NixOS configuration using the experimental [flakes][rfc] mechanism. Its aim is
 to provide a generic template repository which neatly separates concerns and
 allows one to get up and running with NixOS faster than ever.
 
-Flakes are still an experimental feature, but once they finally get merged,
+Flakes are still an experimental feature, but once they finally get merged
 even more will become possible, including [nixops](https://nixos.org/nixops)
 support.
 
