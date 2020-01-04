@@ -10,7 +10,7 @@ let
   else
     [ /etc/nixos/hosts/NixOS.nix ];
 in {
-  imports = builtins.attrValues (import ./modules) ++ [
+  imports = (import ./modules) ++ [
     "${
       builtins.fetchTarball
       "https://github.com/rycee/home-manager/archive/master.tar.gz"
