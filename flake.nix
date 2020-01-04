@@ -29,14 +29,18 @@
       };
 
       nixosModules = let
-        moduleList = import ./modules;
-
-        modulesAttrs = listToAttrs (map (path: {
+        prep = map (path: {
           name = removeSuffix ".nix" (baseNameOf path);
           value = import path;
-        }) moduleList);
+        });
 
-        profilesAttrs = { profiles = import ./profiles; };
+        moduleList = import ./modules;
+
+        modulesAttrs = listToAttrs (prep moduleList);
+
+        profilesList = import ./profiles;
+
+        profilesAttrs = { profiles = listToAttrs (prep profilesList); };
       in modulesAttrs // profilesAttrs;
     };
 }
