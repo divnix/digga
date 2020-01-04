@@ -107,7 +107,7 @@ In addition, profiles can depend on other profiles. For example, The
 simply by importing it in its [`default.nix`](profiles/graphical/default.nix).
 
 ## Users
-User declaration belongs in the [users](users) directory. Everything related to
+User declaration belongs in the `users` directory. Everything related to
 your user should be declared here. For convenience, [home-manager][home-manager]
 is available automatically for home directory setup.
 
@@ -121,7 +121,7 @@ if your not familiar. The filter is already set up to encrypt everything in this
 folder by default.
 
 To keep [profiles](profiles) resuable across configurations, secrets should
-only be imported from the [users](users) directory.
+only be imported from the `users` directory.
 
 ## Modules and Packages
 All [modules](modules/default.nix) and [pkgs](pkgs/default.nix) are available

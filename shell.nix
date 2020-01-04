@@ -26,6 +26,7 @@ pkgs.mkShell {
 
   shellHook = ''
     mkdir -p secrets
+    mkdir -p users
   '';
 
   NIX_CONF_DIR = let
