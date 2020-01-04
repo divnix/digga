@@ -41,4 +41,5 @@
 
   programs.thefuck.enable = true;
   programs.firejail.enable = true;
+  programs.mtr.enable = true;
 }

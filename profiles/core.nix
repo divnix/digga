@@ -143,9 +143,6 @@ in
   nixpkgs.config.allowUnfree = true;
 
 
-  programs.mtr.enable = true;
-
-
   security = {
 
     hideProcessInformation = true;
