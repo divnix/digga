@@ -9,6 +9,12 @@ let
     ;
 in
 {
+  imports = [
+    ../qutebrowser
+  ];
+
+  sound.enable = true;
+
   programs.sway = {
     enable = true;
 
@@ -24,6 +30,8 @@ in
 
     extraPackages = with pkgs; options.programs.sway.extraPackages.default
     ++ [
+      dmenu
+      networkmanager_dmenu
       qt5.qtwayland
       alacritty
       volnoti

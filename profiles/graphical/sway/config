@@ -11,7 +11,7 @@ set $right l
 set $term alacritty
 
 # preferred browser
-set $browser qute
+set $browser $$BROWSER
 
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway

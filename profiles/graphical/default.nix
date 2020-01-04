@@ -14,8 +14,6 @@ in
   hardware.opengl.driSupport = true;
   hardware.pulseaudio.enable = true;
 
-  sound.enable = true;
-
   environment = {
     etc = {
       "xdg/gtk-3.0/settings.ini" = {
@@ -27,22 +25,9 @@ in
         '';
         mode = "444";
       };
-
-      "xdg/qutebrowser/config.py".text = let
-        mpv = "${pkgs.mpv}/bin/mpv";
-      in
-        ''
-          ${readFile ./qutebrowser/config.py}
-
-          config.bind(',m', 'hint links spawn -d ${mpv} {hint-url}')
-          config.bind(',v', 'spawn -d ${mpv} {url}')
-        '';
     };
 
     sessionVariables = {
-      # default browser
-      BROWSER = "qute";
-
       # Theme settings
       QT_QPA_PLATFORMTHEME = "gtk2";
       GTK2_RC_FILES = let
@@ -71,13 +56,8 @@ in
       imlib2
       librsvg
       libsForQt5.qtstyleplugins
-      mpv
-      networkmanager_dmenu
       papirus-icon-theme
-      qute
-      qutebrowser
       sddm-chili
-      youtubeDL
       zathura
     ];
   };
@@ -94,22 +74,18 @@ in
   };
 
   nixpkgs.overlays = let
-    overlay = self: super: {
-      qute = super.writeShellScriptBin "qute" ''
-        exec ${super.qutebrowser}/bin/qutebrowser -C /etc/xdg/qutebrowser/config.py "$@"
-      '';
-
-      cursor = super.writeTextDir "share/icons/default/index.theme" ''
+    overlay = final: prev: {
+      cursor = prev.writeTextDir "share/icons/default/index.theme" ''
         [icon theme]
         Inherits=Adwaita
       '';
 
-      ffmpeg-full = super.ffmpeg-full.override {
-        svt-av1 = super.svt-av1;
-        dav1d = super.dav1d;
+      ffmpeg-full = prev.ffmpeg-full.override {
+        svt-av1 = prev.svt-av1;
+        dav1d = prev.dav1d;
         libaom = null;
         opencore-amr = null;
-        libopus = super.libopus;
+        libopus = prev.libopus;
       };
     };
   in
