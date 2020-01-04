@@ -17,5 +17,7 @@ stdenv.mkDerivation rec {
     description = "Nerdfont version of DejaVu";
     homepage = https://github.com/ryanoasis/nerd-fonts;
     license = licenses.mit;
+    maintainers = [ maintainers.nrdxp ];
+    inherit version;
   };
 }

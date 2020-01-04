@@ -5,23 +5,50 @@ NixOS configuration, using the experimental [flakes][rfc] mechanism. Its aim is
 to provide a generic template repository, to neatly separate concerns and allow
 one to get up and running with NixOS faster. Flakes are still an experimental
 feature, but once they finally get merged, even more will become possible,
-including nixops support.
+including [nixops](https://nixos.org/nixops) support.
 
 
 #### [Flake Talk][video]
 
 # Usage
+
 Enter a nix-shell either manually or automatically using [direnv][direnv]. This
 will set up the exerimental nix features that need to be available to use
-[flakes][pr]. A basic `rebuild` command is included in the shell to replace
+[flakes][pr].
+
+Start a new branch based on the template branch:
+```
+git checkout -b <new_branch> template
+```
+
+You may want to use a generated hardware config for your machine:
+```
+nixos-generate-config --show-hardware-config > ./hosts/<new_host>.nix
+```
+
+
+A basic `rebuild` command is included in the shell to replace
 `nixos-rebuild` for now.
 
 ```
 Usage: rebuild [host] {switch|boot|test}
+
+#example using above generated config
+rebuild <new_host> switch
 ```
 
 You can specify one of the host configurations from the [hosts](hosts)
 directory. If omitted, it will default to your systems current hostname.
+
+And now you should be ready to start writing your nix configuration or import
+some of the already existing profiles. Review [contributing](#contributing)
+below on how to structure your expressions. And be sure to update the
+[locale.nix](local/locale.nix) for your region.
+
+You can always check out my personal branch `nrdxp`, to get an idea of how to
+structure your work.
+
+## Additional Capabilities
 
 In addtion:
 ```
@@ -38,11 +65,19 @@ to install NixOS. For example:
 nix profile install ".#packages.x86_64-linux.purs"
 ```
 
+A similar mechanism exists to import the modules and overlays declared in the
+flake to allow for seemless sharing between configurations.
+
 # Contributing
 
-The purpose of this repository is to allow for simpler modularity and
-maintainability than was achieved in a previous effort. Flakes, along with a
-standardized structure, make this simple.
+The purpose of this repository is to provide a standardized template structure
+for NixOS machine expressions, thus enabling simpler sharing and resue of nix
+expressions.
+
+Say your friend and you are using this repository, each with your own unique
+nix epxpressions. By simply importing your friends flake from `flake.nix` as an
+input, you can have access to all of the packages, modules, overlays, and even
+entire system configurations your friend has defined!
 
 ## Hosts
 Distributions for particular machines should be stored in the [hosts](hosts)
@@ -52,12 +87,20 @@ output. See the [`default.nix`](hosts/default.nix) for implementation details.
 
 ## Profiles
 More abstract configurations that can be reused by multiple machines should
-go in the [profiles](profiles) directory. It's structure is pretty straight
-forward. Just have a look to get an idea. Every profile should have a
-`default.nix` to easily import it. You can also stick things in the profile's
-subdirectory which are not automatically imported by its `default.nix` but are
-meant to be manually imported from a host (useful for less common, or
-specialized configurations).
+go in the [profiles](profiles) directory. We make a distinction between a module
+and profile, in that a profile is simly a regular NixOS module, without any new
+option declarations.
+
+Every profile should have a `default.nix` to easily import it. You can also
+stick things in the profile's subdirectory which are not automatically
+imported, but are meant to be manually imported from a host (useful for less
+common, or specialized configurations).
+
+Importantly, every subdirectory in a profile should be independantly importable.
+For example, a zsh directory lives under [profiles/develop](profiles/develop/zsh).
+It's written in a generic way to allow in to be imported without the entire
+[develop](profiles/develop) if one so wished. This provides a wonderful level of
+granularity.
 
 In addition, profiles can depend on other profiles. For example, The
 [graphical](profiles/graphical) profile depends on [develop](profiles/develop)
@@ -70,7 +113,7 @@ is available automatically for home directory setup.
 
 ## Secrets
 Anything you wish to keep encrypted goes in the [secrets](secrets) directory.
-Be sure to run `git-crypt init`, before committing anything to this repo.
+Be sure to run `git crypt init`, before committing anything to this repo.
 Be sure to check out the [documentation](https://github.com/AGWA/git-crypt) if
 your not familiar.
 
@@ -89,12 +132,18 @@ outputs to import them easily into an external NixOS configuration as well.
 
 ## Pull Requests
 
-If you'd like to add a package, module, profile or host configuration please
-be sure to format your code with [`nixpkgs-fmt`][nixpkgs-fmt] before
+While much of your work in this template may be idiosyncratic in nature. Anything
+that might be generally useful to the broader NixOS community can be synced to
+the `template` branch to provide a host of useful NixOS configurations available
+"out of the box". If you wish to contribute such an expression please follow
+the following guidelines.
+
+Be sure to format your code with [`nixpkgs-fmt`][nixpkgs-fmt] before
 opening a pull-request. The commit message follows the same semantics as
 [nixpkgs][nixpkgs]. You can use a `#` symbol to specify abiguities. For example,
 `develop#zsh: <rest of commit message>` would tell me that your updating the
 `zsh` configuration living under the `develop` profile.
+
 
 
 # License
@@ -109,7 +158,7 @@ which they apply. The aforementioned artifacts are all covered by the
 licenses of the respective packages.
 
 [direnv]: https://direnv.net
-[home-manager]: https://github.com/nrdxp/home-manager
+[home-manager]: https://github.com/rycee/home-manager
 [NixOS]: https://nixos.org
 [nixpkgs-fmt]: https://github.com/nix-community/nixpkgs-fmt
 [nixpkgs]: https://github.com/NixOS/nixpkgs
