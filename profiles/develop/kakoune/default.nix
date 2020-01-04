@@ -19,23 +19,23 @@
   };
 
   nixpkgs.overlays = let
-    kak = self: super: {
-      kakoune = super.kakoune.override {
-        configure.plugins = with super.kakounePlugins; [
-          (kak-fzf.override { fzf = super.skim; })
+    kak = final: prev: {
+      kakoune = prev.kakoune.override {
+        configure.plugins = with prev.kakounePlugins; [
+          (kak-fzf.override { fzf = prev.skim; })
           kak-auto-pairs
           kak-buffers
           kak-powerline
         ];
       };
 
-      kakoune-config = super.writeShellScriptBin "k" ''
-        XDG_CONFIG_HOME=/etc/xdg exec ${self.kakoune}/bin/kak "$@"
+      kakoune-config = prev.writeShellScriptBin "k" ''
+        XDG_CONFIG_HOME=/etc/xdg exec ${final.kakoune}/bin/kak "$@"
       '';
 
-      kakoune-unwrapped = super.kakoune-unwrapped.overrideAttrs (o: rec {
+      kakoune-unwrapped = prev.kakoune-unwrapped.overrideAttrs (o: rec {
         version = "2019.12.10";
-        src = super.fetchFromGitHub {
+        src = prev.fetchFromGitHub {
           repo = "kakoune";
           owner = "mawww";
           rev = "v${version}";

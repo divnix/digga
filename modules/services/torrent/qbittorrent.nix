@@ -67,8 +67,8 @@ in {
     environment.systemPackages = [ pkgs.qbittorrent ];
 
     nixpkgs.overlays = [
-      (self: super: {
-        qbittorrent = super.qbittorrent.override { guiSupport = false; };
+      (final: prev: {
+        qbittorrent = prev.qbittorrent.override { guiSupport = false; };
       })
     ];
 
