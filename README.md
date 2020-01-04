@@ -112,8 +112,8 @@ your user should be declared here. For convenience, [home-manager][home-manager]
 is available automatically for home directory setup.
 
 ## Secrets
-Anything you wish to keep encrypted goes in the directory, which is created
-on first entering a `nix-shell`.
+Anything you wish to keep encrypted goes in the `secrets` directory, which is
+created on first entering a `nix-shell`.
 
 Be sure to run `git crypt init`, before committing anything to this directory.
 Be sure to check out git-crypts [documentation](https://github.com/AGWA/git-crypt)
