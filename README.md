@@ -45,7 +45,8 @@ some of the already existing profiles. Review [contributing](#contributing)
 below on how to structure your expressions. And be sure to update the
 [locale.nix](local/locale.nix) for your region.
 
-You can always check out my personal branch `nrdxp`, to get an idea of how to
+You can always check out my personal branch
+[`nrdxp`](https://github.com/nrdxp/nixflk/tree/nrdxp), to get an idea of how to
 structure your work.
 
 ## Additional Capabilities
