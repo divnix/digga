@@ -112,10 +112,13 @@ your user should be declared here. For convenience, [home-manager][home-manager]
 is available automatically for home directory setup.
 
 ## Secrets
-Anything you wish to keep encrypted goes in the [secrets](secrets) directory.
-Be sure to run `git crypt init`, before committing anything to this repo.
-Be sure to check out the [documentation](https://github.com/AGWA/git-crypt) if
-your not familiar.
+Anything you wish to keep encrypted goes in the directory, which is created
+on first entering a `nix-shell`.
+
+Be sure to run `git crypt init`, before committing anything to this directory.
+Be sure to check out git-crypts [documentation](https://github.com/AGWA/git-crypt)
+if your not familiar. The filter is already set up to encrypt everything in this
+folder by default.
 
 To keep [profiles](profiles) resuable across configurations, secrets should
 only be imported from the [users](users) directory.
