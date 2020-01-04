@@ -1,11 +1,13 @@
 # Introduction
 
 This project is under construction as a rewrite of my [legacy][old]
-NixOS configuration, using the experimental [flakes][rfc] mechanism. Its aim is
-to provide a generic template repository, to neatly separate concerns and allow
-one to get up and running with NixOS faster. Flakes are still an experimental
-feature, but once they finally get merged, even more will become possible,
-including [nixops](https://nixos.org/nixops) support.
+NixOS configuration using the experimental [flakes][rfc] mechanism. Its aim is
+to provide a generic template repository which neatly separates concerns and
+allows one to get up and running with NixOS faster than ever.
+
+Flakes are still an experimental feature, but once they finally get merged,
+even more will become possible, including [nixops](https://nixos.org/nixops)
+support.
 
 
 #### [Flake Talk][video]
@@ -28,7 +30,7 @@ nixos-generate-config --show-hardware-config > ./hosts/<new_host>.nix
 
 
 A basic `rebuild` command is included in the shell to replace
-`nixos-rebuild` for now.
+`nixos-rebuild` for now:
 
 ```
 Usage: rebuild [host] {switch|boot|test}
@@ -46,12 +48,11 @@ below on how to structure your expressions. And be sure to update the
 [locale.nix](local/locale.nix) for your region.
 
 You can always check out my personal branch
-[`nrdxp`](https://github.com/nrdxp/nixflk/tree/nrdxp), to get an idea of how to
-structure your work.
+[`nrdxp`](https://github.com/nrdxp/nixflk/tree/nrdxp), for concrete examples.
 
 ## Additional Capabilities
 
-In addtion:
+Making iso images:
 ```
 rebuild iso
 ```
@@ -72,7 +73,7 @@ flake to allow for seemless sharing between configurations.
 # Contributing
 
 The purpose of this repository is to provide a standardized template structure
-for NixOS machine expressions, thus enabling simpler sharing and resue of nix
+for NixOS machine expressions, thus enabling simpler sharing and reuse of nix
 expressions.
 
 Say your friend and you are using this repository, each with your own unique
@@ -83,14 +84,16 @@ entire system configurations your friend has defined!
 ## Hosts
 Distributions for particular machines should be stored in the [hosts](hosts)
 directory. Every file in this directory will be added automatically to the
-available NixOS configurations available in the `nixosConfigurations` flake
-output. See the [`default.nix`](hosts/default.nix) for implementation details.
+the `nixosConfigurations` flake output. See the
+[`default.nix`](hosts/default.nix) for the implementation details.
 
 ## Profiles
-More abstract configurations that can be reused by multiple machines should
-go in the [profiles](profiles) directory. We make a distinction between a module
+More abstract configurations suitable for reuse by multiple machines should
+go in the [profiles](profiles) directory. A distinction is made between a module
 and profile, in that a profile is simly a regular NixOS module, without any new
-option declarations.
+option declarations. If you want to declare new
+[options](https://nixos.org/nixos/manual/options.html), create an expression
+under the [modules](modules) directory instead.
 
 Every profile should have a `default.nix` to easily import it. You can also
 stick things in the profile's subdirectory which are not automatically
@@ -107,10 +110,16 @@ In addition, profiles can depend on other profiles. For example, The
 [graphical](profiles/graphical) profile depends on [develop](profiles/develop)
 simply by importing it in its [`default.nix`](profiles/graphical/default.nix).
 
+You can, optionally, choose to export your profiles via the flake output. If
+you add an attribute to [profiles/default.nix](profiles/default.nix) named
+\<your-profile>, then it will become available to other flakes via
+`nixosModules.profiles.<your-profile>`.
+
 ## Users
 User declaration belongs in the `users` directory. Everything related to
 your user should be declared here. For convenience, [home-manager][home-manager]
-is available automatically for home directory setup.
+is available automatically for home directory setup and should only be used
+from this directory.
 
 ## Secrets
 Anything you wish to keep encrypted goes in the `secrets` directory, which is
@@ -126,10 +135,10 @@ only be imported from the `users` directory.
 
 ## Modules and Packages
 All [modules](modules/default.nix) and [pkgs](pkgs/default.nix) are available
-for every configuration automatically. Simply add a `*.nix` file to one of
-these  directories declaring your module or package, and update the
+for every configuration automatically. Simply add an expression to one of
+these directories declaring your module or package, and update the
 corresponding `default.nix` to point to it. Now you can use your new module or
-install your new package as usual.
+install your new package as usual from any profile.
 
 Doing this will also add them to the flake's `nixosModules` or `overlays`
 outputs to import them easily into an external NixOS configuration as well.
@@ -140,13 +149,13 @@ While much of your work in this template may be idiosyncratic in nature. Anythin
 that might be generally useful to the broader NixOS community can be synced to
 the `template` branch to provide a host of useful NixOS configurations available
 "out of the box". If you wish to contribute such an expression please follow
-the following guidelines.
+these guidelines:
 
-Be sure to format your code with [`nixpkgs-fmt`][nixpkgs-fmt] before
-opening a pull-request. The commit message follows the same semantics as
-[nixpkgs][nixpkgs]. You can use a `#` symbol to specify abiguities. For example,
-`develop#zsh: <rest of commit message>` would tell me that your updating the
-`zsh` configuration living under the `develop` profile.
+* format your code with [`nixpkgs-fmt`][nixpkgs-fmt]
+* The commit message follows the same semantics as [nixpkgs][nixpkgs].
+  * You can use a `#` symbol to specify abiguities. For example,
+  `develop#zsh: <rest of commit message>` would tell me that your updating the
+  `zsh` subprofile living under the `develop` profile.
 
 
 
