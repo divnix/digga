@@ -18,8 +18,10 @@ let
 in
 pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
-    rebuild
+    git
+    git-crypt
     nixFlakes
+    rebuild
   ];
 
   NIX_CONF_DIR = let
