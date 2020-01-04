@@ -8,6 +8,9 @@
 
   outputs = args@{ self, home, nixpkgs }:
     let
+      inherit (builtins) listToAttrs baseNameOf;
+      inherit (nixpkgs.lib) removeSuffix;
+
       pkgs = import nixpkgs {
         system = "x86_64-linux";
         overlays = self.overlays;
@@ -25,6 +28,15 @@
         inherit (pkgs) sddm-chili dejavu_nerdfont purs;
       };
 
-      nixosModules = (import ./modules) // { profiles = import ./profiles; };
+      nixosModules = let
+        moduleList = import ./modules;
+
+        modulesAttrs = listToAttrs (map (path: {
+          name = removeSuffix ".nix" (baseNameOf path);
+          value = import path;
+        }) moduleList);
+
+        profilesAttrs = { profiles = import ./profiles; };
+      in modulesAttrs // profilesAttrs;
     };
 }
