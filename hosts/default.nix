@@ -1,4 +1,4 @@
-{ home, nixpkgs, flake, ... }:
+args@{ home, nixpkgs, self, ... }:
 let
   utils = import ../lib/utils.nix { lib = nixpkgs.lib; };
 
@@ -11,7 +11,7 @@ let
     ;
 
 
-  config = self:
+  config = this:
     nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
 
@@ -19,24 +19,24 @@ let
         core = ../profiles/core.nix;
 
         global = {
-          networking.hostName = self;
+          networking.hostName = this;
           nix.nixPath = [
             "nixpkgs=${nixpkgs}"
             "nixos-config=/etc/nixos/configuration.nix"
           ];
-          system.configurationRevision = flake.rev;
+          system.configurationRevision = self.rev;
 
-          nixpkgs.overlays = flake.overlays;
+          nixpkgs.overlays = self.overlays;
         };
 
-        local = import "${toString ./.}/${self}.nix";
+        local = import "${toString ./.}/${this}.nix";
 
       in
-        attrValues flake.nixosModules ++ [
+        attrValues self.nixosModules ++ [
           core
           global
           local
-          home
+          home.nixosModules.home-manager
         ];
 
     };

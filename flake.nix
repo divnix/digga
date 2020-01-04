@@ -6,7 +6,7 @@
   inputs.nixpkgs.url = "github:nrdxp/nixpkgs/fork";
   inputs.home.url = "github:nrdxp/home-manager/flakes";
 
-  outputs = { self, home, nixpkgs }: let
+  outputs = args@{ self, home, nixpkgs }: let
     pkgs = import nixpkgs {
       system = "x86_64-linux";
       overlays = self.overlays;
@@ -14,11 +14,7 @@
   in
     {
       nixosConfigurations = let
-        configs = import ./hosts {
-          inherit nixpkgs;
-          flake = self;
-          home = home.nixosModules.home-manager;
-        };
+        configs = import ./hosts args;
 
       in
         configs;
