@@ -1,7 +1,11 @@
 # Introduction
 
 This project is under construction as a rewrite of my [legacy][old]
-NixOS configuration, using the experimental [flakes][rfc] mechanism.
+NixOS configuration, using the experimental [flakes][rfc] mechanism. Its aim is
+to provide a generic template repository, to neatly separate concerns and allow
+one to get up and running with NixOS faster. Flakes are still an experimental
+feature, but once they finally get merged, even more will become possible,
+including nixops support.
 
 
 #### [Flake Talk][video]
@@ -63,6 +67,15 @@ simply by importing it in its [`default.nix`](profiles/graphical/default.nix).
 User declaration belongs in the [users](users) directory. Everything related to
 your user should be declared here. For convenience, [home-manager][home-manager]
 is available automatically for home directory setup.
+
+## Secrets
+Anything you wish to keep encrypted goes in the [secrets](secrets) directory.
+Be sure to run `git-crypt init`, before committing anything to this repo.
+Be sure to check out the [documentation](https://github.com/AGWA/git-crypt) if
+your not familiar.
+
+To keep [profiles](profiles) resuable across configurations, secrets should
+only be imported from the [users](users) directory.
 
 ## Modules and Packages
 All [modules](modules/default.nix) and [pkgs](pkgs/default.nix) are available
