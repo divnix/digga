@@ -111,9 +111,8 @@ In addition, profiles can depend on other profiles. For example, The
 simply by importing it in its [`default.nix`](profiles/graphical/default.nix).
 
 You can, optionally, choose to export your profiles via the flake output. If
-you add an attribute to [profiles/default.nix](profiles/default.nix) named
-\<your-profile>, then it will become available to other flakes via
-`nixosModules.profiles.<your-profile>`.
+you add it to the list in [profiles/default.nix](profiles/default.nix), then it
+will become available to other flakes via `nixosModules.profiles.<filename>`.
 
 ## Users
 User declaration belongs in the `users` directory. Everything related to
