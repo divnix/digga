@@ -11,6 +11,7 @@ in rec {
   #   attrs
   mapFilterAttrs = seive: f: attrs: filterAttrs seive (mapAttrs' f attrs);
 
+  # used in hosts/default.nix
   recImport = { dir, _import ? base: import "${dir}/${base}.nix" }:
     mapFilterAttrs (_: v: v != null) (n: v:
       if n != "default.nix" && hasSuffix ".nix" n && v == "regular"

@@ -16,9 +16,9 @@
         overlays = self.overlays;
       };
     in {
-      nixosConfigurations = let configs = import ./hosts args;
-
-      in configs;
+      nixosConfigurations =
+        let configs = import ./hosts ({ lib = pkgs.lib; } // args);
+        in configs;
 
       overlay = import ./pkgs;
 
