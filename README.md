@@ -1,104 +1,99 @@
 # Introduction
-
-This project is under construction as a rewrite of my [legacy][old]
-NixOS configuration using the experimental [flakes][rfc] mechanism. Its aim is
-to provide a generic template repository which neatly separates concerns and
-allows one to get up and running with NixOS faster than ever.
+A NixOS configuration template using the experimental [flakes][rfc] mechanism.
+Its aim is to provide a generic repository which neatly separates concerns
+and allows one to get up and running with NixOS faster than ever.
 
 Flakes are still an experimental feature, but once they finally get merged
-even more will become possible, including [nixops](https://nixos.org/nixops)
+even more will become possible, i.e. [nixops](https://nixos.org/nixops)
 support.
-
 
 #### [Flake Talk][video]
 
 # Usage
 
-Enter a nix-shell either manually or automatically using [direnv][direnv]. This
-will set up the experimental nix features that need to be available to use
-[flakes][pr].
+```sh
+# not needed if using direnv
+nix-shell
 
-Start a new branch based on the template branch:
-```
-git checkout -b <new_branch> template
-```
+git checkout -b $new_branch template
 
-You may want to use a generated hardware config for your machine:
-```
-nixos-generate-config --show-hardware-config > ./hosts/<new_host>.nix
-```
+# generate hardware config
+nixos-generate-config --show-hardware-config > ./hosts/${new_host}.nix
 
 
-A basic `rebuild` command is included in the shell to replace
-`nixos-rebuild` for now:
+# wrapper for `nix build` bypassing `nixos-rebuild`
+# Usage: rebuild [([host] {switch|boot|test|dry-activate})|iso]
 
-```
-Usage: rebuild [host] {switch|boot|test}
+# You can specify any of the host configurations living in the ./hosts
+# directory. If omitted, it will default to your systems current hostname.
+rebuild $new_host switch
 
-#example using above generated config
-rebuild <new_host> switch
 ```
 
-You can specify one of the host configurations from the [hosts](hosts)
-directory. If omitted, it will default to your systems current hostname.
 
 And now you should be ready to start writing your nix configuration or import
-some of the already existing profiles. Review [contributing](#contributing)
-below on how to structure your expressions. And be sure to update the
-[locale.nix](local/locale.nix) for your region.
+your current one. Review [structure](#structure) below on how to build your
+layout. And be sure to update the [locale.nix](local/locale.nix) for your
+region.
 
-You can always check out my personal branch
-[`nrdxp`](https://github.com/nrdxp/nixflk/tree/nrdxp), for concrete examples.
+You can always checkout my personal branch
+[`nrdxp`](https://github.com/nrdxp/nixflk/tree/nrdxp) for more concrete examples.
 
 ## Additional Capabilities
 
-Making iso images:
-```
+```sh
+# make an iso image based on ./hosts/niximg.nix
 rebuild iso
+
+# install any package the flake exports
+nix profile install ".#packages.x86_64-linux.myPackage"
 ```
 
-Will make a minimal and bootable iso image of the [niximg](hosts/niximg.nix)
-configuration. You can customize the image by editing this file.
+this flake exports overlays and modules as well:
+```nix
+# external flake.nix
+{
+  # ...
+  inputs.nixflk.url = "github:nrdxp/nixflk";
 
-You can also install the packages declared in [pkgs](pkgs) without needing
-to install NixOS. For example:
+  outputs = { self, nixpkgs, nixflk }: {
+
+    nixosConfigurations.myConfig = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        { nixpkgs.overlays = nixflk.overlays; }
+        nixflk.nixosModules.myModule
+      ];
+    };
+  };
+}
+
 ```
-# from top-level
-nix profile install ".#packages.x86_64-linux.purs"
-```
 
-A similar mechanism exists to import the modules and overlays declared in the
-flake to allow for seamless sharing between configurations.
+# Structure
 
-# Structure and Layout
-
-The purpose of this repository is to provide a standardized template structure
-for NixOS machine expressions, thus enabling simpler sharing and reuse of nix
-expressions.
-
-Say your friend and you are using this repository, each with your own unique
-nix expressions. By simply importing your friends flake from `flake.nix` as an
-input, you can have access to all of the packages, modules, overlays, and even
-entire system configurations your friend has defined!
+The structure is here to keep things simple and clean. Anything sufficiently
+generic can ultimately be exported for use in other flakes without getting
+tied up in user concerns. An additional bonus of is the ability to trivially
+swap or combine [profiles](#profiles).
 
 ## Hosts
 Distributions for particular machines should be stored in the [hosts](hosts)
 directory. Every file in this directory will be added automatically to the
-the `nixosConfigurations` flake output. See the
+the `nixosConfigurations` flake output and thus deployable. See the
 [`default.nix`](hosts/default.nix) for the implementation details.
 
 ## Profiles
-More abstract configurations suitable for reuse by multiple machines should
-go in the [profiles](profiles) directory. A distinction is made between a module
-and profile, in that a profile is simply a regular NixOS module, without any new
-option declarations. If you want to declare new
-[options](https://nixos.org/nixos/manual/options.html), create an expression
-under the [modules](modules) directory instead.
+More abstract expressions suitable for reuse by deployments should live  in the
+[profiles](profiles) directory.  A distinction is made between a module and
+profile, in that a profile is simply a regular NixOS module, without any _new_
+option declarations.
 
-Every profile should have a `default.nix` to easily import it. You can also
-stick things in the profile's subdirectory which are not automatically
-imported, but are meant to be manually imported from a host (useful for less
-common, or specialized configurations).
+Every directory here is a profile and should have a `default.nix` to import it.
+Profiles can have subprofiles which are just subdirectories with a `default.nix`.
+There's no hard rule that everything in the folder must be imported by its
+`default.nix` so you can also store relevant configurations that may not be used
+as often and just import them directly from a [host](#hosts) when needed.
 
 Importantly, every subdirectory in a profile should be independently importable.
 For example, a zsh directory lives under [profiles/develop](profiles/develop/zsh).
