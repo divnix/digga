@@ -1,0 +1,4 @@
+[[ -z $3 ]] || return 1
+head=${1:h}
+name="${head}/${2}"
+mv $1 $name
