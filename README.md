@@ -70,7 +70,7 @@ nix profile install ".#packages.x86_64-linux.purs"
 A similar mechanism exists to import the modules and overlays declared in the
 flake to allow for seamless sharing between configurations.
 
-# Contributing
+# Structure and Layout
 
 The purpose of this repository is to provide a standardized template structure
 for NixOS machine expressions, thus enabling simpler sharing and reuse of nix
@@ -142,22 +142,6 @@ install your new package as usual from any profile.
 Doing this will also add them to the flake's `nixosModules` or `overlays`
 outputs to import them easily into an external NixOS configuration as well.
 
-## Pull Requests
-
-While much of your work in this template may be idiosyncratic in nature. Anything
-that might be generally useful to the broader NixOS community can be synced to
-the `template` branch to provide a host of useful NixOS configurations available
-"out of the box". If you wish to contribute such an expression please follow
-these guidelines:
-
-* format your code with [`nixfmt`][nixfmt]
-* The commit message follows the same semantics as [nixpkgs][nixpkgs].
-  * You can use a `#` symbol to specify ambiguities. For example,
-  `develop#zsh: <rest of commit message>` would tell me that your updating the
-  `zsh` subprofile living under the `develop` profile.
-
-
-
 # License
 
 This software is licensed under the [MIT License](COPYING).
@@ -172,8 +156,6 @@ licenses of the respective packages.
 [direnv]: https://direnv.net
 [home-manager]: https://github.com/rycee/home-manager
 [NixOS]: https://nixos.org
-[nixfmt]: https://github.com/serokell/nixfmt
-[nixpkgs]: https://github.com/NixOS/nixpkgs
 [old]: https://github.com/nrdxp/nixos
 [pr]:  https://github.com/NixOS/nixpkgs/pull/68897
 [rfc]: https://github.com/tweag/rfcs/blob/flakes/rfcs/0049-flakes.md
