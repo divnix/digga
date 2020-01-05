@@ -1,6 +1,8 @@
-args@{ lib, home, nixpkgs, self, ... }:
+args@{ home, nixpkgs, self, ... }:
 let
-  inherit (lib.utils) recImport;
+  utils = import ../lib/utils.nix { lib = nixpkgs.lib; };
+
+  inherit (utils) recImport;
 
   inherit (builtins) attrValues removeAttrs;
 
