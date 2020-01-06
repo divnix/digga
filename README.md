@@ -151,19 +151,20 @@ only be imported from the `users` or [`hosts`](hosts) directory.
 ## Modules, Packages and Overlays
 All expressions in both [modules/defualt.nix](modules/default.nix) and
 [pkgs/default.nix](pkgs/default.nix) are available globally, anywhere else in the
-repo. They are additionally included in the `nixosModules` or `overlays` flake
-outputs. Packages can manually be added to [flake.nix](flake.nix) for inclusion
-in the `packages` output as well.
-
-All overlays should be defined in the [overlays](overlays) directory. They will
-be automatically pulled in for use by all configurations. Nix command line tools
-will be able to read overlays from here as well since it is set as
-`nixpkgs-overlays` in `NIX_PATH`.
+repo. They are additionally included in the `nixosModules` and `overlay` flake
+outputs, respectively. Packages can manually be added to [flake.nix](flake.nix)
+for inclusion in the `packages` output as well.
 
 The directory structure is identical to nixpkgs to provide a kind of staging area
 for any modules or packages we might be wanting to merge there later. If your not
 familiar or can't be bothered, simply dropping a valid nix file and pointing the
 `default.nix` to it, is all that's really required.
+
+As for overlays, they should be defined in the [overlays](overlays) directory.
+They will be automatically pulled in for use by all configurations. Nix command
+line tools will be able to read overlays from here as well since it is set as
+`nixpkgs-overlays` in `NIX_PATH`. And of course they will be exported via the
+flake output `overlays` as well.
 
 # License
 
