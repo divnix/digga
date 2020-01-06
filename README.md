@@ -36,8 +36,7 @@ your current one. Review the [structure](#structure) below on how to build your
 layout. And be sure to update the [locale.nix](local/locale.nix) for your
 region.
 
-You can always checkout my personal branch
-[`nrdxp`](https://github.com/nrdxp/nixflk/tree/nrdxp) for more concrete examples.
+You can always checkout my personal branch for more concrete examples.
 
 ## Additional Capabilities
 
