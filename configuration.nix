@@ -3,6 +3,8 @@
 # flake support (e.g `nixos-option`), can work as expected.
 { lib, ... }:
 let
+  inherit (builtins) attrNames readDir;
+
   hostname = lib.fileContents /etc/hostname;
   host = "/etc/nixos/hosts/${hostname}.nix";
   config = if (builtins.pathExists host) then
@@ -25,5 +27,8 @@ in {
     "nixpkgs-overlays=/etc/nixos/overlays"
   ];
 
-  nixpkgs.overlays = lib.singleton (import ./pkgs);
+  nixpkgs.overlays = let
+    overlays = map (name: import (./overlays + "/${name}"))
+      (attrNames (readDir ./overlays));
+  in overlays;
 }
