@@ -3,7 +3,7 @@
 
   epoch = 201909;
 
-  inputs.nixpkgs.url = "github:nrdxp/nixpkgs/fork-010520";
+  inputs.nixpkgs.url = "github:nrdxp/nixpkgs/fork";
   inputs.home.url = "github:nrdxp/home-manager/flakes";
 
   outputs = args@{ self, home, nixpkgs }:
