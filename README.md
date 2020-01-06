@@ -21,8 +21,8 @@ git checkout -b $new_branch template
 nixos-generate-config --show-hardware-config > ./hosts/${new_host}.nix
 
 
-# wrapper for `nix build` bypassing `nixos-rebuild`
-# Usage: rebuild [([host] {switch|boot|test|dry-activate})|iso]
+# `rebuild` wrapper for `nix build` bypassing `nixos-rebuild`
+# Usage: rebuild [host] {switch|boot|test|dry-activate}
 
 # You can specify any of the host configurations living in the ./hosts
 # directory. If omitted, it will default to your systems current hostname.
@@ -32,7 +32,7 @@ rebuild $new_host switch
 
 
 And now you should be ready to start writing your nix configuration or import
-your current one. Review [structure](#structure) below on how to build your
+your current one. Review the [structure](#structure) below on how to build your
 layout. And be sure to update the [locale.nix](local/locale.nix) for your
 region.
 
@@ -49,7 +49,7 @@ rebuild iso
 nix profile install ".#packages.x86_64-linux.myPackage"
 ```
 
-this flake exports overlays and modules as well:
+this flake exports multiple outputs for use in other flakes:
 ```nix
 # external flake.nix
 {
@@ -57,6 +57,8 @@ this flake exports overlays and modules as well:
   inputs.nixflk.url = "github:nrdxp/nixflk";
 
   outputs = { self, nixpkgs, nixflk }: {
+
+    nixosConfigurations.newConfig = nixflk.nixosConfigurations.someConfig;
 
     nixosConfigurations.myConfig = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -74,40 +76,42 @@ this flake exports overlays and modules as well:
 
 The structure is here to keep things simple and clean. Anything sufficiently
 generic can ultimately be exported for use in other flakes without getting
-tied up in user concerns. An additional bonus of is the ability to trivially
-swap or combine [profiles](#profiles).
+tied up in user concerns. As an added bonus, one can now trivially swap or
+combine [profiles](#profiles), creating a custom config in mere moments.
 
 ## Hosts
 Distributions for particular machines should be stored in the [hosts](hosts)
 directory. Every file in this directory will be added automatically to the
-the `nixosConfigurations` flake output and thus deployable. See the
+the `nixosConfigurations` flake output and thus becomes deployable. See the
 [`default.nix`](hosts/default.nix) for the implementation details.
 
 ## Profiles
-More abstract expressions suitable for reuse by deployments should live  in the
-[profiles](profiles) directory.  A distinction is made between a module and
-profile, in that a profile is simply a regular NixOS module, without any _new_
-option declarations.
+A profile is any directory under [profiles](profiles) containing a `default.nix`
+defining a valid NixOS module, _with_ the added restriction that no new
+delclarations to the `options` attribute are allowed (use [modules](modules)
+instead). Their purpose is to provide abstract expressions suitable for reuse by
+multiple deployments. They are perhaps _the_ key concept in keeping this
+repository matainable.
 
-Every directory here is a profile and should have a `default.nix` to import it.
-Profiles can have subprofiles which are just subdirectories with a `default.nix`.
-There's no hard rule that everything in the folder must be imported by its
-`default.nix` so you can also store relevant configurations that may not be used
-as often and just import them directly from a [host](#hosts) when needed.
+Profiles can have subprofiles which are themselves just profiles that live under
+another. There's no hard rule that everything in the folder must be imported by
+its `default.nix`, so you can also store relevant code that is useful but not
+wanted by default in, say, an `alt.nix`.  Importantly, every subdirectory in a
+profile should be independent of its parent.
 
-Importantly, every subdirectory in a profile should be independently importable.
 For example, a zsh directory lives under [profiles/develop](profiles/develop/zsh).
-It's written in a generic way to allow in to be imported without the entire
+It's self contained to allow inclusion without the whole of
 [develop](profiles/develop) if one so wished. This provides a wonderful level of
-granularity.
+granularity and control. Put simply: take the best, leave the rest.
 
-In addition, profiles can depend on other profiles. For example, The
+In addition, profiles can depend on other profiles. For instance, the
 [graphical](profiles/graphical) profile depends on [develop](profiles/develop)
-simply by importing it in its [`default.nix`](profiles/graphical/default.nix).
+simply by importing it. This is to ensure my terminal configuration is always
+available from within a graphical session.
 
-You can, optionally, choose to export your profiles via the flake output. If
-you add it to the list in [profiles/default.nix](profiles/default.nix), then it
-will become available to other flakes via `nixosModules.profiles.<filename>`.
+Optionally, you may choose to export your profiles via the flake output. If
+you include it in the list defined in [profiles/default.nix](profiles/default.nix),
+it will be available to other flakes via `nixosModules.profiles`.
 
 ## Users
 User declaration belongs in the `users` directory. Everything related to
@@ -125,17 +129,19 @@ if your not familiar. The filter is already set up to encrypt everything in this
 folder by default.
 
 To keep [profiles](profiles) reusable across configurations, secrets should
-only be imported from the `users` directory.
+only be imported from the `users` or [`hosts`](hosts) directory.
 
 ## Modules and Packages
-All [modules](modules/default.nix) and [pkgs](pkgs/default.nix) are available
-for every configuration automatically. Simply add an expression to one of
-these directories declaring your module or package, and update the
-corresponding `default.nix` to point to it. Now you can use your new module or
-install your new package as usual from any profile.
+All expressions in both [modules/defualt.nix](modules/default.nix) and
+[pkgs/default.nix](pkgs/default.nix) are available globally, anywhere else in the
+repo. They are additionally included in the `nixosModules` or `overlays` flake
+outputs. Packages can manually be added to [flake.nix](flake.nix) for inclusion
+in the `packages` output as well.
 
-Doing this will also add them to the flake's `nixosModules` or `overlays`
-outputs to import them easily into an external NixOS configuration as well.
+The directory structure is identical to nixpkgs to provide a kind of staging area
+for any modules or packages we might be wanting to merge there later. If your not
+familiar or can't be bothered, simply dropping a valid nix file and pointing the
+`default.nix` to it, is all that's really required.
 
 # License
 
