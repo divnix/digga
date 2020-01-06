@@ -23,6 +23,10 @@ nixos-generate-config --show-hardware-config > ./hosts/${new_host}.nix
 # ensure configuration lives in expected location
 ln -s $PWD /etc/nixos
 
+# a flake is vcs based, so only git aware files are bundled
+# adding a new file to staging is enough
+git add ./hosts/${new_host}.nix
+
 # `rebuild` wrapper for `nix build` bypassing `nixos-rebuild`
 # Usage: rebuild [host] {switch|boot|test|dry-activate}
 
