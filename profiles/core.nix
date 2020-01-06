@@ -131,10 +131,6 @@ in {
 
   services.earlyoom.enable = true;
 
-  users = {
-    mutableUsers = false;
-
-    users.root.hashedPassword = lib.mkDefault "";
-  };
+  users.mutableUsers = false;
 
 }
