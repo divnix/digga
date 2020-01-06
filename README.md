@@ -121,13 +121,13 @@ from this directory.
 ## Lib
 The [lib](lib) directory contains a file `utils.nix` which is an attribute set
 meant to consist mainly of utility functions you might want to write and use
-throughout the configuration. They are available via a new `utils` attribute
+throughout the configuration. They are available via a new `usr` attribute
 passed to every NixOS module, eg:
 
 ```
 # hosts/some-host.nix
-{ utils, ... }:
-let data = utils.myFunction # ...
+{ usr, ... }:
+let data = usr.myFunction # ...
 in
 {
   # NixOS configuration

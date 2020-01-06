@@ -10,7 +10,7 @@ let
     nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
 
-      specialArgs = { inherit utils; };
+      specialArgs.usr = utils;
 
       modules = let
         core = ../profiles/core.nix;
