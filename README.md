@@ -86,11 +86,11 @@ the `nixosConfigurations` flake output and thus becomes deployable. See the
 
 ## Profiles
 A profile is any directory under [profiles](profiles) containing a `default.nix`
-defining a valid NixOS module, _with_ the added restriction that no new
-delclarations to the `options` attribute are allowed (use [modules](modules)
-instead). Their purpose is to provide abstract expressions suitable for reuse by
-multiple deployments. They are perhaps _the_ key concept in keeping this
-repository matainable.
+defining a valid NixOS module, with the added restriction that no new
+delclarations to the `options` _or_ `config` attributes are allowed
+(use [modules](modules) instead). Their purpose is to provide abstract
+expressions suitable for reuse by multiple deployments. They are perhaps _the_
+key mechanism by which we keep this repo maintainable.
 
 Profiles can have subprofiles which are themselves just profiles that live under
 another. There's no hard rule that everything in the folder must be imported by
@@ -117,6 +117,22 @@ User declaration belongs in the `users` directory. Everything related to
 your user should be declared here. For convenience, [home-manager][home-manager]
 is available automatically for home directory setup and should only be used
 from this directory.
+
+## Lib
+The [lib](lib) directory contains a file `utils.nix` which is an attribute set
+meant to consist mainly of utility functions you might want to write and use
+throughout the configuration. They are available via a new `utils` attribute
+passed to every NixOS module, eg:
+
+```
+# hosts/some-host.nix
+{ utils, ... }:
+let data = utils.myFunction # ...
+in
+{
+  # NixOS configuration
+}
+```
 
 ## Secrets
 Anything you wish to keep encrypted goes in the `secrets` directory, which is
