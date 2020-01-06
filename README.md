@@ -20,6 +20,8 @@ git checkout -b $new_branch template
 # generate hardware config
 nixos-generate-config --show-hardware-config > ./hosts/${new_host}.nix
 
+# ensure configuration lives in expected location
+ln -s $PWD /etc/nixos
 
 # `rebuild` wrapper for `nix build` bypassing `nixos-rebuild`
 # Usage: rebuild [host] {switch|boot|test|dry-activate}
@@ -146,12 +148,17 @@ folder by default.
 To keep [profiles](profiles) reusable across configurations, secrets should
 only be imported from the `users` or [`hosts`](hosts) directory.
 
-## Modules and Packages
+## Modules, Packages and Overlays
 All expressions in both [modules/defualt.nix](modules/default.nix) and
 [pkgs/default.nix](pkgs/default.nix) are available globally, anywhere else in the
 repo. They are additionally included in the `nixosModules` or `overlays` flake
 outputs. Packages can manually be added to [flake.nix](flake.nix) for inclusion
 in the `packages` output as well.
+
+All overlays should be defined in the [overlays](overlays) directory. They will
+be automatically pulled in for use by all configurations. Nix command line tools
+will be able to read overlays from here as well since it is set as
+`nixpkgs-overlays` in `NIX_PATH`.
 
 The directory structure is identical to nixpkgs to provide a kind of staging area
 for any modules or packages we might be wanting to merge there later. If your not

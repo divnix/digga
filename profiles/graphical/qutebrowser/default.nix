@@ -16,12 +16,4 @@ in {
 
     systemPackages = with pkgs; [ qute qutebrowser mpv youtubeDL ];
   };
-
-  nixpkgs.overlays = let
-    overlay = final: prev: {
-      qute = prev.writeShellScriptBin "qute" ''
-        exec ${prev.qutebrowser}/bin/qutebrowser -C /etc/xdg/qutebrowser/config.py "$@"
-      '';
-    };
-  in [ overlay ];
 }

@@ -19,8 +19,11 @@ in {
   ] ++ config;
 
   networking.hostName = hostname;
-  nix.nixPath =
-    [ "nixpkgs=${<nixpkgs>}" "nixos-config=/etc/nixos/configuration.nix" ];
+  nix.nixPath = [
+    "nixpkgs=${<nixpkgs>}"
+    "nixos-config=/etc/nixos/configuration.nix"
+    "nixpkgs-overlays=/etc/nixos/overlays"
+  ];
 
   nixpkgs.overlays = lib.singleton (import ./pkgs);
 }

@@ -3,12 +3,12 @@
 
   epoch = 201909;
 
-  inputs.nixpkgs.url = "github:nrdxp/nixpkgs/fork";
+  inputs.nixpkgs.url = "github:nrdxp/nixpkgs/fork-010520";
   inputs.home.url = "github:nrdxp/home-manager/flakes";
 
   outputs = args@{ self, home, nixpkgs }:
     let
-      inherit (builtins) listToAttrs baseNameOf;
+      inherit (builtins) listToAttrs baseNameOf attrNames readDir;
       inherit (nixpkgs.lib) removeSuffix;
 
       pkgs = import nixpkgs {
@@ -22,7 +22,10 @@
 
       overlay = import ./pkgs;
 
-      overlays = [ self.overlay ];
+      overlays = let
+        overlays = map (name: import (./overlays + "/${name}"))
+          (attrNames (readDir ./overlays));
+      in overlays;
 
       packages.x86_64-linux = {
         inherit (pkgs) sddm-chili dejavu_nerdfont purs;

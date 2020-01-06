@@ -20,6 +20,7 @@ let
           nix.nixPath = [
             "nixpkgs=${nixpkgs}"
             "nixos-config=/etc/nixos/configuration.nix"
+            "nixpkgs-overlays=/etc/nixos/overlays"
           ];
           system.configurationRevision = self.rev;
 
