@@ -20,7 +20,7 @@ git checkout -b $new_branch template
 # generate hardware config
 nixos-generate-config --show-hardware-config > ./hosts/${new_host}.nix
 
-# Edit the new file, removing `not-deteced.nix` from the imports.
+# Edit the new file, removing `not-detected.nix` from the imports.
 # In order to maintain purity flakes cannot resolve from the NIX_PATH.
 # You may also want to import ./hosts/NixOS.nix from here which sets up
 # an efi bootloader, enables Network Manager and sets an empty root password.
@@ -170,7 +170,7 @@ To keep [profiles](profiles) reusable across configurations, secrets should
 only be imported from the `users` or [`hosts`](hosts) directory.
 
 ## Modules, Packages and Overlays
-All expressions in both [modules/defualt.nix](modules/default.nix) and
+All expressions in both [modules/default.nix](modules/default.nix) and
 [pkgs/default.nix](pkgs/default.nix) are available globally, anywhere else in the
 repo. They are additionally included in the `nixosModules` and `overlay` flake
 outputs, respectively. Packages can manually be added to [flake.nix](flake.nix)
