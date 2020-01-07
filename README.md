@@ -32,6 +32,7 @@ git add ./hosts/${new_host}.nix
 
 # You can specify any of the host configurations living in the ./hosts
 # directory. If omitted, it will default to your systems current hostname.
+# This will be run as root.
 rebuild $new_host switch
 
 ```
