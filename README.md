@@ -20,7 +20,19 @@ git checkout -b $new_branch template
 # generate hardware config
 nixos-generate-config --show-hardware-config > ./hosts/${new_host}.nix
 
-# ensure configuration lives in expected location
+# Edit the new file, removing `not-deteced.nix` from the imports.
+# In order to maintain purity flakes cannot resolve from the NIX_PATH.
+# You may also want to import ./hosts/NixOS.nix from here which sets up
+# an efi bootloader, enables Network Manager and sets an empty root password.
+# Otherwise you'll need to set the bootloader, network and password yourself.
+
+# Also ensure your file systems are set the way you want. And import
+# any ./profiles you may wish to try out.
+$EDITOR ./hosts/${new_host}.nix
+
+
+# backup existing config and ensure configuration lives in expected location
+mv /etc/nixos /etc/nixos.old
 ln -s $PWD /etc/nixos
 
 # a flake is vcs based, so only git aware files are bundled
