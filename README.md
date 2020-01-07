@@ -7,9 +7,14 @@ Flakes are still an experimental feature, but once they finally get merged
 even more will become possible, i.e. [nixops](https://nixos.org/nixops)
 support.
 
-#### [Flake Talk][video]
+#### Flake Talk:
+[![Flake talk at NixConf][thumb]][video]
 
-# Usage
+Keep in mind that flakes are meant to deprecate nix-channels. I'd recommend not
+installing any. If your really want them, they should work if you wire them
+up with your `NIX_PATH`.
+
+# Setup
 
 ```sh
 # not needed if using direnv
@@ -205,3 +210,4 @@ licenses of the respective packages.
 [pr]:  https://github.com/NixOS/nixpkgs/pull/68897
 [rfc]: https://github.com/tweag/rfcs/blob/flakes/rfcs/0049-flakes.md
 [video]: https://www.youtube.com/watch?v=UeBX7Ide5a0
+[thumb]: https://img.youtube.com/vi/UeBX7Ide5a0/hqdefault.jpg
