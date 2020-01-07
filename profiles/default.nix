@@ -1,11 +1,12 @@
 [
-  ./graphical
-  ./graphical/sway
-  ./graphical/qutebrowser
   ./develop
-  ./develop/zsh
-  ./develop/tmux
   ./develop/kakoune
-  ./misc
+  ./develop/tmux
+  ./develop/zsh
   ./games
+  ./graphical
+  ./graphical/qutebrowser
+  ./graphical/sway
+  ./misc
+  ./virt
 ]
