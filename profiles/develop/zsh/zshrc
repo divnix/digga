@@ -28,12 +28,16 @@ bindkey -M vicmd 'j' history-substring-search-down
 #load compinit
 autoload -Uz compinit
 
-typeset -i updated_at=$(date +'%j' -r ~/.zcompdump \
-  || stat -f '%Sm' -t '%j' ~/.zcompdump)
+if [[ -f ~/.zcompdump ]]; then
+  typeset -i updated_at=$(date +'%j' -r ~/.zcompdump \
+    || stat -f '%Sm' -t '%j' ~/.zcompdump)
 
-# save time if completion cache has been update recently
-if [ $(date +'%j') != $updated_at ]; then
-  compinit -u
+  # save time if completion cache has been update recently
+  if [ $(date +'%j') != $updated_at ]; then
+    compinit -u
+  else
+    compinit -C
+  fi
 else
   compinit -C
 fi
