@@ -3,4 +3,6 @@
 
   isoImage.makeEfiBootable = true;
   isoImage.makeUsbBootable = true;
+  networking.networkmanager.enable = true;
+  users.users.root.password = "";
 }
