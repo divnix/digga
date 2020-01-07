@@ -119,10 +119,14 @@ you include it in the list defined in [profiles/default.nix](profiles/default.ni
 it will be available to other flakes via `nixosModules.profiles`.
 
 ## Users
-User declaration belongs in the `users` directory. Everything related to
-your user should be declared here. For convenience, [home-manager][home-manager]
-is available automatically for home directory setup and should only be used
-from this directory.
+User declarations belong in the `users` directory, created on entering `nix-shell`.
+These are actually just a special case of [profiles](#profiles). Any profile that
+makes a declaration defining, or referencing a specific interactive user or uid
+belongs in  here. That way profiles stay general, and all our idiosyncratic data
+has a clean home.
+
+For convenience, [home-manager][home-manager] is available automatically for
+home directory setup and should only be used from this directory.
 
 ## Lib
 The [lib](lib) directory contains a file `utils.nix` which is an attribute set
