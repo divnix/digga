@@ -28,7 +28,7 @@
       in overlays;
 
       packages.x86_64-linux = {
-        inherit (pkgs) sddm-chili dejavu_nerdfont purs;
+        inherit (pkgs) sddm-chili dejavu_nerdfont purs pure;
       };
 
       nixosModules = let
