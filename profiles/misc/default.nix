@@ -1,3 +1,1 @@
-{ ... }: {
-  imports = [ ./stubby.nix ./adblocking.nix ./make-linux-fast-again.nix ];
-}
+{ ... }: { imports = [ ./stubby.nix ./adblocking.nix ]; }
