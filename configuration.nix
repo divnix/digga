@@ -1,7 +1,7 @@
 # this file is an impure recreation of the flake profile currently deployed
 # based on the systems hostname. The purpose is so tools which do not yet have
 # flake support (e.g `nixos-option`), can work as expected.
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
   inherit (builtins) attrNames readDir;
 
@@ -30,5 +30,12 @@ in {
   nixpkgs.overlays = let
     overlays = map (name: import (./overlays + "/${name}"))
       (attrNames (readDir ./overlays));
-  in overlays;
+  in overlays ++ [
+    (final: prev: {
+      nur = import (builtins.fetchTarball
+        "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+          inherit pkgs;
+        };
+    })
+  ];
 }

@@ -18,6 +18,19 @@
             "narHash": "sha256-4p9gqMJTVmyH7eSq1euGZWusldWoBfKfi/VwZEPL2Mw=",
             "originalUrl": "github:nrdxp/nixpkgs/fork",
             "url": "github:nrdxp/nixpkgs/1e232452ed4c57e9968f4342d9ba044d36403928"
+        },
+        "nur": {
+            "inputs": {
+                "nixpkgs": {
+                    "inputs": {},
+                    "narHash": "sha256-4p9gqMJTVmyH7eSq1euGZWusldWoBfKfi/VwZEPL2Mw=",
+                    "originalUrl": "nixpkgs",
+                    "url": "github:nrdxp/nixpkgs/1e232452ed4c57e9968f4342d9ba044d36403928"
+                }
+            },
+            "narHash": "sha256-i+NZZWnhNcxl73e2FjfgKUn3sW42ZKiVeXNKv72MN14=",
+            "originalUrl": "github:nrdxp/NUR/flake",
+            "url": "github:nrdxp/NUR/c632e4112b19a1b2fa05242a8cc971091d12e154"
         }
     },
     "version": 3
