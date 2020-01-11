@@ -37,13 +37,14 @@
           value = import path;
         });
 
-        moduleList = import ./modules;
-
+        # modules
+        moduleList = import ./modules/list.nix;
         modulesAttrs = listToAttrs (prep moduleList);
 
-        profilesList = import ./profiles;
-
+        # profiles
+        profilesList = import ./profiles/list.nix;
         profilesAttrs = { profiles = listToAttrs (prep profilesList); };
+
       in modulesAttrs // profilesAttrs;
     };
 }
