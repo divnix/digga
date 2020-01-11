@@ -8,9 +8,4 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ];
   };
-
-  # to avoid zsh startup message
-  home-manager.users.nrd.home.file.".zshrc" = ''
-    #
-  '';
 }
