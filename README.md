@@ -1,9 +1,7 @@
 # Introduction
 A NixOS configuration template using the experimental [flakes][rfc] mechanism.
 Its aim is to provide a generic repository which neatly separates concerns
-and allows one to get up and running with NixOS faster than ever. In addition,
-conveniences like [home-manager][home-manager] and [NUR][nur] are wired in by
-default to help make life easier.
+and allows one to get up and running with NixOS faster than ever.
 
 Flakes are still an experimental feature, but once they finally get merged
 even more will become possible, i.e. [nixops](https://nixos.org/nixops)
@@ -36,6 +34,7 @@ nixos-generate-config --show-hardware-config > ./hosts/${new_host}.nix
 # Also ensure your file systems are set the way you want. And import
 # any ./profiles you may wish to try out.
 $EDITOR ./hosts/${new_host}.nix
+
 
 # backup existing config and ensure configuration lives in expected location
 mv /etc/nixos /etc/nixos.old
@@ -95,26 +94,6 @@ this flake exports multiple outputs for use in other flakes:
 }
 
 ```
-
-### NUR usage
-
-You can use packages, modules and overlays from the
-[Nix User Repository][nur].
-
-For modules and overlays, you can pull them in via the new top-level arguements
-`nurModules` and `nurOverlays`, respectively:
-
-```nix
-{ nurModules, nurOverlays, pkgs, ... }:
-{
-  # ...
-  imports = [ nurModules."${nur-username}.modules.${aModule}" ];
-  nixpkgs.overlays = [ nurOverlays."${nur-username}".overlays."${anOverlay}" ];
-}
-```
-
-Packages are installable the same way as without flakes via
-`pkgs.nur."${nur-username}"."${aPackage}"`.
 
 # Structure
 
@@ -227,7 +206,6 @@ licenses of the respective packages.
 [direnv]: https://direnv.net
 [home-manager]: https://github.com/rycee/home-manager
 [NixOS]: https://nixos.org
-[nur]: https://github.com/nix-community/NUR
 [old]: https://github.com/nrdxp/nixos
 [pr]:  https://github.com/NixOS/nixpkgs/pull/68897
 [rfc]: https://github.com/tweag/rfcs/blob/flakes/rfcs/0049-flakes.md
