@@ -1,38 +1,44 @@
 args@{ home, nixpkgs, self, ... }:
 let
-  utils = import ../lib/utils.nix { lib = nixpkgs.lib; };
+  inherit (nixpkgs) lib;
+
+  utils = import ../lib/utils.nix { inherit lib; };
 
   inherit (utils) recImport;
 
   inherit (builtins) attrValues removeAttrs;
 
-  config = this:
-    nixpkgs.lib.nixosSystem rec {
+  config = hostName:
+    lib.nixosSystem rec {
       system = "x86_64-linux";
 
-      specialArgs.usr = utils;
+      specialArgs.usr = { inherit utils; };
 
       modules = let
+        inherit (home.nixosModules) home-manager;
+
         core = ../profiles/core.nix;
 
         global = {
-          networking.hostName = this;
+          networking.hostName = hostName;
           nix.nixPath = [
             "nixpkgs=${nixpkgs}"
             "nixos-config=/etc/nixos/configuration.nix"
             "nixpkgs-overlays=/etc/nixos/overlays"
           ];
+
           system.configurationRevision = self.rev;
 
           nixpkgs.overlays = self.overlays;
         };
 
-        local = import "${toString ./.}/${this}.nix";
+        local = import "${toString ./.}/${hostName}.nix";
 
-        flakeModules = removeAttrs self.nixosModules [ "profiles" ];
+        # Everything in `./modules/list.nix`.
+        flakeModules =
+          attrValues (removeAttrs self.nixosModules [ "profiles" ]);
 
-      in attrValues flakeModules
-      ++ [ core global local home.nixosModules.home-manager ];
+      in flakeModules ++ [ core global local home-manager ];
 
     };
 

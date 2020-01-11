@@ -1,0 +1,99 @@
+## Hosts
+Module declarations dependant on particular machines should be stored in the
+[hosts](hosts) directory. Every file in this directory will be added automatically
+to the the `nixosConfigurations` flake output and thus becomes deployable via
+`nixos-rebuild` and `rebuild`.
+
+See [`hosts/default.nix`](hosts/default.nix) for the implementation.
+
+## Profiles
+A profile is any directory under [profiles](profiles) containing a `default.nix`
+defining a valid NixOS module, with the added restriction that no new
+delclarations to the `options` _or_ `config` attributes are allowed
+(use [modules](modules) instead). Their purpose is to provide abstract
+expressions suitable for reuse by multiple deployments. They are perhaps _the_
+key mechanism by which we keep this repo maintainable.
+
+Profiles can have subprofiles which are themselves just profiles that live under
+another. There's no hard rule that everything in the folder must be imported by
+its `default.nix`, so you can also store relevant code that is useful but not
+wanted by default in, say, an `alt.nix`. Importantly, every subdirectory in a
+profile should be independent of its parent. i.e:
+
+```nix
+{
+  # importing `profile` without implicitly importing `some`
+  imports = [ ./profiles/some/profile ];
+}
+```
+
+It is okay for profiles to depend on other profiles so long as they are
+explicitly loaded via `imports`.
+
+Optionally, you may choose to export your profiles via the flake output. If
+you include it in the list defined in [profiles/list.nix](profiles/list.nix),
+it will be available to other flakes via `nixosModules.profiles`.
+
+## Users
+User declarations belong in the `users` directory.
+
+These are actually just a special case of [profiles](#profiles) attached to
+a particular interactive user. Its primarily for declarations to
+`users.users.<new-user>` where `<new-user>.isNormalUser` is true.
+
+This is a convenient place to import your profiles such that a particular user
+always has a reliable stack.
+
+For convenience, [home-manager][home-manager] is available automatically for
+home directory setup and should only be used from this directory.
+
+## Lib
+The [lib](lib) directory contains a file `utils.nix` which is an attribute set
+meant to consist mainly of utility functions you might want to write and use
+throughout the configuration. They are available via a new `usr` attribute
+passed to every NixOS module, eg:
+
+```
+# hosts/some-host.nix
+{ usr, ... }:
+let
+  inherit (usr) utils;
+
+  data = utils.myFunction # ...
+in
+{
+  # NixOS configuration
+}
+```
+
+## Secrets
+Anything you wish to keep encrypted goes in the `secrets` directory, which is
+created on first entering a `nix-shell`.
+
+Be sure to run `git crypt init`, before committing anything to this directory.
+Be sure to check out git-crypt's [documentation](https://github.com/AGWA/git-crypt)
+if your not familiar. The filter is already set up to encrypt everything in this
+folder by default.
+
+To keep [profiles](profiles) reusable across configurations, secrets should
+only be imported from the `users` or [`hosts`](hosts) directory.
+
+## Modules, Packages and Overlays
+All expressions in both [modules/list.nix](modules/list.nix) and
+[pkgs/default.nix](pkgs/default.nix) are available globally, anywhere else in the
+repo. They are additionally included in the `nixosModules` and `overlay` flake
+outputs, respectively. Packages can manually be added to [flake.nix](flake.nix)
+for inclusion in the `packages` output as well.
+
+The directory structure is identical to nixpkgs to provide a kind of staging area
+for any modules or packages we might be wanting to merge there later. If your not
+familiar or can't be bothered, simply dropping a valid nix file and pointing the
+`default.nix` to it, is all that's really required.
+
+As for overlays, they should be defined in the [overlays](overlays) directory.
+They will be automatically pulled in for use by all configurations. Nix command
+line tools will be able to read overlays from here as well since it is set as
+`nixpkgs-overlays` in `NIX_PATH`. And of course they will be exported via the
+flake output `overlays` as well.
+
+[home-manager]: https://github.com/rycee/home-manager
