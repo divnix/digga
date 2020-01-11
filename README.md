@@ -103,7 +103,8 @@ You can use packages, modules and overlays from the
 [Nix User Repository][nur].
 
 Since NUR packages are completely unchecked, they are not included by default.
-Check out the NUR [branch](https://github.com/nrdxp/nixflk/tree/NUR) for usage.
+Check out the NUR [branch](https://github.com/nrdxp/nixflk/tree/NUR#nur-usage)
+for usage.
 
 # License
 
