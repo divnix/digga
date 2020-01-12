@@ -12,11 +12,9 @@ may wish to modify your configuration to adhere to the [ideals](DOC.md) of this
 project.
 
 ### ⚠ Advisory
-Flakes are still an experimental feature.
-
-Presuming they get [merged][rfc], even more will become possible, e.g.
-[nixops](https://nixos.org/nixops)/[disnix](https://nixos.org/disnix)
-support.
+Flakes are still an experimental feature, so not everything works yet.
+Things like [nixops](https://nixos.org/nixops)/[disnix](https://nixos.org/disnix)
+are not yet supported.
 
 Also, flakes are meant to deprecate nix-channels. I'd recommend not
 installing any. If your really want them, they should work if you hook them
