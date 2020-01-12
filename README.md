@@ -3,73 +3,88 @@ A NixOS configuration template using the experimental [flakes][rfc] mechanism.
 Its aim is to provide a generic repository which neatly separates concerns
 and allows one to get up and running with NixOS faster than ever.
 
-Please be advised, flakes are still an experimental feature.
+A core goal is to facilitate a (mostly) seamless transition to flakes.
+You could start by simply importing your `configuration.nix` from a module
+in [hosts](hosts). There may be some translation if you import anything
+from the `NIX_PATH`, e.g. `import <nixpkgs> {}`, but the majority of any valid
+NixOS config should work right out of the box. Once your up and running, you
+may wish to modify your configuration to adhere to the [ideals](DOC.md) of this
+project.
+
+### ⚠ Advisory
+Flakes are still an experimental feature.
+
 Presuming they get [merged][rfc], even more will become possible, e.g.
 [nixops](https://nixos.org/nixops)/[disnix](https://nixos.org/disnix)
 support.
 
-#### Flake Talk:
+Also, flakes are meant to deprecate nix-channels. I'd recommend not
+installing any. If your really want them, they should work if you hook them
+into your `NIX_PATH` manually.
+
+## Flake Talk:
 [![Flake talk at NixConf][thumb]][video]
 
-Keep in mind that flakes are meant to deprecate nix-channels. I'd recommend not
-installing any. If your really want them, they should work if you wire them
-up with your `NIX_PATH`.
 
 # Setup
 
 ```sh
-# not needed if using direnv
+# This is not needed if your using direnv:
 nix-shell
 
+# It's recommend to start a new branch:
 git checkout -b $new_branch template
 
-# set a root password, preferably with `hashedPassword`
-$EDITOR ./users/root/default.nix
-
-# generate hardware config
+# Generate a hardware config:
 nixos-generate-config --show-hardware-config > ./hosts/${new_host}.nix
 
 # Edit the new file, removing `not-detected.nix` from the imports.
 # In order to maintain purity flakes cannot resolve from the NIX_PATH.
-# You may also want to import ./hosts/NixOS.nix from here which sets up
-# an efi bootloader, enables Network Manager and sets an empty root password.
-# Otherwise you'll need to set the bootloader, network and password yourself.
 
-# Also ensure your file systems are set the way you want. And import
-# any ./profiles you may wish to try out.
+# You could import your existing `configuration.nix`, or the generic
+# `./hosts/NixOS.nix` from here. The latter sets up Network Manger,
+# an efi bootloader, an empty root password, and a generic user
+# named `nixos`.
+
+# Also ensure your file systems are set the way you want:
 $EDITOR ./hosts/${new_host}.nix
 
-# backup existing config and ensure configuration lives in expected location
+# Backup your existing config:
 mv /etc/nixos /etc/nixos.old
+
+# Ensure this flake can be found in its expected location:
 ln -s $PWD /etc/nixos
 
-# a flake is vcs based, so only git aware files are bundled
-# adding a new file to staging is enough
+# A flake is vcs based, so only git aware files are bundled
+# adding a new file to staging is enough:
 git add ./hosts/${new_host}.nix
 
-# `rebuild` wrapper for `nix build` bypassing `nixos-rebuild`
+# A generic `rebuild` wrapper for `nix build` is provided
+# bypassing the need for `nixos-rebuild`.
+
 # Usage: rebuild [host] {switch|boot|test|dry-activate}
+# where `host` is any file living in the `./hosts` directory
 
-# You can specify any of the host configurations living in the ./hosts
-# directory. If omitted, it will default to your systems current hostname.
-# This will be run as root.
-rebuild $new_host switch
+# Test your new deployment; this will be run as root:
+rebuild $new_host test
 
-# you may wish to start by creating a user
+# You may wish to start by creating a user:
 mkdir users/new-user && $EDITOR users/new-user/default.nix
+
+# Once your satisfied, permanently deploy with:
+rebuild $new_host switch
 ```
 
-Best to read the [doc](DOC.md), in order to understand the impetus behind
-the directory structure.
-
+Please read the [doc](DOC.md) in order to understand the impetus
+behind the directory structure.
 
 ## Additional Capabilities
 
 ```sh
-# make an iso image based on ./hosts/niximg.nix
+# Make an iso image based on `./hosts/niximg.nix`:
 rebuild iso
 
-# install any package the flake exports
+# Install any package the flake exports:
 nix profile install ".#packages.x86_64-linux.myPackage"
 ```
 
