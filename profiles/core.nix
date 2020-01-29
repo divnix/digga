@@ -119,8 +119,6 @@ in {
 
   };
 
-  nixpkgs.config.allowUnfree = true;
-
   security = {
 
     hideProcessInformation = true;

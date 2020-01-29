@@ -6,19 +6,22 @@
   inputs.nixpkgs.url = "github:nrdxp/nixpkgs/fork";
   inputs.home.url = "github:nrdxp/home-manager/flakes";
 
-  outputs = args@{ self, home, nixpkgs }:
+  outputs = inputs@{ self, home, nixpkgs }:
     let
       inherit (builtins) listToAttrs baseNameOf attrNames readDir;
       inherit (nixpkgs.lib) removeSuffix;
+      system = "x86_64-linux";
 
       pkgs = import nixpkgs {
-        system = "x86_64-linux";
+        inherit system;
         overlays = self.overlays;
+        config = { allowUnfree = true; };
       };
-    in {
-      nixosConfigurations = let configs = import ./hosts args;
 
-      in configs;
+    in {
+      nixosConfigurations =
+        let configs = import ./hosts (inputs // { inherit system pkgs; });
+        in configs;
 
       overlay = import ./pkgs;
 

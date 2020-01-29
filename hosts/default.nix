@@ -1,4 +1,4 @@
-args@{ home, nixpkgs, self, ... }:
+inputs@{ home, nixpkgs, self, pkgs, system, ... }:
 let
   inherit (nixpkgs) lib;
 
@@ -10,7 +10,7 @@ let
 
   config = hostName:
     lib.nixosSystem rec {
-      system = "x86_64-linux";
+      inherit system;
 
       specialArgs.usr = { inherit utils; };
 
@@ -29,7 +29,7 @@ let
 
           system.configurationRevision = self.rev;
 
-          nixpkgs.overlays = self.overlays;
+          nixpkgs = { inherit pkgs; };
         };
 
         local = import "${toString ./.}/${hostName}.nix";
