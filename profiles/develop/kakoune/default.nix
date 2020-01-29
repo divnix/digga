@@ -6,6 +6,7 @@
     kakoune-unwrapped
     nixfmt
     python3Packages.python-language-server
+    python3
     rustup
   ];
 
