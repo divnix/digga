@@ -30,6 +30,8 @@ in {
         volnoti
         wl-clipboard
         (waybar.override { pulseSupport = pulseaudio.enable; })
+        grim
+        slurp
       ];
   };
 
