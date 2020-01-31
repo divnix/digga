@@ -1,4 +1,6 @@
 { pkgs, ... }: {
+  imports = [ ../python ];
+
   environment.systemPackages = with pkgs; [
     cquery
     kak-lsp
@@ -6,7 +8,6 @@
     kakoune-unwrapped
     nixfmt
     python3Packages.python-language-server
-    python3
     rustup
   ];
 
