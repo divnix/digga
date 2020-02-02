@@ -9,7 +9,7 @@ let
   inherit (builtins) attrValues removeAttrs;
 
   config = hostName:
-    lib.nixosSystem rec {
+    lib.nixosSystem {
       inherit system;
 
       specialArgs.usr = { inherit utils; };

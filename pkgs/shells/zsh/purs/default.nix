@@ -5,7 +5,7 @@ let
   inherit (builtins) readFile toFile;
 
   init = toFile "init.sh" "${readFile ./init.sh}";
-in buildRustPackage rec {
+in buildRustPackage {
   pname = "purs";
   version = "0.1.0";
 
