@@ -59,7 +59,7 @@ passed to every NixOS module, eg:
 let
   inherit (usr) utils;
 
-  data = utils.myFunction # ...
+  data = usr.utils.myFunction # ...
 in
 {
   # NixOS configuration
