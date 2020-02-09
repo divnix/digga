@@ -36,7 +36,7 @@ for_window [app_id="Alacritty"] resize set width $φ
 for_window [app_id="org.qutebrowser.qutebrowser"] resize set width $Φ
 for_window [app_id="org.qutebrowser.qutebrowser"] move left
 
-exec $term -e tmux new-session -A -s$$USER
+exec $term -e tmux new-session -A -s$$USER \; split-window -v -p 38
 
 ### idle configuration
 
