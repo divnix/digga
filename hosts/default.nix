@@ -27,8 +27,6 @@ let
             "nixpkgs-overlays=/etc/nixos/overlays"
           ];
 
-          system.configurationRevision = self.rev;
-
           nixpkgs = { inherit pkgs; };
         };
 
