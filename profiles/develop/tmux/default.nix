@@ -29,7 +29,7 @@ in {
     shortcut = "a";
     terminal = "tmux-256color";
     baseIndex = 1;
-    extraTmuxConf = ''
+    extraConfig = ''
       ${readFile ./tmuxline.conf}
 
       ${readFile ./tmux.conf}
