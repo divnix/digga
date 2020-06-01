@@ -10,6 +10,18 @@
       inherit (nixpkgs.lib) removeSuffix;
       system = "x86_64-linux";
 
+      # Generate an attribute set by mapping a function over a list of values.
+      genAttrs' = values: f: listToAttrs (map f values);
+
+      # Convert a list to file paths to attribute set
+      # that has the filenames stripped of nix extension as keys
+      # and imported content of the file as value.
+      pathsToImportedAttrs = paths:
+        genAttrs' paths (path: {
+          name = removeSuffix ".nix" (baseNameOf path);
+          value = import path;
+        });
+
       pkgs = import nixpkgs {
         inherit system;
         overlays = self.overlays;
@@ -33,18 +45,13 @@
       };
 
       nixosModules = let
-        prep = map (path: {
-          name = removeSuffix ".nix" (baseNameOf path);
-          value = import path;
-        });
-
         # modules
         moduleList = import ./modules/list.nix;
-        modulesAttrs = listToAttrs (prep moduleList);
+        modulesAttrs = pathsToImportedAttrs moduleList;
 
         # profiles
         profilesList = import ./profiles/list.nix;
-        profilesAttrs = { profiles = listToAttrs (prep profilesList); };
+        profilesAttrs = { profiles = pathsToImportedAttrs profilesList; };
 
       in modulesAttrs // profilesAttrs;
     };
