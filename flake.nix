@@ -1,8 +1,6 @@
 {
   description = "A highly structured configuration database.";
 
-  epoch = 201909;
-
   inputs.nixpkgs.url = "nixpkgs/release-20.03";
   inputs.home.url = "github:nrdxp/home-manager/flakes";
 
