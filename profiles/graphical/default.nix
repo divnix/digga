@@ -51,6 +51,7 @@ in {
       papirus-icon-theme
       sddm-chili
       zathura
+      xsel
     ];
   };
 
