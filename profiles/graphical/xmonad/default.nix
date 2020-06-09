@@ -1,5 +1,12 @@
 { pkgs, ... }: {
-  environment.systemPackages = with pkgs; [ xss-lock dzvol maim ];
+  environment.systemPackages = with pkgs; [
+    farbfeld
+    xss-lock
+    imgurbash2
+    dzvol
+    maim
+    xclip
+  ];
 
   services.xserver.windowManager.xmonad = {
     enable = true;
