@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+terminal="alacritty"
+
+# set screen locker to slock
+pgrep -x xss-lock \
+|| xss-lock slock&!
+
+pgrep -x xbanish \
+|| xbanish&!
+
+${terminal} -e tmux new-session -As $(whoami)&!
+
+if ! pgrep -f qutebrowser; then
+  ${BROWSER} &!
+fi

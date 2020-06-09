@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 let inherit (builtins) readFile;
 in {
-  imports = [ ./sway ../develop ];
+  imports = [ ./sway ../develop ./xmonad ];
 
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
@@ -53,6 +53,8 @@ in {
       zathura
     ];
   };
+
+  services.xbanish.enable = true;
 
   services.xserver = {
     enable = true;
