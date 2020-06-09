@@ -6,7 +6,7 @@ let
 
   pluginConf = plugins:
     concatStringsSep "\n\n" (map (plugin:
-      let name = removePrefix "tmuxplugin-" plugin.name;
+      let name = removePrefix "tmuxplugin-" plugin.pname;
       in "run-shell ${plugin}/share/tmux-plugins/${name}/${name}.tmux")
       plugins);
 
