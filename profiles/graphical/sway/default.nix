@@ -51,7 +51,7 @@ in {
     "xdg/waybar".source = ./waybar;
   };
 
-  programs.tmux.extraTmuxConf = lib.mkBefore ''
+  programs.tmux.extraConfig = lib.mkBefore ''
     set -g @override_copy_command 'wl-copy'
   '';
 
