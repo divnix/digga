@@ -2,9 +2,10 @@
   description = "A highly structured configuration database.";
 
   inputs.nixpkgs.url = "nixpkgs/release-20.03";
+  inputs.unstable.url = "nixpkgs/nixos-unstable";
   inputs.home.url = "github:rycee/home-manager/bqv-flakes";
 
-  outputs = inputs@{ self, home, nixpkgs }:
+  outputs = inputs@{ self, home, nixpkgs, unstable }:
     let
       inherit (builtins) listToAttrs baseNameOf attrNames attrValues readDir;
       inherit (nixpkgs.lib) removeSuffix;
@@ -22,25 +23,30 @@
           value = import path;
         });
 
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = attrValues self.overlays;
-        config = { allowUnfree = true; };
-      };
+      pkgImport = pkgs:
+        import pkgs {
+          inherit system;
+          overlays = attrValues self.overlays;
+          config = { allowUnfree = true; };
+        };
+
+      pkgs = pkgImport nixpkgs;
+
+      unstablePkgs = pkgImport unstable;
 
     in {
-      nixosConfigurations =
-        let configs = import ./hosts (inputs // { inherit system pkgs; });
-        in configs;
+      nixosConfigurations = let
+        configs =
+          import ./hosts (inputs // { inherit system pkgs unstablePkgs; });
+      in configs;
 
       overlay = import ./pkgs;
 
-      overlays =
-        let
-          overlayDir = ./overlays;
-          fullPath = name: overlayDir + "/${name}";
-          overlayPaths = map fullPath (attrNames (readDir overlayDir));
-        in pathsToImportedAttrs overlayPaths;
+      overlays = let
+        overlayDir = ./overlays;
+        fullPath = name: overlayDir + "/${name}";
+        overlayPaths = map fullPath (attrNames (readDir overlayDir));
+      in pathsToImportedAttrs overlayPaths;
 
       packages.x86_64-linux = {
         inherit (pkgs) sddm-chili dejavu_nerdfont purs pure;

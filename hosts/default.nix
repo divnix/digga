@@ -1,4 +1,4 @@
-inputs@{ home, nixpkgs, self, pkgs, system, ... }:
+inputs@{ home, nixpkgs, unstablePkgs, self, pkgs, system, ... }:
 let
   inherit (nixpkgs) lib;
 
@@ -12,7 +12,10 @@ let
     lib.nixosSystem {
       inherit system;
 
-      specialArgs.usr = { inherit utils; };
+      specialArgs = {
+        inherit unstablePkgs;
+        usr = { inherit utils; };
+      };
 
       modules = let
         inherit (home.nixosModules) home-manager;
