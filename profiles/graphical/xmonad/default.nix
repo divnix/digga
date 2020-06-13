@@ -20,7 +20,7 @@
     inactiveOpacity = "0.8";
     settings = {
       "unredir-if-possible" = true;
-      "focus-exclude" = "id = 0x2400001";
+      "focus-exclude" = "name = 'slock'";
     };
   };
 

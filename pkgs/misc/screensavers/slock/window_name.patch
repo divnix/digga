@@ -1,0 +1,26 @@
+diff --git a/slock.c b/slock.c
+index d2f0886..b0418f0 100644
+--- a/slock.c
++++ b/slock.c
+@@ -219,8 +219,13 @@ lockscreen(Display *dpy, struct xrandr *rr, int screen)
+ 	struct lock *lock;
+ 	XColor color, dummy;
+ 	XSetWindowAttributes wa;
++	XTextProperty title;
++	char *name = "slock";
+ 	Cursor invisible;
+ 
++	if (XStringListToTextProperty(&name, 1, &title) == 0)
++		die("slock: out of memory\n");
++
+ 	if (dpy == NULL || screen < 0 || !(lock = malloc(sizeof(struct lock))))
+ 		return NULL;
+ 
+@@ -243,6 +248,7 @@ lockscreen(Display *dpy, struct xrandr *rr, int screen)
+ 	                          CopyFromParent,
+ 	                          DefaultVisual(dpy, lock->screen),
+ 	                          CWOverrideRedirect | CWBackPixel, &wa);
++	XSetWMName(dpy, lock->win, &title);
+ 	lock->pmap = XCreateBitmapFromData(dpy, lock->win, curs, 8, 8);
+ 	invisible = XCreatePixmapCursor(dpy, lock->pmap, lock->pmap,
+ 	                                &color, &color, 0, 0);
