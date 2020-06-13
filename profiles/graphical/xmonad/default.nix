@@ -6,6 +6,7 @@
     dzvol
     maim
     xclip
+    xorg.xdpyinfo
   ];
 
   services.xserver.windowManager.xmonad = {
