@@ -1,7 +1,10 @@
-{ pkgs, ... }:
-let inherit (pkgs) lm_sensors wirelesstools pciutils;
-in {
-  environment.systemPackages = [ lm_sensors wirelesstools pciutils ];
+{ pkgs, ... }: {
+  environment.systemPackages = with pkgs; [
+    acpi
+    lm_sensors
+    wirelesstools
+    pciutils
+  ];
 
   # to enable brightness keys 'keys' value may need updating per device
   programs.light.enable = true;
