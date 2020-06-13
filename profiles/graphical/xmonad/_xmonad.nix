@@ -1,4 +1,4 @@
-{ autostart, screenshots, touchtoggle, dzvol, stoggle }: ''
+{ autostart, screenshots, touchtoggle, dzvol, pkgs, stoggle }: ''
   -- Function for fullscreen toggle
   fullToggle :: X ()
   fullToggle = do
@@ -13,6 +13,7 @@
   myAutostart :: X ()
   myAutostart = do
     spawn "${autostart}"
+    spawn "feh --bg-fill --no-fehbg ${pkgs.adapta-backgrounds}/share/backgrounds/adapta/tri-fadeno.jpg"
     setWMName "LG3D"
     sendMessage $ SetStruts [] [minBound .. maxBound]
     setDefaultCursor xC_left_ptr

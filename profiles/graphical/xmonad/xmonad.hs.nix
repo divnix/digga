@@ -14,6 +14,6 @@ let
 in ''
   ${readFile ./_xmonad.hs}
   ${import ./_xmonad.nix {
-    inherit screenshots touchtoggle autostart dzvol stoggle;
+    inherit screenshots touchtoggle autostart dzvol stoggle pkgs;
   }}
 ''

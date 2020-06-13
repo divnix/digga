@@ -41,7 +41,7 @@ main =
   , manageHook         = myManageHook
                          <+> manageHook defaultConfig
                          <+> manageDocks
-  , borderWidth        = 1
+  , borderWidth        = 0
   , logHook            = takeTopFocus
   }
   `additionalKeys` myKeys

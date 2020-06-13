@@ -14,5 +14,14 @@
     config = import ./xmonad.hs.nix { inherit pkgs; };
   };
 
+  services.picom = {
+    enable = true;
+    inactiveOpacity = "0.8";
+    settings = {
+      "unredir-if-possible" = true;
+      "focus-exclude" = "id = 0x2400001";
+    };
+  };
+
   programs.slock.enable = true;
 }
