@@ -62,6 +62,8 @@ in {
 
     desktopManager.plasma5.enable = true;
 
+    libinput.enable = true;
+
     displayManager.sddm = {
       enable = true;
       theme = "chili";
