@@ -257,11 +257,6 @@ c.colors.hints.bg = '#1E1F29'
 # Type: QssColor
 c.colors.hints.match.fg = '#5AF78E'
 
-# Default monospace fonts. Whenever "monospace" is used in a font
-# setting, it's replaced with the fonts listed here.
-# Type: Font
-c.fonts.monospace = 'monospace'
-
 # leave listed modes easily with <a-j>
 for mode in\
         ['caret', 'command', 'hint',
