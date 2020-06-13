@@ -24,7 +24,7 @@ dzen2_dpms_state () {
     new_dpms_state=$1
 
   print "Power Management ${new_dpms_state}" \
-    | dzen2 -fn "DejaVu Sans Mono for Powerline-16:normal" -p 2 -tw ${WIDTH} -x ${XPOS} -y ${YPOS}
+    | dzen2 -fn "monospace" -p 2 -tw ${WIDTH} -x ${XPOS} -y ${YPOS}
 }
 
   case $dpms_state in

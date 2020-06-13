@@ -8,7 +8,7 @@
 
   -- function to call dzen2 and show volume in the middle of the screen
   dzcall :: String
-  dzcall = "${dzvol}/bin/dzvol -fn 'DejaVu Sans Mono for Powerline-16:normal'"
+  dzcall = "${dzvol}/bin/dzvol -fn 'monospace'"
 
   myAutostart :: X ()
   myAutostart = do
@@ -101,7 +101,7 @@
       )
     -- dmenu frontend for network manager
     , ( ( myModKey                              , xK_n                    )
-      , spawn "networkmanager_dmenu -fn 'DejaVu Sans Mono for Powerline-16:normal'"
+      , spawn "networkmanager_dmenu -fn 'monospace'"
       )
     ]
 ''
