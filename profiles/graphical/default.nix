@@ -43,6 +43,10 @@ in {
       feh
       ffmpeg-full
       firefox
+      libsForQt5.plasma-framework
+      libsForQt5.kdeclarative
+      qt5.qtgraphicaleffects
+      plasma-workspace
       gnome3.adwaita-icon-theme
       gnome-themes-extra
       imagemagick
@@ -60,8 +64,6 @@ in {
 
   services.xserver = {
     enable = true;
-
-    desktopManager.plasma5.enable = true;
 
     libinput.enable = true;
 
