@@ -11,8 +11,8 @@ in {
     etc = {
       "xdg/gtk-3.0/settings.ini" = {
         text = ''
-            [ Settings ]
-            gtk-icon-theme-name=Papirus-Adapta
+          [Settings]
+          gtk-icon-theme-name=Papirus
           gtk-theme-name=Adapta
           gtk-cursor-theme-name=Adwaita
         '';
@@ -23,9 +23,10 @@ in {
     sessionVariables = {
       # Theme settings
       QT_QPA_PLATFORMTHEME = "gtk2";
+
       GTK2_RC_FILES = let
         gtk = ''
-          gtk-icon-theme-name="Papirus-Adapta"
+          gtk-icon-theme-name="Papirus"
           gtk-cursor-theme-name="Adwaita"
         '';
       in [
