@@ -6,6 +6,8 @@
     pciutils
   ];
 
+  hardware.bluetooth.enable = true;
+
   # to enable brightness keys 'keys' value may need updating per device
   programs.light.enable = true;
   services.actkbd = {
