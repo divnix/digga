@@ -4,6 +4,7 @@
     lm_sensors
     wirelesstools
     pciutils
+    usbutils
   ];
 
   hardware.bluetooth.enable = true;
