@@ -3,7 +3,6 @@
     farbfeld
     xss-lock
     imgurbash2
-    dzvol
     maim
     xclip
     xorg.xdpyinfo

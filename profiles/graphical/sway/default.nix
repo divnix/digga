@@ -36,17 +36,16 @@ in {
   };
 
   environment.etc = {
-    "sway/config".text = let
-      volnoti =
-        pkgs.writeScript "volnoti.sh" (import ./volnoti.nix { inherit pkgs; });
-    in ''
-      set $volume ${volnoti}
+    "sway/config".text =
+      let volnoti = import ../misc/volnoti.nix { inherit pkgs; };
+      in ''
+        set $volume ${volnoti}
 
-      # set background
-      output * bg ${pkgs.adapta-backgrounds}/share/backgrounds/adapta/tri-fadeno.jpg fill
+        # set background
+        output * bg ${pkgs.adapta-backgrounds}/share/backgrounds/adapta/tri-fadeno.jpg fill
 
-      ${readFile ./config}
-    '';
+        ${readFile ./config}
+      '';
 
     "xdg/waybar".source = ./waybar;
   };

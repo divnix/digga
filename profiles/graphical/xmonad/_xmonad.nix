@@ -1,14 +1,10 @@
-{ autostart, screenshots, touchtoggle, dzvol, pkgs, stoggle }: ''
+{ autostart, screenshots, touchtoggle, pkgs, stoggle, volnoti }: ''
   -- Function for fullscreen toggle
   fullToggle :: X ()
   fullToggle = do
     spawn "${stoggle}"
     sendMessage $ Toggle NBFULL
     sendMessage $ SetStruts [] [minBound .. maxBound]
-
-  -- function to call dzen2 and show volume in the middle of the screen
-  dzcall :: String
-  dzcall = "${dzvol}/bin/dzvol -fn 'monospace'"
 
   myAutostart :: X ()
   myAutostart = do
@@ -45,15 +41,15 @@
       )
     -- lower volume
     , ( ( 0                                     , xF86XK_AudioLowerVolume )
-      , spawn dzcall
+      , spawn "${volnoti}"
       )
     -- raise volume
     , ( ( 0                                     , xF86XK_AudioRaiseVolume )
-      , spawn dzcall
+      , spawn "${volnoti}"
       )
     -- mute volume
     , ( ( 0                                     , xF86XK_AudioMute        )
-      , spawn dzcall
+      , spawn "${volnoti}"
       )
     -- start qutebrowser
     , ( ( myModKey                              , xK_b                    )

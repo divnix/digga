@@ -1,7 +1,7 @@
 { pkgs, ... }:
 let
   inherit (builtins) readFile;
-  inherit (pkgs) writeScript dzvol;
+  inherit (pkgs) writeScript;
 
   screenshots = "Pictures/shots";
 
@@ -11,9 +11,11 @@ let
 
   touchtoggle =
     writeScript "xmonad-touchtoggle" (readFile ./scripts/touchtoggle);
+
+  volnoti = import ../misc/volnoti.nix { inherit pkgs; };
 in ''
   ${readFile ./_xmonad.hs}
   ${import ./_xmonad.nix {
-    inherit screenshots touchtoggle autostart dzvol stoggle pkgs;
+    inherit screenshots touchtoggle autostart stoggle pkgs volnoti;
   }}
 ''
