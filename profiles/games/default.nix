@@ -1,5 +1,9 @@
 { unstablePkgs, ... }: {
-  imports = [ ../graphical ./udev.nix ];
+  imports = [
+    ../graphical
+    ./udev.nix
+    ../../modules/services/hardware/wii-u-gc-adapter.nix
+  ];
   environment.systemPackages = with unstablePkgs; [
     retroarchBare
     steam
@@ -7,6 +11,8 @@
     pcsx2
     qjoypad
   ];
+
+  services.wii-u-gc-adapter.enable = true;
 
   # fps games on laptop need this
   services.xserver.libinput.disableWhileTyping = false;

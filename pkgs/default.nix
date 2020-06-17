@@ -5,4 +5,5 @@ final: prev: {
   purs = prev.callPackage ./shells/zsh/purs { };
   pure = prev.callPackage ./shells/zsh/pure { };
   dzvol = prev.callPackage ./applications/misc/dzvol.nix { };
+  wii-u-gc-adapter = prev.callPackage ./misc/drivers/wii-u-gc-adapter { };
 }
