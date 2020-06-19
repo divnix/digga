@@ -1,13 +1,13 @@
 { stdenv, fetchFromGitHub, ... }:
 stdenv.mkDerivation rec {
-  name = "sddm-chili";
-  version = "0.5.5";
+  pname = "sddm-chili";
+  version = "0.1.5";
 
   src = fetchFromGitHub {
     owner = "MarianArlt";
-    repo = "kde-plasma-chili";
+    repo = "sddm-chili";
     rev = "${version}";
-    hash = "sha256-fWRf96CPRQ2FRkSDtD+N/baZv+HZPO48CfU5Subt854=";
+    hash = "sha256-wxWsdRGC59YzDcSopDRzxg8TfjjmA3LHrdWjepTuzgw=";
   };
 
   installPhase = ''
@@ -15,4 +15,12 @@ stdenv.mkDerivation rec {
 
     cp -r * $out/share/sddm/themes/chili
   '';
+
+  meta = with stdenv.lib; {
+    description = "The hottest theme around for SDDM";
+    homepage = "https://github.com/MarianArlt/sddm-chili";
+    maintainers = [ maintainers.nrdxp ];
+    license = licenses.gpl3;
+    inherit version;
+  };
 }
