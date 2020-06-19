@@ -1,7 +1,7 @@
 { stdenv, fetchFromGitHub, openssl, pkgconfig, rustPlatform }:
 
 stdenv.mkDerivation rec {
-  name = "pure-${version}";
+  pname = "pure";
   version = "0e87bd8";
 
   srcs = fetchFromGitHub {

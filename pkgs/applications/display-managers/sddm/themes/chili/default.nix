@@ -2,6 +2,7 @@
 stdenv.mkDerivation rec {
   name = "sddm-chili";
   version = "0.5.5";
+
   src = fetchFromGitHub {
     owner = "MarianArlt";
     repo = "kde-plasma-chili";

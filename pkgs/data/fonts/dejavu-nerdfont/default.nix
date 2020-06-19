@@ -1,7 +1,7 @@
 { stdenv, fetchzip }:
 
 stdenv.mkDerivation rec {
-  name = "dejavu-nerdfont-${version}";
+  pname = "dejavu-nerdfont";
   version = "2.0.0";
 
   src = fetchzip {

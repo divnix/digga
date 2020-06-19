@@ -1,7 +1,8 @@
 { stdenv, fetchFromGitHub, pkgconfig, libudev, libusb, ... }:
 
 stdenv.mkDerivation {
-  name = "wii-u-gc-adapter";
+  pname = "wii-u-gc-adapter";
+  version = "ae6b46d";
 
   buildInputs = [ pkgconfig libudev libusb ];
 
@@ -18,4 +19,12 @@ stdenv.mkDerivation {
   '';
 
   hardeningDisable = [ "format" ];
+
+  meta = with stdenv.lib; {
+    description = "Tool for using the Wii U GameCube Adapter on Linux";
+    homepage = "https://github.com/ToadKing/wii-u-gc-adapter";
+    maintainers = [ maintainers.nrdxp ];
+    license = licenses.mit;
+    inherit version;
+  };
 }

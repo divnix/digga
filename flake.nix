@@ -48,9 +48,7 @@
         overlayPaths = map fullPath (attrNames (readDir overlayDir));
       in pathsToImportedAttrs overlayPaths;
 
-      packages.x86_64-linux = {
-        inherit (pkgs) sddm-chili dejavu_nerdfont purs pure;
-      };
+      packages.x86_64-linux = self.overlay pkgs pkgs;
 
       nixosModules = let
         # modules

@@ -1,7 +1,7 @@
 { stdenv, meson, ninja, fetchFromGitHub, ... }:
 
 stdenv.mkDerivation rec {
-  name = "libinih";
+  pname = "libinih";
   version = "r50";
 
   src = fetchFromGitHub {
@@ -17,4 +17,12 @@ stdenv.mkDerivation rec {
     -Ddefault_library=shared
     -Ddistro_install=true
   '';
+
+  meta = with stdenv.lib; {
+    description = "Simple .INI file parser in C";
+    homepage = "https://github.com/benhoyt/inih";
+    maintainers = [ maintainers.nrdxp ];
+    license = licenses.bsd3;
+    inherit version;
+  };
 }

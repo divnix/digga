@@ -29,4 +29,11 @@ stdenv.mkDerivation rec {
     -Dwith-systemd-user-unit-dir=${placeholder "out"}/lib/systemd/user
   '';
 
+  meta = with stdenv.lib; {
+    description = "Optimise Linux system performance on demand";
+    homepage = "https://github.com/FeralInteractive/gamemode";
+    maintainers = [ maintainers.nrdxp ];
+    license = licenses.bsd3;
+    inherit version;
+  };
 }
