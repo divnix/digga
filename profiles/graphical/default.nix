@@ -45,6 +45,7 @@ in {
       firefox
       qt5.qtgraphicaleffects
       gnome3.adwaita-icon-theme
+      gnome3.networkmanagerapplet
       gnome-themes-extra
       imagemagick
       imlib2
@@ -58,6 +59,8 @@ in {
   };
 
   services.xbanish.enable = true;
+
+  services.gnome3.gnome-keyring.enable = true;
 
   services.xserver = {
     enable = true;
