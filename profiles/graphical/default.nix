@@ -5,7 +5,7 @@ in {
 
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
-  hardware.pulseaudio.enable = false;
+  hardware.pulseaudio.enable = true;
 
   environment = {
     etc = {
@@ -37,6 +37,7 @@ in {
     };
 
     systemPackages = with pkgs; [
+      pulsemixer
       adapta-gtk-theme
       cursor
       dzen2

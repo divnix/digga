@@ -96,9 +96,9 @@ for_window [app_id=".*"] inhibit_idle fullscreen
     bindsym $mod+f fullscreen
 
     # display volume level when pushed
-    bindsym XF86AudioRaiseVolume exec $volume
-    bindsym XF86AudioLowerVolume exec $volume
-    bindsym XF86AudioMute exec $volume
+    bindsym XF86AudioRaiseVolume exec $volume; $mixer 2%+ unmute
+    bindsym XF86AudioLowerVolume exec $volume; $mixer 2%- unmute
+    bindsym XF86AudioMute exec $volume; $mixer toggle
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.

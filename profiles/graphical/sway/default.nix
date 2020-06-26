@@ -40,6 +40,7 @@ in {
       let volnoti = import ../misc/volnoti.nix { inherit pkgs; };
       in ''
         set $volume ${volnoti}
+        set $mixer "${pkgs.alsaUtils}/bin/amixer -q set Master"
 
         # set background
         output * bg ${pkgs.adapta-backgrounds}/share/backgrounds/adapta/tri-fadeno.jpg fill

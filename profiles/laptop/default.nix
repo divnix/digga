@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ config, pkgs, lib, ... }: {
   environment.systemPackages = with pkgs; [
     acpi
     lm_sensors
@@ -27,7 +27,7 @@
     ];
   };
 
-  sound.mediaKeys = {
+  sound.mediaKeys = lib.mkIf (!config.hardware.pulseaudio.enable) {
     enable = true;
     volumeStep = "1dB";
   };

@@ -1,10 +1,17 @@
-{ autostart, screenshots, touchtoggle, pkgs, stoggle, volnoti }: ''
+{ autostart, screenshots, touchtoggle, pkgs, stoggle, volnoti }:
+let inherit (pkgs) alsaUtils;
+in ''
   -- Function for fullscreen toggle
   fullToggle :: X ()
   fullToggle = do
     spawn "${stoggle}"
     sendMessage $ Toggle NBFULL
     sendMessage $ SetStruts [] [minBound .. maxBound]
+
+  setVolume :: String -> X ()
+  setVolume options = do
+    spawn ("${alsaUtils}/bin/amixer -q set Master " ++ options)
+    spawn "${volnoti}"
 
   myAutostart :: X ()
   myAutostart = do
@@ -41,15 +48,15 @@
       )
     -- lower volume
     , ( ( 0                                     , xF86XK_AudioLowerVolume )
-      , spawn "${volnoti}"
+      , setVolume "2%- unmute"
       )
     -- raise volume
     , ( ( 0                                     , xF86XK_AudioRaiseVolume )
-      , spawn "${volnoti}"
+      , setVolume "2%+ unmute"
       )
     -- mute volume
     , ( ( 0                                     , xF86XK_AudioMute        )
-      , spawn "${volnoti}"
+      , setVolume "toggle"
       )
     -- start qutebrowser
     , ( ( myModKey                              , xK_b                    )
