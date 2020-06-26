@@ -9,8 +9,8 @@
         "format": "<span style=\"italic\">{}</span>"
     },
     "clock": {
-        "format": "{:%l:%M %P}",
-        "tooltip-format": "{:%Y-%m-%d | %l:%M %P}",
+        "format": "{:%I:%M %p}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
     },
     "cpu": {
