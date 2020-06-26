@@ -26,6 +26,7 @@ in {
       curl
       dosfstools
       dnsutils
+      whois
       fd
       git
       gotop
