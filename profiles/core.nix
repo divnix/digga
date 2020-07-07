@@ -24,9 +24,8 @@ in {
       binutils
       coreutils
       curl
-      dosfstools
       dnsutils
-      whois
+      dosfstools
       fd
       git
       gotop
@@ -34,9 +33,11 @@ in {
       iputils
       manpages
       moreutils
+      nmap
       ripgrep
       stdmanpages
       utillinux
+      whois
     ];
 
     shellAliases =
