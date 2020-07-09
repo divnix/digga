@@ -1,14 +1,12 @@
 {
   "nodes": {
     "home": {
-      "info": {
-        "lastModified": 1591751635,
-        "narHash": "sha256-KgGtyFlkI/fsp+j8VEgJ/ynY9B91aX35Xp04HlDLRTo="
-      },
       "inputs": {
         "nixpkgs": "nixpkgs"
       },
       "locked": {
+        "lastModified": 1591751635,
+        "narHash": "sha256-KgGtyFlkI/fsp+j8VEgJ/ynY9B91aX35Xp04HlDLRTo=",
         "owner": "rycee",
         "repo": "home-manager",
         "rev": "b3fee796fcd5531693d9b84ece76ad6836bb1cfa",
@@ -22,11 +20,9 @@
       }
     },
     "nixpkgs": {
-      "info": {
-        "lastModified": 1591748508,
-        "narHash": "sha256-GdYYaYsSBgYUhbDT1JJQ7vEgo8FWeW/AW7/qqJuCvRA="
-      },
       "locked": {
+        "lastModified": 1591748508,
+        "narHash": "sha256-GdYYaYsSBgYUhbDT1JJQ7vEgo8FWeW/AW7/qqJuCvRA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
         "rev": "1d8c4410687390f9b8f92dbe6ff39fd8fc2b17c6",
@@ -38,14 +34,12 @@
       }
     },
     "nixpkgs_2": {
-      "info": {
-        "lastModified": 1591993820,
-        "narHash": "sha256-GStGs4mSOzqUpR4aHhEiikmQiMsdJYKo/yUKbNc+ssg="
-      },
       "locked": {
+        "lastModified": 1594252326,
+        "narHash": "sha256-agE61qMQve4QImGwhZzMZ2ATAcDbRME+52Lg9estCPA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "db31e48c5c8d99dcaf4e5883a96181f6ac4ad6f6",
+        "rev": "6a00eba02a38cd0f71367adc42857395a36ab4cd",
         "type": "github"
       },
       "original": {
@@ -62,14 +56,12 @@
       }
     },
     "unstable": {
-      "info": {
-        "lastModified": 1594272386,
-        "narHash": "sha256-oY7Hodg512HBKbehbv6u5mj2d34qyg/SQWSZmKm+sWA="
-      },
       "locked": {
+        "lastModified": 1594276303,
+        "narHash": "sha256-Z8diPuVTxCZAl7SEjH9v+pmbDwDGWxqje/gb75/HQt8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "12e255f39596b401c68711139733612fc9c52d61",
+        "rev": "ea4412433ba61bfa0a3527c44f0fb33d4f3490ba",
         "type": "github"
       },
       "original": {
@@ -80,5 +72,5 @@
     }
   },
   "root": "root",
-  "version": 5
+  "version": 7
 }
