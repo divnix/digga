@@ -12,9 +12,9 @@ may wish to modify your configuration to adhere to the [ideals](DOC.md) of this
 project.
 
 ### ⚠ Advisory
-Flakes are still an experimental feature, so not everything works yet.
-Things like [nixops](https://nixos.org/nixops)/[disnix](https://nixos.org/disnix)
-are not yet supported.
+Flakes are still an experimental feature, so not everything works yet. However,
+it has been merged upstream, and for those using cloud deployments, there is
+now [nixops](https://github.com/NixOS/nixops/tree/flake-support) support!
 
 Also, flakes are meant to deprecate nix-channels. I'd recommend not
 installing any. If your really want them, they should work if you hook them
