@@ -2,7 +2,7 @@
   description = "A highly structured configuration database.";
 
   inputs.nixpkgs.url = "nixpkgs/release-20.03";
-  inputs.unstable.url = "nixpkgs/nixos-unstable";
+  inputs.unstable.url = "nixpkgs/master";
   inputs.home.url = "github:rycee/home-manager/bqv-flakes";
 
   outputs = inputs@{ self, home, nixpkgs, unstable }:
