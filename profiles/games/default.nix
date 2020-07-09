@@ -2,7 +2,6 @@
   imports = [ ../graphical ./udev.nix ];
   environment.systemPackages = with unstablePkgs; [
     retroarchBare
-    steam
     steam-run
     pcsx2
     qjoypad
@@ -14,6 +13,12 @@
 
   # fps games on laptop need this
   services.xserver.libinput.disableWhileTyping = false;
+
+  # Launch steam from display managers
+  services.xserver.windowManager.steam = {
+    enable = true;
+    package = unstablePkgs.steam;
+  };
 
   # 32-bit support needed for steam
   hardware.opengl.driSupport32Bit = true;
