@@ -57,20 +57,14 @@ ln -s $PWD /etc/nixos
 # adding a new file to staging is enough:
 git add ./hosts/${new_host}.nix
 
-# A generic `rebuild` wrapper for `nix build` is provided
-# bypassing the need for `nixos-rebuild`.
-
-# Usage: rebuild [host] {switch|boot|test|dry-activate}
-# where `host` is any file living in the `./hosts` directory
-
-# Test your new deployment; this will be run as root:
-rebuild $new_host test
+# Test your new deployment:
+sudo nixos-rebuild $new_host test
 
 # You may wish to start by creating a user:
 mkdir users/new-user && $EDITOR users/new-user/default.nix
 
 # Once your satisfied, permanently deploy with:
-rebuild $new_host switch
+sudo nixos-rebuild $new_host switch
 ```
 
 Please read the [doc](DOC.md) in order to understand the impetus
@@ -80,7 +74,7 @@ behind the directory structure.
 
 ```sh
 # Make an iso image based on `./hosts/niximg.nix`:
-rebuild iso
+build-iso
 
 # Install any package the flake exports:
 nix profile install ".#packages.x86_64-linux.myPackage"
