@@ -20,9 +20,7 @@ c.confirm_quit = ['downloads']
 # list) will work.
 # Type: List of String
 c.qt.args = [
-    'disable-reading-from-canvas', 'enable-native-gpu-memory-buffers',
-    'force-webrtc-ip-handling-policy=default_public_interface_only',
-    'no-sandbox'
+    'enable-native-gpu-memory-buffers'
 ]
 
 # Allow websites to request geolocations.
@@ -38,6 +36,14 @@ c.content.geolocation = False
 # the DNT header is not sent at all.
 # Type: Bool
 c.content.headers.do_not_track = True
+
+c.content.cookies.accept = "no-3rdparty"
+
+c.content.canvas_reading = False
+
+c.content.dns_prefetch = True
+
+c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 
 # Enable host blocking.
 # Type: Bool
@@ -104,7 +110,7 @@ c.content.private_browsing = False
 
 # Enable WebGL.
 # Type: Bool
-c.content.webgl = True
+c.content.webgl = False
 
 # Monitor load requests for cross-site scripting attempts. Suspicious
 # scripts will be blocked and reported in the inspector's JavaScript
