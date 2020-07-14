@@ -117,6 +117,7 @@ in {
 
     extraOptions = ''
       experimental-features = nix-command flakes ca-references
+      min-free = 2147483648
     '';
 
   };
