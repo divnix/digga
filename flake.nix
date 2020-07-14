@@ -40,6 +40,8 @@
           import ./hosts (inputs // { inherit system pkgs unstablePkgs; });
       in configs;
 
+      devShell."${system}" = import ./shell.nix { inherit pkgs; };
+
       overlay = import ./pkgs;
 
       overlays = let
