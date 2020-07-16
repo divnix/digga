@@ -8,16 +8,6 @@ in {
 
   imports = [ ../local/locale.nix ];
 
-  boot = {
-
-    kernelPackages = pkgs.linuxPackages_latest;
-
-    tmpOnTmpfs = true;
-
-    kernel.sysctl."kernel.sysrq" = 1;
-
-  };
-
   environment = {
 
     systemPackages = with pkgs; [
@@ -31,11 +21,9 @@ in {
       gotop
       gptfdisk
       iputils
-      manpages
       moreutils
       nmap
       ripgrep
-      stdmanpages
       utillinux
       whois
     ];

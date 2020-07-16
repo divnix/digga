@@ -7,7 +7,18 @@ in {
   hardware.opengl.driSupport = true;
   hardware.pulseaudio.enable = true;
 
+  boot = {
+
+    kernelPackages = pkgs.linuxPackages_latest;
+
+    tmpOnTmpfs = true;
+
+    kernel.sysctl."kernel.sysrq" = 1;
+
+  };
+
   environment = {
+
     etc = {
       "xdg/gtk-3.0/settings.ini" = {
         text = ''
@@ -37,14 +48,12 @@ in {
     };
 
     systemPackages = with pkgs; [
-      pulsemixer
       adapta-gtk-theme
       cursor
       dzen2
       feh
       ffmpeg-full
       firefox
-      qt5.qtgraphicaleffects
       gnome3.adwaita-icon-theme
       gnome3.networkmanagerapplet
       gnome-themes-extra
@@ -52,10 +61,14 @@ in {
       imlib2
       librsvg
       libsForQt5.qtstyleplugins
+      manpages
       papirus-icon-theme
+      pulsemixer
+      qt5.qtgraphicaleffects
       sddm-chili
-      zathura
+      stdmanpages
       xsel
+      zathura
     ];
   };
 
