@@ -20,7 +20,7 @@ let
       modules = let
         inherit (home.nixosModules) home-manager;
 
-        core = ../profiles/core.nix;
+        core = self.nixosModules.profiles.core;
 
         global = {
           networking.hostName = hostName;
