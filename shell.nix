@@ -3,7 +3,7 @@ let
   configs = "${toString ./.}#nixosConfigurations";
 
   buildIso = pkgs.writeShellScriptBin "build-iso" ''
-    nix build ${configs}.niximg.config.system.build.isoImage
+    nix build ${configs}.niximg.config.system.build.isoImage $@
   '';
 in pkgs.mkShell {
   nativeBuildInputs = with pkgs; [ git git-crypt nixFlakes buildIso ];
