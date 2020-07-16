@@ -1,4 +1,4 @@
-{ ... }: {
+{ pkgs, ... }: {
   services.stubby = {
     enable = true;
     upstreamServers = ''
@@ -19,6 +19,13 @@
       '';
       mode = "444";
     };
+  };
+
+  system.activationScripts.immutableDns = {
+    text = ''
+      ${pkgs.e2fsprogs}/bin/chattr +i /etc/resolv.conf
+    '';
+    deps = [ ];
   };
 
   networking = {
