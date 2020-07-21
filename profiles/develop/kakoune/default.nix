@@ -9,6 +9,7 @@
     nixfmt
     python3Packages.python-language-server
     rustup
+    nix-linter
   ];
 
   environment.etc = {
