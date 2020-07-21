@@ -1,5 +1,9 @@
 function zle-line-init zle-keymap-select {
-  PROMPT=`@PURS@/bin/purs prompt -us -k "$KEYMAP" -r "$?" --venv "${${VIRTUAL_ENV:t}%-*}"`
+  if [[ $USER == root ]]; then
+    PROMPT=`@PURS@/bin/purs prompt -u -k "$KEYMAP" -r "$?" --venv "${${VIRTUAL_ENV:t}%-*}"`
+  else
+    PROMPT=`@PURS@/bin/purs prompt -us -k "$KEYMAP" -r "$?" --venv "${${VIRTUAL_ENV:t}%-*}"`
+  fi
   zle reset-prompt
 }
 zle -N zle-line-init
