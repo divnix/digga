@@ -1,7 +1,7 @@
 { unstablePkgs, ... }: {
   environment.systemPackages = with unstablePkgs; [
     discord
-    riot-desktop
+    element-desktop
     signal-desktop
   ];
 }
