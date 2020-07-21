@@ -21,13 +21,6 @@
     };
   };
 
-  system.activationScripts.immutableDns = {
-    text = ''
-      ${pkgs.e2fsprogs}/bin/chattr +i /etc/resolv.conf
-    '';
-    deps = [ ];
-  };
-
   networking = {
     networkmanager.dns = "none";
     resolvconf.dnsExtensionMechanism = false;
