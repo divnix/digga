@@ -21,6 +21,7 @@ in {
       gotop
       gptfdisk
       iputils
+      jq
       moreutils
       nmap
       ripgrep
