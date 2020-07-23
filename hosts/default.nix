@@ -14,6 +14,13 @@ let
 
       specialArgs = {
         inherit unstablePkgs;
+
+        flakes = {
+          nixpkgs = nixpkgs;
+          master = inputs.unstable;
+          nixflk = self;
+        };
+
         usr = { inherit utils; };
       };
 

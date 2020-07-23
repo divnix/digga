@@ -1,10 +1,16 @@
-{ config, lib, pkgs, unstablePkgs, ... }:
+{ config, lib, pkgs, unstablePkgs, flakes, ... }:
 let inherit (lib) fileContents;
 
 in {
   nix.package = pkgs.nixFlakes;
 
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+
+  nix.registry = with flakes; {
+    nixpkgs.flake = nixpkgs;
+    nixflk.flake = nixflk;
+    master.flake = master;
+  };
 
   imports = [ ../local/locale.nix ];
 
