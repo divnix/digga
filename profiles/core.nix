@@ -60,6 +60,7 @@ in {
         ni = "np install";
         nr = "np remove";
         ns = "n search";
+        srch = "ns nixpkgs";
         nrb = ifSudo "sudo nixos-rebuild";
 
         # sudo
