@@ -59,7 +59,7 @@ in {
         np = "n profile";
         ni = "np install";
         nr = "np remove";
-        ns = "n search";
+        ns = "n search --no-update-lock-file";
         srch = "ns nixpkgs";
         nrb = ifSudo "sudo nixos-rebuild";
 
