@@ -50,9 +50,13 @@
         overlayPaths = map fullPath (attrNames (readDir overlayDir));
       in pathsToImportedAttrs overlayPaths;
 
-      packages.x86_64-linux = self.overlay pkgs pkgs;
+      packages."${system}" = self.overlay pkgs pkgs;
 
       nixosModules = let
+        # binary cache
+        cachix = import ./cachix.nix;
+        cachixAttrs = { inherit cachix; };
+
         # modules
         moduleList = import ./modules/list.nix;
         modulesAttrs = pathsToImportedAttrs moduleList;
@@ -61,6 +65,6 @@
         profilesList = import ./profiles/list.nix;
         profilesAttrs = { profiles = pathsToImportedAttrs profilesList; };
 
-      in modulesAttrs // profilesAttrs;
+      in cachixAttrs // modulesAttrs // profilesAttrs;
     };
 }
