@@ -1,5 +1,5 @@
-{ unstablePkgs, ... }: {
-  environment.systemPackages = with unstablePkgs; [
+{ pkgs, ... }: {
+  environment.systemPackages = with pkgs; [
     discord
     element-desktop
     signal-desktop

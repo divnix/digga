@@ -1,6 +1,6 @@
-{ unstablePkgs, ... }: {
+{ pkgs, ... }: {
   imports = [ ../graphical ./udev.nix ];
-  environment.systemPackages = with unstablePkgs; [
+  environment.systemPackages = with pkgs; [
     retroarchBare
     steam-run
     pcsx2
@@ -15,10 +15,7 @@
   services.xserver.libinput.disableWhileTyping = false;
 
   # Launch steam from display managers
-  services.xserver.windowManager.steam = {
-    enable = true;
-    package = unstablePkgs.steam;
-  };
+  services.xserver.windowManager.steam = { enable = true; };
 
   # 32-bit support needed for steam
   hardware.opengl.driSupport32Bit = true;

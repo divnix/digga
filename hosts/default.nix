@@ -12,18 +12,6 @@ let
     lib.nixosSystem {
       inherit system;
 
-      specialArgs = {
-        inherit unstablePkgs;
-
-        flakes = {
-          nixpkgs = nixpkgs;
-          master = inputs.unstable;
-          nixflk = self;
-        };
-
-        usr = { inherit utils; };
-      };
-
       modules = let
         inherit (home.nixosModules) home-manager;
 
@@ -38,6 +26,22 @@ let
           ];
 
           nixpkgs = { inherit pkgs; };
+
+          nix.registry = {
+            nixpkgs.flake = nixpkgs;
+            nixflk.flake = self;
+            master.flake = inputs.unstable;
+          };
+        };
+
+        unstables = {
+          systemd.package = unstablePkgs.systemd;
+          nixpkgs.overlays = [
+            (final: prev:
+              with unstablePkgs; {
+                inherit starship element-desktop discord signal-desktop mpv;
+              })
+          ];
         };
 
         local = import "${toString ./.}/${hostName}.nix";
@@ -46,7 +50,7 @@ let
         flakeModules =
           attrValues (removeAttrs self.nixosModules [ "profiles" ]);
 
-      in flakeModules ++ [ core global local home-manager ];
+      in flakeModules ++ [ core global local home-manager unstables ];
 
     };
 
