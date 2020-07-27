@@ -53,7 +53,6 @@ in {
       dzen2
       feh
       ffmpeg-full
-      firefox
       gnome3.adwaita-icon-theme
       gnome3.networkmanagerapplet
       gnome-themes-extra
