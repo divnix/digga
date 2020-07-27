@@ -1,0 +1,97 @@
+[character]
+style_success = "purple"
+
+[aws]
+symbol = " "
+
+[battery]
+full_symbol = ""
+charging_symbol = ""
+discharging_symbol = ""
+
+[cmd_duration]
+disabled = true
+
+[conda]
+symbol = " "
+
+[directory]
+style = "cyan"
+
+[docker]
+symbol = " "
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+[git_branch]
+symbol = " "
+style = "bold dimmed white"
+
+[git_status]
+conflicted = "䷅"
+ahead.value = "⟫"
+ahead.style = "green"
+behind.value = "⟪"
+behind.style = "red"
+diverged = "🔀"
+untracked.value = " ❓‍"
+untracked.style = "purple"
+stashed = "↪"
+modified.value = "➕"
+modified.style = "yellow"
+staged.value = "𝚫 "
+staged.style = "green"
+prefix = "「"
+suffix = "」"
+renamed = "⇆"
+deleted.value = "✘ "
+deleted.style = "red"
+style = "white"
+
+[golang]
+symbol = " "
+
+[haskell]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
+[java]
+symbol = " "
+
+[julia]
+symbol = " "
+
+[memory_usage]
+symbol = " "
+
+[nim]
+symbol = " "
+
+[nix_shell]
+symbol = " "
+pure_msg = ""
+impure_msg = ""
+
+[nodejs]
+symbol = " "
+
+[package]
+symbol = " "
+
+[php]
+symbol = " "
+
+[python]
+symbol = " "
+
+[ruby]
+symbol = " "
+
+[rust]
+symbol = " "

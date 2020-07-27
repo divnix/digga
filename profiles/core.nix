@@ -29,6 +29,13 @@ in {
       whois
     ];
 
+    shellInit = ''
+      export STARSHIP_CONFIG=${
+        pkgs.writeText "starship.toml"
+        (fileContents ./develop/zsh/starship.toml)
+      }
+    '';
+
     shellAliases =
       let ifSudo = string: lib.mkIf config.security.sudo.enable string;
       in {
@@ -111,6 +118,10 @@ in {
     '';
 
   };
+
+  programs.bash.promptInit = ''
+    eval "$(${pkgs.starship}/bin/starship init bash)"
+  '';
 
   security = {
 

@@ -6,6 +6,7 @@ let
     nix build ${configs}.niximg.config.system.build.isoImage $@
   '';
 in pkgs.mkShell {
+  name = "nixflk";
   nativeBuildInputs = with pkgs; [ git git-crypt nixFlakes buildIso ];
 
   shellHook = ''

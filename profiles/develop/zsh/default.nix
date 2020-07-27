@@ -81,7 +81,7 @@ in {
     ];
 
     promptInit = ''
-      source ${pkgs.purs}/share/zsh/plugins/purs/purs.zsh
+      eval "$(${pkgs.starship}/bin/starship init zsh)"
     '';
 
     interactiveShellInit = let
