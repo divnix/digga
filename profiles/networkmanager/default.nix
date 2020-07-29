@@ -1,9 +1,14 @@
-{ ... }: {
+{ lib, ... }: {
   imports = [ ../misc/adblocking.nix ];
 
   networking.networkmanager = {
     enable = true;
     wifi.backend = "iwd";
+    dns = lib.mkForce "none";
+    extraConfig = ''
+      [main]
+      systemd-resolved=false
+    '';
   };
 
   networking.nameservers =
