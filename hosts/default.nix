@@ -1,11 +1,7 @@
-inputs@{ home, nixpkgs, unstablePkgs, self, pkgs, system, ... }:
+{ home, nixpkgs, unstable, unstablePkgs, self, pkgs, system, utils, ... }:
 let
   inherit (nixpkgs) lib;
-
-  utils = import ../lib/utils.nix { inherit lib; };
-
   inherit (utils) recImport;
-
   inherit (builtins) attrValues removeAttrs;
 
   config = hostName:
@@ -30,7 +26,7 @@ let
           nix.registry = {
             nixpkgs.flake = nixpkgs;
             nixflk.flake = self;
-            master.flake = inputs.unstable;
+            master.flake = unstable;
           };
         };
 
