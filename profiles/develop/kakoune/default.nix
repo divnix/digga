@@ -10,6 +10,7 @@
     python3Packages.python-language-server
     rustup
     nix-linter
+    dhall
   ];
 
   environment.etc = {
