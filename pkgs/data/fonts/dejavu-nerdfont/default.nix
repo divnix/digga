@@ -1,8 +1,9 @@
-{ stdenv, fetchzip }:
+let version = "2.0.0";
+in { stdenv, fetchzip }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "dejavu-nerdfont";
-  version = "2.0.0";
+  inherit version;
 
   src = fetchzip {
     url =

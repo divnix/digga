@@ -1,6 +1,7 @@
-final: prev: {
-  pcsx2 = prev.pcsx2.overrideAttrs (o: rec {
-    version = "1.6.0";
+let version = "1.6.0";
+in final: prev: {
+  pcsx2 = prev.pcsx2.overrideAttrs (o: {
+    inherit version;
     src = prev.fetchFromGitHub {
       owner = "PCSX2";
       repo = "pcsx2";

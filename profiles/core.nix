@@ -37,7 +37,7 @@ in {
     '';
 
     shellAliases =
-      let ifSudo = string: lib.mkIf config.security.sudo.enable string;
+      let ifSudo = lib.mkIf config.security.sudo.enable;
       in {
         # quick cd
         ".." = "cd ..";

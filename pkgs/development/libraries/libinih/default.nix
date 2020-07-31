@@ -1,8 +1,8 @@
 { stdenv, meson, ninja, fetchFromGitHub, ... }:
-
-stdenv.mkDerivation rec {
+let version = "r50";
+in stdenv.mkDerivation {
   pname = "libinih";
-  version = "r50";
+  inherit version;
 
   src = fetchFromGitHub {
     owner = "benhoyt";

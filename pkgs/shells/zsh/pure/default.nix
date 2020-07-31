@@ -1,8 +1,8 @@
-{ stdenv, fetchFromGitHub, openssl, pkgconfig, rustPlatform }:
-
-stdenv.mkDerivation rec {
+{ stdenv, fetchFromGitHub }:
+let version = "0e87bd8";
+in stdenv.mkDerivation {
   pname = "pure";
-  version = "0e87bd8";
+  inherit version;
 
   srcs = fetchFromGitHub {
     owner = "sindresorhus";

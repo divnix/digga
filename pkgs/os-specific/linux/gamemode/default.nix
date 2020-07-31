@@ -1,9 +1,10 @@
-{ stdenv, appstream, meson, ninja, pkgsi686Linux, polkit, pkgconfig, systemd
-, dbus, libinih, fetchFromGitHub, ... }:
+let version = "1.5.1";
+in { stdenv, meson, ninja, polkit, pkgconfig, systemd, dbus, libinih
+, fetchFromGitHub, ... }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "gamemode";
-  version = "1.5.1";
+  inherit version;
 
   src = fetchFromGitHub {
     owner = "FeralInteractive";

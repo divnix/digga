@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ ... }: {
   services.stubby = {
     enable = true;
     upstreamServers = ''

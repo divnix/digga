@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 let inherit (builtins) readFile;
 in {
   imports = [ ./sway ../develop ./xmonad ../networkmanager ../im ];

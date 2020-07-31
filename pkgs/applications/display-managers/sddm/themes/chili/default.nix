@@ -1,7 +1,8 @@
 { stdenv, fetchFromGitHub, ... }:
-stdenv.mkDerivation rec {
+let version = "0.1.5";
+in stdenv.mkDerivation {
   pname = "sddm-chili";
-  version = "0.1.5";
+  inherit version;
 
   src = fetchFromGitHub {
     owner = "MarianArlt";

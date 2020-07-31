@@ -1,4 +1,4 @@
-{ autostart, screenshots, touchtoggle, pkgs, stoggle, volnoti }:
+{ autostart, screenshots, pkgs, stoggle, volnoti }:
 let inherit (pkgs) alsaUtils;
 in ''
   -- Function for fullscreen toggle

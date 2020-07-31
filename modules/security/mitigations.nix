@@ -1,4 +1,4 @@
-{ config, lib, options, ... }:
+{ config, lib, ... }:
 with lib;
 let
   inherit (builtins) readFile fetchurl;

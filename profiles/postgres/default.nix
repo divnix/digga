@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   services.postgresql = {
     enable = true;
     dataDir = "/srv/postgres";
