@@ -4,7 +4,7 @@ hook -group lint global WinSetOption filetype=nix %{
 
   set buffer lintcmd '/etc/xdg/kak/autoload/lint/nix.sh $1'
   lint-enable
-  set buffer formatcmd "nixfmt"
+  set buffer formatcmd "nixpkgs-fmt"
   hook buffer BufWritePre .* %{
     format
     lint

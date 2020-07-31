@@ -6,7 +6,7 @@
     kak-lsp
     kakoune-config
     kakoune-unwrapped
-    nixfmt
+    nixpkgs-fmt
     python3Packages.python-language-server
     rustup
     nix-linter

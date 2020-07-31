@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-nix-linter $1 2>&1 | < /dev/stdin > /tmp/lint.out
+nix-linter -W all $1 2>&1 | < /dev/stdin > /tmp/lint.out
 if head -1 /tmp/lint.out | grep Failure &> /dev/null; then
   sed -n 2p /tmp/lint.out | tr '\n' ' '
   printf "error: "
