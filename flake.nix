@@ -9,7 +9,7 @@
     let
       inherit (builtins) attrNames attrValues readDir;
       inherit (nixpkgs) lib;
-      inherit (lib) removeSuffix;
+      inherit (lib) removeSuffix recursiveUpdate;
       inherit (utils) pathsToImportedAttrs;
 
       utils = import ./lib/utils.nix { inherit lib; };
@@ -29,7 +29,11 @@
     in
     {
       nixosConfigurations =
-        import ./hosts (inputs // { inherit system pkgs unstablePkgs utils; });
+        import ./hosts (recursiveUpdate inputs {
+          inherit system pkgs
+            unstablePkgs utils;
+        }
+        );
 
       devShell."${system}" = import ./shell.nix { inherit pkgs; };
 
@@ -60,6 +64,8 @@
           profilesAttrs = { profiles = pathsToImportedAttrs profilesList; };
 
         in
-        cachixAttrs // modulesAttrs // profilesAttrs;
+        recursiveUpdate
+          (recursiveUpdate cachixAttrs modulesAttrs)
+          profilesAttrs;
     };
 }
