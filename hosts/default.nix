@@ -37,7 +37,7 @@ let
               (final: prev:
                 with unstablePkgs; {
                   inherit starship element-desktop discord signal-desktop mpv
-                    dhall;
+                    protonvpn-cli-ng dhall nixpkgs-fmt;
                 }
               )
             ];
