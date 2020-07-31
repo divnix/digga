@@ -26,7 +26,8 @@
       pkgs = pkgImport nixpkgs;
       unstablePkgs = pkgImport unstable;
 
-    in {
+    in
+    {
       nixosConfigurations =
         import ./hosts (inputs // { inherit system pkgs unstablePkgs utils; });
 
@@ -34,27 +35,31 @@
 
       overlay = import ./pkgs;
 
-      overlays = let
-        overlayDir = ./overlays;
-        fullPath = name: overlayDir + "/${name}";
-        overlayPaths = map fullPath (attrNames (readDir overlayDir));
-      in pathsToImportedAttrs overlayPaths;
+      overlays =
+        let
+          overlayDir = ./overlays;
+          fullPath = name: overlayDir + "/${name}";
+          overlayPaths = map fullPath (attrNames (readDir overlayDir));
+        in
+        pathsToImportedAttrs overlayPaths;
 
       packages."${system}" = self.overlay pkgs pkgs;
 
-      nixosModules = let
-        # binary cache
-        cachix = import ./cachix.nix;
-        cachixAttrs = { inherit cachix; };
+      nixosModules =
+        let
+          # binary cache
+          cachix = import ./cachix.nix;
+          cachixAttrs = { inherit cachix; };
 
-        # modules
-        moduleList = import ./modules/list.nix;
-        modulesAttrs = pathsToImportedAttrs moduleList;
+          # modules
+          moduleList = import ./modules/list.nix;
+          modulesAttrs = pathsToImportedAttrs moduleList;
 
-        # profiles
-        profilesList = import ./profiles/list.nix;
-        profilesAttrs = { profiles = pathsToImportedAttrs profilesList; };
+          # profiles
+          profilesList = import ./profiles/list.nix;
+          profilesAttrs = { profiles = pathsToImportedAttrs profilesList; };
 
-      in cachixAttrs // modulesAttrs // profilesAttrs;
+        in
+        cachixAttrs // modulesAttrs // profilesAttrs;
     };
 }

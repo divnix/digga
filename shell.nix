@@ -5,7 +5,8 @@ let
   buildIso = pkgs.writeShellScriptBin "build-iso" ''
     nix build ${configs}.niximg.config.system.build.isoImage $@
   '';
-in pkgs.mkShell {
+in
+pkgs.mkShell {
   name = "nixflk";
   nativeBuildInputs = with pkgs; [ git git-crypt nixFlakes buildIso ];
 

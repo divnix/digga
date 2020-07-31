@@ -1,6 +1,7 @@
 { stdenv, fetchFromGitHub }:
 let version = "0e87bd8";
-in stdenv.mkDerivation {
+in
+stdenv.mkDerivation {
   pname = "pure";
   inherit version;
 

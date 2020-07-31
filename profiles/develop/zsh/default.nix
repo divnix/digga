@@ -4,22 +4,27 @@ let
 
   inherit (lib) fileContents;
 
-in {
+in
+{
   users.defaultUserShell = pkgs.zsh;
 
   environment = {
-    sessionVariables = let fd = "${pkgs.fd}/bin/fd -H";
-    in {
-      BAT_PAGER = "less";
-      SKIM_ALT_C_COMMAND = let
-        alt_c_cmd = pkgs.writeScriptBin "cdr-skim.zsh" ''
-          #!${pkgs.zsh}/bin/zsh
-          ${fileContents ./cdr-skim.zsh}
-        '';
-      in "${alt_c_cmd}/bin/cdr-skim.zsh";
-      SKIM_DEFAULT_COMMAND = fd;
-      SKIM_CTRL_T_COMMAND = fd;
-    };
+    sessionVariables =
+      let fd = "${pkgs.fd}/bin/fd -H";
+      in
+      {
+        BAT_PAGER = "less";
+        SKIM_ALT_C_COMMAND =
+          let
+            alt_c_cmd = pkgs.writeScriptBin "cdr-skim.zsh" ''
+              #!${pkgs.zsh}/bin/zsh
+              ${fileContents ./cdr-skim.zsh}
+            '';
+          in
+          "${alt_c_cmd}/bin/cdr-skim.zsh";
+        SKIM_DEFAULT_COMMAND = fd;
+        SKIM_CTRL_T_COMMAND = fd;
+      };
 
     shellAliases = {
       cat = "${pkgs.bat}/bin/bat";
@@ -84,58 +89,62 @@ in {
       eval "$(${pkgs.starship}/bin/starship init zsh)"
     '';
 
-    interactiveShellInit = let
-      zshrc = fileContents ./zshrc;
+    interactiveShellInit =
+      let
+        zshrc = fileContents ./zshrc;
 
-      sources = with pkgs; [
-        ./cdr.zsh
-        "${skim}/share/skim/completion.zsh"
-        "${oh-my-zsh}/share/oh-my-zsh/plugins/sudo/sudo.plugin.zsh"
-        "${oh-my-zsh}/share/oh-my-zsh/plugins/extract/extract.plugin.zsh"
-        "${zsh-you-should-use}/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh"
-        "${zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-        "${zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
-      ];
+        sources = with pkgs; [
+          ./cdr.zsh
+          "${skim}/share/skim/completion.zsh"
+          "${oh-my-zsh}/share/oh-my-zsh/plugins/sudo/sudo.plugin.zsh"
+          "${oh-my-zsh}/share/oh-my-zsh/plugins/extract/extract.plugin.zsh"
+          "${zsh-you-should-use}/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh"
+          "${zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+          "${zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+        ];
 
-      source = map (source: "source ${source}") sources;
+        source = map (source: "source ${source}") sources;
 
-      functions = pkgs.stdenv.mkDerivation {
-        name = "zsh-functions";
-        src = ./functions;
+        functions = pkgs.stdenv.mkDerivation {
+          name = "zsh-functions";
+          src = ./functions;
 
-        ripgrep = "${pkgs.ripgrep}";
-        man = "${pkgs.man}";
-        exa = "${pkgs.exa}";
+          ripgrep = "${pkgs.ripgrep}";
+          man = "${pkgs.man}";
+          exa = "${pkgs.exa}";
 
-        installPhase = let basename = "\${file##*/}";
-        in ''
-          mkdir $out
+          installPhase =
+            let basename = "\${file##*/}";
+            in
+            ''
+              mkdir $out
 
-          for file in $src/*; do
-            substituteAll $file $out/${basename}
-            chmod 755 $out/${basename}
-          done
-        '';
-      };
+              for file in $src/*; do
+                substituteAll $file $out/${basename}
+                chmod 755 $out/${basename}
+              done
+            '';
+        };
 
-      plugins = concatStringsSep "\n" ([
-        "${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin"
-      ] ++ source);
+        plugins = concatStringsSep "\n" ([
+          "${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin"
+        ] ++ source);
 
-    in ''
-      ${plugins}
+      in
+      ''
+        ${plugins}
 
-      fpath+=( ${functions} )
-      autoload -Uz ${functions}/*(:t)
+        fpath+=( ${functions} )
+        autoload -Uz ${functions}/*(:t)
 
-      ${zshrc}
+        ${zshrc}
 
-      eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
-      eval $(${pkgs.gitAndTools.hub}/bin/hub alias -s)
-      source ${pkgs.skim}/share/skim/key-bindings.zsh
+        eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
+        eval $(${pkgs.gitAndTools.hub}/bin/hub alias -s)
+        source ${pkgs.skim}/share/skim/key-bindings.zsh
 
-      # needs to remain at bottom so as not to be overwritten
-      bindkey jj vi-cmd-mode
-    '';
+        # needs to remain at bottom so as not to be overwritten
+        bindkey jj vi-cmd-mode
+      '';
   };
 }

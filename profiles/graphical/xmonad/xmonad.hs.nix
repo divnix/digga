@@ -13,9 +13,10 @@ let
     writeScript "xmonad-touchtoggle" (readFile ./scripts/touchtoggle);
 
   volnoti = import ../misc/volnoti.nix { inherit pkgs; };
-in ''
+in
+''
   ${readFile ./_xmonad.hs}
   ${import ./_xmonad.nix {
     inherit screenshots touchtoggle autostart stoggle pkgs volnoti;
-  }}
+    }}
 ''

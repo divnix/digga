@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 let inherit (lib) fileContents;
 
-in {
+in
+{
   nix.package = pkgs.nixFlakes;
 
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
@@ -38,7 +39,8 @@ in {
 
     shellAliases =
       let ifSudo = lib.mkIf config.security.sudo.enable;
-      in {
+      in
+      {
         # quick cd
         ".." = "cd ..";
         "..." = "cd ../..";

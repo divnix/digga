@@ -1,5 +1,6 @@
 let version = "1.8.9";
-in final: prev: {
+in
+final: prev: {
   retroarchBare = prev.retroarchBare.overrideAttrs (o: {
     inherit version;
 

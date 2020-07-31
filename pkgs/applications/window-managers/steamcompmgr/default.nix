@@ -1,5 +1,17 @@
-{ stdenv, fetchFromGitHub, libudev, SDL, SDL_image, libXdamage, libXcomposite
-, libXrender, libXext, libXxf86vm, pkgconfig, autoreconfHook, gnumake }:
+{ stdenv
+, fetchFromGitHub
+, libudev
+, SDL
+, SDL_image
+, libXdamage
+, libXcomposite
+, libXrender
+, libXext
+, libXxf86vm
+, pkgconfig
+, autoreconfHook
+, gnumake
+}:
 
 stdenv.mkDerivation {
   name = "steamcompmgr";

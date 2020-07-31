@@ -1,9 +1,9 @@
 { pkgs, lib, config, ... }:
 
 with lib;
-
 let cfg = config.services.xserver.windowManager.steam;
-in {
+in
+{
   options = {
     services.xserver.windowManager.steam = {
       enable = mkEnableOption "steam";

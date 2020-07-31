@@ -1,6 +1,7 @@
 { pkgs, ... }:
 let inherit (builtins) readFile;
-in {
+in
+{
   imports = [ ./sway ../develop ./xmonad ../networkmanager ../im ];
 
   hardware.opengl.enable = true;
@@ -35,16 +36,18 @@ in {
       # Theme settings
       QT_QPA_PLATFORMTHEME = "gtk2";
 
-      GTK2_RC_FILES = let
-        gtk = ''
-          gtk-icon-theme-name="Papirus"
-          gtk-cursor-theme-name="Adwaita"
-        '';
-      in [
-        ("${pkgs.writeText "iconrc" "${gtk}"}")
-        "${pkgs.adapta-gtk-theme}/share/themes/Adapta/gtk-2.0/gtkrc"
-        "${pkgs.gnome3.gnome-themes-extra}/share/themes/Adwaita/gtk-2.0/gtkrc"
-      ];
+      GTK2_RC_FILES =
+        let
+          gtk = ''
+            gtk-icon-theme-name="Papirus"
+            gtk-cursor-theme-name="Adwaita"
+          '';
+        in
+        [
+          ("${pkgs.writeText "iconrc" "${gtk}"}")
+          "${pkgs.adapta-gtk-theme}/share/themes/Adapta/gtk-2.0/gtkrc"
+          "${pkgs.gnome3.gnome-themes-extra}/share/themes/Adwaita/gtk-2.0/gtkrc"
+        ];
     };
 
     systemPackages = with pkgs; [

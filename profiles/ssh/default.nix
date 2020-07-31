@@ -6,4 +6,3 @@
     forwardX11 = true;
   };
 }
-

@@ -7,16 +7,18 @@ let
 
   hostname = lib.fileContents /etc/hostname;
   host = "/etc/nixos/hosts/${hostname}.nix";
-  config = if (builtins.pathExists host) then
-    [ host ]
-  else
-    [ /etc/nixos/hosts/NixOS.nix ];
-in {
+  config =
+    if (builtins.pathExists host) then
+      [ host ]
+    else
+      [ /etc/nixos/hosts/NixOS.nix ];
+in
+{
   imports = (import ./modules/list.nix) ++ [
     "${
       builtins.fetchTarball
-      "https://github.com/rycee/home-manager/archive/master.tar.gz"
-    }/nixos"
+        "https://github.com/rycee/home-manager/archive/master.tar.gz"
+      }/nixos"
     /etc/nixos/profiles/core.nix
   ] ++ config;
 
@@ -27,8 +29,11 @@ in {
     "nixpkgs-overlays=/etc/nixos/overlays"
   ];
 
-  nixpkgs.overlays = let
-    overlays = map (name: import (./overlays + "/${name}"))
-      (attrNames (readDir ./overlays));
-  in overlays;
+  nixpkgs.overlays =
+    let
+      overlays = map
+        (name: import (./overlays + "/${name}"))
+        (attrNames (readDir ./overlays));
+    in
+    overlays;
 }

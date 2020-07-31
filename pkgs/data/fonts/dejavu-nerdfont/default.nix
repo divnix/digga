@@ -1,5 +1,6 @@
 let version = "2.0.0";
-in { stdenv, fetchzip }:
+in
+{ stdenv, fetchzip }:
 
 stdenv.mkDerivation {
   pname = "dejavu-nerdfont";

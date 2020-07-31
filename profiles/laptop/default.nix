@@ -45,16 +45,18 @@
   '';
   services.logind.lidSwitch = "suspend";
 
-  nixpkgs.overlays = let
-    light_ov = self: super: {
-      light = super.light.overrideAttrs (o: {
-        src = self.fetchFromGitHub {
-          owner = "haikarainen";
-          repo = "light";
-          rev = "ae7a6ebb45a712e5293c7961eed8cceaa4ebf0b6";
-          sha256 = "00z9bxrkjpfmfhz9fbf6mjbfqvixx6857mvgmiv01fvvs0lr371n";
-        };
-      });
-    };
-  in [ light_ov ];
+  nixpkgs.overlays =
+    let
+      light_ov = self: super: {
+        light = super.light.overrideAttrs (o: {
+          src = self.fetchFromGitHub {
+            owner = "haikarainen";
+            repo = "light";
+            rev = "ae7a6ebb45a712e5293c7961eed8cceaa4ebf0b6";
+            sha256 = "00z9bxrkjpfmfhz9fbf6mjbfqvixx6857mvgmiv01fvvs0lr371n";
+          };
+        });
+      };
+    in
+    [ light_ov ];
 }

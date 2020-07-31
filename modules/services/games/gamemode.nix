@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-
 let cfg = config.services.gamemode;
-in {
+in
+{
   options.services.gamemode = {
     enable = mkOption {
       type = types.bool;

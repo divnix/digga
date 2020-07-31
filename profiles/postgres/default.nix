@@ -5,4 +5,3 @@
     package = pkgs.postgresql_12;
   };
 }
-

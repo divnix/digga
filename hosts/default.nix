@@ -8,46 +8,49 @@ let
     lib.nixosSystem {
       inherit system;
 
-      modules = let
-        inherit (home.nixosModules) home-manager;
+      modules =
+        let
+          inherit (home.nixosModules) home-manager;
 
-        core = self.nixosModules.profiles.core;
+          core = self.nixosModules.profiles.core;
 
-        global = {
-          networking.hostName = hostName;
-          nix.nixPath = [
-            "nixpkgs=${nixpkgs}"
-            "nixos-config=/etc/nixos/configuration.nix"
-            "nixpkgs-overlays=/etc/nixos/overlays"
-          ];
+          global = {
+            networking.hostName = hostName;
+            nix.nixPath = [
+              "nixpkgs=${nixpkgs}"
+              "nixos-config=/etc/nixos/configuration.nix"
+              "nixpkgs-overlays=/etc/nixos/overlays"
+            ];
 
-          nixpkgs = { inherit pkgs; };
+            nixpkgs = { inherit pkgs; };
 
-          nix.registry = {
-            nixpkgs.flake = nixpkgs;
-            nixflk.flake = self;
-            master.flake = unstable;
+            nix.registry = {
+              nixpkgs.flake = nixpkgs;
+              nixflk.flake = self;
+              master.flake = unstable;
+            };
           };
-        };
 
-        unstables = {
-          systemd.package = unstablePkgs.systemd;
-          nixpkgs.overlays = [
-            (final: prev:
-              with unstablePkgs; {
-                inherit starship element-desktop discord signal-desktop mpv
-                  dhall;
-              })
-          ];
-        };
+          unstables = {
+            systemd.package = unstablePkgs.systemd;
+            nixpkgs.overlays = [
+              (final: prev:
+                with unstablePkgs; {
+                  inherit starship element-desktop discord signal-desktop mpv
+                    dhall;
+                }
+              )
+            ];
+          };
 
-        local = import "${toString ./.}/${hostName}.nix";
+          local = import "${toString ./.}/${hostName}.nix";
 
-        # Everything in `./modules/list.nix`.
-        flakeModules =
-          attrValues (removeAttrs self.nixosModules [ "profiles" ]);
+          # Everything in `./modules/list.nix`.
+          flakeModules =
+            attrValues (removeAttrs self.nixosModules [ "profiles" ]);
 
-      in flakeModules ++ [ core global local home-manager unstables ];
+        in
+        flakeModules ++ [ core global local home-manager unstables ];
 
     };
 
@@ -55,4 +58,5 @@ let
     dir = ./.;
     _import = config;
   };
-in hosts
+in
+hosts
