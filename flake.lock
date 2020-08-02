@@ -19,6 +19,36 @@
         "type": "github"
       }
     },
+    "master": {
+      "locked": {
+        "lastModified": 1596337980,
+        "narHash": "sha256-LyE4haB7x2SBb1AyFJwqtGQitdaBFyK2ov4eH9Agono=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "111221b93ad46bb7119686f0a89a7bf1d3ad5bd7",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "master",
+        "type": "indirect"
+      }
+    },
+    "nixos": {
+      "locked": {
+        "lastModified": 1596329181,
+        "narHash": "sha256-q6NSFQnFbpey/RP2LFfYW9Vcpt6CYKO8Q//6TuNBuYM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7dc4385dc7b5b2c0dbfecd774cebbc87ac05c061",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "release-20.03",
+        "type": "indirect"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1591748508,
@@ -33,41 +63,11 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1596030432,
-        "narHash": "sha256-Q5LNY71SXjEjhyzZ+cInbGu0reezV4LlXbRPe3jk7gk=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "326767fd7309831974e6d7533593725897010c49",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "ref": "release-20.03",
-        "type": "indirect"
-      }
-    },
     "root": {
       "inputs": {
         "home": "home",
-        "nixpkgs": "nixpkgs_2",
-        "unstable": "unstable"
-      }
-    },
-    "unstable": {
-      "locked": {
-        "lastModified": 1596085265,
-        "narHash": "sha256-GvvEdlmQHmt9S/yrInyJ/unOSlcTHjHoOC4LcOvzATM=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "4701e11216560f85e7b2ecf215e592ff9a46c41b",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "ref": "master",
-        "type": "indirect"
+        "master": "master",
+        "nixos": "nixos"
       }
     }
   },

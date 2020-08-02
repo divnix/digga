@@ -1,14 +1,17 @@
 {
   description = "A highly structured configuration database.";
 
-  inputs.nixpkgs.url = "nixpkgs/release-20.03";
-  inputs.unstable.url = "nixpkgs/master";
-  inputs.home.url = "github:rycee/home-manager/bqv-flakes";
+  inputs =
+    {
+      master.url = "nixpkgs/master";
+      nixos.url = "nixpkgs/release-20.03";
+      home.url = "github:rycee/home-manager/bqv-flakes";
+    };
 
-  outputs = inputs@{ self, home, nixpkgs, unstable }:
+  outputs = inputs@{ self, home, nixos, master }:
     let
       inherit (builtins) attrNames attrValues readDir;
-      inherit (nixpkgs) lib;
+      inherit (nixos) lib;
       inherit (lib) removeSuffix recursiveUpdate;
       inherit (utils) pathsToImportedAttrs;
 
@@ -23,19 +26,23 @@
           config = { allowUnfree = true; };
         };
 
-      pkgs = pkgImport nixpkgs;
-      unstablePkgs = pkgImport unstable;
+      pkgset = {
+        osPkgs = pkgImport nixos;
+        pkgs = pkgImport master;
+      };
 
     in
+    with pkgset;
     {
       nixosConfigurations =
         import ./hosts (recursiveUpdate inputs {
-          inherit system pkgs
-            unstablePkgs utils;
+          inherit lib pkgset system utils;
         }
         );
 
-      devShell."${system}" = import ./shell.nix { inherit pkgs; };
+      devShell."${system}" = import ./shell.nix {
+        inherit pkgs;
+      };
 
       overlay = import ./pkgs;
 
@@ -47,7 +54,7 @@
         in
         pathsToImportedAttrs overlayPaths;
 
-      packages."${system}" = self.overlay pkgs pkgs;
+      packages."${system}" = (self.overlay osPkgs osPkgs);
 
       nixosModules =
         let

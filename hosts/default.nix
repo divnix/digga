@@ -1,8 +1,17 @@
-{ home, nixpkgs, unstable, unstablePkgs, self, pkgs, system, utils, ... }:
+{ home
+, lib
+, nixos
+, master
+, pkgset
+, self
+, system
+, utils
+, ...
+}:
 let
-  inherit (nixpkgs) lib;
   inherit (utils) recImport;
   inherit (builtins) attrValues removeAttrs;
+  inherit (pkgset) osPkgs pkgs;
 
   config = hostName:
     lib.nixosSystem {
@@ -16,31 +25,36 @@ let
 
           global = {
             networking.hostName = hostName;
-            nix.nixPath = [
-              "nixpkgs=${nixpkgs}"
-              "nixos-config=/etc/nixos/configuration.nix"
-              "nixpkgs-overlays=/etc/nixos/overlays"
-            ];
+            nix.nixPath = let path = toString ../.; in
+              [
+                "nixpkgs=${master}"
+                "nixos=${nixos}"
+                "nixos-config=${path}/configuration.nix"
+                "nixpkgs-overlays=${path}/overlays"
+              ];
 
-            nixpkgs = { inherit pkgs; };
+            nixpkgs = { pkgs = osPkgs; };
 
             nix.registry = {
-              nixpkgs.flake = nixpkgs;
+              nixos.flake = nixos;
               nixflk.flake = self;
-              master.flake = unstable;
+              nixpkgs.flake = master;
             };
           };
 
-          unstables = {
-            systemd.package = unstablePkgs.systemd;
-            nixpkgs.overlays = [
-              (final: prev:
-                with unstablePkgs; {
-                  inherit starship element-desktop discord signal-desktop mpv
-                    protonvpn-cli-ng dhall nixpkgs-fmt;
-                }
-              )
-            ];
+          overrides = {
+            # use latest systemd
+            systemd.package = pkgs.systemd;
+
+            nixpkgs.overlays =
+              let
+                override = import ../pkgs/override.nix pkgs;
+
+                overlay = pkg: final: prev: {
+                  inherit pkg;
+                };
+              in
+              map overlay override;
           };
 
           local = import "${toString ./.}/${hostName}.nix";
@@ -50,7 +64,7 @@ let
             attrValues (removeAttrs self.nixosModules [ "profiles" ]);
 
         in
-        flakeModules ++ [ core global local home-manager unstables ];
+        flakeModules ++ [ core global local home-manager overrides ];
 
     };
 
