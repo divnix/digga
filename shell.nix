@@ -14,7 +14,7 @@ pkgs.mkShell {
     mkdir -p secrets
     PATH=${
       pkgs.writeShellScriptBin "nix" ''
-        ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" $@
+        ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
       ''
     }/bin:$PATH
   '';
