@@ -9,7 +9,6 @@ with pkgs;
   element-desktop
   discord
   signal-desktop
-  mpv
   dhall
   nixpkgs-fmt
 ]

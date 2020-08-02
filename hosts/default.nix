@@ -51,7 +51,7 @@ let
                 override = import ../pkgs/override.nix pkgs;
 
                 overlay = pkg: final: prev: {
-                  inherit pkg;
+                  "${pkg.pname}" = pkg;
                 };
               in
               map overlay override;
