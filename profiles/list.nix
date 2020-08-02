@@ -1,5 +1,5 @@
 [
-  ./core.nix
+  ./core
   ./develop
   ./develop/kakoune
   ./develop/tmux

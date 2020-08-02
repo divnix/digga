@@ -7,7 +7,7 @@ in
 
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
-  imports = [ ../local/locale.nix ];
+  imports = [ ../../local/locale.nix ];
 
   environment = {
 
@@ -34,7 +34,7 @@ in
     shellInit = ''
       export STARSHIP_CONFIG=${
         pkgs.writeText "starship.toml"
-        (fileContents ./develop/zsh/starship.toml)
+        (fileContents ./starship.toml)
       }
     '';
 
