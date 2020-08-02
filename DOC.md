@@ -42,29 +42,11 @@ a particular interactive user. Its primarily for declarations to
 `users.users.<new-user>` where `<new-user>.isNormalUser` is true.
 
 This is a convenient place to import your profiles such that a particular user
-always has a reliable stack.
+always has a reliable stack. Also [user profiles](./users/profiles) are
+available to create reusable configs across different users.
 
 For convenience, [home-manager][home-manager] is available automatically for
 home directory setup and should only be used from this directory.
-
-## Lib
-The [lib](lib) directory contains a file `utils.nix` which is an attribute set
-meant to consist mainly of utility functions you might want to write and use
-throughout the configuration. They are available via a new `usr` attribute
-passed to every NixOS module, eg:
-
-```
-# hosts/some-host.nix
-{ usr, ... }:
-let
-  inherit (usr) utils;
-
-  data = usr.utils.myFunction # ...
-in
-{
-  # NixOS configuration
-}
-```
 
 ## Secrets
 Anything you wish to keep encrypted goes in the `secrets` directory, which is
@@ -77,6 +59,16 @@ folder by default.
 
 To keep [profiles](profiles) reusable across configurations, secrets should
 only be imported from the `users` or [`hosts`](hosts) directory.
+
+## Cachix
+When using:
+```
+cachix use <your-cachix>
+```
+A file with be created in `/etc/nixos/cachix/your-cachix.nix`. Simply add this
+file to git, and it will be exported so others can use your binary cache
+directly from this flake via `nixosModules.cachix.<your-cachix>`.
+
 
 ## Modules, Packages and Overlays
 All expressions in both [modules/list.nix](modules/list.nix) and

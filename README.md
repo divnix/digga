@@ -1,113 +1,84 @@
 # Introduction
-A NixOS configuration template using the experimental [flakes][rfc] mechanism.
-Its aim is to provide a generic repository which neatly separates concerns
-and allows one to get up and running with NixOS faster than ever.
+Herein lies a [NixOS][NixOS] configuration template using the new [flakes][wiki]
+mechanism. Its aim is to provide a generic repository which neatly separates
+concerns and allows one to get up and running with NixOS faster than ever, while
+keeping your code clean and organized.
 
-A core goal is to facilitate a (mostly) seamless transition to flakes.
-You could start by simply importing your `configuration.nix` from a module
-in [hosts](hosts). There may be some translation if you import anything
-from the `NIX_PATH`, e.g. `import <nixpkgs> {}`, but the majority of any valid
-NixOS config should work right out of the box. Once your up and running, you
-may wish to modify your configuration to adhere to the [ideals](DOC.md) of this
-project.
+Some key advantages include:
+* A single home for all your Nix expressions, easily sharable and portable!
+* Skip the setup, simply use the included [nix-shell](./shell.nix) or
+  [direnv][direnv] profile and get up and running with flakes right away.
+* Thanks to flakes, the entire system is more [deterministic](./flake.lock).
+* Systems defined under [hosts](./hosts) are automatically imported into
+  `nixosConfigurations`, ready to deploy.
+* [Profiles](./profiles/list.nix) are a simple mechanism for using portable
+  code across machines, and are available to share via the
+  `nixosModules.profiles` output.
+* Defined [packages](./pkgs/default.nix) and
+  [modules](./modules/list.nix), are automatically wired and available from
+  anywhere. They are _also_ sharable via their respective flake outputs.
+* Easily [override](./pkgs/override.nix) packages from different nixpkgs versions.
+* Keep [user](./users) configuration isolated and easily reusable by taking
+  advantage of [user profiles](./users/profiles) and [home-manager][home-manager].
+* [Overlay](./overlays) files are automatically available and sharable.
+
+For a more detailed explanation of the code structure, check out the
+[docs](./DOC.md).
 
 ### ⚠ Advisory
-Flakes are still an experimental feature, so not everything works yet. However,
-it has been merged upstream, and for those using cloud deployments, there is
-now [nixops](https://github.com/NixOS/nixops/tree/flake-support) support!
+Flakes are still new, so not everything works yet. However, it has been to
+merged in [nixpkgs][nixpkgs] via [`pkgs.nixFlakes`][nixFlakes]. Thus, this
+project should be considered _experimental_, until flakes become the default.
 
-Also, flakes are meant to deprecate nix-channels. I'd recommend not
-installing any. If your really want them, they should work if you hook them
-into your `NIX_PATH` manually.
-
-## Flake Talk:
-[![Flake talk at NixConf][thumb]][video]
-
+Also, flakes are meant to deprecate nix-channels. It's recommend not to install
+any. If your really want them, they should work if you hook them into
+`NIX_PATH`.
 
 # Setup
+There are many way to get up and running. You can fork this repo or use it as
+a template. There is a [bare branch][bare] if you want to start with a
+completely empty template and make your own profiles from scratch.
 
-```sh
-# This is not needed if your using direnv:
-nix-shell
+You'll need to have NixOS already installed since the `nixos-install` script
+doesn't yet support flakes.
 
-# It's recommend to start a new branch:
-git checkout -b $new_branch template
+If you already have [nix-command][nix-command] setup you can:
+```
+# for standard template
+nix flake new -t "github:nrdxp/nixflk" flk
 
-# Generate a hardware config:
-nixos-generate-config --show-hardware-config > ./hosts/${new_host}.nix
-
-# Edit the new file, removing `not-detected.nix` from the imports.
-# In order to maintain purity flakes cannot resolve from the NIX_PATH.
-
-# You could import your existing `configuration.nix`, or the generic
-# `./hosts/NixOS.nix` from here. The latter sets up Network Manger,
-# an efi bootloader, an empty root password, and a generic user
-# named `nixos`.
-
-# Also ensure your file systems are set the way you want:
-$EDITOR ./hosts/${new_host}.nix
-
-# Backup your existing config:
-mv /etc/nixos /etc/nixos.old
-
-# Ensure this flake can be found in its expected location:
-ln -s $PWD /etc/nixos
-
-# A flake is vcs based, so only git aware files are bundled
-# adding a new file to staging is enough:
-git add ./hosts/${new_host}.nix
-
-# A generic `rebuild` wrapper for `nix build` is provided
-# bypassing the need for `nixos-rebuild`.
-
-# Usage: rebuild [host] {switch|boot|test|dry-activate}
-# where `host` is any file living in the `./hosts` directory
-
-# Test your new deployment; this will be run as root:
-rebuild $new_host test
-
-# You may wish to start by creating a user:
-mkdir users/new-user && $EDITOR users/new-user/default.nix
-
-# Once your satisfied, permanently deploy with:
-rebuild $new_host switch
+# for bare template
+nix flake new -t "github:nrdxp/nixflk/bare" flk
 ```
 
-Please read the [doc](DOC.md) in order to understand the impetus
-behind the directory structure.
+However you decide to acquire the repo, once you have it, you'll want to __move
+or symlink__ it to `/etc/nixos` for ease of use. Once inside:
 
-## Additional Capabilities
+```
+nix-shell # or `direnv allow` if you prefer
+```
+
+From here it's up to you. You can deploy the barebones [NixOS](./hosts/NixOS.nix)
+host and build from there, or you can copy your existing `configuration.nix`.
+You'll probably at least need to setup your `fileSystems` and make sure the
+[locale](./local/locale.nix) is correct.
+
+Once you're ready to deploy you can use `nixos-rebuild` if your NixOS version
+is recent enough to support flakes, _or_ the [shell.nix](./shell.nix) defines
+its own `rebuild` command in case you need it.
+
+```
+# Usage: rebuild host {switch|boot|test|iso}
+rebuild <host-filename> test
+```
+
+## Build an ISO
+
+You can make an ISO and customize it by modifying the [niximg](./hosts/niximg.nix)
+file:
 
 ```sh
-# Make an iso image based on `./hosts/niximg.nix`:
 rebuild iso
-
-# Install any package the flake exports:
-nix profile install ".#packages.x86_64-linux.myPackage"
-```
-
-this flake exports multiple outputs for use in other flakes, or forks
-of this one:
-```nix
-# external flake.nix
-{
-  # ...
-  inputs.nixflk.url = "github:nrdxp/nixflk";
-
-  outputs = { self, nixpkgs, nixflk }: {
-
-    nixosConfigurations.newConfig = nixflk.nixosConfigurations.someConfig;
-
-    nixosConfigurations.myConfig = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        { nixpkgs.overlays = nixflk.overlays; }
-        nixflk.nixosModules.myModule
-      ];
-    };
-  };
-}
-
 ```
 
 ### NUR usage
@@ -118,6 +89,9 @@ You can use packages, modules and overlays from the
 Since NUR packages are completely unchecked, they are not included by default.
 Check out the NUR [branch](https://github.com/nrdxp/nixflk/tree/NUR#nur-usage)
 for usage.
+
+## Flake Talk:
+[![Flake talk at NixConf][thumb]][video]
 
 # License
 
@@ -130,11 +104,14 @@ included here, which may be derivative works of the packages to
 which they apply. The aforementioned artifacts are all covered by the
 licenses of the respective packages.
 
+[bare]: https://github.com/nrdxp/nixflk/tree/bare
 [direnv]: https://direnv.net
+[home-manager]: https://github.com/rycee/home-manager
+[nix-command]: https://nixos.wiki/wiki/Nix_command
+[nixFlakes]: https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/package-management/nix/default.nix#L211
 [NixOS]: https://nixos.org
+[nixpkgs]: https://github.com/NixOS/nixpkgs
 [nur]: https://github.com/nix-community/NUR
-[old]: https://github.com/nrdxp/nixos
-[pr]:  https://github.com/NixOS/nixpkgs/pull/68897
-[rfc]: https://github.com/tweag/rfcs/blob/flakes/rfcs/0049-flakes.md
-[video]: https://www.youtube.com/watch?v=UeBX7Ide5a0
+[wiki]: https://nixos.wiki/wiki/Flakes
 [thumb]: https://img.youtube.com/vi/UeBX7Ide5a0/hqdefault.jpg
+[video]: https://www.youtube.com/watch?v=UeBX7Ide5a0
