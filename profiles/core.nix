@@ -15,6 +15,7 @@ in
       binutils
       coreutils
       curl
+      direnv
       dnsutils
       dosfstools
       fd
@@ -122,9 +123,14 @@ in
 
   };
 
-  programs.bash.promptInit = ''
-    eval "$(${pkgs.starship}/bin/starship init bash)"
-  '';
+  programs.bash = {
+    promptInit = ''
+      eval "$(${pkgs.starship}/bin/starship init bash)"
+    '';
+    shellInit = ''
+      eval "$(${pkgs.direnv}/bin/direnv hook bash)"
+    '';
+  };
 
   security = {
 

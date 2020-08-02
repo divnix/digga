@@ -46,7 +46,6 @@ in
     systemPackages = with pkgs; [
       bat
       bzip2
-      direnv
       exa
       gitAndTools.hub
       gzip
