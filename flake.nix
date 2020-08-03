@@ -12,7 +12,7 @@
     let
       inherit (builtins) attrNames attrValues readDir;
       inherit (nixos) lib;
-      inherit (lib) removeSuffix recursiveUpdate;
+      inherit (lib) removeSuffix recursiveUpdate genAttrs filterAttrs;
       inherit (utils) pathsToImportedAttrs;
 
       utils = import ./lib/utils.nix { inherit lib; };
@@ -54,7 +54,16 @@
         in
         pathsToImportedAttrs overlayPaths;
 
-      packages."${system}" = (self.overlay osPkgs osPkgs);
+      packages."${system}" =
+        let
+          packages = self.overlay osPkgs osPkgs;
+          overlays = lib.filterAttrs (n: v: n != "pkgs") self.overlays;
+          overlayPkgs =
+            genAttrs
+              (attrNames overlays)
+              (name: (overlays."${name}" osPkgs osPkgs)."${name}");
+        in
+        recursiveUpdate packages overlayPkgs;
 
       nixosModules =
         let
