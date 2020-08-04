@@ -45,6 +45,8 @@ stdenv.mkDerivation {
     homepage = "https://github.com/FeralInteractive/gamemode";
     maintainers = [ maintainers.nrdxp ];
     license = licenses.bsd3;
+    platforms = platforms.linux;
+    broken = true;
     inherit version;
   };
 }

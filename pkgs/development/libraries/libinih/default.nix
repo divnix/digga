@@ -24,6 +24,7 @@ stdenv.mkDerivation {
     homepage = "https://github.com/benhoyt/inih";
     maintainers = [ maintainers.nrdxp ];
     license = licenses.bsd3;
+    platforms = platforms.all;
     inherit version;
   };
 }
