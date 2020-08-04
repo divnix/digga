@@ -1,6 +1,4 @@
 { lib, ... }: {
-  imports = [ ../misc/adblocking.nix ];
-
   networking.networkmanager = {
     enable = true;
     wifi.backend = "iwd";
@@ -24,5 +22,4 @@
       DNSOverTLS=yes
     '';
   };
-
 }
