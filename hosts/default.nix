@@ -40,6 +40,8 @@ let
               nixflk.flake = self;
               nixpkgs.flake = master;
             };
+
+            system.configurationRevision = lib.mkIf (self ? rev) self.rev;
           };
 
           overrides = {
