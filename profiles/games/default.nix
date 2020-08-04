@@ -9,8 +9,6 @@
 
   services.wii-u-gc-adapter.enable = true;
 
-  services.gamemode.enable = true;
-
   # fps games on laptop need this
   services.xserver.libinput.disableWhileTyping = false;
 
