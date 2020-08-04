@@ -6,7 +6,6 @@ final: prev: {
   pure = prev.callPackage ./shells/zsh/pure { };
   wii-u-gc-adapter = prev.callPackage ./misc/drivers/wii-u-gc-adapter { };
   libinih = prev.callPackage ./development/libraries/libinih { };
-  gamemode = prev.callPackage ./os-specific/linux/gamemode { };
   steamcompmgr =
     prev.callPackage ./applications/window-managers/steamcompmgr { };
 }
