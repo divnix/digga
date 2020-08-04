@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  imports = [ ../graphical ./udev.nix ];
+  imports = [ ./udev.nix ];
   environment.systemPackages = with pkgs; [
     retroarchBare
     steam-run
