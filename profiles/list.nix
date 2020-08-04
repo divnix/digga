@@ -4,8 +4,9 @@
   ./develop/kakoune
   ./develop/tmux
   ./develop/zsh
-  ./games
   ./graphical
+  ./graphical/games
+  ./graphical/im
   ./graphical/qutebrowser
   ./graphical/sway
   ./misc
