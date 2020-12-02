@@ -4,8 +4,8 @@
   inputs =
     {
       master.url = "nixpkgs/master";
-      nixos.url = "nixpkgs/release-20.03";
-      home.url = "github:rycee/home-manager/bqv-flakes";
+      nixos.url = "nixpkgs/release-20.09";
+      home.url = "github:nix-community/home-manager/release-20.09";
     };
 
   outputs = inputs@{ self, home, nixos, master }:
