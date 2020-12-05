@@ -17,7 +17,7 @@ in
 
     sessionVariables.BROWSER = "qute";
 
-    systemPackages = with pkgs; [ qute qutebrowser mpv youtubeDL ];
+    systemPackages = with pkgs; [ qute qutebrowser mpv youtubeDL rofi ];
   };
 
   nixpkgs.overlays = [
