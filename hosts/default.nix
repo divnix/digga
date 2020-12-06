@@ -45,9 +45,6 @@ let
           };
 
           overrides = {
-            # use latest systemd
-            systemd.package = pkgs.systemd;
-
             nixpkgs.overlays =
               let
                 override = import ../pkgs/override.nix pkgs;
