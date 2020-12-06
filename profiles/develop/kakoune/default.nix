@@ -2,7 +2,7 @@
   imports = [ ../python ];
 
   environment.systemPackages = with pkgs; [
-    cquery
+    clang-tools
     kak-lsp
     kakoune-config
     kakoune-unwrapped
