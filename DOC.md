@@ -9,7 +9,7 @@ See [`hosts/default.nix`](hosts/default.nix) for the implementation.
 ## Profiles
 A profile is any directory under [profiles](profiles) containing a `default.nix`
 defining a valid NixOS module, with the added restriction that no new
-delclarations to the `options` _or_ `config` attributes are allowed
+declarations to the `options` _or_ `config` attributes are allowed
 (use [modules](modules) instead). Their purpose is to provide abstract
 expressions suitable for reuse by multiple deployments. They are perhaps _the_
 key mechanism by which we keep this repo maintainable.
