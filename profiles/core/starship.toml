@@ -1,16 +1,14 @@
-[character]
-style_success = "purple"
-
 [aws]
 symbol = " "
+
+[character]
+success_symbol = "[❯](bold purple)"
+vicmd_symbol = "[❮](bold purple)"
 
 [battery]
 full_symbol = ""
 charging_symbol = ""
 discharging_symbol = ""
-
-[cmd_duration]
-disabled = true
 
 [conda]
 symbol = " "
@@ -28,29 +26,23 @@ symbol = " "
 symbol = " "
 
 [git_branch]
+format = "[$symbol$branch]($style) "
 symbol = " "
 style = "bold dimmed white"
 
 [git_status]
-conflicted = "䷅"
-ahead.value = "⟫"
-ahead.style = "green"
-behind.value = "⟪"
-behind.style = "red"
-diverged = "🔀"
-untracked.value = " ❓‍"
-untracked.style = "purple"
-stashed = "↪"
-modified.value = "➕"
-modified.style = "yellow"
-staged.value = "𝚫 "
-staged.style = "green"
-prefix = "「"
-suffix = "」"
-renamed = "⇆"
-deleted.value = "✘ "
-deleted.style = "red"
-style = "white"
+format = '([「$all_status$ahead_behind」]($style) )'
+conflicted = "⚠️"
+ahead = "⟫${count} "
+behind = "⟪${count}"
+diverged = "🔀 "
+untracked = "📁 "
+stashed = "↪ "
+modified = "𝚫 "
+staged = "✔ "
+renamed = "⇆ "
+deleted = "✘ "
+style = "bold bright-white"
 
 [golang]
 symbol = " "
@@ -69,14 +61,16 @@ symbol = " "
 
 [memory_usage]
 symbol = " "
+disabled = false
 
 [nim]
 symbol = " "
 
 [nix_shell]
+format = '[$symbol$state]($style) '
 symbol = " "
-pure_msg = ""
-impure_msg = ""
+pure_msg = "λ"
+impure_msg = "⎔"
 
 [nodejs]
 symbol = " "
@@ -95,3 +89,6 @@ symbol = " "
 
 [rust]
 symbol = " "
+
+[status]
+disabled = false
