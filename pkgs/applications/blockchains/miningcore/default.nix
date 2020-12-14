@@ -8,7 +8,6 @@
 , boost
 , libsodium
 , pkgconfig
-, icu
 , zeromq
 }:
 let
@@ -75,26 +74,19 @@ stdenv.mkDerivation rec {
 
     dotnet restore \
       --source ${nugetSource}/lib \
-      --runtime ${projectRuntime} \
       src/${projectName}
 
-    dotnet publish \
+    dotnet build \
       --no-restore \
-      --runtime ${projectRuntime} \
       --configuration ${projectConfiguration} \
       src/${projectName}
   '';
 
   installPhase = ''
     mkdir -p $out
-    cp -r src/${projectName}/bin/${projectConfiguration}/netcoreapp3.1/${projectRuntime}/publish $out/lib
-    mkdir -p $out/bin
-    makeWrapper $out/lib/Miningcore $out/bin/${pname} \
-      --prefix LD_LIBRARY_PATH : ${stdenv.lib.makeLibraryPath [
-      openssl
-      icu
-      zeromq
-    ]} \
+    dotnet publish --no-restore -o $out/lib -c Release src/${projectName}
+    makeWrapper $out/lib/${projectName} $out/bin/${pname} \
+      --set DOTNET_ROOT "${dotnet-sdk}" \
       --run "cd $out/lib"
   '';
 
