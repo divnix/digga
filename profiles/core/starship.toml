@@ -15,6 +15,7 @@ symbol = " "
 
 [directory]
 style = "cyan"
+read_only = " 🔒"
 
 [docker]
 symbol = " "
