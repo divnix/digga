@@ -24,6 +24,8 @@ in
       gptfdisk
       iputils
       jq
+      manix
+      nix-index
       moreutils
       nmap
       ripgrep
@@ -67,6 +69,9 @@ in
         nf = "n flake";
         srch = "ns nixpkgs";
         nrb = ifSudo "sudo nixos-rebuild";
+        mn = ''
+          manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | sk --preview="manix '{}'" | xargs manix
+        '';
 
         # sudo
         s = ifSudo "sudo -E ";

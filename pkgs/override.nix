@@ -11,4 +11,5 @@ with pkgs;
   signal-desktop
   dhall
   nixpkgs-fmt
+  manix
 ]
