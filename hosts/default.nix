@@ -24,6 +24,8 @@ let
           core = self.nixosModules.profiles.core;
 
           global = {
+            home-manager.useGlobalPkgs = true;
+
             networking.hostName = hostName;
             nix.nixPath = let path = toString ../.; in
               [
