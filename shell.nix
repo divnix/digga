@@ -1,4 +1,7 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? import <nixpkgs> {
+    overlays = [ (import ./overlays/nix-zsh-completions.nix) ];
+  }
+}:
 let
   configs = "${toString ./.}#nixosConfigurations";
   build = "config.system.build";
@@ -19,6 +22,7 @@ pkgs.mkShell {
     git
     git-crypt
     rebuild
+    nix-zsh-completions
   ];
 
   shellHook = ''
