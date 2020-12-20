@@ -132,7 +132,7 @@ in
     promptInit = ''
       eval "$(${pkgs.starship}/bin/starship init bash)"
     '';
-    shellInit = ''
+    interactiveShellInit = ''
       eval "$(${pkgs.direnv}/bin/direnv hook bash)"
     '';
   };
