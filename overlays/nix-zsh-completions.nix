@@ -3,8 +3,8 @@ final: prev: {
     src = prev.fetchFromGitHub {
       owner = "Ma27";
       repo = "nix-zsh-completions";
-      hash = "sha256-Iz04FVW7UJ2SOs3XlSF1g9HhMOvsjFbYh5baHBeCtZM=";
-      rev = "5a0f218ea4a452d63f90efe71e0c6ba722ec7311";
+      hash = "sha256-3HVYez/wt7EP8+TlhTppm968Wl8x5dXuGU0P+8xNDpo=";
+      rev = "939c48c182e9d018eaea902b1ee9d00a415dba86";
     };
   });
 }
