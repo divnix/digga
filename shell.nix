@@ -18,16 +18,17 @@ pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
     git
     git-crypt
-    nixFlakes
     rebuild
   ];
 
   shellHook = ''
     mkdir -p secrets
-    PATH=${
-      pkgs.writeShellScriptBin "nix" ''
-        ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
-      ''
-    }/bin:$PATH
+    if ! nix flake show; then
+      PATH=${
+        pkgs.writeShellScriptBin "nix" ''
+          ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
+        ''
+      }/bin:$PATH
+    fi
   '';
 }
