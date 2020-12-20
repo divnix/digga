@@ -2,6 +2,10 @@
   programs.git = {
     enable = true;
 
+    extraConfig = {
+      pull.rebase = false;
+    };
+
     aliases = {
       a = "add -p";
       co = "checkout";
