@@ -27,7 +27,7 @@ pkgs.mkShell {
 
   shellHook = ''
     mkdir -p secrets
-    if ! nix flake show; then
+    if ! nix flake show &> /dev/null; then
       PATH=${
         pkgs.writeShellScriptBin "nix" ''
           ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
