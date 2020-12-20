@@ -11,19 +11,4 @@
   environment.sessionVariables = {
     VAGRANT_DEFAULT_PROVIDER = "libvirt";
   };
-
-  nixpkgs.overlays =
-    let
-      overlay = final: prev: {
-
-        # Patch libvirt to use ebtables-legacy
-        libvirt =
-          if prev.libvirt.version <= "5.4.0" && prev.ebtables.version
-            > "2.0.10-4" then
-            prev.libvirt.overrideAttrs (o: { EBTABLES_PATH = "${final.ebtables}/bin/ebtables-legacy"; })
-          else
-            prev.libvirt;
-      };
-    in
-    [ overlay ];
 }
