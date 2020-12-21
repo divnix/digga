@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   imports = [ ./zsh ./kakoune ./tmux ];
 
-  environment.shellAliases = { v = "$EDITOR"; };
+  environment.shellAliases = { v = "$EDITOR"; pass = "gopass"; };
 
   environment.sessionVariables = {
     PAGER = "less";
@@ -18,7 +18,7 @@
     gnupg
     less
     ncdu
-    pass
+    gopass
     tig
     tokei
     wget

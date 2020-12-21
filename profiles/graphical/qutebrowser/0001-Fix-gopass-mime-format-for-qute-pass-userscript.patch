@@ -1,0 +1,25 @@
+From 3284ec900e42b279bc3bc40593d7356ab1e3f9b0 Mon Sep 17 00:00:00 2001
+From: Timothy DeHerrera <tim.deh@pm.me>
+Date: Mon, 21 Dec 2020 02:50:55 -0700
+Subject: [PATCH] Fix gopass mime format for qute-pass userscript
+
+---
+ misc/userscripts/qute-pass | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/misc/userscripts/qute-pass b/misc/userscripts/qute-pass
+index b49e87dd8..388a7a737 100755
+--- a/misc/userscripts/qute-pass
++++ b/misc/userscripts/qute-pass
+@@ -152,6 +152,8 @@ def _run_pass(pass_arguments):
+
+
+ def pass_(path):
++    if arguments.mode == "gopass":
++        return _run_pass(['show', '-o', path])
+     return _run_pass(['show', path])
+
+
+--
+2.29.2
+
