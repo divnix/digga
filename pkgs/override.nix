@@ -12,4 +12,5 @@ with pkgs;
   dhall
   nixpkgs-fmt
   manix
+  qutebrowser
 ]

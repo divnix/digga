@@ -87,14 +87,6 @@ c.content.local_content_can_access_file_urls = True
 # Type: Bool
 c.content.local_storage = True
 
-# Allow websites to record audio/video.
-# Type: BoolAsk
-# Valid values:
-#   - true
-#   - false
-#   - ask
-c.content.media_capture = 'ask'
-
 # Enable plugins in Web pages.
 # Type: Bool
 c.content.plugins = False
