@@ -8,6 +8,9 @@
       home.url = "github:nix-community/home-manager/release-20.09";
       flake-utils.url = "github:numtide/flake-utils";
       devshell.url = "github:numtide/devshell";
+      naersk.url = "github:nmattia/naersk";
+      naersk.inputs.nixpkgs.follows = "master";
+      mozilla-overlay = { url = "github:mozilla/mozilla-nixpkgs"; flake = false; };
     };
 
   outputs = inputs@{ self, home, nixos, master, flake-utils, nur, devshell }:
@@ -18,13 +21,13 @@
       inherit (lib) all removeSuffix recursiveUpdate genAttrs filterAttrs
         mapAttrs;
       inherit (utils) pathsToImportedAttrs genPkgset overlayPaths modules
-        genPackages pkgImport;
+        genPackages pkgImport devShellModules;
 
       utils = import ./lib/utils.nix { inherit lib; };
 
       system = "x86_64-linux";
 
-      externOverlays = [ nur.overlay devshell.overlay ];
+      externOverlays = [ nur.overlay devshell.overlay (import mozilla-overlay) naersk.overlay];
       externModules = [ home.nixosModules.home-manager ];
 
       pkgset =
@@ -44,6 +47,8 @@
         overlays = pathsToImportedAttrs overlayPaths;
 
         nixosModules = modules;
+
+        devShellModules = devShellModules;
 
         templates.flk.path = ./.;
 
