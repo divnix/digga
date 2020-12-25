@@ -62,11 +62,26 @@
         "type": "indirect"
       }
     },
+    "nur": {
+      "locked": {
+        "lastModified": 1608983018,
+        "narHash": "sha256-mhnPEzNTaIdE2zxdDgv6LU5koNyIkzomSerIbYuBepM=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "c32c0ee347949d55f34b0762dccaa52a1f73aa83",
+        "type": "github"
+      },
+      "original": {
+        "id": "nur",
+        "type": "indirect"
+      }
+    },
     "root": {
       "inputs": {
         "home": "home",
         "master": "master",
-        "nixos": "nixos"
+        "nixos": "nixos",
+        "nur": "nur"
       }
     }
   },
