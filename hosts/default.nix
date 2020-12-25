@@ -11,7 +11,7 @@
 let
   inherit (utils) recImport;
   inherit (builtins) attrValues removeAttrs;
-  inherit (pkgset) osPkgs pkgs;
+  inherit (pkgset) osPkgs unstablePkgs;
 
   config = hostName:
     lib.nixosSystem {
@@ -37,7 +37,7 @@ let
                 "home-manager=${home}"
               ];
 
-            nixpkgs = { pkgs = osPkgs; };
+            nixpkgs.pkgs = osPkgs;
 
             nix.registry = {
               master.flake = master;
@@ -52,7 +52,7 @@ let
           overrides = {
             nixpkgs.overlays =
               let
-                override = import ../pkgs/override.nix pkgs;
+                override = import ../pkgs/override.nix unstablePkgs;
 
                 overlay = pkg: final: prev: {
                   "${pkg.pname}" = pkg;

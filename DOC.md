@@ -74,8 +74,8 @@ directly from this flake via `nixosModules.cachix.<your-cachix>`.
 All expressions in both [modules/list.nix](modules/list.nix) and
 [pkgs/default.nix](pkgs/default.nix) are available globally, anywhere else in the
 repo. They are additionally included in the `nixosModules` and `overlay` flake
-outputs, respectively. Packages can manually be added to [flake.nix](flake.nix)
-for inclusion in the `packages` output as well.
+outputs, respectively. Packages are automatically included in the `packages`
+output as well.
 
 The directory structure is identical to nixpkgs to provide a kind of staging area
 for any modules or packages we might be wanting to merge there later. If your not
@@ -87,5 +87,9 @@ They will be automatically pulled in for use by all configurations. Nix command
 line tools will be able to read overlays from here as well since it is set as
 `nixpkgs-overlays` in `NIX_PATH`. And of course they will be exported via the
 flake output `overlays` as well.
+
+If you wish to use an overlay from an external flake, simply add it to the
+`externOverlays` list in the `let` block of the `outputs` attribute in
+[flake.nix](flake.nix).
 
 [home-manager]: https://github.com/rycee/home-manager
