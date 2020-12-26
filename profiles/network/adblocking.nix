@@ -10,8 +10,8 @@ let
     src = fetchFromGitHub {
       owner = "StevenBlack";
       repo = "hosts";
-      rev = "ca3a99a0499add858969ce8747049e681b85a2e2";
-      hash = "sha256-DMIal28cTr/8oij89LwSvNp7n1QiwzNmwsiSzV9X49c=";
+      rev = "a204d5a1e9049dd12378fa5f9c5ab3fc6bf3d63e";
+      hash = "sha256-8WVEvpxxvxmOpP1XVgO2GFAbEHO1QileWZ3behpgYEs=";
     };
 
     nativeBuildInputs = [ gnugrep ];
