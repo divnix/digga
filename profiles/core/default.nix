@@ -124,6 +124,8 @@ in
     extraOptions = ''
       experimental-features = nix-command flakes ca-references
       min-free = 536870912
+      keep-outputs = true
+      keep-derivations = true
     '';
 
   };
