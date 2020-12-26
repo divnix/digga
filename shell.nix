@@ -6,7 +6,7 @@ let
   configs = "${toString ./.}#nixosConfigurations";
   build = "config.system.build";
 
-  rebuild = pkgs.writeShellScriptBin "rebuild" ''
+  flk = pkgs.writeShellScriptBin "flk" ''
     if [[ -z $1 ]]; then
       echo "Usage: $(basename $0) host {switch|boot|test|iso}"
     elif [[ $1 == "iso" ]]; then
@@ -21,7 +21,7 @@ pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
     git
     git-crypt
-    rebuild
+    flk
     nix-zsh-completions
   ];
 

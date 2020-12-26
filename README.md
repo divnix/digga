@@ -65,11 +65,11 @@ You'll probably at least need to setup your `fileSystems` and make sure the
 
 Once you're ready to deploy you can use `nixos-rebuild` if your NixOS version
 is recent enough to support flakes, _or_ the [shell.nix](./shell.nix) defines
-its own `rebuild` command in case you need it.
+its own `flk` command in case you need it.
 
 ```
-# Usage: rebuild host {switch|boot|test|iso}
-rebuild <host-filename> test
+# Usage: flk host {switch|boot|test|iso}
+flk <host-filename> test
 ```
 
 ## Build an ISO
@@ -78,7 +78,7 @@ You can make an ISO and customize it by modifying the [niximg](./hosts/niximg.ni
 file:
 
 ```sh
-rebuild iso
+flk iso
 ```
 
 ## Flake Talk:

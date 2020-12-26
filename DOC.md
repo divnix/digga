@@ -2,7 +2,7 @@
 Module declarations dependant on particular machines should be stored in the
 [hosts](hosts) directory. Every file in this directory will be added automatically
 to the the `nixosConfigurations` flake output and thus becomes deployable via
-`nixos-rebuild` and `rebuild`.
+`nixos-rebuild` and `flk`.
 
 See [`hosts/default.nix`](hosts/default.nix) for the implementation.
 
