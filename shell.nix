@@ -1,7 +1,4 @@
-{ pkgs ? import <nixpkgs> {
-    overlays = [ (import ./overlays/nix-zsh-completions.nix) ];
-  }
-}:
+{ pkgs ? import (import ./nixpkgs-compat.nix) { } }:
 let
   configs = "${toString ./.}#nixosConfigurations";
   build = "config.system.build";

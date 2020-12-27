@@ -5,6 +5,8 @@
 let
   inherit (builtins) attrNames readDir;
 
+  nixpkgs = toString (import ./nixpkgs-compat.nix);
+
   hostname = lib.fileContents /etc/hostname;
   host = "/etc/nixos/hosts/${hostname}.nix";
   config =
@@ -24,7 +26,7 @@ in
 
   networking.hostName = hostname;
   nix.nixPath = [
-    "nixpkgs=${<nixpkgs>}"
+    "nixpkgs=${nixpkgs}"
     "nixos-config=/etc/nixos/configuration.nix"
     "nixpkgs-overlays=/etc/nixos/overlays"
   ];
