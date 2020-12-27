@@ -8,7 +8,7 @@
       home.url = "github:nix-community/home-manager/release-20.09";
     };
 
-  outputs = inputs@{ self, home, nixos, master }:
+  outputs = inputs@{ self, home, nixos, master, nur }:
     let
       inherit (builtins) attrNames attrValues readDir;
       inherit (nixos) lib;
@@ -20,7 +20,7 @@
 
       system = "x86_64-linux";
 
-      externOverlays = [ ];
+      externOverlays = [ nur.overlay ];
 
       pkgset =
         let overlays = (attrValues self.overlays) ++ externOverlays; in
