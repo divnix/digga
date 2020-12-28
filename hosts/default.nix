@@ -6,6 +6,7 @@
 , self
 , system
 , utils
+, externModules
 , ...
 }:
 let
@@ -19,8 +20,6 @@ let
 
       modules =
         let
-          inherit (home.nixosModules) home-manager;
-
           core = self.nixosModules.profiles.core;
 
           global = {
@@ -68,7 +67,7 @@ let
             attrValues (removeAttrs self.nixosModules [ "profiles" ]);
 
         in
-        flakeModules ++ [ core global local home-manager overrides ];
+        flakeModules ++ [ core global local overrides ] ++ externModules;
 
       extraArgs = {
         inherit system;

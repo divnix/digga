@@ -23,6 +23,7 @@
       system = "x86_64-linux";
 
       externOverlays = [ nur.overlay ];
+      externModules = [ home.nixosModules.home-manager ];
 
       pkgset =
         let overlays = (attrValues self.overlays) ++ externOverlays; in
@@ -33,7 +34,7 @@
       outputs = {
         nixosConfigurations =
           import ./hosts (recursiveUpdate inputs {
-            inherit lib pkgset system utils;
+            inherit lib pkgset system utils externModules;
           });
 
         overlay = import ./pkgs;
