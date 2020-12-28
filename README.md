@@ -6,7 +6,7 @@ keeping your code clean and organized.
 
 Some key advantages include:
 * A single home for all your Nix expressions, easily sharable and portable!
-* Skip the setup, simply use the included [nix-shell](./shell.nix) or
+* Skip the boilerplate, simply use the included [nix-shell](./shell.nix) or
   [direnv][direnv] profile and get up and running with flakes right away.
 * Thanks to flakes, the entire system is more [deterministic](./flake.lock).
 * Systems defined under [hosts](./hosts) are automatically imported into
@@ -21,6 +21,7 @@ Some key advantages include:
 * Keep [user](./users) configuration isolated and easily reusable by taking
   advantage of [user profiles](./users/profiles) and [home-manager][home-manager].
 * [Overlay](./overlays) files are automatically available and sharable.
+* Automatic [NUR][nur] support.
 
 For a more detailed explanation of the code structure, check out the
 [docs](./DOC.md).
@@ -43,7 +44,7 @@ You'll need to have NixOS already installed since the `nixos-install` script
 doesn't yet support flakes.
 
 If you already have [nix-command][nix-command] setup you can:
-```
+```sh
 # for standard template
 nix flake new -t "github:nrdxp/nixflk" flk
 
@@ -54,7 +55,7 @@ nix flake new -t "github:nrdxp/nixflk/bare" flk
 However you decide to acquire the repo, once you have it, you'll want to __move
 or symlink__ it to `/etc/nixos` for ease of use. Once inside:
 
-```
+```sh
 nix-shell # or `direnv allow` if you prefer
 ```
 
@@ -67,18 +68,29 @@ Once you're ready to deploy you can use `nixos-rebuild` if your NixOS version
 is recent enough to support flakes, _or_ the [shell.nix](./shell.nix) defines
 its own `flk` command in case you need it.
 
-```
+```sh
 # Usage: flk host {switch|boot|test|iso}
 flk <host-filename> test
 ```
 
 ## Build an ISO
 
+```sh
+flk iso
+```
+
 You can make an ISO and customize it by modifying the [niximg](./hosts/niximg.nix)
 file:
 
-```sh
-flk iso
+## Use a Package from NUR
+
+NUR is wired in from the start. For safety, nothing is added from it by default,
+but you can easily pull packages from inside your configuration like so:
+```nix
+{ pkgs, ... }:
+{
+  environment.systemPackages = with pkgs; [ nur.repos.<owner>.<package> ];
+}
 ```
 
 ## Flake Talk:
@@ -106,3 +118,4 @@ licenses of the respective packages.
 [wiki]: https://nixos.wiki/wiki/Flakes
 [thumb]: https://img.youtube.com/vi/UeBX7Ide5a0/hqdefault.jpg
 [video]: https://www.youtube.com/watch?v=UeBX7Ide5a0
+[nur]: https://github.com/nix-community/NUR
