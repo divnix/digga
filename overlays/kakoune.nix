@@ -5,6 +5,7 @@ final: prev: {
       kak-auto-pairs
       kak-buffers
       kak-powerline
+      kak-vertical-selection
     ];
   };
 
