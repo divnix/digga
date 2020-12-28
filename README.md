@@ -1,3 +1,6 @@
+> Since flakes are still quite new, I've listed some learning resources
+> [below](#resources).
+
 # Introduction
 Herein lies a [NixOS][NixOS] configuration template using the new [flakes][wiki]
 mechanism. Its aim is to provide a generic repository which neatly separates
@@ -92,9 +95,18 @@ but you can easily pull packages from inside your configuration like so:
   environment.systemPackages = with pkgs; [ nur.repos.<owner>.<package> ];
 }
 ```
+# Resources
+
+## Links
+* [Example Repo](https://github.com/colemickens/nixos-flake-example)
+* [Tweag.io _Flakes_ Blog Series](https://www.tweag.io/blog/2020-05-25-flakes)
+* [NixOS _Flakes_ Wiki](https://nixos.wiki/wiki/Flakes)
+* [Zimbatm's _Flakes_ Blog](https://zimbatm.com/NixFlakes)
+* [Original RFC](https://github.com/tweag/rfcs/blob/flakes/rfcs/0049-flakes.md)
 
 ## Flake Talk:
 [![Flake talk at NixConf][thumb]][video]
+
 
 # License
 
