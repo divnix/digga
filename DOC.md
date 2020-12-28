@@ -90,6 +90,6 @@ flake output `overlays` as well.
 
 If you wish to use an overlay from an external flake, simply add it to the
 `externOverlays` list in the `let` block of the `outputs` attribute in
-[flake.nix](flake.nix).
+[flake.nix](flake.nix). Same for external modules, add them to `externModules`.
 
 [home-manager]: https://github.com/rycee/home-manager
