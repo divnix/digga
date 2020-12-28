@@ -98,6 +98,6 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/akshaynexus/miningcore";
     license = licenses.mit;
     maintainers = with maintainers; [ nrdxp ];
-    platforms = [ "x86_64-linux" ];
+    platforms = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
   };
 }

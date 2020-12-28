@@ -19,10 +19,11 @@ stdenv.mkDerivation {
   '';
 
   meta = with stdenv.lib; {
+    inherit version;
     description = "The hottest theme around for SDDM";
     homepage = "https://github.com/MarianArlt/sddm-chili";
     maintainers = [ maintainers.nrdxp ];
     license = licenses.gpl3;
-    inherit version;
+    platforms = platforms.linux;
   };
 }

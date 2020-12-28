@@ -33,6 +33,7 @@ buildRustPackage {
     homepage = "https://github.com/xcambar/purs";
     maintainers = [ maintainers.nrdxp ];
     license = licenses.mit;
+    platforms = platforms.unix;
     inherit version;
   };
 }

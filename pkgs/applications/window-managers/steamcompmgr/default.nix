@@ -41,6 +41,7 @@ stdenv.mkDerivation {
     homepage = "https://github.com/steamos-compositor-plus";
     maintainers = [ maintainers.nrdxp ];
     license = licenses.bsd2;
+    platforms = platforms.linux;
     inherit version;
   };
 }
