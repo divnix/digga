@@ -69,9 +69,6 @@ let
         in
         flakeModules ++ [ core global local overrides ] ++ externModules;
 
-      extraArgs = {
-        inherit system;
-      };
     };
 
   hosts = recImport {
