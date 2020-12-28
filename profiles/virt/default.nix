@@ -9,6 +9,8 @@
       ];
     };
 
+    containers.enable = true;
+
     podman.enable = true;
     oci-containers.backend = "podman";
   };
