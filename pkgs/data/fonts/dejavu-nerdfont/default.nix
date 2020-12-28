@@ -21,6 +21,7 @@ stdenv.mkDerivation {
     homepage = "https://github.com/ryanoasis/nerd-fonts";
     license = licenses.mit;
     maintainers = [ maintainers.nrdxp ];
+    platforms = platforms.unix;
     inherit version;
   };
 }

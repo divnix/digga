@@ -23,6 +23,7 @@ stdenv.mkDerivation {
     description = "Pretty, minimal and fast ZSH prompt";
     homepage = "https://github.com/sindresorhus/pure";
     maintainers = [ maintainers.nrdxp ];
+    platforms = platforms.unix;
     license = licenses.mit;
     inherit version;
   };

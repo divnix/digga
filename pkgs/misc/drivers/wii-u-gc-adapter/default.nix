@@ -25,6 +25,7 @@ stdenv.mkDerivation {
     homepage = "https://github.com/ToadKing/wii-u-gc-adapter";
     maintainers = [ maintainers.nrdxp ];
     license = licenses.mit;
+    platforms = platforms.linux;
     inherit version;
   };
 }
