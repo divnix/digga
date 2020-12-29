@@ -79,6 +79,7 @@
         {
           devShell = import ./shell.nix {
             pkgs = pkgs';
+            nixpkgs = nixos;
           };
 
           apps =
