@@ -7,9 +7,10 @@
       nixos.url = "nixpkgs/release-20.09";
       home.url = "github:nix-community/home-manager/release-20.09";
       flake-utils.url = "github:numtide/flake-utils";
+      agenix.url = "github:ryantm/agenix";
     };
 
-  outputs = inputs@{ self, home, nixos, master, flake-utils, nur }:
+  outputs = inputs@{ self, home, nixos, master, flake-utils, nur, agenix }:
     let
       inherit (builtins) attrNames attrValues readDir elem;
       inherit (flake-utils.lib) eachDefaultSystem;
@@ -22,8 +23,8 @@
 
       system = "x86_64-linux";
 
-      externOverlays = [ nur.overlay ];
-      externModules = [ home.nixosModules.home-manager ];
+      externOverlays = [ nur.overlay agenix.overlay ];
+      externModules = [ home.nixosModules.home-manager agenix.nixosModules.age ];
 
       pkgset =
         let overlays = (attrValues self.overlays) ++ externOverlays; in
