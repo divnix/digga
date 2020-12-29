@@ -1,5 +1,5 @@
 let
-  nixpkgs' = import ./nixpkgs-compat.nix;
+  nixpkgs = import ./compat/nixpkgs.nix;
 in
 { pkgs ? import nixpkgs { }, nixpkgs ? nixpkgs' }:
 let
