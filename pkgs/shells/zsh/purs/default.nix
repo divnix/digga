@@ -17,9 +17,14 @@ buildRustPackage {
     hash = "sha256-ETU7dDGVa2ggM+qoFgi8k4MJNuqb3kNCX9ZbEA4r5PM=";
   };
 
-  buildInputs = [ openssl pkgconfig ];
+  nativeBuildInputs = [ openssl pkgconfig ];
 
-  cargoSha256 = "sha256-xdDSh4CvUHA8SWBZn21UnNRXZ/SU7RdfNcJjqyE9OXA=";
+  cargoSha256 = "sha256-FPxJuVyuuHdo2dNLhmJK6xXy12LJsbKNWBAo8pcuLDg=";
+
+  preBuild = ''
+    export PKG_CONFIG_PATH=${openssl.dev}/lib/pkgconfig
+    export OPENSSL_DIRS=${openssl.out}:${openssl.dev}
+  '';
 
   postInstall = ''
     mkdir -p $out/share/zsh/plugins/purs
