@@ -30,6 +30,10 @@ let
   name = "flk";
 in
 pkgs.mkDevShell {
+
+  imports  = [ (import ./shells/rust) ];
+  nixflk.rust.enable = true;
+  
   inherit name;
 
   packages = with pkgs; with installPkgs; [
