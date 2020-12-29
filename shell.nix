@@ -21,9 +21,9 @@ let
     elif [[ $1 == "iso" ]]; then
       nix build ${configs}.niximg.${build}.isoImage
     elif [[ $1 == "install" ]]; then
-      nixos-install --flake ".#$2" $@
+      sudo nixos-install --flake ".#$2" "${"\${@:3}"}"
     else
-      sudo nixos-rebuild --flake ".#$1" $@
+      sudo nixos-rebuild --flake ".#$1" "${"\${@:2}"}"
     fi
   '';
 
