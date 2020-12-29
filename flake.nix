@@ -7,9 +7,10 @@
       nixos.url = "nixpkgs/release-20.09";
       home.url = "github:nix-community/home-manager/release-20.09";
       flake-utils.url = "github:numtide/flake-utils";
+      devshell.url = "github:numtide/devshell";
     };
 
-  outputs = inputs@{ self, home, nixos, master, flake-utils, nur }:
+  outputs = inputs@{ self, home, nixos, master, flake-utils, nur, devshell }:
     let
       inherit (builtins) attrNames attrValues readDir elem pathExists filter;
       inherit (flake-utils.lib) eachDefaultSystem mkApp;
@@ -23,7 +24,7 @@
 
       system = "x86_64-linux";
 
-      externOverlays = [ nur.overlay ];
+      externOverlays = [ nur.overlay devshell.overlay ];
       externModules = [ home.nixosModules.home-manager ];
 
       pkgset =
@@ -57,7 +58,7 @@
           pkgs' = pkgImport {
             pkgs = master;
             system = system';
-            overlays = [ ];
+            overlays = [ devshell.overlay ];
           };
 
           packages' = genPackages {
@@ -79,7 +80,6 @@
         {
           devShell = import ./shell.nix {
             pkgs = pkgs';
-            nixpkgs = nixos;
           };
 
           apps =

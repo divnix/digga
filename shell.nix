@@ -1,7 +1,11 @@
 let
   nixpkgs = import ./compat/nixpkgs.nix;
+  fetch = import ./compat/fetch.nix;
+
+  devshell' = fetch "devshell";
+  pkgs' = import devshell' { inherit nixpkgs; };
 in
-{ pkgs ? import nixpkgs { }, nixpkgs ? nixpkgs' }:
+{ pkgs ? pkgs', ... }:
 let
   configs = "${toString ./.}#nixosConfigurations";
   build = "config.system.build";
@@ -22,14 +26,20 @@ let
       sudo nixos-rebuild --flake ".#$1" $@
     fi
   '';
+
+  nix = pkgs.writeShellScriptBin "nix" ''
+    ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
+  '';
 in
-pkgs.mkShell {
+pkgs.mkDevShell {
   name = "nixflk";
-  nativeBuildInputs = with pkgs; with installPkgs; [
+
+  packages = with pkgs; with installPkgs; [
     git
     git-crypt
     flk
-    nix-zsh-completions
+    nix
+    nixpkgs-fmt
     python38Packages.grip
     nixos-install
     nixos-generate-config
@@ -37,14 +47,6 @@ pkgs.mkShell {
     nixos-rebuild
   ];
 
-  shellHook = ''
-    mkdir -p secrets
-    if ! nix flake show &> /dev/null; then
-      PATH=${
-        pkgs.writeShellScriptBin "nix" ''
-          ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
-        ''
-      }/bin:$PATH
-    fi
-  '';
+  env = { };
+
 }
