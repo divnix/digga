@@ -11,10 +11,11 @@
 
   outputs = inputs@{ self, home, nixos, master, flake-utils, nur }:
     let
-      inherit (builtins) attrNames attrValues readDir elem;
-      inherit (flake-utils.lib) eachDefaultSystem;
+      inherit (builtins) attrNames attrValues readDir elem pathExists filter;
+      inherit (flake-utils.lib) eachDefaultSystem mkApp;
       inherit (nixos) lib;
-      inherit (lib) all removeSuffix recursiveUpdate genAttrs filterAttrs;
+      inherit (lib) all removeSuffix recursiveUpdate genAttrs filterAttrs
+        mapAttrs;
       inherit (utils) pathsToImportedAttrs genPkgset overlayPaths modules
         genPackages pkgImport;
 
@@ -50,37 +51,50 @@
         defaultTemplate = self.templates.flk;
       };
     in
-    (eachDefaultSystem (system':
-      let
-        pkgs' = pkgImport {
-          pkgs = nixos;
-          system = system';
-          overlays = [ ];
-        };
-      in
-      {
-        devShell = import ./shell.nix {
-          pkgs = pkgs';
-        };
+    (eachDefaultSystem
+      (system':
+        let
+          pkgs' = pkgImport {
+            pkgs = master;
+            system = system';
+            overlays = [ ];
+          };
 
-        packages =
-          let
-            packages' = genPackages {
-              overlay = self.overlay;
-              overlays = self.overlays;
-              pkgs = pkgs';
-            };
+          packages' = genPackages {
+            overlay = self.overlay;
+            overlays = self.overlays;
+            pkgs = pkgs';
+          };
 
-            filtered = filterAttrs
-              (_: v:
-                (v.meta ? platforms)
-                && (elem system' v.meta.platforms)
-                && (
-                  (all (dev: dev.meta ? platforms) v.buildInputs)
-                  && (all (dev: elem system' dev.meta.platforms) v.buildInputs)
-                ))
-              packages';
-          in
-          filtered;
-      })) // outputs;
+          filtered = filterAttrs
+            (_: v:
+              (v.meta ? platforms)
+              && (elem system' v.meta.platforms)
+              && (
+                (all (dev: dev.meta ? platforms) v.buildInputs)
+                && (all (dev: elem system' dev.meta.platforms) v.buildInputs)
+              ))
+            packages';
+        in
+        {
+          devShell = import ./shell.nix {
+            pkgs = pkgs';
+          };
+
+          apps =
+            let
+              validApps = attrNames (filterAttrs (_: drv: pathExists "${drv}/bin")
+                self.packages."${system}");
+
+              validSystems = attrNames filtered;
+
+              filterBins = filterAttrs
+                (n: _: elem n validSystems && elem n validApps)
+                filtered;
+            in
+            mapAttrs (_: drv: mkApp { inherit drv; }) filterBins;
+
+          packages =
+            filtered;
+        })) // outputs;
 }
