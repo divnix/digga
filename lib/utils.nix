@@ -82,7 +82,7 @@ in
       (recursiveUpdate cachixAttrs modulesAttrs)
       profilesAttrs;
 
-  devShellModules =
+  devshells =
     let
       # shells
       shellList = import ../shells/list.nix;

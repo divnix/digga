@@ -9,11 +9,10 @@
       flake-utils.url = "github:numtide/flake-utils";
       devshell.url = "github:numtide/devshell";
       naersk.url = "github:nmattia/naersk";
-      naersk.inputs.nixpkgs.follows = "master";
       mozilla-overlay = { url = "github:mozilla/mozilla-nixpkgs"; flake = false; };
     };
 
-  outputs = inputs@{ self, home, nixos, master, flake-utils, nur, devshell }:
+  outputs = inputs@{ self, home, nixos, master, flake-utils, nur, devshell, naersk, mozilla-overlay }:
     let
       inherit (builtins) attrNames attrValues readDir elem pathExists filter;
       inherit (flake-utils.lib) eachDefaultSystem mkApp;
@@ -21,7 +20,7 @@
       inherit (lib) all removeSuffix recursiveUpdate genAttrs filterAttrs
         mapAttrs;
       inherit (utils) pathsToImportedAttrs genPkgset overlayPaths modules
-        genPackages pkgImport devShellModules;
+        genPackages pkgImport devshells;
 
       utils = import ./lib/utils.nix { inherit lib; };
 
@@ -48,7 +47,7 @@
 
         nixosModules = modules;
 
-        devShellModules = devShellModules;
+        devshellModules = devshells;
 
         templates.flk.path = ./.;
 
