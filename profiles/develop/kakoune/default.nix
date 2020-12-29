@@ -3,6 +3,7 @@
 
   environment.systemPackages = with pkgs; [
     clang-tools
+    editorconfig-core-c
     kak-lsp
     kakoune-config
     kakoune-unwrapped

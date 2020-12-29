@@ -13,6 +13,9 @@ hook global BufWritePre ^[^*]+$ %{
   try %{ execute-keys -draft \%@s\h+$<ret>d }
 }
 
+# use .editorconfig
+hook global WinCreate .* %{editorconfig-load}
+
 # useful mappings
 map global normal <a-q> ': delete-buffer<ret>'
 map global normal <c-s> ': write<ret>'
