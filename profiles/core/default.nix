@@ -19,6 +19,7 @@ in
       dnsutils
       dosfstools
       fd
+      exa
       git
       gotop
       gptfdisk
@@ -52,6 +53,13 @@ in
 
         # git
         g = "git";
+
+        # ls
+        l = "exa";
+        la = "exa --long --all";
+        ll = "exa --long";
+        ls = "exa";
+        tree = "exa --tree";
 
         # grep
         grep = "rg";
