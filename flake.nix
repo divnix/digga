@@ -17,7 +17,7 @@
       inherit (nixos) lib;
       inherit (lib) recursiveUpdate filterAttrs mapAttrs;
       inherit (utils) pathsToImportedAttrs genPkgset overlayPaths modules
-        genPackages pkgImport;
+        genPackages pkgImport devshells;
 
       utils = import ./lib/utils.nix { inherit lib; };
 
@@ -51,6 +51,8 @@
           overlays = pathsToImportedAttrs overlayPaths;
 
           nixosModules = modules;
+
+          devshellModules = devshells;
 
           templates.flk.path = ./.;
 

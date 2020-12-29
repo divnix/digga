@@ -82,6 +82,13 @@ in
       (recursiveUpdate cachixAttrs modulesAttrs)
       profilesAttrs;
 
+  devshells =
+    let
+      # shells
+      shellList = import ../shells/list.nix;
+    in
+    pathsToImportedAttrs shellList;
+
   genPackages = { self, pkgs }:
     let
       inherit (self) overlay overlays;
