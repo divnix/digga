@@ -258,8 +258,8 @@ c.colors.hints.match.fg = '#5AF78E'
 # leave listed modes easily with <a-j>
 for mode in\
         ['caret', 'command', 'hint',
-         'insert', 'passthrough', 'prompt',
-         'yesno']:
+            'insert', 'passthrough', 'prompt',
+            'yesno']:
     config.bind('<Alt+j>', 'leave-mode', mode=mode)
 
 # Bindings for normal mode

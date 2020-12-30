@@ -28,7 +28,7 @@ import           XMonad.Layout.PerWorkspace          (onWorkspace)
 import           XMonad.Layout.Reflect               (reflectHoriz)
 import           XMonad.Util.Cursor
 import qualified XMonad.StackSet                     as S (StackSet, greedyView,
-                                                           shift)
+                                                            shift)
 
 main :: IO ()
 main =
@@ -39,17 +39,17 @@ main =
   , workspaces         = myWorkspaces
   , startupHook        = myAutostart
   , manageHook         = myManageHook
-                         <+> manageHook defaultConfig
-                         <+> manageDocks
+                          <+> manageHook defaultConfig
+                          <+> manageDocks
   , borderWidth        = 0
   , logHook            = takeTopFocus
   }
   `additionalKeys` myKeys
 
 myLayout = smartBorders
-   .  mkToggle ( NBFULL ?? EOT)
-   . onWorkspace "7:im" ( half ||| Mirror half ||| tiled ||| reflectHoriz tiled )
-   $ tiled ||| reflectHoriz tiled ||| half ||| Mirror half
+  .  mkToggle ( NBFULL ?? EOT)
+  . onWorkspace "7:im" ( half ||| Mirror half ||| tiled ||| reflectHoriz tiled )
+  $ tiled ||| reflectHoriz tiled ||| half ||| Mirror half
     where
       tiled     = ResizableTall nmaster delta ratiot []
       half      = ResizableTall nmaster delta ratioh []

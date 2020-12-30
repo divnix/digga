@@ -37,7 +37,7 @@ define-command -docstring 'copy system clipboard if current register is unset' \
 
 # Pull the clipboard and execute the key with the same context
 define-command -docstring 'copy system clipboard then execute keys' \
-         kakboard-with-pull-clipboard -params 1 %{
+  kakboard-with-pull-clipboard -params 1 %{
     kakboard-pull-if-unset
     evaluate-commands %sh{
         if test -n "$kak_register"; then
@@ -69,7 +69,7 @@ define-command -docstring 'set system clipboard if current register is unset' \
 
 # Set the clipboard and execute the key with the same context
 define-command -docstring 'execute keys then set system clipboard' \
-         kakboard-with-push-clipboard -params 1 %{
+  kakboard-with-push-clipboard -params 1 %{
     evaluate-commands %sh{
         if test -n "$kak_register"; then
             register="\"$kak_register"
