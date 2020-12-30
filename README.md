@@ -169,7 +169,7 @@ licenses of the respective packages.
 
 [bare]: https://github.com/nrdxp/nixflk/tree/bare
 [direnv]: https://direnv.net
-[home-manager]: https://github.com/rycee/home-manager
+[home-manager]: https://github.com/nix-community/home-manager
 [nix-command]: https://nixos.wiki/wiki/Nix_command
 [nixFlakes]: https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/package-management/nix/default.nix#L211
 [NixOS]: https://nixos.org
