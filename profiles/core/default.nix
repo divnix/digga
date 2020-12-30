@@ -67,6 +67,7 @@ in
         nr = "np remove";
         ns = "n search --no-update-lock-file";
         nf = "n flake";
+        nepl = "n repl '<nixpkgs>'";
         srch = "ns nixpkgs";
         nrb = ifSudo "sudo nixos-rebuild";
         mn = ''
