@@ -16,7 +16,7 @@ let
   }).config.system.build;
 
   flk = pkgs.writeShellScriptBin "flk" ''
-    if [[ -z "$1" || "$1" == "help" || "--help" || "-h" ]]; then
+    if [[ -z "$1" || "$1" == "help" || "$1" == "--help" || "$1" == "-h" ]]; then
       echo "Usage: $(basename "$0") [ iso | install {host} | {host} [switch|boot|test] ]"
     elif [[ "$1" == "iso" ]]; then
       nix build ${configs}.niximg.${build}.isoImage
