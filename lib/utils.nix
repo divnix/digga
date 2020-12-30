@@ -85,11 +85,10 @@ in
   genPackages = { overlay, overlays, pkgs }:
     let
       packages = overlay pkgs pkgs;
-      overlays' = lib.filterAttrs (n: v: n != "pkgs") overlays;
       overlayPkgs =
         genAttrs
-          (attrNames overlays')
-          (name: (overlays'."${name}" pkgs pkgs)."${name}");
+          (attrNames overlays)
+          (name: (overlays."${name}" pkgs pkgs)."${name}");
     in
     recursiveUpdate packages overlayPkgs;
 
