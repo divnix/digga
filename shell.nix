@@ -37,6 +37,7 @@ pkgs.mkDevShell {
     nixos-install
     nixos-generate-config
     nixos-enter
+    pre-commit
   ];
 
   env = { inherit name; };
@@ -53,6 +54,11 @@ pkgs.mkDevShell {
       help = "Build, deploy, and install nixflk";
       category = "main";
       package = flk;
+    }
+    {
+      name = "hooks";
+      help = "install git hooks";
+      command = "pre-commit install";
     }
     {
       name = "grip";
