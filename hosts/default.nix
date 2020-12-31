@@ -14,6 +14,8 @@ let
   inherit (builtins) attrValues removeAttrs;
   inherit (pkgset) osPkgs unstablePkgs;
 
+  unstableModules = [ ];
+
   config = hostName:
     lib.nixosSystem {
       inherit system;
@@ -26,6 +28,13 @@ let
       modules =
         let
           core = self.nixosModules.profiles.core;
+
+          modOverrides = { config, unstableModulesPath, ... }: {
+            disabledModules = unstableModules;
+            imports = map
+              (path: "${unstableModulesPath}/${path}")
+              unstableModules;
+          };
 
           global = {
             home-manager.useGlobalPkgs = true;
