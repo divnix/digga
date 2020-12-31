@@ -28,7 +28,11 @@
       externModules = [ home.nixosModules.home-manager ];
 
       pkgset =
-        let overlays = (attrValues self.overlays) ++ externOverlays; in
+        let overlays =
+          (attrValues self.overlays)
+          ++ externOverlays
+          ++ [ self.overlay ];
+        in
         genPkgset {
           inherit master nixos overlays system;
         };
