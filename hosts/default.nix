@@ -81,7 +81,13 @@ let
             attrValues (removeAttrs self.nixosModules [ "profiles" ]);
 
         in
-        flakeModules ++ [ core global local overrides ] ++ externModules;
+        flakeModules ++ [
+          core
+          global
+          local
+          overrides
+          modOverrides
+        ] ++ externModules;
 
     };
 
