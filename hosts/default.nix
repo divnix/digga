@@ -18,6 +18,11 @@ let
     lib.nixosSystem {
       inherit system;
 
+      specialArgs =
+        {
+          unstableModulesPath = "${master}/nixos/modules";
+        };
+
       modules =
         let
           core = self.nixosModules.profiles.core;
