@@ -1,10 +1,10 @@
-{ modulesPath, ... }: {
+{ unstableModulesPath, ... }: {
   imports = [
     # passwd is nixos by default
     ../users/nixos
     # passwd is empty by default
     ../users/root
-    "${modulesPath}/installer/cd-dvd/iso-image.nix"
+    "${unstableModulesPath}/installer/cd-dvd/iso-image.nix"
   ];
 
   isoImage.makeEfiBootable = true;
