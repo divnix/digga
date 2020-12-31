@@ -1,3 +1,0 @@
-{
-  imports = [ ./networkmanager ./adblocking.nix ];
-}

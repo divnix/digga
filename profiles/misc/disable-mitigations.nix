@@ -1,1 +1,0 @@
-{ ... }: { security.mitigations.disable = true; }
