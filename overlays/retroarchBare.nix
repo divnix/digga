@@ -10,5 +10,14 @@ final: prev: {
       hash = "sha256-dzPOuT+v1JtYzvAtqZ/eVWQSYQLAWX3TyS3jXdBmDdg=";
       rev = "v${version}";
     };
+
+    # fix darwin builds
+    nativeBuildInputs =
+      if ! prev.stdenv.isLinux then
+        prev.lib.filter
+          (drv: ! prev.lib.hasPrefix "wayland" drv.name)
+          o.nativeBuildInputs
+      else
+        o.nativeBuildInputs;
   });
 }
