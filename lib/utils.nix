@@ -82,8 +82,9 @@ in
       (recursiveUpdate cachixAttrs modulesAttrs)
       profilesAttrs;
 
-  genPackages = { overlay, overlays, pkgs }:
+  genPackages = { self, pkgs }:
     let
+      inherit (self) overlay overlays;
       packages = overlay pkgs pkgs;
       overlayPkgs =
         genAttrs

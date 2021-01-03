@@ -6,100 +6,102 @@
       master.url = "nixpkgs/master";
       nixos.url = "nixpkgs/release-20.09";
       home.url = "github:nix-community/home-manager/release-20.09";
-      flake-utils.url = "github:numtide/flake-utils";
+      flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
       devshell.url = "github:numtide/devshell";
     };
 
   outputs = inputs@{ self, home, nixos, master, flake-utils, nur, devshell }:
     let
-      inherit (builtins) attrNames attrValues readDir elem pathExists filter;
-      inherit (flake-utils.lib) eachDefaultSystem mkApp;
+      inherit (builtins) attrNames attrValues elem pathExists;
+      inherit (flake-utils.lib) eachDefaultSystem mkApp flattenTreeSystem;
       inherit (nixos) lib;
-      inherit (lib) all removeSuffix recursiveUpdate genAttrs filterAttrs
-        mapAttrs;
+      inherit (lib) recursiveUpdate filterAttrs mapAttrs;
       inherit (utils) pathsToImportedAttrs genPkgset overlayPaths modules
         genPackages pkgImport;
 
       utils = import ./lib/utils.nix { inherit lib; };
 
-      system = "x86_64-linux";
-
       externOverlays = [ nur.overlay devshell.overlay ];
       externModules = [ home.nixosModules.home-manager ];
 
-      pkgset =
-        let overlays =
-          (attrValues self.overlays)
-          ++ externOverlays
-          ++ [ self.overlay ];
+      osSystem = "x86_64-linux";
+
+      outputs =
+        let
+          system = osSystem;
+          pkgset =
+            let
+              overlays =
+                (attrValues self.overlays)
+                ++ externOverlays
+                ++ [ self.overlay ];
+            in
+            genPkgset {
+              inherit master nixos overlays system;
+            };
         in
-        genPkgset {
-          inherit master nixos overlays system;
+        {
+          nixosConfigurations =
+            import ./hosts (recursiveUpdate inputs {
+              inherit lib pkgset utils externModules system;
+            });
+
+          overlay = import ./pkgs;
+
+          overlays = pathsToImportedAttrs overlayPaths;
+
+          nixosModules = modules;
+
+          templates.flk.path = ./.;
+
+          templates.flk.description = "flk template";
+
+          defaultTemplate = self.templates.flk;
         };
-
-      outputs = {
-        nixosConfigurations =
-          import ./hosts (recursiveUpdate inputs {
-            inherit lib pkgset system utils externModules;
-          });
-
-        overlay = import ./pkgs;
-
-        overlays = pathsToImportedAttrs overlayPaths;
-
-        nixosModules = modules;
-
-        templates.flk.path = ./.;
-
-        templates.flk.description = "flk template";
-
-        defaultTemplate = self.templates.flk;
-      };
     in
     (eachDefaultSystem
-      (system':
+      (system:
         let
-          pkgs' = pkgImport {
+          pkgs = pkgImport {
+            inherit system;
             pkgs = master;
-            system = system';
             overlays = [ devshell.overlay ];
           };
 
-          packages' = genPackages {
-            overlay = self.overlay;
-            overlays = self.overlays;
-            pkgs = pkgs';
-          };
+          packages = filterAttrs
+            (_: drv: drv.meta.broken != true)
+            (flattenTreeSystem system
+              (genPackages {
+                inherit self pkgs;
+              })
+            );
 
-          filtered = filterAttrs
-            (_: v:
-              (v.meta ? platforms)
-              && (elem system' v.meta.platforms)
-              && (
-                (all (dev: dev.meta ? platforms) v.buildInputs)
-                && (all (dev: elem system' dev.meta.platforms) v.buildInputs)
-              ))
-            packages';
+
         in
         {
+          inherit packages;
+
           devShell = import ./shell.nix {
-            pkgs = pkgs';
+            inherit pkgs;
           };
 
           apps =
             let
-              validApps = attrNames (filterAttrs (_: drv: pathExists "${drv}/bin")
-                self.packages."${system}");
+              validApps = attrNames (filterAttrs
+                (_: drv:
+                  drv.meta.broken != true
+                  && pathExists "${drv}/bin"
+                )
+                self.packages."${osSystem}"
+              );
 
-              validSystems = attrNames filtered;
+              validSystems = attrNames packages;
 
               filterBins = filterAttrs
                 (n: _: elem n validSystems && elem n validApps)
-                filtered;
+                packages;
             in
             mapAttrs (_: drv: mkApp { inherit drv; }) filterBins;
 
-          packages =
-            filtered;
         })) // outputs;
 }
