@@ -17,9 +17,11 @@ let
 
   flk = pkgs.writeShellScriptBin "flk" ''
     if [[ -z "$1" ]]; then
-      echo "Usage: $(basename "$0") [ iso | install {host} | {host} [switch|boot|test] ]"
+      echo "Usage: $(basename "$0") [ iso | sd | install {host} | {host} [switch|boot|test] ]"
     elif [[ "$1" == "iso" ]]; then
-      nix build ${configs}.niximg.${build}.isoImage
+      nix build ${configs}.nixISO.${build}.isoImage
+    elif [[ "$1" == "sd" ]]; then
+      nix build ${configs}.nixSD.${build}.sdImage
     elif [[ "$1" == "install" ]]; then
       sudo nixos-install --flake ".#$2" "${"\${@:3}"}"
     else
