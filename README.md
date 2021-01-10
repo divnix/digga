@@ -87,6 +87,9 @@ a template. There is a [bare branch][bare] if you want to start with a
 completely empty template and make your own profiles from scratch. The only
 hard requirement is nix itself. The `shell.nix` will pull in everything else.
 
+When using nix shell for building your system generation, after a change you
+need to exit and re-enter the nix-shell.
+
 ## Flake Templates
 If you already have [nix-command][nix-command] setup you can:
 ```sh
