@@ -17,7 +17,14 @@ let
 
   flk = pkgs.writeShellScriptBin "flk" ''
     if [[ -z "$1" ]]; then
-      echo "Usage: $(basename "$0") [ iso | install {host} | {host} [switch|boot|test] ]"
+      echo "Usage: $(basename "$0") [ iso | up | install {host} | {host} [switch|boot|test] ]"
+    elif [[ "$1" == "up" ]]; then
+      mkdir -p up
+      nixos-generate-config --dir up
+      echo \
+      "{
+      imports = [ ../up/configuration.nix ];
+    }" > hosts/up-$(hostname).nix
     elif [[ "$1" == "iso" ]]; then
       nix build ${configs}.niximg.${build}.isoImage
     elif [[ "$1" == "install" ]]; then

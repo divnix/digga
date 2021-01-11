@@ -104,12 +104,9 @@ for ease of use. Once inside:
 # This will setup nix-command and pull in the needed tools
 nix-shell # or `direnv allow` if you prefer
 
-# quick way to setup your fileSystems (assuming they are partioned):
-sudo mount /dev/<install-drive> /mnt
-nixos-generate-config --root /mnt --show-hardware-config > hosts/yourConfig.nix
-
-# Edit your config to add a bootloader
-$EDITOR hosts/yourConfig.nix
+# use nixos-generate-config to generate a basic config for your system
+# edit hosts/up-$(hostname).nix to modify.
+flk up
 
 # The following should work fine for EFI systems.
 # boot.loader.systemd-boot.enable = true;
