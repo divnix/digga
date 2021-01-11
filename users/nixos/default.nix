@@ -1,5 +1,5 @@
 {
-  imports = [ ../../profiles/develop ];
+  imports = [ ../../profiles/develop ../root ];
 
   home-manager.users.nixos = {
     imports = [ ../profiles/git ../profiles/direnv ];

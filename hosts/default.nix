@@ -11,7 +11,7 @@
 }:
 let
   inherit (utils) recImport;
-  inherit (builtins) attrValues removeAttrs;
+  inherit (builtins) attrValues fromTOML readFile removeAttrs;
   inherit (pkgset) osPkgs unstablePkgs;
 
   unstableModules = [ ];
@@ -24,6 +24,7 @@ let
       specialArgs =
         {
           unstableModulesPath = "${master}/nixos/modules";
+          settings = fromTOML (readFile ../settings.toml);
         };
 
       modules =

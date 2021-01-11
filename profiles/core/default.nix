@@ -1,13 +1,17 @@
-{ config, lib, pkgs, ... }:
-let inherit (lib) fileContents;
-
+{ config, lib, pkgs, settings, ... }:
+let
+  inherit (lib) fileContents;
+  inherit (settings) users;
 in
 {
   nix.package = pkgs.nixFlakes;
 
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
-  imports = [ ../../local/locale.nix ];
+  imports = [
+    ../../local/locale.nix
+    (../../users + "/${users.interactive}")
+  ];
 
   environment = {
 

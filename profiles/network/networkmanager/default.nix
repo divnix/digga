@@ -1,4 +1,8 @@
-{ lib, ... }: {
+{ lib, settings, ... }:
+let
+  inherit (settings) users;
+in
+{
   networking.networkmanager = {
     enable = true;
     wifi.backend = "iwd";
@@ -22,4 +26,6 @@
       DNSOverTLS=yes
     '';
   };
+
+  users.users."${users.interactive}".extraGroups = [ "networkmanager" ];
 }

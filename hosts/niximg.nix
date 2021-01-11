@@ -1,9 +1,5 @@
 { unstableModulesPath, ... }: {
   imports = [
-    # passwd is nixos by default
-    ../users/nixos
-    # passwd is empty by default
-    ../users/root
     "${unstableModulesPath}/installer/cd-dvd/iso-image.nix"
   ];
 

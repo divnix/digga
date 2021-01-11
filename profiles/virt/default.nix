@@ -1,4 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, settings, ... }:
+let
+  inherit (settings) users;
+in
+{
   virtualisation = {
     libvirtd = {
       enable = true;
@@ -23,4 +27,6 @@
   environment.sessionVariables = {
     VAGRANT_DEFAULT_PROVIDER = "libvirt";
   };
+
+  users.users."${users.interactive}".extraGroups = [ "libvirtd" ];
 }

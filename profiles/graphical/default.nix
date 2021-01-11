@@ -1,5 +1,7 @@
-{ pkgs, ... }:
-let inherit (builtins) readFile;
+{ pkgs, settings, ... }:
+let
+  inherit (builtins) readFile;
+  inherit (settings) users;
 in
 {
   imports = [ ./sway ../develop ./xmonad ../network ./im ];
@@ -88,4 +90,6 @@ in
       theme = "chili";
     };
   };
+
+  users.users."${users.interactive}".extraGroups = [ "input" ];
 }
