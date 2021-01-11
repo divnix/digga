@@ -3,6 +3,7 @@
 
   inputs =
     {
+      # nix flake update --update-input master
       master.url = "nixpkgs/master";
       nixos.url = "nixpkgs/release-20.09";
       home.url = "github:nix-community/home-manager/release-20.09";
