@@ -41,7 +41,8 @@ in
       };
 
       unstablePkgs = pkgImport {
-        inherit system overlays;
+        inherit system;
+        overlays = [];
         pkgs = master;
       };
     };
