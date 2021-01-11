@@ -1,11 +1,11 @@
-{ lib, pkgs, config, unstableModulesPath, ... }:
+{ lib, pkgs, config, modulesPath, ... }:
 {
   imports = [
     # passwd is nixos by default
     ../users/nixos
     # passwd is empty by default
     ../users/root
-    (unstableModulesPath + "/installer/cd-dvd/sd-image-aarch64.nix")
+    (modulesPath + "/installer/cd-dvd/sd-image-aarch64-new-kernel.nix")
   ];
 
   hardware.enableRedistributableFirmware.enable = lib.mkDefault true;

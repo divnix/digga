@@ -13,4 +13,5 @@ with pkgs;
   nixpkgs-fmt
   manix
   qutebrowser
+  ubootRaspberryPi3_64bit
 ]
