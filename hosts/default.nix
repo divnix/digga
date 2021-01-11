@@ -15,6 +15,7 @@ let
   inherit (pkgset) osPkgs unstablePkgs;
 
   unstableModules = [ ];
+  addToDisabledModules = [ ];
 
   config = hostName:
     lib.nixosSystem {
@@ -30,7 +31,7 @@ let
           core = self.nixosModules.profiles.core;
 
           modOverrides = { config, unstableModulesPath, ... }: {
-            disabledModules = unstableModules;
+            disabledModules = unstableModules ++ addToDisabledModules;
             imports = map
               (path: "${unstableModulesPath}/${path}")
               unstableModules;
