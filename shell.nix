@@ -19,9 +19,9 @@ let
     if [[ -z "$1" ]]; then
       echo "Usage: $(basename "$0") [ iso | sd | install {host} | {host} [switch|boot|test] ]"
     elif [[ "$1" == "iso" ]]; then
-      nix build ${configs}.nixISO.${build}.isoImage
+      nix build ${configs}.nixISO.${build}.isoImage "${"\${@:2}"}"
     elif [[ "$1" == "sd" ]]; then
-      nix build ${configs}.nixSD.${build}.sdImage
+      nix build ${configs}.nixSD.${build}.sdImage "${"\${@:2}"}"
     elif [[ "$1" == "install" ]]; then
       sudo nixos-install --flake ".#$2" "${"\${@:3}"}"
     else
