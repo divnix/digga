@@ -20,11 +20,14 @@ let
       echo "Usage: $(basename "$0") [ iso | up | install {host} | {host} [switch|boot|test] ]"
     elif [[ "$1" == "up" ]]; then
       mkdir -p up
-      nixos-generate-config --dir up
+      hostname=$(hostname)
+      nixos-generate-config --dir up/$hostname
       echo \
       "{
-      imports = [ ../up/configuration.nix ];
-    }" > hosts/up-$(hostname).nix
+      imports = [ ../up/$hostname/configuration.nix ];
+    }" > hosts/up-$hostname.nix
+    git add -f up/$hostname
+    git add -f hosts/up-$hostname.nix
     elif [[ "$1" == "iso" ]]; then
       nix build ${configs}.niximg.${build}.isoImage
     elif [[ "$1" == "install" ]]; then
