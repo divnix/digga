@@ -8,7 +8,7 @@
     (modulesPath + "/installer/cd-dvd/sd-image-aarch64-new-kernel.nix")
   ];
 
-  hardware.enableRedistributableFirmware.enable = lib.mkDefault true;
+  hardware.enableRedistributableFirmware = lib.mkDefault true;
   hardware.pulseaudio.enable = lib.mkDefault true;
   sound.enable = lib.mkDefault true;
 
