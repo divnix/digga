@@ -19,7 +19,7 @@ let
     if [[ -z "$1" ]]; then
       echo "Usage: $(basename "$0") [ iso | install {host} | {host} [switch|boot|test] ]"
     elif [[ "$1" == "iso" ]]; then
-      nix build ${configs}.niximg.${build}.isoImage
+      nix build ${configs}.niximg.${build}.isoImage "${"\${@:2}"}"
     elif [[ "$1" == "install" ]]; then
       sudo nixos-install --flake ".#$2" "${"\${@:3}"}"
     else
