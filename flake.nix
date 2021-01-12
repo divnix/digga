@@ -14,23 +14,23 @@
 
   outputs = inputs@{ self, home, nixos, master, flake-utils, nur, devshell }:
     let
-      inherit (builtins) attrNames attrValues elem pathExists;
+      inherit (builtins) attrNames attrValues elem fromTOML pathExists;
       inherit (flake-utils.lib) eachDefaultSystem mkApp flattenTreeSystem;
       inherit (nixos) lib;
-      inherit (lib) recursiveUpdate filterAttrs mapAttrs;
+      inherit (lib) recursiveUpdate filterAttrs fileContents mapAttrs;
       inherit (utils) pathsToImportedAttrs genPkgset overlayPaths modules
         genPackages pkgImport;
 
       utils = import ./lib/utils.nix { inherit lib; };
+      settings = fromTOML (fileContents ./settings.toml);
 
       externOverlays = [ nur.overlay devshell.overlay ];
       externModules = [ home.nixosModules.home-manager ];
 
-      osSystem = "x86_64-linux";
 
       outputs =
         let
-          system = osSystem;
+          inherit (settings) system;
           pkgset =
             let
               overlays =
@@ -45,7 +45,7 @@
         {
           nixosConfigurations =
             import ./hosts (recursiveUpdate inputs {
-              inherit lib pkgset utils externModules system;
+              inherit lib pkgset utils externModules settings;
             });
 
           overlay = import ./pkgs;

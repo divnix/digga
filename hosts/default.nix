@@ -4,7 +4,7 @@
 , master
 , pkgset
 , self
-, system
+, settings
 , utils
 , externModules
 , ...
@@ -13,6 +13,7 @@ let
   inherit (utils) recImport;
   inherit (builtins) attrValues fromTOML readFile removeAttrs;
   inherit (pkgset) osPkgs unstablePkgs;
+  inherit (settings) system;
 
   unstableModules = [ ];
   addToDisabledModules = [ ];
