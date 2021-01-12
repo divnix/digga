@@ -17,15 +17,16 @@
     },
     "flake-utils": {
       "locked": {
-        "lastModified": 1605370193,
-        "narHash": "sha256-YyMTf3URDL/otKdKgtoMChu4vfVL3vCMkRqpGifhUn0=",
+        "lastModified": 1608663846,
+        "narHash": "sha256-YOAXeoNLW0IubQ6AZLGuSj5kAD5n4DYXLYReLtyds1A=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "5021eac20303a61fafe17224c087f5519baed54d",
+        "rev": "a68df93a37cd5137ac22ffeb2d8a03acf253cc24",
         "type": "github"
       },
       "original": {
         "owner": "numtide",
+        "ref": "flatten-tree-system",
         "repo": "flake-utils",
         "type": "github"
       }
