@@ -16,7 +16,7 @@ let
 
   flk = pkgs.writeShellScriptBin "flk" ''
     if [[ -z "$1" ]]; then
-      echo "Usage: $(basename "$0") [ iso | up | install {host} | {host} [switch|boot|test] ]"
+      echo "Usage: $(basename "$0") [ iso | sd | up | install {host} | {host} [switch|boot|test] ]"
     elif [[ "$1" == "up" ]]; then
       mkdir -p up
       hostname=$(hostname)
