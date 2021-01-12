@@ -24,8 +24,8 @@ let
 
       specialArgs =
         {
+          inherit settings;
           unstableModulesPath = "${master}/nixos/modules";
-          settings = fromTOML (readFile ../settings.toml);
         };
 
       modules =
