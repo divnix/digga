@@ -66,7 +66,7 @@
         let
           pkgs = pkgImport {
             inherit system;
-            pkgs = master;
+            pkgs = nixos;
             overlays = [ devshell.overlay ];
           };
 
