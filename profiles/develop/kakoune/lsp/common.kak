@@ -1,5 +1,5 @@
 eval %sh{kak-lsp --kakoune -s $kak_session}
-hook -group lsp global WinSetOption filetype=(elm|rust|c|cpp|python|dhall) %{
+hook -group lsp global WinSetOption filetype=(elm|rust|c|cpp|python|dhall|haskell) %{
   lsp-auto-hover-enable
 
   # easily enter lsp mode
