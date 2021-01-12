@@ -47,6 +47,7 @@ pkgs.mkDevShell {
     nixos-generate-config
     nixos-enter
     pre-commit
+    manix
   ];
 
   env = { inherit name; };
