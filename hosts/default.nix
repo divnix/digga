@@ -67,12 +67,8 @@ let
             nixpkgs.overlays =
               let
                 override = import ../pkgs/override.nix unstablePkgs;
-
-                overlay = pkg: final: prev: {
-                  "${pkg.pname}" = pkg;
-                };
               in
-              map overlay override;
+              [ override ];
           };
 
           local = import "${toString ./.}/${hostName}.nix";
