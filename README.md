@@ -122,6 +122,15 @@ flk install yourConfig # deploys hosts/yourConfig.nix
 flk yourConfig switch
 ```
 
+### Note on `flk up`:
+While the `up` sub-command is provided as a convenience to quickly set up and
+install a "fresh" NixOS system on current hardware, committing these files is
+discouraged.
+
+They are placed in the git staging area automatically because they would be
+invisible to the flake otherwise, but it is best to move what you need from
+them directly into your hosts file and commit that instead.
+
 ## Build an ISO
 
 You can make an ISO and customize it by modifying the [niximg](./hosts/niximg.nix)
