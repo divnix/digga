@@ -61,49 +61,29 @@
           defaultTemplate = self.templates.flk;
         };
     in
-    (eachDefaultSystem
-      (system:
-        let
-          pkgs = pkgImport {
-            inherit system;
-            pkgs = nixos;
-            overlays = [ devshell.overlay ];
-          };
+    recursiveUpdate
+      (eachDefaultSystem
+        (system:
+          let
+            pkgs = pkgImport {
+              inherit system;
+              pkgs = nixos;
+              overlays = [ devshell.overlay ];
+            };
 
-          packages = filterAttrs
-            (_: drv: drv.meta.broken != true)
-            (flattenTreeSystem system
+            packages = flattenTreeSystem system
               (genPackages {
                 inherit self pkgs;
-              })
-            );
+              });
+          in
+          {
+            inherit packages;
 
-
-        in
-        {
-          inherit packages;
-
-          devShell = import ./shell.nix {
-            inherit pkgs;
-          };
-
-          apps =
-            let
-              validApps = attrNames (filterAttrs
-                (_: drv:
-                  drv.meta.broken != true
-                  && pathExists "${drv}/bin"
-                )
-                self.packages."${osSystem}"
-              );
-
-              validSystems = attrNames packages;
-
-              filterBins = filterAttrs
-                (n: _: elem n validSystems && elem n validApps)
-                packages;
-            in
-            mapAttrs (_: drv: mkApp { inherit drv; }) filterBins;
-
-        })) // outputs;
+            devShell = import ./shell.nix {
+              inherit pkgs;
+            };
+          }
+        )
+      )
+      outputs;
 }
