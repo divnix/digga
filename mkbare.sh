@@ -21,10 +21,16 @@ mkdir -p users/nixos
 
 echo "[ ./core ]" > profiles/list.nix
 echo "[ ]" > modules/list.nix
-echo "pkgs:\nwith pkgs;\n[ ]" > pkgs/override.nix
 echo "final: prev: { }" > pkgs/default.nix
 echo "final: prev: { hello = prev.hello; }" > overlays/hello.nix
 echo "{ }" > cachix/default.nix
+
+cat << EOF > pkgs/override.nix
+pkgs: final: prev: {
+  inherit (pkgs)
+    manix;
+}
+EOF
 
 cat << EOF > users/nixos/default.nix
 {

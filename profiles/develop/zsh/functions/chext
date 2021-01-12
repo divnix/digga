@@ -1,5 +1,0 @@
-[[ -z $3 ]] || return 1
-file=$1
-ext=$2
-new="${file:r}.${ext}"
-mv $file $new
