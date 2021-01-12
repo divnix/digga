@@ -68,7 +68,7 @@
             pkgs = pkgImport {
               inherit system;
               pkgs = nixos;
-              overlays = [ devshell.overlay ];
+              overlays = externOverlays ++ [ self.overlay ] ++ (builtins.attrValues self.overlays);
             };
 
             packages = flattenTreeSystem system
