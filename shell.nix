@@ -7,7 +7,6 @@ let
 in
 { pkgs ? pkgs', ... }:
 let
-  configs = "${toString ./.}#nixosConfigurations";
   build = "config.system.build";
 
   installPkgs = (import "${nixpkgs}/nixos" {
@@ -19,7 +18,7 @@ let
     if [[ -z "$1" ]]; then
       echo "Usage: $(basename "$0") [ iso | install {host} | {host} [switch|boot|test] ]"
     elif [[ "$1" == "iso" ]]; then
-      nix build ${configs}.niximg.${build}.isoImage "${"\${@:2}"}"
+      nix build $DEVSHELL_ROOT#nixosConfigurations.niximg.${build}.isoImage "${"\${@:2}"}"
     elif [[ "$1" == "install" ]]; then
       sudo nixos-install --flake ".#$2" "${"\${@:3}"}"
     else
