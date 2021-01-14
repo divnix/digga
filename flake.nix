@@ -29,7 +29,8 @@
       inherit (builtins) attrValues;
       inherit (flake-utils.lib) eachDefaultSystem flattenTreeSystem;
       inherit (nixos.lib) recursiveUpdate;
-      inherit (self.lib) overlays nixosModules genPackages pkgImport;
+      inherit (self.lib) overlays nixosModules genPackages pkgImport
+        genHomeActivationPackages;
 
       externOverlays = [ nur.overlay devshell.overlay ];
       externModules = [
@@ -51,6 +52,11 @@
                 inherit pkgs externModules system;
                 inherit (pkgs) lib;
               });
+
+          homeConfigurations =
+            builtins.mapAttrs
+              (_: config: config.config.home-manager.users)
+              self.nixosConfigurations;
 
           overlay = import ./pkgs;
 
@@ -90,10 +96,17 @@
             in
             pkgImport nixos overlays system;
 
-          packages = flattenTreeSystem system
-            (genPackages {
-              inherit self pkgs;
-            });
+          packages =
+            let
+              packages' = flattenTreeSystem system
+                (genPackages {
+                  inherit self pkgs;
+                });
+
+              homeActivationPackages = genHomeActivationPackages
+                self.homeConfigurations;
+            in
+            recursiveUpdate packages' homeActivationPackages;
         in
         {
           inherit packages;
