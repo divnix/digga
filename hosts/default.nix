@@ -41,6 +41,8 @@ let
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
 
+            hardware.enableRedistributableFirmware = lib.mkDefault true;
+
             networking.hostName = hostName;
             nix.nixPath = let path = toString ../.; in
               [
