@@ -2,9 +2,10 @@
 , lib
 , nixos
 , master
-, pkgset
+, osPkgs
 , self
 , settings
+, unstablePkgs
 , utils
 , externModules
 , ...
@@ -12,7 +13,6 @@
 let
   inherit (utils) recImport;
   inherit (builtins) attrValues fromTOML readFile removeAttrs;
-  inherit (pkgset) osPkgs unstablePkgs;
   inherit (settings) system;
 
   unstableModules = [ ];
@@ -65,14 +65,6 @@ let
             system.configurationRevision = lib.mkIf (self ? rev) self.rev;
           };
 
-          overrides = {
-            nixpkgs.overlays =
-              let
-                override = import ../pkgs/override.nix unstablePkgs;
-              in
-              [ override ];
-          };
-
           local = import "${toString ./.}/${hostName}.nix";
 
           # Everything in `./modules/list.nix`.
@@ -84,7 +76,6 @@ let
           core
           global
           local
-          overrides
           modOverrides
         ] ++ externModules;
 
