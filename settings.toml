@@ -2,3 +2,16 @@ system = "x86_64-linux"
 
 [users]
 interactive = "nixos"
+
+[modules]
+unstable = [ ]
+disabled = [ ]
+
+[meta]
+machine = "work"
+
+[meta.machines]
+work = [
+  "develop",
+  "virt"
+]

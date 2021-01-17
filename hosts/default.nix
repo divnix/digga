@@ -15,8 +15,8 @@ let
   inherit (builtins) attrValues fromTOML readFile removeAttrs;
   inherit (settings) system;
 
-  unstableModules = [ ];
-  addToDisabledModules = [ ];
+  unstableModules = settings.modules.unstable;
+  addToDisabledModules = settings.modules.disabled;
 
   config = hostName:
     lib.nixosSystem {
@@ -31,6 +31,16 @@ let
       modules =
         let
           core = self.nixosModules.profiles.core;
+
+          profiles =
+            let
+              inherit (settings.meta) machine machines;
+            in
+            {
+              imports = map
+                (profile: self.nixosModules.profiles.${profile})
+                machines.${machine} or [ ];
+            };
 
           modOverrides = { config, unstableModulesPath, ... }: {
             disabledModules = unstableModules ++ addToDisabledModules;
@@ -76,6 +86,7 @@ let
           core
           global
           local
+          profiles
           modOverrides
         ] ++ externModules;
 
