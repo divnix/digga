@@ -139,6 +139,17 @@ file:
 flk iso
 ```
 
+## Hardware Specific Profile for a Single Host
+
+Find out the fitting [nixos-hardware profile](https://github.com/NixOS/nixos-hardware#list-of-profiles) path for the hardware of your host and add it to the configuration.
+For example for a Dell XPS 13 9370 the host configuration would contain:
+```nix
+{
+  imports = [ "${hardwareModulesPath}/dell/xps/13-9370" ... ];
+  ...
+}
+```
+
 ## Use a Package from NUR
 
 NUR is wired in from the start. For safety, nothing is added from it by default,

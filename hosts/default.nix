@@ -2,6 +2,7 @@
 , lib
 , nixos
 , master
+, nixos-hardware
 , pkgset
 , self
 , system
@@ -24,6 +25,7 @@ let
       specialArgs =
         {
           unstableModulesPath = "${master}/nixos/modules";
+          hardwareModulesPath = "${nixos-hardware}";
         };
 
       modules =

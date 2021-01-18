@@ -10,9 +10,10 @@
       home.url = "github:nix-community/home-manager/release-20.09";
       flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
       devshell.url = "github:numtide/devshell";
+      nixos-hardware.url = "github:nixos/nixos-hardware";
     };
 
-  outputs = inputs@{ self, home, nixos, master, flake-utils, nur, devshell }:
+  outputs = inputs@{ self, home, nixos, master, flake-utils, nur, devshell, nixos-hardware }:
     let
       inherit (builtins) attrNames attrValues elem pathExists;
       inherit (flake-utils.lib) eachDefaultSystem mkApp flattenTreeSystem;
