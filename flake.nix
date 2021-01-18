@@ -1,4 +1,6 @@
 {
+  nixConfig.substituters = [ "https://nrdxp.cachix.org" ];
+
   description = "A highly structured configuration database.";
 
   inputs =
