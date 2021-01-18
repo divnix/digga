@@ -27,26 +27,29 @@
       externOverlays = [ nur.overlay devshell.overlay ];
       externModules = [ home.nixosModules.home-manager ];
 
+      pkgs' = unstable:
+        let
+          override = import ./pkgs/override.nix;
+          overlays = (attrValues self.overlays)
+            ++ externOverlays
+            ++ [ self.overlay (override unstable) ];
+        in
+        pkgImport nixos overlays;
+
+      unstable' = pkgImport master [ ];
+
       osSystem = "x86_64-linux";
 
       outputs =
         let
           system = osSystem;
-          pkgset =
-            let
-              overlays =
-                (attrValues self.overlays)
-                ++ externOverlays
-                ++ [ self.overlay ];
-            in
-            genPkgset {
-              inherit master nixos overlays system;
-            };
+          unstablePkgs = unstable' system;
+          osPkgs = pkgs' unstablePkgs system;
         in
         {
           nixosConfigurations =
             import ./hosts (recursiveUpdate inputs {
-              inherit lib pkgset utils externModules system;
+              inherit lib osPkgs unstablePkgs utils externModules system;
             });
 
           overlay = import ./pkgs;
@@ -66,11 +69,8 @@
       (eachDefaultSystem
         (system:
           let
-            pkgs = pkgImport {
-              inherit system;
-              pkgs = nixos;
-              overlays = [ devshell.overlay ];
-            };
+            unstablePkgs = unstable' system;
+            pkgs = pkgs' unstablePkgs system;
 
             packages = flattenTreeSystem system
               (genPackages {

@@ -8,5 +8,4 @@ final: prev: {
   libinih = prev.callPackage ./development/libraries/libinih { };
   steamcompmgr =
     prev.callPackage ./applications/window-managers/steamcompmgr { };
-  miningcore = prev.callPackage ./applications/blockchains/miningcore { };
 }
