@@ -3,16 +3,14 @@
 , nixos
 , master
 , nixos-hardware
-, osPkgs
+, pkgs
 , self
 , system
-, unstablePkgs
-, utils
 , externModules
 , ...
 }:
 let
-  inherit (utils) recImport;
+  inherit (lib.flk) recImport;
   inherit (builtins) attrValues removeAttrs;
 
   unstableModules = [ ];
@@ -50,12 +48,11 @@ let
               [
                 "nixos-unstable=${master}"
                 "nixpkgs=${nixos}"
-                "nixos-config=${path}/configuration.nix"
                 "nixpkgs-overlays=${path}/overlays"
                 "home-manager=${home}"
               ];
 
-            nixpkgs.pkgs = osPkgs;
+            nixpkgs = { inherit pkgs; };
 
             nix.registry = {
               master.flake = master;

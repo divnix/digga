@@ -15,48 +15,34 @@
 
   outputs = inputs@{ self, home, nixos, master, flake-utils, nur, devshell, nixos-hardware }:
     let
-      inherit (builtins) attrNames attrValues elem pathExists;
-      inherit (flake-utils.lib) eachDefaultSystem mkApp flattenTreeSystem;
-      inherit (nixos) lib;
-      inherit (lib) recursiveUpdate filterAttrs mapAttrs;
-      inherit (utils) pathsToImportedAttrs genPkgset overlayPaths modules
-        genPackages pkgImport;
-
-      utils = import ./lib/utils.nix { inherit lib; };
+      inherit (builtins) attrValues;
+      inherit (flake-utils.lib) eachDefaultSystem flattenTreeSystem;
+      inherit (nixos.lib) recursiveUpdate;
+      inherit (self.lib) overlays nixosModules genPackages pkgImport;
 
       externOverlays = [ nur.overlay devshell.overlay ];
       externModules = [ home.nixosModules.home-manager ];
 
-      pkgs' = unstable:
-        let
-          override = import ./pkgs/override.nix;
-          overlays = (attrValues self.overlays)
-            ++ externOverlays
-            ++ [ self.overlay (override unstable) ];
-        in
-        pkgImport nixos overlays;
-
-      unstable' = pkgImport master [ ];
-
-      osSystem = "x86_64-linux";
-
       outputs =
         let
-          system = osSystem;
-          unstablePkgs = unstable' system;
-          osPkgs = pkgs' unstablePkgs system;
+          system = "x86_64-linux";
+          pkgs = self.legacyPackages.${system};
         in
         {
+          inherit nixosModules overlays;
+
           nixosConfigurations =
-            import ./hosts (recursiveUpdate inputs {
-              inherit lib osPkgs unstablePkgs utils externModules system;
-            });
+            import ./hosts
+              (recursiveUpdate inputs {
+                inherit pkgs externModules system;
+                inherit (pkgs) lib;
+              });
 
           overlay = import ./pkgs;
 
-          overlays = pathsToImportedAttrs overlayPaths;
-
-          nixosModules = modules;
+          lib = import ./lib {
+            inherit (nixos) lib;
+          };
 
           templates.flk.path = ./.;
 
@@ -69,8 +55,26 @@
       (eachDefaultSystem
         (system:
           let
-            unstablePkgs = unstable' system;
-            pkgs = pkgs' unstablePkgs system;
+            unstable = pkgImport master [ ] system;
+
+            pkgs =
+              let
+                override = import ./pkgs/override.nix;
+                overlays = (attrValues self.overlays)
+                  ++ externOverlays
+                  ++ [
+                  self.overlay
+                  (override unstable)
+                  (final: prev: {
+                    lib = (prev.lib or { }) // {
+                      inherit (nixos.lib) nixosSystem;
+                      flk = self.lib;
+                      utils = flake-utils.lib;
+                    };
+                  })
+                ];
+              in
+              pkgImport nixos overlays system;
 
             packages = flattenTreeSystem system
               (genPackages {
@@ -80,9 +84,11 @@
           {
             inherit packages;
 
-            devShell = import ./shell.nix {
-              inherit pkgs;
+            devShell = import ./shell {
+              inherit pkgs nixos;
             };
+
+            legacyPackages = pkgs;
           }
         )
       )

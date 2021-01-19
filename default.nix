@@ -1,15 +1,6 @@
 let
-  inherit (flake.inputs.nixos.lib) recurseIntoAttrs mapAttrs;
-  flake = (import
-    (
-      fetchTarball {
-        url = "https://github.com/edolstra/flake-compat/archive/99f1c2157fba4bfe6211a321fd0ee43199025dbf.tar.gz";
-        sha256 = "sha256:0x2jn3vrawwv9xp15674wjz9pixwjyj3j771izayl962zziivbx2";
-      }
-    )
-    {
-      src = ./.;
-    }).defaultNix;
-  recurse = mapAttrs (_: v: recurseIntoAttrs v) flake.packages;
+  inherit (default.inputs.nixos.lib) recurseIntoAttrs;
+
+  default = (import ./compat).defaultNix;
 in
-recurse
+builtins.mapAttrs (_: v: recurseIntoAttrs v) default.packages

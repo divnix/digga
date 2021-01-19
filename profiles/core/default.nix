@@ -74,6 +74,9 @@ in
           manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | sk --preview="manix '{}'" | xargs manix
         '';
 
+        # fix nixos-option
+        nixos-option = "nixos-option -I nixpkgs=${toString ../../compat}";
+
         # sudo
         s = ifSudo "sudo -E ";
         si = ifSudo "sudo -i";
