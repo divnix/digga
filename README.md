@@ -141,7 +141,7 @@ flk iso
 
 ## Hardware Specific Profile for a Single Host
 
-Find out the fitting [nixos-hardware profile](https://github.com/NixOS/nixos-hardware#list-of-profiles) path for the hardware of your host, then find the corresponding modules in the [flake](https://github.com/NixOS/nixos-hardware/blob/master/flake.nix) and addit to the configuration.
+Find out the fitting [nixos-hardware profile](https://github.com/NixOS/nixos-hardware#list-of-profiles) for the hardware of your host, then find the corresponding modules in the [flake](https://github.com/NixOS/nixos-hardware/blob/master/flake.nix) and add it to the configuration.
 For example for a Dell XPS 13 9370 the host configuration would contain:
 ```nix
 {
