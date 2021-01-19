@@ -1,5 +1,4 @@
-{ home
-, lib
+{ lib
 , nixos
 , master
 , nixos-hardware
@@ -47,9 +46,7 @@ let
             nix.nixPath = let path = toString ../.; in
               [
                 "nixos-unstable=${master}"
-                "nixpkgs=${nixos}"
-                "nixpkgs-overlays=${path}/overlays"
-                "home-manager=${home}"
+                "nixos=${nixos}"
               ];
 
             nixpkgs = { inherit pkgs; };
@@ -58,7 +55,6 @@ let
               master.flake = master;
               nixflk.flake = self;
               nixpkgs.flake = nixos;
-              home-manager.flake = home;
             };
 
             system.configurationRevision = lib.mkIf (self ? rev) self.rev;
