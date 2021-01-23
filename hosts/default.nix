@@ -25,7 +25,7 @@ let
       specialArgs =
         {
           unstableModulesPath = "${master}/nixos/modules";
-          hardwareModulesPath = "${nixos-hardware}";
+          hardware = nixos-hardware.nixosModules;
         };
 
       modules =
