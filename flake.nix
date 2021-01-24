@@ -60,11 +60,9 @@
             pkgs =
               let
                 override = import ./pkgs/override.nix;
-                overlays = (attrValues self.overlays)
-                  ++ externOverlays
-                  ++ [
-                  self.overlay
+                overlays = [
                   (override unstable)
+                  self.overlay
                   (final: prev: {
                     lib = (prev.lib or { }) // {
                       inherit (nixos.lib) nixosSystem;
@@ -72,7 +70,9 @@
                       utils = flake-utils.lib;
                     };
                   })
-                ];
+                ]
+                ++ (attrValues self.overlays)
+                ++ externOverlays;
               in
               pkgImport nixos overlays system;
 
