@@ -7,11 +7,12 @@ let
 
   shell = recurseIntoAttrs default.devShell.x86_64-linux;
 
-  ci = recurseIntoAttrs
-    default.nixosConfigurations.ci.config.system.build.toplevel;
+  # failing on hercules-ci, probably until nix is updated
+  # ci = recurseIntoAttrs
+  #   default.nixosConfigurations.ci.config.system.build.toplevel;
 in
 {
-  inherit ci shell;
+  inherit shell;
   # platforms supported by our hercules-ci agent
   inherit (packages)
     i686-linux
