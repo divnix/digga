@@ -11,9 +11,20 @@
       flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
       devshell.url = "github:numtide/devshell";
       nixos-hardware.url = "github:nixos/nixos-hardware";
+      ci-agent.url = "github:hercules-ci/hercules-ci-agent";
     };
 
-  outputs = inputs@{ self, home, nixos, master, flake-utils, nur, devshell, nixos-hardware }:
+  outputs =
+    inputs@{ self
+    , ci-agent
+    , home
+    , nixos
+    , master
+    , flake-utils
+    , nur
+    , devshell
+    , nixos-hardware
+    }:
     let
       inherit (builtins) attrValues;
       inherit (flake-utils.lib) eachDefaultSystem flattenTreeSystem;
@@ -21,7 +32,10 @@
       inherit (self.lib) overlays nixosModules genPackages pkgImport;
 
       externOverlays = [ nur.overlay devshell.overlay ];
-      externModules = [ home.nixosModules.home-manager ];
+      externModules = [
+        home.nixosModules.home-manager
+        ci-agent.nixosModules.agent-profile
+      ];
 
       outputs =
         let

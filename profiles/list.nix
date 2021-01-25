@@ -1,4 +1,5 @@
 [
+  ./ci-agent
   ./core
   ./db/postgres
   ./develop
