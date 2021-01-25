@@ -29,6 +29,8 @@ let
                           (nixos + "/nixos/modules/installer/cd-dvd/installation-cd-minimal-new-kernel.nix")
                           ({ config, ... }: {
                             isoImage.isoBaseName = "nixos-" + config.networking.hostName;
+                            networking.networkmanager.enable = lib.mkForce false; # confilcts with networking.wireless which might be slightly more useful on a stick
+                            networking.wireless.iwd.enable = lib.mkForce false; # confilcts with networking.wireless
                           })
                         ];
                       }
