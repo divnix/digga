@@ -15,8 +15,40 @@ let
   unstableModules = [ ];
   addToDisabledModules = [ ];
 
+  libExt = lib.extend (
+    final: prev: {
+      nixosSystemExtended = { modules, ... } @ args:
+        lib.nixosSystem (args // {
+            modules =
+              let
+                isoConfig = (
+                  import (nixos + "/nixos/lib/eval-config.nix")
+                    (
+                      args // {
+                        modules = modules ++ [
+                          (nixos + "/nixos/modules/installer/cd-dvd/installation-cd-minimal-new-kernel.nix")
+                          ({ config, ... }: {
+                            isoImage.isoBaseName = "nixos-" + config.networking.hostName;
+                          })
+                        ];
+                      }
+                    )
+                ).config;
+              in
+                modules ++ [
+                  {
+                    system.build = {
+                      iso = isoConfig.system.build.isoImage;
+                    };
+                  }
+                ];
+          }
+        );
+    }
+  );
+
   config = hostName:
-    lib.nixosSystem {
+    libExt.nixosSystemExtended {
       inherit system;
 
       specialArgs =
