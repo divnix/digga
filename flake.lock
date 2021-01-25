@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "ci-agent": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "nixos-20_09": "nixos-20_09",
+        "nixos-unstable": "nixos-unstable",
+        "pre-commit-hooks-nix": "pre-commit-hooks-nix"
+      },
+      "locked": {
+        "lastModified": 1610978656,
+        "narHash": "sha256-9GKLu24KSurJEsvQlIB+mUmHWRn9y5XiYDXjCs7vWAw=",
+        "owner": "hercules-ci",
+        "repo": "hercules-ci-agent",
+        "rev": "42e702d5865b7b7eb6ee5b743bcda7562f95e82e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "hercules-ci-agent",
+        "type": "github"
+      }
+    },
     "devshell": {
       "locked": {
         "lastModified": 1607956014,
@@ -12,6 +33,22 @@
       "original": {
         "owner": "numtide",
         "repo": "devshell",
+        "type": "github"
+      }
+    },
+    "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1603796912,
+        "narHash": "sha256-6ayqpH/4XiEXylNdWI3AghubqS6XuiPg3Y60jY8RTo4=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "19576c2aea7f074ff0da818b21a8b0950ff6ec86",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
         "type": "github"
       }
     },
@@ -52,11 +89,11 @@
     },
     "master": {
       "locked": {
-        "lastModified": 1607981906,
-        "narHash": "sha256-tFuNBkK0F5km1Lq5ulLgLVm3BvOvI7t4k4Y7xTIo3QE=",
+        "lastModified": 1610960440,
+        "narHash": "sha256-0ZDzGoFhROKZwcW2Sa2CXiwYL6br09JORgEHr58w/Ew=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "dd95aa337e23a8a48fe82f0f7b1cced8bc03e379",
+        "rev": "3bdf95ceb5660273a01ed2e5be2676487f7e820e",
         "type": "github"
       },
       "original": {
@@ -67,17 +104,64 @@
     },
     "nixos": {
       "locked": {
-        "lastModified": 1607967859,
-        "narHash": "sha256-biRVmLlWfxIvB2O+mkFbObb4MmCzbYvpy5Rap4g9Mig=",
+        "lastModified": 1610885893,
+        "narHash": "sha256-VAETd1jhnWUJmq0b8Dbi9mo4qvS+AYC3d9tmVfnf2zQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "7362dab2c9bd21eeef831f32608161584b388ef4",
+        "rev": "3888fe83e1c7b5331d032177b039e91f83bf34e1",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
         "ref": "release-20.09",
         "type": "indirect"
+      }
+    },
+    "nixos-20_09": {
+      "locked": {
+        "lastModified": 1610870190,
+        "narHash": "sha256-G0fY7YVFpMw7lLb9HgpZufpeAVmCCZkzZ+WDscy4ImY=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f5f66148b28b3d9b9b8381532052ad93a35d5d67",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-20.09",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1610430373,
+        "narHash": "sha256-2sTBiGl0z0B3VD2qMHIJtOGxOuftR0iiBSv30AhVWIw=",
+        "owner": "nixos",
+        "repo": "nixos-hardware",
+        "rev": "874830945a65ad1134aff3a5aea0cdd2e1d914ab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
+    "nixos-unstable": {
+      "locked": {
+        "lastModified": 1610842533,
+        "narHash": "sha256-6hW8CML8RnNrRJMv7E56rXAhsCNgUM97HIVSqWxnO64=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "68398d2dd50efc2d878bf0f83bbc8bc323b6b0e0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgs": {
@@ -107,13 +191,31 @@
         "type": "indirect"
       }
     },
+    "pre-commit-hooks-nix": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1603721622,
+        "narHash": "sha256-tUgyf5eYK5+0A/dvLzbbm4W7icxbpORuFMXiFe5yz+I=",
+        "owner": "cachix",
+        "repo": "pre-commit-hooks.nix",
+        "rev": "efdbd6d28f7f44db3d9f8cf0e0b4cb9db0d259e1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cachix",
+        "repo": "pre-commit-hooks.nix",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
+        "ci-agent": "ci-agent",
         "devshell": "devshell",
         "flake-utils": "flake-utils",
         "home": "home",
         "master": "master",
         "nixos": "nixos",
+        "nixos-hardware": "nixos-hardware",
         "nur": "nur"
       }
     }

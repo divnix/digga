@@ -10,49 +10,53 @@
       home.url = "github:nix-community/home-manager/release-20.09";
       flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
       devshell.url = "github:numtide/devshell";
+      nixos-hardware.url = "github:nixos/nixos-hardware";
+      ci-agent.url = "github:hercules-ci/hercules-ci-agent";
     };
 
-  outputs = inputs@{ self, home, nixos, master, flake-utils, nur, devshell }:
+  outputs =
+    inputs@{ self
+    , ci-agent
+    , home
+    , nixos
+    , master
+    , flake-utils
+    , nur
+    , devshell
+    , nixos-hardware
+    }:
     let
-      inherit (builtins) attrNames attrValues elem pathExists;
-      inherit (flake-utils.lib) eachDefaultSystem mkApp flattenTreeSystem;
-      inherit (nixos) lib;
-      inherit (lib) recursiveUpdate filterAttrs mapAttrs;
-      inherit (utils) pathsToImportedAttrs genPkgset overlayPaths modules
-        genPackages pkgImport;
-
-      utils = import ./lib/utils.nix { inherit lib; };
+      inherit (builtins) attrValues;
+      inherit (flake-utils.lib) eachDefaultSystem flattenTreeSystem;
+      inherit (nixos.lib) recursiveUpdate;
+      inherit (self.lib) overlays nixosModules genPackages pkgImport;
 
       externOverlays = [ nur.overlay devshell.overlay ];
-      externModules = [ home.nixosModules.home-manager ];
-
-      osSystem = "x86_64-linux";
+      externModules = [
+        home.nixosModules.home-manager
+        ci-agent.nixosModules.agent-profile
+      ];
 
       outputs =
         let
-          system = osSystem;
-          pkgset =
-            let
-              overlays =
-                (attrValues self.overlays)
-                ++ externOverlays
-                ++ [ self.overlay ];
-            in
-            genPkgset {
-              inherit master nixos overlays system;
-            };
+          system = "x86_64-linux";
+          pkgs = self.legacyPackages.${system};
         in
         {
+          inherit nixosModules overlays;
+
           nixosConfigurations =
-            import ./hosts (recursiveUpdate inputs {
-              inherit lib pkgset utils externModules system;
-            });
+            import ./hosts
+              (recursiveUpdate inputs {
+                inherit pkgs externModules system;
+                inherit (pkgs) lib;
+              });
 
           overlay = import ./pkgs;
 
-          overlays = pathsToImportedAttrs overlayPaths;
-
-          nixosModules = modules;
+          lib = import ./lib {
+            inherit (nixos) lib;
+          };
 
           templates.flk.path = ./.;
 
@@ -64,26 +68,42 @@
     recursiveUpdate
       (eachDefaultSystem
         (system:
-          let
-            pkgs = pkgImport {
-              inherit system;
-              pkgs = nixos;
-              overlays = [ devshell.overlay ];
-            };
+        let
+          unstable = pkgImport master [ ] system;
 
-            packages = flattenTreeSystem system
-              (genPackages {
-                inherit self pkgs;
-              });
-          in
-          {
-            inherit packages;
+          pkgs =
+            let
+              override = import ./pkgs/override.nix;
+              overlays = [
+                (override unstable)
+                self.overlay
+                (final: prev: {
+                  lib = (prev.lib or { }) // {
+                    inherit (nixos.lib) nixosSystem;
+                    flk = self.lib;
+                    utils = flake-utils.lib;
+                  };
+                })
+              ]
+              ++ (attrValues self.overlays)
+              ++ externOverlays;
+            in
+            pkgImport nixos overlays system;
 
-            devShell = import ./shell.nix {
-              inherit pkgs;
-            };
-          }
-        )
+          packages = flattenTreeSystem system
+            (genPackages {
+              inherit self pkgs;
+            });
+        in
+        {
+          inherit packages;
+
+          devShell = import ./shell {
+            inherit pkgs nixos;
+          };
+
+          legacyPackages = pkgs;
+        })
       )
       outputs;
 }

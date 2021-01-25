@@ -67,12 +67,15 @@ in
         nr = "np remove";
         ns = "n search --no-update-lock-file";
         nf = "n flake";
-        nepl = "n repl '<nixpkgs>'";
+        nepl = "n repl '<nixos>'";
         srch = "ns nixpkgs";
         nrb = ifSudo "sudo nixos-rebuild";
         mn = ''
           manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | sk --preview="manix '{}'" | xargs manix
         '';
+
+        # fix nixos-option
+        nixos-option = "nixos-option -I nixpkgs=${toString ../../compat}";
 
         # sudo
         s = ifSudo "sudo -E ";

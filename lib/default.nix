@@ -1,8 +1,8 @@
 { lib, ... }:
 let
-  inherit (builtins) attrNames isAttrs readDir listToAttrs;
+  inherit (builtins) attrNames attrValues isAttrs readDir listToAttrs mapAttrs;
 
-  inherit (lib) filterAttrs hasSuffix mapAttrs' nameValuePair removeSuffix
+  inherit (lib) fold filterAttrs hasSuffix mapAttrs' nameValuePair removeSuffix
     recursiveUpdate genAttrs;
 
   # mapFilterAttrs ::
@@ -14,8 +14,9 @@ let
   # Generate an attribute set by mapping a function over a list of values.
   genAttrs' = values: f: listToAttrs (map f values);
 
-  pkgImport = { pkgs, system, overlays }:
-    import pkgs {
+  # pkgImport :: Nixpkgs -> Overlays -> System -> Pkgs
+  pkgImport = nixpkgs: overlays: system:
+    import nixpkgs {
       inherit system overlays;
       config = { allowUnfree = true; };
     };
@@ -23,29 +24,12 @@ let
   # Convert a list to file paths to attribute set
   # that has the filenames stripped of nix extension as keys
   # and imported content of the file as value.
+  #
   pathsToImportedAttrs = paths:
     genAttrs' paths (path: {
       name = removeSuffix ".nix" (baseNameOf path);
       value = import path;
     });
-
-in
-{
-  inherit mapFilterAttrs genAttrs' pkgImport pathsToImportedAttrs;
-
-  genPkgset = { master, nixos, overlays, system }:
-    {
-      osPkgs = pkgImport {
-        inherit system overlays;
-        pkgs = nixos;
-      };
-
-      unstablePkgs = pkgImport {
-        inherit system;
-        overlays = [];
-        pkgs = master;
-      };
-    };
 
   overlayPaths =
     let
@@ -53,6 +37,12 @@ in
       fullPath = name: overlayDir + "/${name}";
     in
     map fullPath (attrNames (readDir overlayDir));
+
+in
+{
+  inherit mapFilterAttrs genAttrs' pkgImport pathsToImportedAttrs;
+
+  overlays = pathsToImportedAttrs overlayPaths;
 
   recImport = { dir, _import ? base: import "${dir}/${base}.nix" }:
     mapFilterAttrs
@@ -65,7 +55,7 @@ in
           nameValuePair ("") (null))
       (readDir dir);
 
-  modules =
+  nixosModules =
     let
       # binary cache
       cachix = import ../cachix.nix;
@@ -86,12 +76,19 @@ in
   genPackages = { self, pkgs }:
     let
       inherit (self) overlay overlays;
-      packages = overlay pkgs pkgs;
-      overlayPkgs =
-        genAttrs
-          (attrNames overlays)
-          (name: (overlays."${name}" pkgs pkgs)."${name}");
+      packagesNames = attrNames (overlay null null)
+        ++ attrNames (fold
+        (attr: sum: recursiveUpdate sum attr)
+        { }
+        (attrValues
+          (mapAttrs (_: v: v null null) overlays)
+        )
+      );
     in
-    recursiveUpdate packages overlayPkgs;
-
+    fold
+      (key: sum: recursiveUpdate sum {
+        ${key} = pkgs.${key};
+      })
+      { }
+      packagesNames;
 }
