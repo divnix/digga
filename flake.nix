@@ -68,43 +68,42 @@
     recursiveUpdate
       (eachDefaultSystem
         (system:
-          let
-            unstable = pkgImport master [ ] system;
+        let
+          unstable = pkgImport master [ ] system;
 
-            pkgs =
-              let
-                override = import ./pkgs/override.nix;
-                overlays = [
-                  (override unstable)
-                  self.overlay
-                  (final: prev: {
-                    lib = (prev.lib or { }) // {
-                      inherit (nixos.lib) nixosSystem;
-                      flk = self.lib;
-                      utils = flake-utils.lib;
-                    };
-                  })
-                ]
-                ++ (attrValues self.overlays)
-                ++ externOverlays;
-              in
-              pkgImport nixos overlays system;
+          pkgs =
+            let
+              override = import ./pkgs/override.nix;
+              overlays = [
+                (override unstable)
+                self.overlay
+                (final: prev: {
+                  lib = (prev.lib or { }) // {
+                    inherit (nixos.lib) nixosSystem;
+                    flk = self.lib;
+                    utils = flake-utils.lib;
+                  };
+                })
+              ]
+              ++ (attrValues self.overlays)
+              ++ externOverlays;
+            in
+            pkgImport nixos overlays system;
 
-            packages = flattenTreeSystem system
-              (genPackages {
-                inherit self pkgs;
-              });
-          in
-          {
-            inherit packages;
+          packages = flattenTreeSystem system
+            (genPackages {
+              inherit self pkgs;
+            });
+        in
+        {
+          inherit packages;
 
-            devShell = import ./shell {
-              inherit pkgs nixos;
-            };
+          devShell = import ./shell {
+            inherit pkgs nixos;
+          };
 
-            legacyPackages = pkgs;
-          }
-        )
+          legacyPackages = pkgs;
+        })
       )
       outputs;
 }
