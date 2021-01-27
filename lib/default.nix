@@ -73,6 +73,15 @@ in
       (recursiveUpdate cachixAttrs modulesAttrs)
       profilesAttrs;
 
+  genHomeActivationPackages = hmConfigs: {
+    hmActivationPackages =
+      builtins.mapAttrs
+        (_: x: builtins.mapAttrs
+          (_: cfg: cfg.home.activationPackage)
+          x)
+        hmConfigs;
+  };
+
   genPackages = { self, pkgs }:
     let
       inherit (self) overlay overlays;

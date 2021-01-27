@@ -131,6 +131,43 @@ They are placed in the git staging area automatically because they would be
 invisible to the flake otherwise, but it is best to move what you need from
 them directly into your hosts file and commit that instead.
 
+## Home Manager Integration
+The home-manager nixos module is available for each host. It is meant
+to be used in the user profiles, you can find an example in the nixos user profile
+
+The home-manager configuration for each user in each system is available in the
+outputs as homeConfigurations and the activation packages in hmActivationPackages.
+
+This allows you to just build the home-manager environment without the rest of the
+system configuration. The feature is useful on systems without nixos or root access.
+
+Lets say you want to activate the home configuration for the user `nixos` in the 
+host `NixOS`.
+
+With the flk script:
+```sh
+# You can build it using
+flk home NixOS nixos
+# and activate with
+./result/activate
+
+# Or do both like this
+flk home NixOS nixos switch
+```
+
+This can also be done manually:
+```sh
+
+# With hmActivationPackages, what the flk script uses
+nix build ./#hmActivationPackages.NixOS.nixos
+
+# Or with homeConfigurations, 
+nix build ./#homeConfigurations.NixOS.nixos.home.activationPackage
+# this is hard to debug though, due to nix build's fallback to packages
+
+# The configuration can then be activated like before
+```
+
 ## Build an ISO
 
 You can make an ISO and customize it by modifying the [niximg](./hosts/niximg.nix)
