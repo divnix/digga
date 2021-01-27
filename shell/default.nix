@@ -34,7 +34,7 @@ let
 
   name = "flk";
 in
-pkgs.mkDevShell {
+pkgs.devshell.mkShell {
   inherit name;
 
   packages = with pkgs; with installPkgs; [
@@ -48,6 +48,28 @@ pkgs.mkDevShell {
 
   env = { inherit name; };
 
+  git.hooks = with pkgs; {
+    enable = true;
+    pre-commit.text = ''
+      if ${git}/bin/git rev-parse --verify HEAD >/dev/null 2>&1
+      then
+        against=HEAD
+      else
+        # Initial commit: diff against an empty tree object
+        against=$(${git}/bin/git hash-object -t tree /dev/null)
+      fi
+      # Redirect output to stderr.
+      exec 1>&2
+
+      # Format staged nix files.
+      exec ${nixpkgs-fmt}/bin/nixpkgs-fmt \
+        $(
+           ${git}/bin/git diff-index --name-only --cached $against -- \
+           | ${ripgrep}/bin/rg '\.nix$'
+         )
+    '';
+  };
+
   commands = with pkgs; [
     {
       name = nixpkgs-fmt.pname;
@@ -60,11 +82,6 @@ pkgs.mkDevShell {
       help = "Build, deploy, and install nixflk";
       category = "main";
       package = flk;
-    }
-    {
-      name = "hooks";
-      help = "install git hooks";
-      command = "pre-commit install";
     }
     {
       name = "grip";
