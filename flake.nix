@@ -62,6 +62,7 @@
 
           lib = import ./lib {
             inherit (nixos) lib;
+            inherit nixos;
           };
 
           templates.flk.path = ./.;

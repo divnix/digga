@@ -9,48 +9,14 @@
 , ...
 }:
 let
-  inherit (lib.flk) recImport;
+  inherit (lib.flk) recImport nixosSystemExtended;
   inherit (builtins) attrValues removeAttrs;
 
   unstableModules = [ ];
   addToDisabledModules = [ ];
 
-  libExt = lib.extend (
-    final: prev: {
-      nixosSystemExtended = { modules, ... } @ args:
-        lib.nixosSystem (args // {
-            modules =
-              let
-                isoConfig = (
-                  import (nixos + "/nixos/lib/eval-config.nix")
-                    (
-                      args // {
-                        modules = modules ++ [
-                          (nixos + "/nixos/modules/installer/cd-dvd/installation-cd-minimal-new-kernel.nix")
-                          ({ config, ... }: {
-                            isoImage.isoBaseName = "nixos-" + config.networking.hostName;
-                            networking.networkmanager.enable = lib.mkForce false; # confilcts with networking.wireless which might be slightly more useful on a stick
-                            networking.wireless.iwd.enable = lib.mkForce false; # confilcts with networking.wireless
-                          })
-                        ];
-                      }
-                    )
-                ).config;
-              in
-                modules ++ [
-                  {
-                    system.build = {
-                      iso = isoConfig.system.build.isoImage;
-                    };
-                  }
-                ];
-          }
-        );
-    }
-  );
-
   config = hostName:
-    libExt.nixosSystemExtended {
+    nixosSystemExtended {
       inherit system;
 
       specialArgs =
