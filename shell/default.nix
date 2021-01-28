@@ -12,7 +12,7 @@ let
 
   flk = pkgs.writeShellScriptBin "flk" ''
     if [[ -z "$1" ]]; then
-      echo "Usage: $(basename "$0") [ up | iso {host} | install {host} | {host} [switch|boot|test] | home {host} {user} [switch] ]"
+      echo "Usage: $(basename "$0") [ up | iso {host} | netboot-ramdisk {host} | netboot-ipxe {host} | install {host} | {host} [switch|boot|test] | home {host} {user} [switch] ]"
     elif [[ "$1" == "up" ]]; then
       mkdir -p $DEVSHELL_ROOT/up
       hostname=$(hostname)
@@ -25,6 +25,10 @@ let
     git add -f $DEVSHELL_ROOT/hosts/up-$hostname.nix
     elif [[ "$1" == "iso" ]]; then
       nix build $DEVSHELL_ROOT#nixosConfigurations.$2.${build}.iso "${"\${@:3}"}"
+    elif [[ "$1" == "netboot-ramdisk" ]]; then
+      nix build $DEVSHELL_ROOT#nixosConfigurations.$2.${build}.netbootRamdisk "${"\${@:3}"}"
+    elif [[ "$1" == "netboot-ipxe" ]]; then
+      nix build $DEVSHELL_ROOT#nixosConfigurations.$2.${build}.netbootIpxeScript "${"\${@:3}"}"
     elif [[ "$1" == "install" ]]; then
       sudo nixos-install --flake "$DEVSHELL_ROOT#$2" "${"\${@:3}"}"
     elif [[ "$1" == "home" ]]; then

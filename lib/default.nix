@@ -77,11 +77,24 @@ in
                   }
                 )
             ).config;
+
+            netbootConfig = (
+              import (nixos + "/nixos/lib/eval-config.nix")
+                (
+                  args // {
+                    modules = modules ++ [
+                      (nixos + "/nixos/modules/installer/netboot/netboot.nix")
+                    ];
+                  }
+                )
+            ).config;
           in
           modules ++ [
             {
               system.build = {
                 iso = isoConfig.system.build.isoImage;
+                netbootRamdisk = netbootConfig.system.build.netbootRamdisk;
+                netbootIpxeScript = netbootConfig.system.build.netbootIpxeScript;
               };
             }
           ];
