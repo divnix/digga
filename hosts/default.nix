@@ -43,11 +43,11 @@ let
             hardware.enableRedistributableFirmware = lib.mkDefault true;
 
             networking.hostName = hostName;
-            nix.nixPath = let path = toString ../.; in
-              [
-                "nixos-unstable=${master}"
-                "nixos=${nixos}"
-              ];
+            nix.nixPath = [
+              "nixos-unstable=${master}"
+              "nixos=${nixos}"
+              "nixpkgs=${nixos}"
+            ];
 
             nixpkgs = { inherit pkgs; };
 
