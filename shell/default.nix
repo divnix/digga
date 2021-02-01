@@ -69,7 +69,7 @@ pkgs.devshell.mkShell {
       # Format staged nix files.
       exec ${nixpkgs-fmt}/bin/nixpkgs-fmt \
         $(
-           ${git}/bin/git diff-index --name-only --cached $against -- \
+           ${git}/bin/git diff-index --name-only --cached $against --diff-filter d -- \
            | ${ripgrep}/bin/rg '\.nix$'
          )
     '';
