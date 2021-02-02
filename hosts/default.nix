@@ -9,14 +9,14 @@
 , ...
 }:
 let
-  inherit (lib.flk) recImport;
+  inherit (lib.flk) recImport nixosSystemExtended;
   inherit (builtins) attrValues removeAttrs;
 
   unstableModules = [ ];
   addToDisabledModules = [ ];
 
   config = hostName:
-    lib.nixosSystem {
+    nixosSystemExtended {
       inherit system;
 
       specialArgs =

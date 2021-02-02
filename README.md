@@ -170,10 +170,9 @@ nix build ./#homeConfigurations.NixOS.nixos.home.activationPackage
 
 ## Build an ISO
 
-You can make an ISO and customize it by modifying the [niximg](./hosts/niximg.nix)
-file:
+You can make an ISO out of any config:
 ```sh
-flk iso
+flk iso yourConfig # build an iso for hosts/yourConfig.nix
 ```
 
 ## Hardware Specific Profile for a Single Host
