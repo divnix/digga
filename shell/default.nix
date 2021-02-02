@@ -59,6 +59,8 @@ pkgs.devshell.mkShell {
   git.hooks = with pkgs; {
     enable = true;
     pre-commit.text = ''
+      #!/usr/bin/env bash
+
       if ${git}/bin/git rev-parse --verify HEAD >/dev/null 2>&1
       then
         against=HEAD
@@ -66,15 +68,25 @@ pkgs.devshell.mkShell {
         # Initial commit: diff against an empty tree object
         against=$(${git}/bin/git hash-object -t tree /dev/null)
       fi
-      # Redirect output to stderr.
-      exec 1>&2
+
+      diff="${git}/bin/git diff-index --name-only --cached $against --diff-filter d"
+
+      nix_files=($($diff -- '*.nix'))
+
+      all_files=($($diff))
 
       # Format staged nix files.
-      exec ${nixpkgs-fmt}/bin/nixpkgs-fmt \
-        $(
-           ${git}/bin/git diff-index --name-only --cached $against --diff-filter d -- \
-           | ${ripgrep}/bin/rg '\.nix$'
-         )
+      ${nixpkgs-fmt}/bin/nixpkgs-fmt "${"\${nix_files[@]}"}"
+
+      # check editorconfig
+      ${editorconfig-checker}/bin/editorconfig-checker -- "${"\${all_files[@]}"}"
+      if [[ $? != '0' ]]; then
+        {
+          echo -e "\nCode is not aligned with .editorconfig"
+          echo "Review the output and commit your fixes"
+        } >&2
+        exit 1
+      fi
     '';
   };
 
