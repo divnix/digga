@@ -41,6 +41,9 @@ directly imported from any host like so:
 }
 ```
 
+You can declare any combination of users and profiles that you wish, providing
+a nice abstraction, free from the idiosyncratic concerns of specific hardware.
+
 ## Users
 User declarations belong in the `users` directory.
 
