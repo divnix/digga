@@ -1,16 +1,22 @@
 { lib, profiles }:
 let
   inherit (builtins) mapAttrs isFunction;
-  all =
+
+  allProfiles =
     let
       filtered = lib.filterAttrs (n: _: n != "core") profiles;
     in
     lib.collect isFunction filtered;
+
+  allUsers = lib.collect isFunction users;
+
+  users = lib.flk.defaultImports (toString ../users);
 in
 with profiles;
 mapAttrs (_: v: lib.flk.profileMap v)
+  # define your own suites below
   rec {
-    work = [ develop virt ];
+    work = [ develop virt users.nixos users.root ];
 
     graphics = work ++ [ graphical ];
 
@@ -24,5 +30,5 @@ mapAttrs (_: v: lib.flk.profileMap v)
 
     goPlay = play ++ [ laptop ];
   } // {
-  inherit all;
+  inherit allProfiles allUsers;
 }

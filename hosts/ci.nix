@@ -1,6 +1,6 @@
 { suites, ... }:
 {
-  imports = [ ../users/nixos ../users/root ] ++ suites.all;
+  imports = with suites; allProfiles ++ allUsers;
 
   security.mitigations.acceptRisk = true;
 
