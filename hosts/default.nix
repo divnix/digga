@@ -9,8 +9,11 @@
 , ...
 }:
 let
-  inherit (lib.flk) recImport nixosSystemExtended;
+  inherit (lib.flk) recImport nixosSystemExtended defaultImports;
   inherit (builtins) attrValues removeAttrs;
+
+  profiles = defaultImports (toString ../profiles);
+  suites = import ../profiles/suites.nix { inherit lib profiles; };
 
   unstableModules = [ ];
   addToDisabledModules = [ ];
@@ -21,13 +24,14 @@ let
 
       specialArgs =
         {
+          inherit suites;
           unstableModulesPath = "${master}/nixos/modules";
           hardware = nixos-hardware.nixosModules;
         };
 
       modules =
         let
-          core = self.nixosModules.profiles.core;
+          core = profiles.core.default;
 
           modOverrides = { config, unstableModulesPath, ... }: {
             disabledModules = unstableModules ++ addToDisabledModules;
@@ -63,7 +67,7 @@ let
 
           # Everything in `./modules/list.nix`.
           flakeModules =
-            attrValues (removeAttrs self.nixosModules [ "profiles" ]);
+            attrValues self.nixosModules;
 
         in
         flakeModules ++ [

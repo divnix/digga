@@ -1,6 +1,5 @@
 { config, lib, pkgs, ... }:
 let inherit (lib) fileContents;
-
 in
 {
   nix.package = pkgs.nixFlakes;

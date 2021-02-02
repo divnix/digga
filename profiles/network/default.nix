@@ -1,3 +1,3 @@
-{
-  imports = [ ./networkmanager ./adblocking.nix ];
+{ ... }: {
+  imports = [ ./networkmanager ./adblocking ];
 }
