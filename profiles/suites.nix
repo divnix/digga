@@ -24,7 +24,7 @@ mapAttrs (_: v: lib.flk.profileMap v)
 
     play = graphics ++ [
       graphical.games
-      torrent
+      network.torrent
       misc.disable-mitigations
     ];
 
