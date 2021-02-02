@@ -31,6 +31,8 @@ c.qt.args = [
 #   - ask
 c.content.geolocation = False
 
+c.content.pdfjs = True
+
 # Value to send in the `DNT` header. When this is set to true,
 # qutebrowser asks websites to not track your identity. If set to null,
 # the DNT header is not sent at all.
