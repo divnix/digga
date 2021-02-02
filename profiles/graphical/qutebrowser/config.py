@@ -2,8 +2,8 @@
 #   qute://help/configuring.html
 #   qute://help/settings.html
 
-# Uncomment this to still load settings configured via autoconfig.yml
-# config.load_autoconfig()
+# Disable autoconfig
+config.load_autoconfig(False)
 
 # Require a confirmation before quitting the application.
 # Type: ConfirmQuit
@@ -31,6 +31,8 @@ c.qt.args = [
 #   - ask
 c.content.geolocation = False
 
+c.content.pdfjs = True
+
 # Value to send in the `DNT` header. When this is set to true,
 # qutebrowser asks websites to not track your identity. If set to null,
 # the DNT header is not sent at all.
@@ -44,10 +46,6 @@ c.content.canvas_reading = False
 c.content.dns_prefetch = True
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
-
-# Enable host blocking.
-# Type: Bool
-c.content.host_blocking.enabled = False
 
 # Allow JavaScript to read from or write to the clipboard. With
 # QtWebEngine, writing the clipboard as response to a user interaction
@@ -241,6 +239,10 @@ c.url.searchengines = {
 c.url.start_pages = ['https://nixos.org/nixos/manual/options.html']
 
 c.hints.chars = "asdfghjklvbcntyruewom"
+
+c.colors.webpage.darkmode.enabled = True
+
+c.colors.webpage.prefers_color_scheme_dark = True
 
 # Font color for hints.
 # Type: QssColor

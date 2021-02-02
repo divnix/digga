@@ -46,7 +46,7 @@ in
     systemPackages = with pkgs; [
       bat
       bzip2
-      devshell
+      devshell.cli
       exa
       gitAndTools.hub
       gzip

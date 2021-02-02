@@ -24,7 +24,7 @@ in
     (final: prev: {
       # wrapper to specify config file
       qute = prev.writeShellScriptBin "qute" ''
-        QT_QPA_PLATFORMTHEME= exec ${final.qutebrowser}/bin/qutebrowser -C /etc/xdg/qutebrowser/config.py "$@"
+        QUTE_DARKMODE_VARIANT=qt_515_2 QT_QPA_PLATFORMTHEME= exec ${final.qutebrowser}/bin/qutebrowser -C /etc/xdg/qutebrowser/config.py "$@"
       '';
     })
   ];

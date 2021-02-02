@@ -11,28 +11,31 @@ let
   }).config.system.build;
 
   flk = pkgs.writeShellScriptBin "flk" ''
+    system="$(nix eval --impure --expr builtins.currentSystem)"
+    system="${"\${system//\\\"/"}}"
+
     if [[ -z "$1" ]]; then
-      echo "Usage: $(basename "$0") [ up | iso {host} | netboot-ramdisk {host} | netboot-ipxe {host} | install {host} | {host} [switch|boot|test] | home {host} {user} [switch] ]"
+      echo "Usage: $(basename $0) [ up | (iso|netboot-ramdisk|netboot-ipxe) {host} | install {host} | {host} [switch|boot|test] | home {host} {user} [switch] ]"
     elif [[ "$1" == "up" ]]; then
-      mkdir -p $DEVSHELL_ROOT/up
-      hostname=$(hostname)
-      nixos-generate-config --dir $DEVSHELL_ROOT/up/$hostname
+      mkdir -p "$DEVSHELL_ROOT/up"
+      hostname="$(hostname)"
+      nixos-generate-config --dir "$DEVSHELL_ROOT/up/$hostname"
       echo \
       "{
       imports = [ ../up/$hostname/configuration.nix ];
-    }" > $DEVSHELL_ROOT/hosts/up-$hostname.nix
-    git add -f $DEVSHELL_ROOT/up/$hostname
-    git add -f $DEVSHELL_ROOT/hosts/up-$hostname.nix
+    }" > "$DEVSHELL_ROOT/hosts/up-$hostname.nix"
+    git add -f "$DEVSHELL_ROOT/up/$hostname"
+    git add -f "$DEVSHELL_ROOT/hosts/up-$hostname.nix"
     elif [[ "$1" == "iso" ]]; then
-      nix build $DEVSHELL_ROOT#nixosConfigurations.$2.${build}.iso "${"\${@:3}"}"
+      nix build "$DEVSHELL_ROOT#nixosConfigurations.$2.${build}.iso" "${"\${@:3}"}"
     elif [[ "$1" == "netboot-ramdisk" ]]; then
-      nix build $DEVSHELL_ROOT#nixosConfigurations.$2.${build}.netbootRamdisk "${"\${@:3}"}"
+      nix build "$DEVSHELL_ROOT#nixosConfigurations.$2.${build}.netbootRamdisk" "${"\${@:3}"}"
     elif [[ "$1" == "netboot-ipxe" ]]; then
-      nix build $DEVSHELL_ROOT#nixosConfigurations.$2.${build}.netbootIpxeScript "${"\${@:3}"}"
+      nix build "$DEVSHELL_ROOT#nixosConfigurations.$2.${build}.netbootIpxeScript" "${"\${@:3}"}"
     elif [[ "$1" == "install" ]]; then
       sudo nixos-install --flake "$DEVSHELL_ROOT#$2" "${"\${@:3}"}"
     elif [[ "$1" == "home" ]]; then
-      nix build ./#hmActivationPackages.$2.$3
+      nix build "./#hmActivationPackages.$system.$2.$3"  "${"\${@:4}"}"
       if [[ "$4" == "switch" ]]; then
         ./result/activate && unlink result
       fi
@@ -60,6 +63,8 @@ pkgs.devshell.mkShell {
   git.hooks = with pkgs; {
     enable = true;
     pre-commit.text = ''
+      #!/usr/bin/env bash
+
       if ${git}/bin/git rev-parse --verify HEAD >/dev/null 2>&1
       then
         against=HEAD
@@ -67,15 +72,25 @@ pkgs.devshell.mkShell {
         # Initial commit: diff against an empty tree object
         against=$(${git}/bin/git hash-object -t tree /dev/null)
       fi
-      # Redirect output to stderr.
-      exec 1>&2
+
+      diff="${git}/bin/git diff-index --name-only --cached $against --diff-filter d"
+
+      nix_files=($($diff -- '*.nix'))
+
+      all_files=($($diff))
 
       # Format staged nix files.
-      exec ${nixpkgs-fmt}/bin/nixpkgs-fmt \
-        $(
-           ${git}/bin/git diff-index --name-only --cached $against -- \
-           | ${ripgrep}/bin/rg '\.nix$'
-         )
+      ${nixpkgs-fmt}/bin/nixpkgs-fmt "${"\${nix_files[@]}"}"
+
+      # check editorconfig
+      ${editorconfig-checker}/bin/editorconfig-checker -- "${"\${all_files[@]}"}"
+      if [[ $? != '0' ]]; then
+        {
+          echo -e "\nCode is not aligned with .editorconfig"
+          echo "Review the output and commit your fixes"
+        } >&2
+        exit 1
+      fi
     '';
   };
 

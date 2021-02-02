@@ -1,9 +1,9 @@
-{ lib, nixos, ... }:
+{ nixos, ... }:
 let
   inherit (builtins) attrNames attrValues isAttrs readDir listToAttrs mapAttrs;
 
-  inherit (lib) fold filterAttrs hasSuffix mapAttrs' nameValuePair removeSuffix
-    recursiveUpdate genAttrs nixosSystem;
+  inherit (nixos.lib) fold filterAttrs hasSuffix mapAttrs' nameValuePair removeSuffix
+    recursiveUpdate genAttrs nixosSystem mkForce;
 
   # mapFilterAttrs ::
   #   (name -> value -> bool )
@@ -56,50 +56,41 @@ in
       (readDir dir);
 
   nixosSystemExtended = { modules, ... } @ args:
-    nixosSystem (
-      args // {
-        modules =
-          let
-            isoConfig = (
-              import (nixos + "/nixos/lib/eval-config.nix")
-                (
-                  args // {
-                    modules = modules ++ [
-                      (nixos + "/nixos/modules/installer/cd-dvd/installation-cd-minimal-new-kernel.nix")
-                      (
-                        { config, ... }: {
-                          isoImage.isoBaseName = "nixos-" + config.networking.hostName;
-                          networking.networkmanager.enable = lib.mkForce false; # confilcts with networking.wireless which might be slightly more useful on a stick
-                          networking.wireless.iwd.enable = lib.mkForce false; # confilcts with networking.wireless
-                        }
-                      )
-                    ];
-                  }
-                )
-            ).config;
-
-            netbootConfig = (
-              import (nixos + "/nixos/lib/eval-config.nix")
-                (
-                  args // {
-                    modules = modules ++ [
-                      (nixos + "/nixos/modules/installer/netboot/netboot.nix")
-                    ];
-                  }
-                )
-            ).config;
-          in
-          modules ++ [
-            {
-              system.build = {
-                iso = isoConfig.system.build.isoImage;
-                netbootRamdisk = netbootConfig.system.build.netbootRamdisk;
-                netbootIpxeScript = netbootConfig.system.build.netbootIpxeScript;
-              };
-            }
-          ];
-      }
-    );
+    nixosSystem (args // {
+      modules =
+        let
+          modpath = "nixos/modules";
+          cd = "installer/cd-dvd/installation-cd-minimal-new-kernel.nix";
+          netboot = "installer/netboot/netboot.nix";
+          isoConfig = (nixosSystem
+            (args // {
+              modules = modules ++ [
+                "${nixos}/${modpath}/${cd}"
+                ({ config, ... }: {
+                  isoImage.isoBaseName = "nixos-" + config.networking.hostName;
+                  # confilcts with networking.wireless which might be slightly
+                  # more useful on a stick
+                  networking.networkmanager.enable = mkForce false;
+                  # confilcts with networking.wireless
+                  networking.wireless.iwd.enable = mkForce false;
+                })
+              ];
+            })).config;
+          netbootConfig = (nixosSystem
+            (args // {
+              modules = modules ++ [
+                "${nixos}/${modpath}/${netboot}"
+              ];
+            })).config;
+        in
+        modules ++ [{
+          system.build = {
+            iso = isoConfig.system.build.isoImage;
+            netbootRamdisk = netbootConfig.system.build.netbootRamdisk;
+            netbootIpxeScript = netbootConfig.system.build.netbootIpxeScript;
+          };
+        }];
+    });
 
   nixosModules =
     let
@@ -119,14 +110,12 @@ in
       (recursiveUpdate cachixAttrs modulesAttrs)
       profilesAttrs;
 
-  genHomeActivationPackages = hmConfigs: {
-    hmActivationPackages =
-      builtins.mapAttrs
-        (_: x: builtins.mapAttrs
-          (_: cfg: cfg.home.activationPackage)
-          x)
-        hmConfigs;
-  };
+  genHomeActivationPackages = hmConfigs:
+    mapAttrs
+      (_: x: mapAttrs
+        (_: cfg: cfg.home.activationPackage)
+        x)
+      hmConfigs;
 
   genPackages = { self, pkgs }:
     let

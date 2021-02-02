@@ -5,14 +5,17 @@ let
 
   packages = import ../default.nix;
 
-  shell = recurseIntoAttrs default.devShell.x86_64-linux;
+  shell = recurseIntoAttrs {
+    inherit (default.devShell)
+      i686-linux x86_64-linux;
+  };
 
-  # failing on hercules-ci, probably until nix is updated
-  # ci = recurseIntoAttrs
-  #   default.nixosConfigurations.ci.config.system.build.toplevel;
+  ci = recurseIntoAttrs {
+    nixos = default.nixosConfigurations.ci.config.system.build.toplevel;
+  };
 in
 {
-  inherit shell;
+  inherit shell ci;
   # platforms supported by our hercules-ci agent
   inherit (packages)
     i686-linux
