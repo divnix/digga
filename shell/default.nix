@@ -11,27 +11,27 @@ let
   }).config.system.build;
 
   flk = pkgs.writeShellScriptBin "flk" ''
-    system=$(nix eval --impure --expr "builtins.currentSystem")
-    system=${"\${system//\\\"/"}}
+    system="$(nix eval --impure --expr builtins.currentSystem)"
+    system="${"\${system//\\\"/"}}"
 
     if [[ -z "$1" ]]; then
-      echo "Usage: $(basename "$0") [ up | iso {host} | install {host} | {host} [switch|boot|test] | home {host} {user} [switch] ]"
+      echo "Usage: $(basename $0) [ up | iso {host} | install {host} | {host} [switch|boot|test] | home {host} {user} [switch] ]"
     elif [[ "$1" == "up" ]]; then
-      mkdir -p $DEVSHELL_ROOT/up
-      hostname=$(hostname)
-      nixos-generate-config --dir $DEVSHELL_ROOT/up/$hostname
+      mkdir -p "$DEVSHELL_ROOT/up"
+      hostname="$(hostname)"
+      nixos-generate-config --dir "$DEVSHELL_ROOT/up/$hostname"
       echo \
       "{
       imports = [ ../up/$hostname/configuration.nix ];
-    }" > $DEVSHELL_ROOT/hosts/up-$hostname.nix
-    git add -f $DEVSHELL_ROOT/up/$hostname
-    git add -f $DEVSHELL_ROOT/hosts/up-$hostname.nix
+    }" > "$DEVSHELL_ROOT/hosts/up-$hostname.nix"
+    git add -f "$DEVSHELL_ROOT/up/$hostname"
+    git add -f "$DEVSHELL_ROOT/hosts/up-$hostname.nix"
     elif [[ "$1" == "iso" ]]; then
-      nix build $DEVSHELL_ROOT#nixosConfigurations.$2.${build}.iso "${"\${@:3}"}"
+      nix build "$DEVSHELL_ROOT#nixosConfigurations.$2.${build}.iso" "${"\${@:3}"}"
     elif [[ "$1" == "install" ]]; then
       sudo nixos-install --flake "$DEVSHELL_ROOT#$2" "${"\${@:3}"}"
     elif [[ "$1" == "home" ]]; then
-      nix build ./#hmActivationPackages."$system".$2.$3 "${"\${@:4}"}"
+      nix build "./#hmActivationPackages.$system.$2.$3"  "${"\${@:4}"}"
       if [[ "$4" == "switch" ]]; then
         ./result/activate && unlink result
       fi
