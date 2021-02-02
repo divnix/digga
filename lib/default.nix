@@ -73,14 +73,12 @@ in
       (recursiveUpdate cachixAttrs modulesAttrs)
       profilesAttrs;
 
-  genHomeActivationPackages = hmConfigs: {
-    hmActivationPackages =
-      builtins.mapAttrs
-        (_: x: builtins.mapAttrs
-          (_: cfg: cfg.home.activationPackage)
-          x)
-        hmConfigs;
-  };
+  genHomeActivationPackages = hmConfigs:
+    mapAttrs
+      (_: x: mapAttrs
+        (_: cfg: cfg.home.activationPackage)
+        x)
+      hmConfigs;
 
   genPackages = { self, pkgs }:
     let
