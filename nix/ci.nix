@@ -11,7 +11,7 @@ let
   };
 
   ci = recurseIntoAttrs {
-    nixos = default.nixosConfigurations.ci.config.system.build.toplevel;
+    nixos = default.nixosConfigurations.NixOS.config.system.build.ci;
   };
 in
 {

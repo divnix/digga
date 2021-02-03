@@ -63,7 +63,11 @@ let
             system.configurationRevision = lib.mkIf (self ? rev) self.rev;
           };
 
-          local = import "${toString ./.}/${hostName}.nix";
+          local = {
+            require = [
+              (import "${toString ./.}/${hostName}.nix")
+            ];
+          };
 
           # Everything in `./modules/list.nix`.
           flakeModules =

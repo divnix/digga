@@ -1,7 +1,7 @@
 { nixos, ... }:
 let
   inherit (builtins) attrNames attrValues isAttrs readDir listToAttrs mapAttrs
-    pathExists;
+    pathExists filter;
 
   inherit (nixos.lib) fold filterAttrs hasSuffix mapAttrs' nameValuePair removeSuffix
     recursiveUpdate genAttrs nixosSystem mkForce;
@@ -76,6 +76,27 @@ in
         let
           modpath = "nixos/modules";
           cd = "installer/cd-dvd/installation-cd-minimal-new-kernel.nix";
+          ciConfig =
+            (nixosSystem (args // {
+              modules =
+                let
+                  # remove host module
+                  modules' = filter (x: ! x ? require) modules;
+                in
+                modules' ++ [
+                  ({ suites, ... }: {
+                    imports = with suites;
+                      allProfiles ++ allUsers;
+                    security.mitigations.acceptRisk = true;
+
+                    boot.loader.systemd-boot.enable = true;
+                    boot.loader.efi.canTouchEfiVariables = true;
+
+                    fileSystems."/" = { device = "/dev/disk/by-label/nixos"; };
+                  })
+                ];
+            })).config;
+
           isoConfig = (nixosSystem
             (args // {
               modules = modules ++ [
@@ -94,6 +115,7 @@ in
         modules ++ [{
           system.build = {
             iso = isoConfig.system.build.isoImage;
+            ci = ciConfig.system.build.toplevel;
           };
         }];
     });
