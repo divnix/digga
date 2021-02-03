@@ -12,6 +12,7 @@ let
 
   ci = recurseIntoAttrs {
     nixos = default.nixosConfigurations.NixOS.config.system.build.ci;
+    iso = default.nixosConfigurations.NixOS.config.system.build.iso;
   };
 in
 {
