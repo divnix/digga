@@ -29,6 +29,7 @@ in
       moreutils
       nmap
       ripgrep
+      tealdeer
       utillinux
       whois
     ];
