@@ -1,10 +1,6 @@
+{ suites, ... }:
 {
-  imports =
-    let
-      profiles = builtins.filter (n: n != ../profiles/core)
-        (import ../profiles/list.nix);
-    in
-    profiles ++ [ ../users/nixos ../users/root ];
+  imports = with suites; allProfiles ++ allUsers;
 
   security.mitigations.acceptRisk = true;
 

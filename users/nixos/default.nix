@@ -1,6 +1,5 @@
+{ ... }:
 {
-  imports = [ ../../profiles/develop ];
-
   home-manager.users.nixos = {
     imports = [ ../profiles/git ../profiles/direnv ];
   };

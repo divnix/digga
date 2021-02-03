@@ -8,8 +8,8 @@ See [`hosts/default.nix`](hosts/default.nix) for the implementation.
 
 ## Profiles
 A profile is any directory under [profiles](profiles) containing a `default.nix`
-defining a valid NixOS module, with the added restriction that no new
-declarations to the `options` _or_ `config` attributes are allowed
+defining a function that returns a valid NixOS module, with the added restriction
+that no new declarations to the `options` _or_ `config` attributes are allowed
 (use [modules](modules) instead). Their purpose is to provide abstract
 expressions suitable for reuse by multiple deployments. They are perhaps _the_
 key mechanism by which we keep this repo maintainable.
@@ -30,9 +30,19 @@ profile should be independent of its parent. i.e:
 It is okay for profiles to depend on other profiles so long as they are
 explicitly loaded via `imports`.
 
-Optionally, you may choose to export your profiles via the flake output. If
-you include it in the list defined in [profiles/list.nix](profiles/list.nix),
-it will be available to other flakes via `nixosModules.profiles`.
+## Suites
+
+[Suites](./profiles/suites.nix) are simple collections of profiles that can be
+directly imported from any host like so:
+```
+{ suites, ... }:
+{
+  imports = suites.mySuite;
+}
+```
+
+You can declare any combination of users and profiles that you wish, providing
+a nice abstraction, free from the idiosyncratic concerns of specific hardware.
 
 ## Users
 User declarations belong in the `users` directory.

@@ -1,6 +1,7 @@
 { nixos, ... }:
 let
-  inherit (builtins) attrNames attrValues isAttrs readDir listToAttrs mapAttrs;
+  inherit (builtins) attrNames attrValues isAttrs readDir listToAttrs mapAttrs
+    pathExists;
 
   inherit (nixos.lib) fold filterAttrs hasSuffix mapAttrs' nameValuePair removeSuffix
     recursiveUpdate genAttrs nixosSystem mkForce;
@@ -38,11 +39,25 @@ let
     in
     map fullPath (attrNames (readDir overlayDir));
 
+  defaultImports = dir:
+    let
+      filtered = filterAttrs
+        (n: v: v == "directory" && pathExists "${dir}/${n}/default.nix")
+        (readDir dir);
+    in
+    mapAttrs
+      (n: v: {
+        default = import "${dir}/${n}/default.nix";
+      } // defaultImports "${dir}/${n}")
+      filtered;
+
 in
 {
-  inherit mapFilterAttrs genAttrs' pkgImport pathsToImportedAttrs;
+  inherit defaultImports mapFilterAttrs genAttrs' pkgImport pathsToImportedAttrs;
 
   overlays = pathsToImportedAttrs overlayPaths;
+
+  profileMap = map (profile: profile.default);
 
   recImport = { dir, _import ? base: import "${dir}/${base}.nix" }:
     mapFilterAttrs
@@ -93,13 +108,8 @@ in
       moduleList = import ../modules/list.nix;
       modulesAttrs = pathsToImportedAttrs moduleList;
 
-      # profiles
-      profilesList = import ../profiles/list.nix;
-      profilesAttrs = { profiles = pathsToImportedAttrs profilesList; };
     in
-    recursiveUpdate
-      (recursiveUpdate cachixAttrs modulesAttrs)
-      profilesAttrs;
+    recursiveUpdate cachixAttrs modulesAttrs;
 
   genHomeActivationPackages = hmConfigs:
     mapAttrs
