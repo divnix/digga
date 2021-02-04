@@ -9,6 +9,12 @@ in
   users.defaultUserShell = pkgs.zsh;
 
   environment = {
+    etc.zshrc.text = lib.mkBefore ''
+      if [[ -r "${"\${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-\${(%):-%n}"}.zsh" ]]; then
+        source "${"\${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-\${(%):-%n}"}.zsh"
+      fi
+    '';
+
     sessionVariables =
       let fd = "${pkgs.fd}/bin/fd -H";
       in
@@ -85,9 +91,17 @@ in
       "promptsubst"
     ];
 
-    promptInit = ''
-      eval "$(${pkgs.starship}/bin/starship init zsh)"
-    '';
+    promptInit =
+      let
+        p10k = pkgs.writeText "pk10.zsh" (fileContents ./p10k.zsh);
+        p10k-linux = pkgs.writeText "pk10-linux.zsh" (fileContents ./p10k-linux.zsh);
+      in
+      ''
+        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+        [[ -z $DISPLAY && -z $WAYLAND_DISPLAY ]] \
+          && source ${p10k-linux} \
+          || source ${p10k}
+      '';
 
     interactiveShellInit =
       let
