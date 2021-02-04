@@ -27,7 +27,10 @@ let
   # and imported content of the file as value.
   #
   pathsToImportedAttrs = paths:
-    genAttrs' paths (path: {
+    let
+      paths' = filter (hasSuffix ".nix") paths;
+    in
+    genAttrs' paths' (path: {
       name = removeSuffix ".nix" (baseNameOf path);
       value = import path;
     });
@@ -87,7 +90,6 @@ in
                   ({ suites, ... }: {
                     imports = with suites;
                       allProfiles ++ allUsers;
-                    security.mitigations.acceptRisk = true;
 
                     boot.loader.systemd-boot.enable = true;
                     boot.loader.efi.canTouchEfiVariables = true;
