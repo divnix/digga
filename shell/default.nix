@@ -76,7 +76,8 @@ pkgs.devshell.mkShell {
       all_files=($($diff))
 
       # Format staged nix files.
-      ${nixpkgs-fmt}/bin/nixpkgs-fmt "${"\${nix_files[@]}"}"
+      ${nixpkgs-fmt}/bin/nixpkgs-fmt "${"\${nix_files[@]}"}" \
+      && git add "${"\${nix_files[@]}"}"
 
       # check editorconfig
       ${editorconfig-checker}/bin/editorconfig-checker -- "${"\${all_files[@]}"}"
