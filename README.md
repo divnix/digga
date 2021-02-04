@@ -83,24 +83,31 @@ From within a flake:
 
 # Setup
 There are a few ways to get up and running. You can fork this repo or use it as
-a template. There is a [bare branch][bare] if you want to start with a
-completely empty template and make your own profiles from scratch. The only
-hard requirement is nix itself. The `shell.nix` will pull in everything else.
+a template. There is a [community][community] branch with a bunch of useful
+profiles, modules, overlays, etc, already configured for you to use. Please
+consider adding your own expressions there if you feel they would be helpful
+for others.
+
+The only hard requirement is nix itself. The `shell.nix` will pull in
+everything else.
 
 ## Flake Templates
 If you already have [nix-command][nix-command] setup you can:
 ```sh
-# for standard template
+# for the core template with no profiles
 nix flake new -t "github:nrdxp/nixflk" flk
 
-# for bare template
-nix flake new -t "github:nrdxp/nixflk/bare" flk
+# for the community template
+nix flake new -t "github:nrdxp/nixflk/community" flk
 ```
 
 ## Nix Only
 Once you have this repo, you'll want to __move or symlink__ it to `/etc/nixos`
 for ease of use. Once inside:
 ```sh
+# probably want to use a separate branch for you config
+git checkout -b my-branch
+
 # This will setup nix-command and pull in the needed tools
 nix-shell # or `direnv allow` if you prefer
 
@@ -141,7 +148,7 @@ outputs as homeConfigurations and the activation packages in hmActivationPackage
 This allows you to just build the home-manager environment without the rest of the
 system configuration. The feature is useful on systems without nixos or root access.
 
-Lets say you want to activate the home configuration for the user `nixos` in the 
+Lets say you want to activate the home configuration for the user `nixos` in the
 host `NixOS`.
 
 With the flk script:
@@ -155,19 +162,6 @@ flk home NixOS nixos
 flk home NixOS nixos switch
 ```
 
-This can also be done manually:
-```sh
-
-# With hmActivationPackages, what the flk script uses
-nix build ./#hmActivationPackages.NixOS.nixos
-
-# Or with homeConfigurations, 
-nix build ./#homeConfigurations.NixOS.nixos.home.activationPackage
-# this is hard to debug though, due to nix build's fallback to packages
-
-# The configuration can then be activated like before
-```
-
 ## Build an ISO
 
 You can make an ISO out of any config:
@@ -177,8 +171,12 @@ flk iso yourConfig # build an iso for hosts/yourConfig.nix
 
 ## Hardware Specific Profile for a Single Host
 
-Find out the fitting [nixos-hardware profile](https://github.com/NixOS/nixos-hardware#list-of-profiles) for the hardware of your host, then find the corresponding modules in the [flake](https://github.com/NixOS/nixos-hardware/blob/master/flake.nix) and add it to the configuration.
-For example for a Dell XPS 13 9370 the host configuration would contain:
+Find out the fitting
+[nixos-hardware profile](https://github.com/NixOS/nixos-hardware#list-of-profiles)
+for the hardware of your host, then find the corresponding modules in the
+[flake](https://github.com/NixOS/nixos-hardware/blob/master/flake.nix) and add
+it to the configuration. For example for a Dell XPS 13 9370 the host
+configuration would contain:
 ```nix
 {
   imports = [ hardware.dell-xps-13-9370 ... ];
@@ -220,7 +218,7 @@ included here, which may be derivative works of the packages to
 which they apply. The aforementioned artifacts are all covered by the
 licenses of the respective packages.
 
-[bare]: https://github.com/nrdxp/nixflk/tree/bare
+[community]: https://github.com/nrdxp/nixflk/tree/community
 [direnv]: https://direnv.net
 [home-manager]: https://github.com/nix-community/home-manager
 [nix-command]: https://nixos.wiki/wiki/Nix_command
