@@ -5,7 +5,7 @@
 , pkgs
 , self
 , system
-, externModules
+, extern
 , ...
 }:
 let
@@ -14,9 +14,6 @@ let
 
   profiles = defaultImports (toString ../profiles);
   suites = import ../profiles/suites.nix { inherit lib profiles; };
-
-  unstableModules = [ ];
-  addToDisabledModules = [ ];
 
   config = hostName:
     nixosSystemExtended {
@@ -33,12 +30,17 @@ let
         let
           core = profiles.core.default;
 
-          modOverrides = { config, unstableModulesPath, ... }: {
-            disabledModules = unstableModules ++ addToDisabledModules;
-            imports = map
-              (path: "${unstableModulesPath}/${path}")
-              unstableModules;
-          };
+          modOverrides = { config, unstableModulesPath, ... }:
+            let
+              unstable = import ../unstable;
+              inherit (unstable) modules disabledModules;
+            in
+            {
+              disabledModules = modules ++ disabledModules;
+              imports = map
+                (path: "${unstableModulesPath}/${path}")
+                modules;
+            };
 
           global = {
             home-manager.useGlobalPkgs = true;
@@ -80,7 +82,7 @@ let
           global
           local
           modOverrides
-        ] ++ externModules;
+        ] ++ extern.modules;
 
     };
 

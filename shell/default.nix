@@ -11,9 +11,6 @@ let
   }).config.system.build;
 
   flk = pkgs.writeShellScriptBin "flk" ''
-    system="$(nix eval --impure --expr builtins.currentSystem)"
-    system="${"\${system//\\\"/"}}"
-
     if [[ -z "$1" ]]; then
       echo "Usage: $(basename $0) [ up | iso {host} | install {host} | {host} [switch|boot|test] | home {host} {user} [switch] ]"
     elif [[ "$1" == "up" ]]; then
@@ -31,7 +28,7 @@ let
     elif [[ "$1" == "install" ]]; then
       sudo nixos-install --flake "$DEVSHELL_ROOT#$2" "${"\${@:3}"}"
     elif [[ "$1" == "home" ]]; then
-      nix build "./#hmActivationPackages.$system.$2.$3"  "${"\${@:4}"}"
+      nix build "./#hmActivationPackages.$2.$3"  "${"\${@:4}"}"
       if [[ "$4" == "switch" ]]; then
         ./result/activate && unlink result
       fi
@@ -50,8 +47,6 @@ pkgs.devshell.mkShell {
     nixos-install
     nixos-generate-config
     nixos-enter
-    nixos-option
-    pre-commit
   ];
 
   env = { inherit name; };
