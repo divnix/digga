@@ -1,0 +1,58 @@
+# useful functions
+autoload -Uz zmv zcalc zargs url-quote-magic bracketed-paste-magic
+zle -N self-insert url-quote-magic
+zle -N bracketed-paste bracketed-paste-magic
+
+# tilde directories
+hash -d \
+  nixos=/etc/nixos \
+  dl=~/Downloads \
+  git=~/git
+
+hash -d \
+  github=~git/github.com \
+  gitlab=~git/gitlab.com
+
+
+# key binds
+bindkey -v '^?' backward-delete-char
+bindkey '^[OA' history-substring-search-up
+bindkey '^[OB' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
+# if in tmux launch skim in tmux pane
+[[ ${+TMUX} == 1 ]] \
+  && SKIM_TMUX=1
+
+#load compinit
+autoload -Uz compinit
+
+if [[ -f ~/.zcompdump ]]; then
+  typeset -i updated_at=$(date +'%j' -r ~/.zcompdump \
+    || stat -f '%Sm' -t '%j' ~/.zcompdump)
+
+  # save time if completion cache has been update recently
+  if [ $(date +'%j') != $updated_at ]; then
+    compinit -u
+  else
+    compinit -C
+  fi
+else
+  compinit -C
+fi
+
+# Case insens only when no case match; after all completions loaded
+zstyle ':completion:*' matcher-list \
+  "" 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+# Auto rehash for new binaries
+zstyle ':completion:*' rehash true
+
+
+# remove duplicates from paths
+typeset -U path
+typeset -U fpath
+
+# keep shell state frozen
+ttyctl -f

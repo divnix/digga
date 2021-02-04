@@ -1,0 +1,6 @@
+# pipe exa into PAGER with colors
+if [[ -t 1 && -n $PAGER ]]; then
+  @exa@/bin/exa --color=always $@ | $PAGER
+else
+  @exa@/bin/exa $@
+fi

@@ -16,7 +16,19 @@ with profiles;
 mapAttrs (_: v: lib.flk.profileMap v)
   # define your own suites below
   rec {
-    core = [ users.nixos users.root ];
+    work = [ develop virt users.nixos users.root ];
+
+    graphics = work ++ [ graphical ];
+
+    mobile = graphics ++ [ laptop ];
+
+    play = graphics ++ [
+      graphical.games
+      network.torrent
+      misc.disable-mitigations
+    ];
+
+    goPlay = play ++ [ laptop ];
   } // {
   inherit allProfiles allUsers;
 }

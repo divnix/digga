@@ -1,0 +1,12 @@
+RED='\033[0;31m'
+NC='\033[0m'
+
+# needs one arguement or exit
+[[ -n $2 || -z $1 ]] && {
+  print -u2 \
+    "${RED}error:${NC} takes exactly one package as an arguement"
+
+  return 1
+}
+
+nix profile install "nixpkgs#$1"

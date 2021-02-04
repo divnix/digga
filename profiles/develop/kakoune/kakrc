@@ -1,0 +1,104 @@
+hook global WinCreate ^[^*]+$ %{ add-highlighter window/ number-lines  }
+
+# colorscheme
+face global Information yellow,default
+face global MenuBackground black,white
+face global MenuForeground white,black
+face global comment white+d
+face global meta blue
+addhl global/ column 80 SecondaryCursor
+
+# convert tabs to spaces and cleanup trailing whitespace on save
+hook global BufWritePre ^[^*]+$ %{
+  try %{ execute-keys -draft \%@s\h+$<ret>d }
+}
+
+# use .editorconfig
+hook global WinCreate .* %{editorconfig-load}
+
+# useful mappings
+map global normal <a-q> ': delete-buffer<ret>'
+map global normal <c-s> ': write<ret>'
+map global normal <c-q> ': quit<ret>'
+map global normal <c-a-n> ': buffer-next<ret>'
+map global normal <c-a-p> ': buffer-previous<ret>'
+map global -docstring "comment line" user c ': comment-line<ret>'
+map global -docstring "comment block" user C ': comment-block<ret>'
+map -docstring "format buffer" global user f ': format<ret>'
+
+# splits just like vim using tmux
+define-command -params 0.. -file-completion \
+  -docstring "split tmux pane vertically" split \
+  %{ tmux-terminal-vertical kak -c %val{session} -e edit! %arg{@} }
+
+define-command -params 0.. -file-completion \
+  -docstring "split tmux pane horizontally" vsplit \
+  %{ tmux-terminal-horizontal kak -c %val{session} -e edit! %arg{@} }
+
+alias global sp split
+alias global vs vsplit
+
+# jj to leave insert mode
+hook global InsertChar j %{ try %{
+  exec -draft hH <a-k>jj<ret> d
+  exec <esc>
+}}
+
+set global ui_options ncurses_assistant=none
+set global tabstop 2
+set global indentwidth 2
+
+hook global InsertCompletionShow .* %{
+    try %{
+        # this command temporarily removes cursors preceded by whitespace;
+        # if there are no cursors left, it raises an error, does not
+        # continue to execute the mapping commands, and the error is eaten
+        # by the `try` command so no warning appears.
+        execute-keys -draft 'h<a-K>\h<ret>'
+        map window insert <tab> <c-n>
+        map window insert <s-tab> <c-p>
+    }
+}
+hook global InsertCompletionHide .* %{
+    unmap window insert <tab> <c-n>
+    unmap window insert <s-tab> <c-p>
+}
+
+try %{ require-module kak }
+add-highlighter shared/kakrc/code/if_else regex \b(if|else)\b 0:keyword
+
+# create an if for conditional parsing
+define-command -docstring "if <condition> <expression> [else [if <condition>] <expression>]: if statement that accepts shell-valid condition string" \
+if -params 2.. %{ evaluate-commands %sh{
+    while [ true ]; do
+        condition="[ $1 ]"
+        if [ -n "$3" ] && [ "$3" != "else" ]; then
+            printf "%s\n" "fail %{if: unknown operator '$3'}"
+        elif [ $# -eq 3 ]; then
+            printf "%s\n" "fail %{if: wrong argument count}"
+        elif eval $condition; then
+            [ -n "${2##*&*}" ] && arg="$2" || arg="$(printf '%s' "$2" | sed 's/&/&&/g')"
+            printf "%s\n" "evaluate-commands %& $arg &"
+        elif [ $# -eq 4 ]; then
+            [ -n "${4##*&*}" ] && arg="$4" || arg="$(printf '%s' "$4" | sed 's/&/&&/g')"
+            printf "%s\n" "evaluate-commands %& $arg &"
+        elif [ $# -gt 4 ]; then
+            if [ "$4" = "if" ]; then
+                shift 4
+                continue
+            else
+                printf "%s\n" "fail %{if: wrong argument count}"
+            fi
+        fi
+        exit
+    done
+}}
+
+# show git diff on sidebar if it git repository
+if %[ "$(command git status 2>/dev/null)" ] %{
+  hook global WinCreate .* %{ git show-diff }
+  hook global BufWritePost .* %{ git show-diff }
+  hook global ModeChange insert:normal %{ git show-diff }
+}
+
+hook global WinCreate .* %{ kakboard-enable  }

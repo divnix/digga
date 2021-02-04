@@ -5,7 +5,14 @@
 pkgs: final: prev:
 {
   inherit (pkgs)
-    manix;
+    dhall
+    discord
+    element-desktop
+    manix
+    nixpkgs-fmt
+    qutebrowser
+    signal-desktop
+    starship;
 
   haskellPackages = prev.haskellPackages.override {
     overrides = hfinal: hprev:

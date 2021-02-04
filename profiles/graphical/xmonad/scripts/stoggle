@@ -1,0 +1,45 @@
+#!/usr/bin/env zsh
+# variables for dzen2
+WIDTH=512
+WINDOW_HEIGHT=$( xdpyinfo \
+  | awk '$1 ~ /dimensions/ {split($2,arr,"x"); print int(arr[2])}' \
+)
+WINDOW_WIDTH=$( xdpyinfo \
+  | awk '$1 ~ /dimensions/ {split($2,arr,"x"); print int(arr[1])}' \
+)
+XPOS=$(( ( ${WINDOW_WIDTH} / 2 ) - ( ${WIDTH} / 2 ) ))
+YPOS=$((  ${WINDOW_HEIGHT} / 2 ))
+
+readonly WIDTH WINDOW_HEIGHT WINDOW_WIDTH XPOS YPOS
+
+# get current state of dpms
+xset -q \
+  | grep -Eo 'DPMS is (Enabled|Disabled)' \
+  | awk '{print $3}' \
+  | read dpms_state
+
+# function to call dzen2 with current state
+dzen2_dpms_state () {
+  local -r \
+    new_dpms_state=$1
+
+  print "Power Management ${new_dpms_state}" \
+    | dzen2 -fn "monospace" -p 2 -tw ${WIDTH} -x ${XPOS} -y ${YPOS}
+}
+
+  case $dpms_state in
+    Enabled)
+      xset -dpms
+      xset s off
+      dzen2_dpms_state "Disabled"
+      ;;
+    Disabled)
+      xset +dpms
+      xset s on
+      xset s 300
+      dzen2_dpms_state "Enabled"
+      ;;
+    *)
+      exit 1
+      ;;
+  esac
