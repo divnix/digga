@@ -15,8 +15,7 @@ Some key advantages include:
 * Systems defined under [hosts](./hosts) are automatically imported into
   `nixosConfigurations`, ready to deploy.
 * [Profiles](./profiles/list.nix) are a simple mechanism for using portable
-  code across machines, and are available to share via the
-  `nixosModules.profiles` output.
+  code across machines.
 * Defined [packages](./pkgs/default.nix) and
   [modules](./modules/list.nix), are automatically wired and available from
   anywhere. They are _also_ sharable via their respective flake outputs.
@@ -37,49 +36,6 @@ project should be considered _experimental_, until flakes become the default.
 Also, flakes are meant to deprecate nix-channels. It's recommended not to
 install any. If your really want them, they should work if you hook them into
 `NIX_PATH`.
-
-# Sharing
-One of the great benefits of flakes is the ability to easily share your user
-defined packages, modules and other nix expressions without having to merge
-anything upstream. In that spirit, everything defined in this flake is usable
-from other flakes. So even if you don't want to use this project as a template,
-you can still pull in any useful modules, packages or profiles defined here.
-
-From the command line:
-```sh
-# to see what this flake exports
-nix flake show "github:nrdxp/nixflk"
-
-# run an app
-nix run "github:nrdxp/nixflk#someApp"
-
-# start a dev shell for a given derivation
-nix develop "github:nrdxp/nixflk#somePackage"
-
-# a nix shell with the package in scope
-nix shell "github:nrdxp/nixflk#somePackage"
-```
-
-From within a flake:
-```nix
-{
-  inputs.nixflk.url = "github:nrdxp/nixflk";
-
-  outputs = { self, nixpkgs, nixflk, ... }:
-  {
-    nixosConfigurations.example = nixpkgs.lib.nixosSystem {
-      # ...
-        modules = [
-        nixflk.nixosModules.someModule
-        ({
-          nixpkgs.overlays = [ nixflk.overlay nixflk.overlays.someOverlay ];
-        })
-        # ...
-      ];
-    };
-  };
-}
-```
 
 # Setup
 There are a few ways to get up and running. You can fork this repo or use it as
@@ -138,6 +94,49 @@ They are placed in the git staging area automatically because they would be
 invisible to the flake otherwise, but it is best to move what you need from
 them directly into your hosts file and commit that instead.
 
+# Sharing
+One of the great benefits of flakes is the ability to easily share your user
+defined packages, modules and other nix expressions without having to merge
+anything upstream. In that spirit, everything defined in this flake is usable
+from other flakes. So even if you don't want to use this project as a template,
+you can still pull in any useful modules, packages or profiles defined here.
+
+From the command line:
+```sh
+# to see what this flake exports
+nix flake show "github:nrdxp/nixflk"
+
+# run an app
+nix run "github:nrdxp/nixflk#someApp"
+
+# start a dev shell for a given derivation
+nix develop "github:nrdxp/nixflk#somePackage"
+
+# a nix shell with the package in scope
+nix shell "github:nrdxp/nixflk#somePackage"
+```
+
+From within a flake:
+```nix
+{
+  inputs.nixflk.url = "github:nrdxp/nixflk";
+
+  outputs = { self, nixpkgs, nixflk, ... }:
+  {
+    nixosConfigurations.example = nixpkgs.lib.nixosSystem {
+      # ...
+        modules = [
+        nixflk.nixosModules.someModule
+        ({
+          nixpkgs.overlays = [ nixflk.overlay nixflk.overlays.someOverlay ];
+        })
+        # ...
+      ];
+    };
+  };
+}
+```
+
 ## Home Manager Integration
 The home-manager nixos module is available for each host. It is meant
 to be used in the user profiles, you can find an example in the nixos user profile
@@ -178,6 +177,7 @@ for the hardware of your host, then find the corresponding modules in the
 it to the configuration. For example for a Dell XPS 13 9370 the host
 configuration would contain:
 ```nix
+{ hardware, ... }:
 {
   imports = [ hardware.dell-xps-13-9370 ... ];
   ...
