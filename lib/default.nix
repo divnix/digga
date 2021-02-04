@@ -60,6 +60,34 @@ in
 
   overlays = pathsToImportedAttrs overlayPaths;
 
+  genPkgs = { self }:
+    let inherit (self) inputs;
+    in
+    (inputs.flake-utils.lib.eachDefaultSystem
+      (system:
+        let
+          extern = import ../extern { inherit inputs; };
+          unstable = pkgImport inputs.master [ ] system;
+          overrides = (import ../unstable).packages;
+
+          overlays = [
+            (overrides unstable)
+            self.overlay
+            (final: prev: {
+              lib = (prev.lib or { }) // {
+                inherit (nixos.lib) nixosSystem;
+                flk = self.lib;
+                utils = inputs.flake-utils.lib;
+              };
+            })
+          ]
+          ++ (attrValues self.overlays)
+          ++ extern.overlays;
+        in
+        { pkgs = pkgImport nixos overlays system; }
+      )
+    ).pkgs;
+
   profileMap = map (profile: profile.default);
 
   recImport = { dir, _import ? base: import "${dir}/${base}.nix" }:
@@ -137,7 +165,12 @@ in
     in
     recursiveUpdate cachixAttrs modulesAttrs;
 
-  genHomeActivationPackages = hmConfigs:
+  genHomeActivationPackages = { self }:
+    let hmConfigs =
+      builtins.mapAttrs
+        (_: config: config.config.home-manager.users)
+        self.nixosConfigurations;
+    in
     mapAttrs
       (_: x: mapAttrs
         (_: cfg: cfg.home.activationPackage)

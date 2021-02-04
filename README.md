@@ -19,7 +19,8 @@ Some key advantages include:
 * Defined [packages](./pkgs/default.nix) and
   [modules](./modules/list.nix), are automatically wired and available from
   anywhere. They are _also_ sharable via their respective flake outputs.
-* Easily [override](./pkgs/override.nix) packages from different nixpkgs versions.
+* Easily [override](./unstable/default.nix) packages from different nixpkgs
+  versions.
 * Keep [user](./users) configuration isolated and easily reusable by taking
   advantage of [user profiles](./users/profiles) and [home-manager][home-manager].
 * [Overlay](./overlays) files are automatically available and sharable.
