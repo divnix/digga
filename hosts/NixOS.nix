@@ -1,7 +1,7 @@
 { suites, ... }:
 {
   ### root password is empty by default ###
-  imports = suites.graphics;
+  imports = suites.core;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
