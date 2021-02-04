@@ -57,6 +57,7 @@ let
 
             nix.registry = {
               master.flake = master;
+              nixflk.flake = self;
               nixpkgs.flake = nixos;
             };
 
