@@ -19,12 +19,7 @@ let
     nixosSystemExtended {
       inherit system;
 
-      specialArgs =
-        {
-          inherit suites;
-          unstableModulesPath = "${master}/nixos/modules";
-          hardware = nixos-hardware.nixosModules;
-        };
+      specialArgs = extern.specialArgs // { inherit suites; };
 
       modules =
         let
