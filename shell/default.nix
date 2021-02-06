@@ -12,7 +12,7 @@ let
 
   flk = pkgs.writeShellScriptBin "flk" ''
     if [[ -z "$1" ]]; then
-      echo "Usage: $(basename $0) [ up | iso {host} | install {host} | {host} [switch|boot|test] | home {host} {user} [switch] ]"
+      echo "Usage: $(basename $0) [ up | get [core|community] {dest} | iso {host} | install {host} | {host} [switch|boot|test] | home {host} {user} [switch] ]"
     elif [[ "$1" == "up" ]]; then
       mkdir -p "$DEVSHELL_ROOT/up"
       hostname="$(hostname)"
@@ -32,6 +32,13 @@ let
       if [[ "$4" == "switch" ]]; then
         ./result/activate && unlink result
       fi
+    elif [[ "$1" == "get" ]]; then
+      if [[ "$2" == "core" || "$2" == "community" ]]; then
+        nix flake new -t "github:nrdxp/nixflk/$2" "${"\${3:-flk}"}"
+      else
+        echo "flk get [core|community] {dest}"
+        exit 1
+      fi
     else
       sudo nixos-rebuild --flake "$DEVSHELL_ROOT#$1" "${"\${@:2}"}"
     fi
@@ -47,6 +54,7 @@ pkgs.devshell.mkShell {
     nixos-install
     nixos-generate-config
     nixos-enter
+    mdbook
   ];
 
   env = { inherit name; };
