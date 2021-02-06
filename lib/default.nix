@@ -42,21 +42,37 @@ let
     in
     map fullPath (attrNames (readDir overlayDir));
 
-  defaultImports = dir:
+  /**
+  Synopsis: importDefaults _path_
+
+  Recursively import the subdirs of _path_ containing a default.nix.
+
+  Example:
+  let profiles = importDefaults ./profiles; in
+  assert profiles ? core.default; 0
+  **/
+  importDefaults = dir:
     let
-      filtered = filterAttrs
-        (n: v: v == "directory" && pathExists "${dir}/${n}/default.nix")
-        (readDir dir);
+      imports =
+        let
+          files = readDir dir;
+
+          p = n: v:
+            v == "directory"
+            && pathExists "${dir}/${n}/default.nix";
+        in
+        filterAttrs p files;
+
+      f = n: _:
+        { default = import "${dir}/${n}/default.nix"; }
+        // importDefaults "${dir}/${n}";
     in
-    mapAttrs
-      (n: v: {
-        default = import "${dir}/${n}/default.nix";
-      } // defaultImports "${dir}/${n}")
-      filtered;
+    mapAttrs f imports;
 
 in
 {
-  inherit defaultImports mapFilterAttrs genAttrs' pkgImport pathsToImportedAttrs;
+  inherit importDefaults mapFilterAttrs genAttrs' pkgImport
+    pathsToImportedAttrs;
 
   overlays = pathsToImportedAttrs overlayPaths;
 
