@@ -3,4 +3,6 @@ let
 
   default = (import ./compat).defaultNix;
 in
-builtins.mapAttrs (_: v: recurseIntoAttrs v) default.packages
+builtins.mapAttrs (_: v: recurseIntoAttrs v) default.packages // {
+  shell = import ./shell.nix;
+}
