@@ -32,7 +32,7 @@ explicitly loaded via `imports`.
 
 ## Suites
 
-[Suites](./profiles/suites.nix) are simple collections of profiles that can be
+[Suites](./suites/default.nix) are simple collections of profiles that can be
 directly imported from any host like so:
 ```
 { suites, ... }:
