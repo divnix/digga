@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>From NixOS - nixflk docs</title>
+        <title>Cachix - nixflk docs</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="../start/from-nixos.html" class="active"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="../layout/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../layout/hosts.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="../layout/profiles.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="../layout/suites.html"><strong aria-hidden="true">3.3.</strong> Suites</a></li><li class="chapter-item expanded "><a href="../layout/users.html"><strong aria-hidden="true">3.4.</strong> Users</a></li><li class="chapter-item expanded "><a href="../layout/cachix.html"><strong aria-hidden="true">3.5.</strong> Cachix</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="../start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="../layout/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../layout/hosts.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="../layout/profiles.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="../layout/suites.html"><strong aria-hidden="true">3.3.</strong> Suites</a></li><li class="chapter-item expanded "><a href="../layout/users.html"><strong aria-hidden="true">3.4.</strong> Users</a></li><li class="chapter-item expanded "><a href="../layout/cachix.html" class="active"><strong aria-hidden="true">3.5.</strong> Cachix</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -163,57 +163,27 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#from-nixos" id="from-nixos">From NixOS</a></h1>
-<h2><a class="header" href="#generate-configuration" id="generate-configuration">Generate Configuration</a></h2>
-<p>Assuming your happy with your existing partition layout, you can generate a
-basic NixOS configuration for your system using:</p>
-<pre><code>flk up
-</code></pre>
-<p>This will make a new file <code>hosts/up-$(hostname).nix</code>, which you can edit to
-your liking.</p>
-<blockquote>
-<p>While the <code>up</code> sub-command is provided as a convenience to quickly set up and
-install a &quot;fresh&quot; NixOS system on current hardware, committing these files is
-discouraged.</p>
-<p>They are placed in the git staging area automatically because they would be
-invisible to the flake otherwise, but it is best to move what you need from
-them directly into a host module of your own making, and commit that instead.</p>
-</blockquote>
-<p>Make sure your <code>i18n.defaultLocale</code> and <code>time.timeZone</code> are set properly for
-your region. Keep in mind that <code>networking.hostName</code> with be automatically
-set to the filename of your hosts file, so <code>hosts/my-host.nix</code> will have the
-hostname <code>my-host</code>.</p>
-<p>Now might be a good time to read the docs on <a href="../layout/suites.html">suites</a> and
-<a href="../layout/profiles.html">profiles</a> and add or create any that you need.</p>
-<h1><a class="header" href="#installation" id="installation">Installation</a></h1>
-<p>Once your ready to deploy <code>hosts/my-host.nix</code>:</p>
-<pre><code>flk my-host switch
-</code></pre>
-<blockquote>
-<p>Instead of <code>switch</code>, you can pass <code>build</code>, <code>test</code>, <code>boot</code>, etc just as with
-<code>nixos-rebuild</code>.</p>
-</blockquote>
-<p>This calls <code>nixos-rebuild</code> with sudo to build and install your configuration.</p>
-<blockquote>
-<p>It is convenient to have the template living at <code>/etc/nixos</code> so you can
-simply <code>sudo nixos-rebuild switch</code> from anywhere on the system, but it is
-not required.</p>
-</blockquote>
+                        <h1><a class="header" href="#cachix" id="cachix">Cachix</a></h1>
+<p>The cachix directory simple captures the output of <code>sudo cachix use</code> for the
+developers personal cache, as well as the nix-community cache. You can easily
+add your own cache, assuming the template lives in /etc/nixos, by simply
+running <code>sudo cachix use yourcache</code>.</p>
+<p>These caches are only added to the system after a <code>nixos-rebuild switch</code>, so it
+is recommended to call <code>cachix use nrdxp</code> before the initial deployment, as it
+will save a lot of build time.</p>
+<p>In the future, users will be able to skip this step once the ability to define
+the nix.conf within the flake is fully fleshed out upstream.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../start/iso.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../layout/users.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
-                        
-                            <a rel="next" href="../layout/layout.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
                         
 
                         <div style="clear: both"></div>
@@ -223,15 +193,11 @@ not required.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../start/iso.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../layout/users.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
-                
-                    <a rel="next" href="../layout/layout.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
                 
             </nav>
 
