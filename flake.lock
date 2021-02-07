@@ -3,8 +3,12 @@
     "ci-agent": {
       "inputs": {
         "flake-compat": "flake-compat",
-        "nixos-20_09": "nixos-20_09",
-        "nixos-unstable": "nixos-unstable",
+        "nixos-20_09": [
+          "nixos"
+        ],
+        "nixos-unstable": [
+          "master"
+        ],
         "pre-commit-hooks-nix": "pre-commit-hooks-nix"
       },
       "locked": {
@@ -70,7 +74,9 @@
     },
     "home": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": [
+          "nixos"
+        ]
       },
       "locked": {
         "lastModified": 1611323638,
@@ -117,22 +123,6 @@
         "type": "indirect"
       }
     },
-    "nixos-20_09": {
-      "locked": {
-        "lastModified": 1610870190,
-        "narHash": "sha256-G0fY7YVFpMw7lLb9HgpZufpeAVmCCZkzZ+WDscy4ImY=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "f5f66148b28b3d9b9b8381532052ad93a35d5d67",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-20.09",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1612644173,
@@ -146,35 +136,6 @@
         "owner": "nixos",
         "repo": "nixos-hardware",
         "type": "github"
-      }
-    },
-    "nixos-unstable": {
-      "locked": {
-        "lastModified": 1610842533,
-        "narHash": "sha256-6hW8CML8RnNrRJMv7E56rXAhsCNgUM97HIVSqWxnO64=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "68398d2dd50efc2d878bf0f83bbc8bc323b6b0e0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs": {
-      "locked": {
-        "lastModified": 1612241354,
-        "narHash": "sha256-OepU8m0D4ZfgsPHt+QL5IGieGRCoA+b6RPqGRHkt9dg=",
-        "path": "/nix/store/ni76x56hwqch7c6lybf1vfh1cm4lqmp7-source",
-        "rev": "8cef6531ff83c940d8be117011a667269e829338",
-        "type": "path"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
       }
     },
     "nur": {
