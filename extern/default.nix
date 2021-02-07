@@ -9,4 +9,10 @@
     nur.overlay
     devshell.overlay
   ];
+
+  # passed to all nixos modules
+  specialArgs = {
+    unstableModulesPath = "${master}/nixos/modules";
+    hardware = nixos-hardware.nixosModules;
+  };
 }

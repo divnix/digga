@@ -12,23 +12,17 @@ let
   inherit (lib.flk) recImport nixosSystemExtended defaultImports;
   inherit (builtins) attrValues removeAttrs;
 
-  profiles = defaultImports (toString ../profiles);
-  suites = import ../profiles/suites.nix { inherit lib profiles; };
+  suites = import ../suites { inherit lib; };
 
   config = hostName:
     nixosSystemExtended {
       inherit system;
 
-      specialArgs =
-        {
-          inherit suites;
-          unstableModulesPath = "${master}/nixos/modules";
-          hardware = nixos-hardware.nixosModules;
-        };
+      specialArgs = extern.specialArgs // { inherit suites; };
 
       modules =
         let
-          core = profiles.core.default;
+          core = import ../profiles/core;
 
           modOverrides = { config, unstableModulesPath, ... }:
             let

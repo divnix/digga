@@ -6,8 +6,6 @@ in
 
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
-  imports = [ ../../local/locale.nix ];
-
   environment = {
 
     systemPackages = with pkgs; [
