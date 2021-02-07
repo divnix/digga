@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="layout/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="layout/hosts.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="layout/profiles.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="layout/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="layout/hosts.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="layout/profiles.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="layout/suites.html"><strong aria-hidden="true">3.3.</strong> Suites</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -328,6 +328,25 @@ nix expressions self contained and modular. This way we can maximize reuse
 while minimizing boilerplate. Always strive to keep your profiles as generic
 and modular as possible. Anything machine specific belongs in your
 <a href="layout/./hosts">host</a> files.</p>
+<h1><a class="header" href="#suites" id="suites">Suites</a></h1>
+<p>Suites provide a mechanism for users to easily combine and name collecitons of
+profiles. For good examples, check out the suites defined in the community
+<a href="https://github.com/nrdxp/nixflk/blob/community/suites/default.nix">branch</a>.</p>
+<p>In the future, we will use suites as a mechanism for deploying various machine
+types which don't depend on hardware, such as vm's and containers.</p>
+<h2><a class="header" href="#definition" id="definition">Definition</a></h2>
+<pre><code class="language-nix">rec {
+  workstation = [ profiles.develop profiles.graphical users.nixos ];
+  mobileWS = workstation ++ [ profiles.laptop ];
+}
+</code></pre>
+<h2><a class="header" href="#usage" id="usage">Usage</a></h2>
+<p><code>hosts/my-laptop.nix</code>:</p>
+<pre><code class="language-nix">{ suites, ... }:
+{
+  imports = suites.mobileWS;
+}
+</code></pre>
 
                     </main>
 
