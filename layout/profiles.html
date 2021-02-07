@@ -173,9 +173,9 @@ community <a href="https://github.com/nrdxp/nixflk/tree/community/profiles">bran
 profile should always be defined in a <code>default.nix</code>, and it should always be a
 a function taking a single attribute set as an argument, and returning a NixOS
 module which does not define any new module options. If you need to make new
-module option declarations, just use <a href="./modules">modules</a>.</p>
+module option declarations, just use <a href="./modules.html">modules</a>.</p>
 <p>These restrictions help simplify the import logic used to pass profles to
-<a href="./suites">suites</a>.</p>
+<a href="./suites.html">suites</a>.</p>
 <h3><a class="header" href="#example" id="example">Example</a></h3>
 <p>✔<code>profiles/develop/default.nix</code>:</p>
 <pre><code class="language-nix"># good profile definition
@@ -202,7 +202,7 @@ individual programs.</p>
 nix expressions self contained and modular. This way we can maximize reuse
 while minimizing boilerplate. Always strive to keep your profiles as generic
 and modular as possible. Anything machine specific belongs in your
-<a href="./hosts">host</a> files.</p>
+<a href="./hosts.html">host</a> files.</p>
 
                     </main>
 
