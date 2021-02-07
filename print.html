@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="layout/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="layout/hosts.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="layout/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="layout/hosts.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="layout/profiles.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -237,8 +237,8 @@ them directly into a host module of your own making, and commit that instead.</p
 your region. Keep in mind that <code>networking.hostName</code> with be automatically
 set to the filename of your hosts file, so <code>hosts/my-host.nix</code> will have the
 hostname <code>my-host</code>.</p>
-<p>Now might be a good time to read the docs on <a href="start/./suites.html">suites</a> and
-<a href="start/./profiles.html">profiles</a> and add or create any that you need.</p>
+<p>Now might be a good time to read the docs on <a href="start/../layout/suites.html">suites</a> and
+<a href="start/../layout/profiles.html">profiles</a> and add or create any that you need.</p>
 <h1><a class="header" href="#installation" id="installation">Installation</a></h1>
 <p>Once your ready to deploy <code>hosts/my-host.nix</code>:</p>
 <pre><code>flk my-host switch
@@ -288,6 +288,47 @@ the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> reposit
   fileSystems.&quot;/&quot; = { device = &quot;/dev/disk/by-label/nixos&quot;; };
 }
 </code></pre>
+<h1><a class="header" href="#profiles" id="profiles">Profiles</a></h1>
+<p>Profiles are simply NixOS modules which contain generic expressions suitable
+for any host. A good example is the configuration for a text editor, or
+window manager. If you need some concrete examples, just checkout the
+community <a href="https://github.com/nrdxp/nixflk/tree/community/profiles">branch</a>.</p>
+<h2><a class="header" href="#constaints" id="constaints">Constaints</a></h2>
+<p>For the sake of consistency, there are a few minor constraints. First of all, a
+profile should always be defined in a <code>default.nix</code>, and it should always be a
+a function taking a single attribute set as an argument, and returning a NixOS
+module which does not define any new module options. If you need to make new
+module option declarations, just use <a href="layout/./modules">modules</a>.</p>
+<p>These restrictions help simplify the import logic used to pass profles to
+<a href="layout/./suites">suites</a>.</p>
+<h3><a class="header" href="#example-1" id="example-1">Example</a></h3>
+<p>✔<code>profiles/develop/default.nix</code>:</p>
+<pre><code class="language-nix"># good profile definition
+{ ... }:
+{
+  # profile definitions
+}
+</code></pre>
+<p>❌<code>profiles/develop.nix</code>:</p>
+<pre><code># bad profile definition
+{
+  options = {};
+  # module definitions
+}
+</code></pre>
+<h2><a class="header" href="#subprofiles" id="subprofiles">Subprofiles</a></h2>
+<p>Profiles can also define subprofiles. They follow the same constraints outlined
+above. A good top level profile should be a high level concern, such a your
+personal development environment, and the subprofiles should be more concrete
+program configurations such as your text editor, and shell configs. This way,
+you can either pull in the whole development profile, or pick and choose
+individual programs.</p>
+<h2><a class="header" href="#conclusion" id="conclusion">Conclusion</a></h2>
+<p>Profiles are the most important concept in nixflk. They allow us to keep our
+nix expressions self contained and modular. This way we can maximize reuse
+while minimizing boilerplate. Always strive to keep your profiles as generic
+and modular as possible. Anything machine specific belongs in your
+<a href="layout/./hosts">host</a> files.</p>
 
                     </main>
 
