@@ -179,16 +179,15 @@ module option declarations, just use <a href="./modules">modules</a>.</p>
 <h3><a class="header" href="#example" id="example">Example</a></h3>
 <p>✔<code>profiles/develop/default.nix</code>:</p>
 <pre><code class="language-nix"># good profile definition
-{ lib, ... }:
+{  ... }:
 {
-  # profile definitions
+  programs.zsh.enable = true;
 }
 </code></pre>
 <p>❌<code>profiles/develop.nix</code>:</p>
 <pre><code># bad profile definition
 {
   options = {};
-  # module definitions
 }
 </code></pre>
 <h2><a class="header" href="#subprofiles" id="subprofiles">Subprofiles</a></h2>
