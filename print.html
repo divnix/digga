@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="hosts.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="layout/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="layout/hosts.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -205,9 +205,9 @@ git set up, and a nix-shell that provides all the dependencies, including the
 required nix version.</p>
 <h2><a class="header" href="#next-steps" id="next-steps">Next Steps:</a></h2>
 <ul>
-<li><a href="./iso.html">Make installable ISO</a></li>
-<li><a href="./from-nixos.html">Already on NixOS</a></li>
-<li><a href="./from-linux.html">Install from Linux</a></li>
+<li><a href="start/./iso.html">Make installable ISO</a></li>
+<li><a href="start/./from-nixos.html">Already on NixOS</a></li>
+<li><a href="start/./from-linux.html">Install from Linux</a></li>
 </ul>
 <h1><a class="header" href="#iso" id="iso">ISO</a></h1>
 <p>Making and writing an installable iso for <code>hosts/NixOS.nix</code> is as simple as:</p>
@@ -237,8 +237,8 @@ them directly into a host module of your own making, and commit that instead.</p
 your region. Keep in mind that <code>networking.hostName</code> with be automatically
 set to the filename of your hosts file, so <code>hosts/my-host.nix</code> will have the
 hostname <code>my-host</code>.</p>
-<p>Now might be a good time to read the docs on <a href="./suites.html">suites</a> and
-<a href="./profiles.html">profiles</a> and add or create any that you need.</p>
+<p>Now might be a good time to read the docs on <a href="start/./suites.html">suites</a> and
+<a href="start/./profiles.html">profiles</a> and add or create any that you need.</p>
 <h1><a class="header" href="#installation" id="installation">Installation</a></h1>
 <p>Once your ready to deploy <code>hosts/my-host.nix</code>:</p>
 <pre><code>flk my-host switch
@@ -271,8 +271,8 @@ convenience, since <code>nixos-rebuild</code> automatically searches for a confi
 matching the current systems hostname if one is not specified explicitly.</p>
 <p>It is recommended that the host modules only contain configuration information
 specific to a particular piece of hardware. Anything reusable across machines
-is best saved for <a href="./profiles.html">profile modules</a>.</p>
-<p>This is a good place to import sets of profiles, called <a href="./suites.html">suites</a>,
+is best saved for <a href="layout/./profiles.html">profile modules</a>.</p>
+<p>This is a good place to import sets of profiles, called <a href="layout/./suites.html">suites</a>,
 that you intend to use on your machine.</p>
 <p>Additionally, this is the perfect place to import anything you might need from
 the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> repository.</p>
