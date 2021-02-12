@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="layout/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="layout/hosts.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="layout/profiles.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="layout/suites.html"><strong aria-hidden="true">3.3.</strong> Suites</a></li><li class="chapter-item expanded "><a href="layout/users.html"><strong aria-hidden="true">3.4.</strong> Users</a></li><li class="chapter-item expanded "><a href="layout/cachix.html"><strong aria-hidden="true">3.5.</strong> Cachix</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="doc/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="doc/start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="doc/start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="doc/start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Layout</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="hosts/index.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="profiles/index.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="suites/index.html"><strong aria-hidden="true">3.3.</strong> Suites</a></li><li class="chapter-item expanded "><a href="users/index.html"><strong aria-hidden="true">3.4.</strong> Users</a></li><li class="chapter-item expanded "><a href="cachix/index.html"><strong aria-hidden="true">3.5.</strong> Cachix</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -212,9 +212,9 @@ required nix version. In addition, the cachix cache which contains all the
 binary outputs from this flake is added for faster deployment.</p>
 <h2><a class="header" href="#next-steps" id="next-steps">Next Steps:</a></h2>
 <ul>
-<li><a href="start/./iso.html">Make installable ISO</a></li>
-<li><a href="start/./from-nixos.html">Already on NixOS</a></li>
-<li><a href="start/./from-linux.html">Install from Linux</a></li>
+<li><a href="doc/start/./iso.html">Make installable ISO</a></li>
+<li><a href="doc/start/./from-nixos.html">Already on NixOS</a></li>
+<li><a href="doc/start/./from-linux.html">Install from Linux</a></li>
 </ul>
 <h1><a class="header" href="#iso" id="iso">ISO</a></h1>
 <p>Making and writing an installable iso for <code>hosts/NixOS.nix</code> is as simple as:</p>
@@ -244,8 +244,8 @@ them directly into a host module of your own making, and commit that instead.</p
 your region. Keep in mind that <code>networking.hostName</code> with be automatically
 set to the filename of your hosts file, so <code>hosts/my-host.nix</code> will have the
 hostname <code>my-host</code>.</p>
-<p>Now might be a good time to read the docs on <a href="start/../layout/suites.html">suites</a> and
-<a href="start/../layout/profiles.html">profiles</a> and add or create any that you need.</p>
+<p>Now might be a good time to read the docs on <a href="doc/start/../layout/suites.html">suites</a> and
+<a href="doc/start/../layout/profiles.html">profiles</a> and add or create any that you need.</p>
 <h1><a class="header" href="#installation" id="installation">Installation</a></h1>
 <p>Once your ready to deploy <code>hosts/my-host.nix</code>:</p>
 <pre><code>flk my-host switch
@@ -260,9 +260,6 @@ hostname <code>my-host</code>.</p>
 simply <code>sudo nixos-rebuild switch</code> from anywhere on the system, but it is
 not required.</p>
 </blockquote>
-<h1><a class="header" href="#layout" id="layout">Layout</a></h1>
-<p>This section describes the layout of nixflk and the purpose of each
-subdirectory.</p>
 <h1><a class="header" href="#hosts" id="hosts">Hosts</a></h1>
 <p>Nix flakes contain an output called <code>nixosConfigurations</code> declaring an
 attribute set of valid NixOS systems. To simplify the management and creation
@@ -278,8 +275,8 @@ convenience, since <code>nixos-rebuild</code> automatically searches for a confi
 matching the current systems hostname if one is not specified explicitly.</p>
 <p>It is recommended that the host modules only contain configuration information
 specific to a particular piece of hardware. Anything reusable across machines
-is best saved for <a href="layout/./profiles.html">profile modules</a>.</p>
-<p>This is a good place to import sets of profiles, called <a href="layout/./suites.html">suites</a>,
+is best saved for <a href="hosts/./profiles.html">profile modules</a>.</p>
+<p>This is a good place to import sets of profiles, called <a href="hosts/./suites.html">suites</a>,
 that you intend to use on your machine.</p>
 <p>Additionally, this is the perfect place to import anything you might need from
 the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> repository.</p>
@@ -305,9 +302,9 @@ community <a href="https://github.com/nrdxp/nixflk/tree/community/profiles">bran
 profile should always be defined in a <code>default.nix</code>, and it should always be a
 a function taking a single attribute set as an argument, and returning a NixOS
 module which does not define any new module options. If you need to make new
-module option declarations, just use <a href="layout/./modules.html">modules</a>.</p>
+module option declarations, just use <a href="profiles/./modules.html">modules</a>.</p>
 <p>These restrictions help simplify the import logic used to pass profles to
-<a href="layout/./suites.html">suites</a>.</p>
+<a href="profiles/./suites.html">suites</a>.</p>
 <h3><a class="header" href="#example-1" id="example-1">Example</a></h3>
 <p>✔<code>profiles/develop/default.nix</code>:</p>
 <pre><code class="language-nix"># good profile definition
@@ -334,7 +331,7 @@ individual programs.</p>
 nix expressions self contained and modular. This way we can maximize reuse
 while minimizing boilerplate. Always strive to keep your profiles as generic
 and modular as possible. Anything machine specific belongs in your
-<a href="layout/./hosts.html">host</a> files.</p>
+<a href="profiles/./hosts.html">host</a> files.</p>
 <h1><a class="header" href="#suites" id="suites">Suites</a></h1>
 <p>Suites provide a mechanism for users to easily combine and name collecitons of
 profiles. For good examples, check out the suites defined in the community
@@ -355,7 +352,7 @@ types which don't depend on hardware, such as vm's and containers.</p>
 }
 </code></pre>
 <h1><a class="header" href="#users" id="users">Users</a></h1>
-<p>Users are a special case of <a href="layout/./profiles.html">profiles</a> that define system users
+<p>Users are a special case of <a href="users/./profiles.html">profiles</a> that define system users
 and <a href="https://nix-community.github.io/home-manager">home-manager</a> configurations. For your convenience, home
 manager is wired in by default so all you have to worry about is declaring your
 users. For a fully fleshed out example, check out the developers personal
@@ -377,7 +374,7 @@ users. For a fully fleshed out example, check out the developers personal
 <h2><a class="header" href="#external-usage" id="external-usage">External Usage</a></h2>
 <p>You can easily use the defined home-manager configurations outside of NixOS
 using the <code>hmActivations</code> meta-package defined in the flakes <code>legacyPackages</code>
-output. The <a href="layout/../flk/flk.html">flk</a> helper script makes this even easier. Just
+output. The <a href="users/../flk/flk.html">flk</a> helper script makes this even easier. Just
 make sure you have home-manager
 <a href="https://nix-community.github.io/home-manager/index.html#ch-installation">installed</a>.</p>
 <p>This is great for keeping your environment consistent across Unix systems,

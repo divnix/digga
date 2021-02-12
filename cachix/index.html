@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Suites - nixflk docs</title>
+        <title>Cachix - nixflk docs</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="../start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="../layout/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../layout/hosts.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="../layout/profiles.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="../layout/suites.html" class="active"><strong aria-hidden="true">3.3.</strong> Suites</a></li><li class="chapter-item expanded "><a href="../layout/users.html"><strong aria-hidden="true">3.4.</strong> Users</a></li><li class="chapter-item expanded "><a href="../layout/cachix.html"><strong aria-hidden="true">3.5.</strong> Cachix</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../doc/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../doc/start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../doc/start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="../doc/start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Layout</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../hosts/index.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="../profiles/index.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="../suites/index.html"><strong aria-hidden="true">3.3.</strong> Suites</a></li><li class="chapter-item expanded "><a href="../users/index.html"><strong aria-hidden="true">3.4.</strong> Users</a></li><li class="chapter-item expanded "><a href="../cachix/index.html" class="active"><strong aria-hidden="true">3.5.</strong> Cachix</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -163,40 +163,27 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#suites" id="suites">Suites</a></h1>
-<p>Suites provide a mechanism for users to easily combine and name collecitons of
-profiles. For good examples, check out the suites defined in the community
-<a href="https://github.com/nrdxp/nixflk/blob/community/suites/default.nix">branch</a>.</p>
-<p>In the future, we will use suites as a mechanism for deploying various machine
-types which don't depend on hardware, such as vm's and containers.</p>
-<h2><a class="header" href="#definition" id="definition">Definition</a></h2>
-<pre><code class="language-nix">rec {
-  workstation = [ profiles.develop profiles.graphical users.nixos ];
-  mobileWS = workstation ++ [ profiles.laptop ];
-}
-</code></pre>
-<h2><a class="header" href="#usage" id="usage">Usage</a></h2>
-<p><code>hosts/my-laptop.nix</code>:</p>
-<pre><code class="language-nix">{ suites, ... }:
-{
-  imports = suites.mobileWS;
-}
-</code></pre>
+                        <h1><a class="header" href="#cachix" id="cachix">Cachix</a></h1>
+<p>The cachix directory simple captures the output of <code>sudo cachix use</code> for the
+developers personal cache, as well as the nix-community cache. You can easily
+add your own cache, assuming the template lives in /etc/nixos, by simply
+running <code>sudo cachix use yourcache</code>.</p>
+<p>These caches are only added to the system after a <code>nixos-rebuild switch</code>, so it
+is recommended to call <code>cachix use nrdxp</code> before the initial deployment, as it
+will save a lot of build time.</p>
+<p>In the future, users will be able to skip this step once the ability to define
+the nix.conf within the flake is fully fleshed out upstream.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../layout/profiles.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../users/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
-                        
-                            <a rel="next" href="../layout/users.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
                         
 
                         <div style="clear: both"></div>
@@ -206,15 +193,11 @@ types which don't depend on hardware, such as vm's and containers.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../layout/profiles.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../users/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
-                
-                    <a rel="next" href="../layout/users.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
                 
             </nav>
 

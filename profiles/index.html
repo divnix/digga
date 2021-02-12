@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Hosts - nixflk docs</title>
+        <title>Profiles - nixflk docs</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="../start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="../layout/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../layout/hosts.html" class="active"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="../layout/profiles.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="../layout/suites.html"><strong aria-hidden="true">3.3.</strong> Suites</a></li><li class="chapter-item expanded "><a href="../layout/users.html"><strong aria-hidden="true">3.4.</strong> Users</a></li><li class="chapter-item expanded "><a href="../layout/cachix.html"><strong aria-hidden="true">3.5.</strong> Cachix</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../doc/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../doc/start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../doc/start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="../doc/start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Layout</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../hosts/index.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="../profiles/index.html" class="active"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="../suites/index.html"><strong aria-hidden="true">3.3.</strong> Suites</a></li><li class="chapter-item expanded "><a href="../users/index.html"><strong aria-hidden="true">3.4.</strong> Users</a></li><li class="chapter-item expanded "><a href="../cachix/index.html"><strong aria-hidden="true">3.5.</strong> Cachix</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -163,51 +163,59 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#hosts" id="hosts">Hosts</a></h1>
-<p>Nix flakes contain an output called <code>nixosConfigurations</code> declaring an
-attribute set of valid NixOS systems. To simplify the management and creation
-of these hosts, nixflk automatically imports every <code>*.nix</code> file inside this
-directory to the mentioned attribute set, applying the projects defaults to
-each. The only hard requirement is that the file contain a valid NixOS module.</p>
-<p>As an example, a file <code>hosts/system.nix</code> will be available via the flake
-output <code>nixosConfigurations.system</code>. You can have as many hosts as you want
-and all of them will be automatically imported based on their name.</p>
-<p>For each host, the configuration automatically sets the <code>networking.hostName</code>
-attribute to the name of the file minus the <code>.nix</code> extension. This is for
-convenience, since <code>nixos-rebuild</code> automatically searches for a configuration
-matching the current systems hostname if one is not specified explicitly.</p>
-<p>It is recommended that the host modules only contain configuration information
-specific to a particular piece of hardware. Anything reusable across machines
-is best saved for <a href="./profiles.html">profile modules</a>.</p>
-<p>This is a good place to import sets of profiles, called <a href="./suites.html">suites</a>,
-that you intend to use on your machine.</p>
-<p>Additionally, this is the perfect place to import anything you might need from
-the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> repository.</p>
-<h2><a class="header" href="#example" id="example">Example</a></h2>
-<p><code>hosts/librem.nix</code>:</p>
-<pre><code class="language-nix">{ suites, hardware, ... }:
+                        <h1><a class="header" href="#profiles" id="profiles">Profiles</a></h1>
+<p>Profiles are simply NixOS modules which contain generic expressions suitable
+for any host. A good example is the configuration for a text editor, or
+window manager. If you need some concrete examples, just checkout the
+community <a href="https://github.com/nrdxp/nixflk/tree/community/profiles">branch</a>.</p>
+<h2><a class="header" href="#constraints" id="constraints">Constraints</a></h2>
+<p>For the sake of consistency, there are a few minor constraints. First of all, a
+profile should always be defined in a <code>default.nix</code>, and it should always be a
+a function taking a single attribute set as an argument, and returning a NixOS
+module which does not define any new module options. If you need to make new
+module option declarations, just use <a href="./modules.html">modules</a>.</p>
+<p>These restrictions help simplify the import logic used to pass profles to
+<a href="./suites.html">suites</a>.</p>
+<h3><a class="header" href="#example" id="example">Example</a></h3>
+<p>✔<code>profiles/develop/default.nix</code>:</p>
+<pre><code class="language-nix"># good profile definition
+{  ... }:
 {
-  imports = suites.laptop ++ [ hardware.purism-librem-13v3 ];
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  fileSystems.&quot;/&quot; = { device = &quot;/dev/disk/by-label/nixos&quot;; };
+  programs.zsh.enable = true;
 }
 </code></pre>
+<p>❌<code>profiles/develop.nix</code>:</p>
+<pre><code># bad profile definition
+{
+  options = {};
+}
+</code></pre>
+<h2><a class="header" href="#subprofiles" id="subprofiles">Subprofiles</a></h2>
+<p>Profiles can also define subprofiles. They follow the same constraints outlined
+above. A good top level profile should be a high level concern, such a your
+personal development environment, and the subprofiles should be more concrete
+program configurations such as your text editor, and shell configs. This way,
+you can either pull in the whole development profile, or pick and choose
+individual programs.</p>
+<h2><a class="header" href="#conclusion" id="conclusion">Conclusion</a></h2>
+<p>Profiles are the most important concept in nixflk. They allow us to keep our
+nix expressions self contained and modular. This way we can maximize reuse
+while minimizing boilerplate. Always strive to keep your profiles as generic
+and modular as possible. Anything machine specific belongs in your
+<a href="./hosts.html">host</a> files.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../layout/layout.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../hosts/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../layout/profiles.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../suites/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -219,13 +227,13 @@ the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> reposit
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../layout/layout.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../hosts/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="../layout/profiles.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../suites/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
