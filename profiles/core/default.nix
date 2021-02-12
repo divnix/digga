@@ -141,8 +141,6 @@ in
     '';
   };
 
-  security.hideProcessInformation = true;
-
   services.earlyoom.enable = true;
 
   users.mutableUsers = false;
