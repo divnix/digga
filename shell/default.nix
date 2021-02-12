@@ -1,4 +1,4 @@
-{ pkgs ? (import ./compat).defaultNix.legacyPackages."${builtins.currentSystem}"
+{ pkgs ? (import ./compat).defaultNix.nixosConfigurations.NixOS.config.nixpkgs.pkgs
 , nixos ? (import ./compat).defaultNix.inputs.nixos
 , ...
 }:
