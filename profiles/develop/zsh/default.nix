@@ -144,11 +144,13 @@ in
           "${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin"
         ] ++ source);
 
+        localCompletions = toString ./completions;
+
       in
       ''
         ${plugins}
 
-        fpath+=( ${functions} )
+        fpath+=( ${functions} ${localCompletions} )
         autoload -Uz ${functions}/*(:t)
 
         ${zshrc}
