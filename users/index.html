@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../doc/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../doc/start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../doc/start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="../doc/start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Layout</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../hosts/index.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="../profiles/index.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="../suites/index.html"><strong aria-hidden="true">3.3.</strong> Suites</a></li><li class="chapter-item expanded "><a href="../users/index.html" class="active"><strong aria-hidden="true">3.4.</strong> Users</a></li><li class="chapter-item expanded "><a href="../cachix/index.html"><strong aria-hidden="true">3.5.</strong> Cachix</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../doc/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../doc/start/index.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../doc/start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="../doc/start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="../doc/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cachix/index.html"><strong aria-hidden="true">3.1.</strong> Cachix</a></li><li class="chapter-item expanded "><a href="../extern/index.html"><strong aria-hidden="true">3.2.</strong> Extern</a></li><li class="chapter-item expanded "><a href="../hosts/index.html"><strong aria-hidden="true">3.3.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="../modules/index.html"><strong aria-hidden="true">3.4.</strong> Modules</a></li><li class="chapter-item expanded "><a href="../overlays/index.html"><strong aria-hidden="true">3.5.</strong> Overlays</a></li><li class="chapter-item expanded "><a href="../overrides/index.html"><strong aria-hidden="true">3.6.</strong> Overrides</a></li><li class="chapter-item expanded "><a href="../pkgs/index.html"><strong aria-hidden="true">3.7.</strong> Packages</a></li><li class="chapter-item expanded "><a href="../profiles/index.html"><strong aria-hidden="true">3.8.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="../secrets/index.html"><strong aria-hidden="true">3.9.</strong> Secrets</a></li><li class="chapter-item expanded "><a href="../suites/index.html"><strong aria-hidden="true">3.10.</strong> Suites</a></li><li class="chapter-item expanded "><a href="../users/index.html" class="active"><strong aria-hidden="true">3.11.</strong> Users</a></li></ol></li><li class="chapter-item expanded "><a href="../doc/flk/index.html"><strong aria-hidden="true">4.</strong> flk command</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -164,10 +164,10 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#users" id="users">Users</a></h1>
-<p>Users are a special case of <a href="./profiles.html">profiles</a> that define system users
-and <a href="https://nix-community.github.io/home-manager">home-manager</a> configurations. For your convenience, home
-manager is wired in by default so all you have to worry about is declaring your
-users. For a fully fleshed out example, check out the developers personal
+<p>Users are a special case of <a href="../profiles">profiles</a> that define system
+users and <a href="https://nix-community.github.io/home-manager">home-manager</a> configurations. For your convenience,
+home manager is wired in by default so all you have to worry about is declaring
+your users. For a fully fleshed out example, check out the developers personal
 <a href="https://github.com/nrdxp/nixflk/tree/nrd/users/nrd/default.nix">branch</a>.</p>
 <h2><a class="header" href="#basic-usage" id="basic-usage">Basic Usage</a></h2>
 <p><code>users/myuser/default.nix</code>:</p>
@@ -186,16 +186,14 @@ users. For a fully fleshed out example, check out the developers personal
 <h2><a class="header" href="#external-usage" id="external-usage">External Usage</a></h2>
 <p>You can easily use the defined home-manager configurations outside of NixOS
 using the <code>hmActivations</code> meta-package defined in the flakes <code>legacyPackages</code>
-output. The <a href="../flk/flk.html">flk</a> helper script makes this even easier. Just
-make sure you have home-manager
-<a href="https://nix-community.github.io/home-manager/index.html#ch-installation">installed</a>.</p>
+output. The <a href="../doc/flk">flk</a> helper script makes this even easier.</p>
 <p>This is great for keeping your environment consistent across Unix systems,
 including OSX.</p>
 <h3><a class="header" href="#from-within-the-projects-devshell" id="from-within-the-projects-devshell">From within the projects devshell:</a></h3>
 <pre><code class="language-sh"># builds the nixos user defined in the NixOS host
 flk home NixOS nixos
 
-# activate
+# build and activate
 flk home NixOS nixos switch
 </code></pre>
 <h3><a class="header" href="#manually-from-outside-the-project" id="manually-from-outside-the-project">Manually from outside the project:</a></h3>
@@ -217,7 +215,7 @@ nix build &quot;github:nrdxp/nixflk#hmActivationPackages.NixOS.nixos&quot;
                         
 
                         
-                            <a rel="next" href="../cachix/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../doc/flk/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -235,7 +233,7 @@ nix build &quot;github:nrdxp/nixflk#hmActivationPackages.NixOS.nixos&quot;
                 
 
                 
-                    <a rel="next" href="../cachix/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../doc/flk/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

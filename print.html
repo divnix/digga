@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="doc/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="doc/start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="doc/start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="doc/start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Layout</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="hosts/index.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="profiles/index.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="suites/index.html"><strong aria-hidden="true">3.3.</strong> Suites</a></li><li class="chapter-item expanded "><a href="users/index.html"><strong aria-hidden="true">3.4.</strong> Users</a></li><li class="chapter-item expanded "><a href="cachix/index.html"><strong aria-hidden="true">3.5.</strong> Cachix</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="doc/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="doc/start/index.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="doc/start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="doc/start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="doc/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cachix/index.html"><strong aria-hidden="true">3.1.</strong> Cachix</a></li><li class="chapter-item expanded "><a href="extern/index.html"><strong aria-hidden="true">3.2.</strong> Extern</a></li><li class="chapter-item expanded "><a href="hosts/index.html"><strong aria-hidden="true">3.3.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="modules/index.html"><strong aria-hidden="true">3.4.</strong> Modules</a></li><li class="chapter-item expanded "><a href="overlays/index.html"><strong aria-hidden="true">3.5.</strong> Overlays</a></li><li class="chapter-item expanded "><a href="overrides/index.html"><strong aria-hidden="true">3.6.</strong> Overrides</a></li><li class="chapter-item expanded "><a href="pkgs/index.html"><strong aria-hidden="true">3.7.</strong> Packages</a></li><li class="chapter-item expanded "><a href="profiles/index.html"><strong aria-hidden="true">3.8.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="secrets/index.html"><strong aria-hidden="true">3.9.</strong> Secrets</a></li><li class="chapter-item expanded "><a href="suites/index.html"><strong aria-hidden="true">3.10.</strong> Suites</a></li><li class="chapter-item expanded "><a href="users/index.html"><strong aria-hidden="true">3.11.</strong> Users</a></li></ol></li><li class="chapter-item expanded "><a href="doc/flk/index.html"><strong aria-hidden="true">4.</strong> flk command</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -172,14 +172,15 @@ providing a sane repository structure, integrating several popular projects
 like <a href="https://nix-community.github.io/home-manager">home-manager</a>, setting clear guidelines, offering useful
 conveniences, and eliminating boilerplate so you can focus on deploying your
 systems.</p>
-<p>In addition, every package and NixOS profile is built and uploaded to a binary
-cache, so everything provided is available without building anything. This is
-especially useful for the packages that are pulled from master, as without the
-cache, rebuilds are quite frequent.</p>
 <h2><a class="header" href="#community-profiles" id="community-profiles">Community Profiles</a></h2>
-<p>There are two branches from which to choose: core and community. The commuity
-branch builds on core and includes several ready-made profiles for
-discretionary employment.</p>
+<p>There are two branches from which to choose: <a href="https://github.com/nrdxp/nixflk">core</a> and
+<a href="https://github.com/nrdxp/nixflk/tree/community">community</a>. The community branch builds on core and includes
+several ready-made profiles for discretionary use.</p>
+<p>Every package and NixOS profile declared in community is uploaded to
+<a href="doc/../cachix">cachix</a>, so everything provided is available without building
+anything. This is especially useful for the packages that are
+<a href="doc/../overrides">overridden</a> from master, as without the cache, rebuilds are
+quite frequent.</p>
 <h3><a class="header" href="#-advisory" id="-advisory">⚠ Advisory</a></h3>
 <p>Nixflk leverages the <a href="https://nixos.wiki/wiki/Flakes">flakes</a> feature available via an <em>experimental</em>
 branch of <a href="https://nixos.org/manual/nix/stable">nix</a>. Until nix 3.0 is released, this project should be
@@ -189,7 +190,7 @@ considered unstable.</p>
 <h1><a class="header" href="#quick-start" id="quick-start">Quick Start</a></h1>
 <p>The only dependency is nix, so make sure you have it <a href="https://nixos.org/manual/nix/stable/#sect-multi-user-installation">installed</a>.</p>
 <h2><a class="header" href="#get-the-template" id="get-the-template">Get the Template</a></h2>
-<p>Here is a snippet that will work as long as <code>nix-shell</code> is in your path:</p>
+<p>Here is a snippet that will get you the template without the git history:</p>
 <pre><code class="language-sh">nix-shell https://github.com/nrdxp/nixflk/archive/core.tar.gz -A shell \
   --run &quot;flk get core&quot;
 
@@ -203,18 +204,23 @@ git commit -m init
 
 cachix use nrdxp
 </code></pre>
+<p>This will place you in a new folder named <code>flk</code> with git initialized, and a
+nix-shell that provides all the dependencies, including the unstable nix
+version required.</p>
+<p>In addition, the <a href="doc/start/../../cachix">binary cache</a> is added for faster deployment.</p>
 <blockquote>
-<p>You can change <code>core</code> to <code>community</code> in the call to <code>flk get</code></p>
+<h5><a class="header" href="#notes" id="notes"><em>Notes:</em></a></h5>
+<ul>
+<li>You can change <code>core</code> to <a href="doc/start/../introduction.html#community-profiles"><code>community</code></a>
+in the call to <code>flk get</code></li>
+<li>Flakes ignore files that have not been added to git, so be sure to stage new
+files before building the system.</li>
+</ul>
 </blockquote>
-<p>This will place you in a new folder named <code>flk</code> in the current directory with
-git set up, and a nix-shell that provides all the dependencies, including the
-required nix version. In addition, the cachix cache which contains all the
-binary outputs from this flake is added for faster deployment.</p>
 <h2><a class="header" href="#next-steps" id="next-steps">Next Steps:</a></h2>
 <ul>
 <li><a href="doc/start/./iso.html">Make installable ISO</a></li>
 <li><a href="doc/start/./from-nixos.html">Already on NixOS</a></li>
-<li><a href="doc/start/./from-linux.html">Install from Linux</a></li>
 </ul>
 <h1><a class="header" href="#iso" id="iso">ISO</a></h1>
 <p>Making and writing an installable iso for <code>hosts/NixOS.nix</code> is as simple as:</p>
@@ -228,11 +234,18 @@ dd bs=4M if=result/iso/*.iso of=/dev/$your_installation_device \
 <h2><a class="header" href="#generate-configuration" id="generate-configuration">Generate Configuration</a></h2>
 <p>Assuming your happy with your existing partition layout, you can generate a
 basic NixOS configuration for your system using:</p>
-<pre><code>flk up
+<pre><code class="language-sh">flk up
 </code></pre>
 <p>This will make a new file <code>hosts/up-$(hostname).nix</code>, which you can edit to
 your liking.</p>
+<p>Make sure your <code>i18n.defaultLocale</code> and <code>time.timeZone</code> are set properly for
+your region. Keep in mind that <code>networking.hostName</code> with be automatically
+set to the filename of your hosts file, so <code>hosts/my-host.nix</code> will have the
+hostname <code>my-host</code>.</p>
+<p>Now might be a good time to read the docs on <a href="doc/start/../../suites">suites</a> and
+<a href="doc/start/../../profiles">profiles</a> and add or create any that you need.</p>
 <blockquote>
+<h5><a class="header" href="#note" id="note"><em>Note:</em></a></h5>
 <p>While the <code>up</code> sub-command is provided as a convenience to quickly set up and
 install a &quot;fresh&quot; NixOS system on current hardware, committing these files is
 discouraged.</p>
@@ -240,43 +253,63 @@ discouraged.</p>
 invisible to the flake otherwise, but it is best to move what you need from
 them directly into a host module of your own making, and commit that instead.</p>
 </blockquote>
-<p>Make sure your <code>i18n.defaultLocale</code> and <code>time.timeZone</code> are set properly for
-your region. Keep in mind that <code>networking.hostName</code> with be automatically
-set to the filename of your hosts file, so <code>hosts/my-host.nix</code> will have the
-hostname <code>my-host</code>.</p>
-<p>Now might be a good time to read the docs on <a href="doc/start/../layout/suites.html">suites</a> and
-<a href="doc/start/../layout/profiles.html">profiles</a> and add or create any that you need.</p>
 <h1><a class="header" href="#installation" id="installation">Installation</a></h1>
 <p>Once your ready to deploy <code>hosts/my-host.nix</code>:</p>
-<pre><code>flk my-host switch
+<pre><code class="language-sh">flk my-host switch
 </code></pre>
-<blockquote>
-<p>Instead of <code>switch</code>, you can pass <code>build</code>, <code>test</code>, <code>boot</code>, etc just as with
-<code>nixos-rebuild</code>.</p>
-</blockquote>
 <p>This calls <code>nixos-rebuild</code> with sudo to build and install your configuration.</p>
 <blockquote>
+<h5><a class="header" href="#notes-1" id="notes-1"><em>Notes:</em></a></h5>
+<ul>
+<li>
+<p>Instead of <code>switch</code>, you can pass <code>build</code>, <code>test</code>, <code>boot</code>, etc just as with
+<code>nixos-rebuild</code>.</p>
+</li>
+<li>
 <p>It is convenient to have the template living at <code>/etc/nixos</code> so you can
 simply <code>sudo nixos-rebuild switch</code> from anywhere on the system, but it is
 not required.</p>
+</li>
+</ul>
 </blockquote>
+<h1><a class="header" href="#layout" id="layout">Layout</a></h1>
+<p>Each of the following sections is a directory in the root of the project
+serving a singular purpose. Select a chapter to read more about its purpose
+and usage.</p>
+<h1><a class="header" href="#cachix" id="cachix">Cachix</a></h1>
+<p>The cachix directory simple captures the output of <code>sudo cachix use</code> for the
+developers personal cache, as well as the nix-community cache. You can easily
+add your own cache, assuming the template lives in /etc/nixos, by simply
+running <code>sudo cachix use yourcache</code>.</p>
+<p>These caches are only added to the system after a <code>nixos-rebuild switch</code>, so it
+is recommended to call <code>cachix use nrdxp</code> before the initial deployment, as it
+will save a lot of build time.</p>
+<p>In the future, users will be able to skip this step once the ability to define
+the nix.conf within the flake is fully fleshed out upstream.</p>
+<h1><a class="header" href="#external-art" id="external-art">External Art</a></h1>
+<p>When you need to use a module, overlay, or pass a value from one of your inputs
+to the rest of your NixOS configuration, <a href="https://github.com/nrdxp/nixflk/tree/core/extern/default.nix">extern</a> is where you do it.</p>
+<p>Modules and overlays are self explanatory, and the <code>specialArgs</code> attribute is
+used to extend the arguments passed to all NixOS modules, allowing for
+arbitrary values to be passed from flake inputs to the rest of your
+configuration.</p>
 <h1><a class="header" href="#hosts" id="hosts">Hosts</a></h1>
 <p>Nix flakes contain an output called <code>nixosConfigurations</code> declaring an
 attribute set of valid NixOS systems. To simplify the management and creation
-of these hosts, nixflk automatically imports every <code>*.nix</code> file inside this
+of these hosts, nixflk automatically imports every <em>.nix</em> file inside this
 directory to the mentioned attribute set, applying the projects defaults to
 each. The only hard requirement is that the file contain a valid NixOS module.</p>
 <p>As an example, a file <code>hosts/system.nix</code> will be available via the flake
 output <code>nixosConfigurations.system</code>. You can have as many hosts as you want
 and all of them will be automatically imported based on their name.</p>
 <p>For each host, the configuration automatically sets the <code>networking.hostName</code>
-attribute to the name of the file minus the <code>.nix</code> extension. This is for
+attribute to the name of the file minus the <em>.nix</em> extension. This is for
 convenience, since <code>nixos-rebuild</code> automatically searches for a configuration
 matching the current systems hostname if one is not specified explicitly.</p>
 <p>It is recommended that the host modules only contain configuration information
 specific to a particular piece of hardware. Anything reusable across machines
-is best saved for <a href="hosts/./profiles.html">profile modules</a>.</p>
-<p>This is a good place to import sets of profiles, called <a href="hosts/./suites.html">suites</a>,
+is best saved for <a href="hosts/../profiles">profile modules</a>.</p>
+<p>This is a good place to import sets of profiles, called <a href="hosts/../suites">suites</a>,
 that you intend to use on your machine.</p>
 <p>Additionally, this is the perfect place to import anything you might need from
 the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> repository.</p>
@@ -292,6 +325,179 @@ the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> reposit
   fileSystems.&quot;/&quot; = { device = &quot;/dev/disk/by-label/nixos&quot;; };
 }
 </code></pre>
+<h1><a class="header" href="#modules" id="modules">Modules</a></h1>
+<p>The modules directory is a replica of nixpkg's NixOS <a href="https://github.com/NixOS/nixpkgs/tree/master/nixos/modules">modules</a>
+, and follows the same semantics. This allows for trivial upstreaming into
+nixpkgs proper once your module is sufficiently stable.</p>
+<p>All modules linked in <em>module-list.nix</em> are automatically exported via
+<code>nixosModules.&lt;file-basename&gt;</code>, and imported into all <a href="modules/../hosts">hosts</a>.</p>
+<blockquote>
+<h5><a class="header" href="#note-1" id="note-1"><em>Note:</em></a></h5>
+<p>This is reserved for declaring brand new module options. If you just want to
+declare a coherent configuration of already existing and related NixOS options
+, use <a href="modules/../profiles">profiles</a> instead.</p>
+</blockquote>
+<h2><a class="header" href="#semantics" id="semantics">Semantics</a></h2>
+<p>In case you've never written a module for nixpkgs before, here is a brief
+outline of the process.</p>
+<h3><a class="header" href="#declaration" id="declaration">Declaration</a></h3>
+<p>modules/services/service-category/my-service.nix:</p>
+<pre><code class="language-nix">{ config, lib, ... }:
+let
+  cfg = config.services.myService;
+in
+{
+  options.services.myService = {
+    enable = lib.mkEnableOption &quot;Description of my new service.&quot;;
+
+    # additional options ...
+  };
+
+  config = lib.mkIf cfg.enable {
+    # implementation ...
+  };
+}
+</code></pre>
+<h3><a class="header" href="#import" id="import">Import</a></h3>
+<p>modules/module-list.nix:</p>
+<pre><code class="language-nix">[
+  ./services/service-category/my-service.nix
+]
+</code></pre>
+<h2><a class="header" href="#usage" id="usage">Usage</a></h2>
+<h3><a class="header" href="#internal" id="internal">Internal</a></h3>
+<p>profiles/profile-category/my-profile.nix:</p>
+<pre><code class="language-nix">{ ... }:
+{
+  services.MyService.enable = true;
+}
+</code></pre>
+<h3><a class="header" href="#external" id="external">External</a></h3>
+<p>flake.nix:</p>
+<pre><code class="language-nix">{
+  # inputs omitted
+
+  outputs = { self, nixflk, nixpkgs, ... }: {
+    nixosConfigurations.myConfig = nixpkgs.lib.nixosSystem {
+      system = &quot;...&quot;;
+
+      modules = [
+        nixflk.nixosModules.my-service
+        ({ ... }: {
+          services.MyService.enable = true;
+        })
+      ];
+    };
+  };
+}
+</code></pre>
+<h1><a class="header" href="#overlays" id="overlays">Overlays</a></h1>
+<p>Writing overlays is a common occurence when using a NixOS system. Therefore,
+we want to keep the process as simple and straightforward as possible.</p>
+<p>Any <em>.nix</em> files declared in this directory will be assumed to be a valid
+overlay, and will be automatically imported into all <a href="overlays/../hosts">hosts</a>, and
+exported via <code>overlays.&lt;file-basename&gt;</code> <em>as well as</em>
+<code>packages.&lt;system&gt;.&lt;pkgName&gt;</code> (for valid systems), so all you have to do is
+write it.</p>
+<h2><a class="header" href="#example-1" id="example-1">Example</a></h2>
+<p>overlays/kakoune.nix:</p>
+<pre><code class="language-nix">final: prev: {
+  kakoune = prev.kakoune.override {
+    configure.plugins = with final.kakounePlugins; [
+      (kak-fzf.override { fzf = final.skim; })
+      kak-auto-pairs
+      kak-buffers
+      kak-powerline
+      kak-vertical-selection
+    ];
+  };
+}
+</code></pre>
+<h1><a class="header" href="#overrides" id="overrides">Overrides</a></h1>
+<p>By default, the NixOS systems are based on the latest release. While it is
+trivial to change this to nixos-unstable or any other branch of nixpkgs by
+changing the flake url, sometimes all we want is a single package from another
+branch.</p>
+<p>This is what the overrides are for. By default, they are pulled directly from
+nixpkgs/master, but you can change the <code>override</code> flake input url to
+nixos-unstable, or even a specific sha revision.</p>
+<h2><a class="header" href="#example-2" id="example-2">Example</a></h2>
+<h3><a class="header" href="#packages" id="packages">Packages</a></h3>
+<p>The override packages are defined as a regular overlay with an extra arguement
+<code>pkgs</code>. This refers to the packages built from the <code>override</code> flake.</p>
+<p>Pulling the manix package from the override flake:</p>
+<pre><code class="language-nix">{
+  packages = pkgs: final: prev: {
+    inherit (pkgs) manix;
+  };
+}
+</code></pre>
+<h3><a class="header" href="#modules-1" id="modules-1">Modules</a></h3>
+<p>You can also pull modules from override. Simply specify their path relative to
+the nixpkgs <a href="https://github.com/NixOS/nixpkgs/tree/master/nixos/modules">modules</a> directory. The old version will be added
+to <code>disabledModules</code> and the new version imported into the configuration.</p>
+<p>Pulling the zsh module from the override flake:</p>
+<pre><code class="language-nix">{
+  modules = [ &quot;programs/zsh/zsh.nix&quot; ];
+}
+</code></pre>
+<blockquote>
+<h5><a class="header" href="#note-2" id="note-2"><em>Note:</em></a></h5>
+<p>Sometimes a modules name will change from one branch to another. This is what
+the <code>disabledModules</code> list is for. If the module name changes, the old
+version will not automatically be disabled, so simply put it's old name in
+this list to disable it.</p>
+</blockquote>
+<h1><a class="header" href="#packages-1" id="packages-1">Packages</a></h1>
+<p>Similar to <a href="pkgs/../modules">modules</a>, the pkgs directory mirrors the upstream
+<a href="https://github.com/NixOS/nixpkgs/tree/master/pkgs">nixpkgs/pkgs</a>, and for the same reason; if you ever want to upstream
+your package, it's as simple as dropping it into the nixpkgs/pkgs directory.</p>
+<p>The only minor difference is that, instead of adding the <code>callPackage</code> call to
+<code>all-packages.nix</code>, you just add it the the <em>default.nix</em> in this directory,
+which is defined as a simple overlay.</p>
+<p>This overlay is set as the default <code>overlay</code> output attribute for the flake.
+And all the packages are exported via <code>packages.&lt;system&gt;.&lt;pkg-name&gt;</code>, for all
+the supported systems listed in the package's <code>meta.platforms</code> attribute.</p>
+<p>And, as usual, every package in the overlay is also available to any NixOS
+<a href="pkgs/../hosts">host</a>.</p>
+<h2><a class="header" href="#example-3" id="example-3">Example</a></h2>
+<p>pkgs/development/libraries/libinih/default.nix:</p>
+<pre><code class="language-nix">{ stdenv, meson, ninja, fetchFromGitHub, ... }:
+let version = &quot;r50&quot;;
+in
+stdenv.mkDerivation {
+  pname = &quot;libinih&quot;;
+  inherit version;
+
+  src = fetchFromGitHub {
+    owner = &quot;benhoyt&quot;;
+    repo = &quot;inih&quot;;
+    rev = &quot;${version}&quot;;
+    hash = &quot;sha256-GF+TVEysaXJxSBBjMsTr2IQvRKlzdEu3rlPQ88PE3nI=&quot;;
+  };
+
+  buildInputs = [ meson ninja ];
+
+  mesonFlags = ''
+    -Ddefault_library=shared
+    -Ddistro_install=true
+  '';
+
+  meta = with stdenv.lib; {
+    description = &quot;Simple .INI file parser in C&quot;;
+    homepage = &quot;https://github.com/benhoyt/inih&quot;;
+    maintainers = [ maintainers.nrdxp ];
+    license = licenses.bsd3;
+    platforms = platforms.all;
+    inherit version;
+  };
+}
+</code></pre>
+<p>pkgs/default.nix:</p>
+<pre><code class="language-nix">final: prev: {
+  libinih = prev.callPackage ./development/libraries/libinih { };
+}
+</code></pre>
 <h1><a class="header" href="#profiles" id="profiles">Profiles</a></h1>
 <p>Profiles are simply NixOS modules which contain generic expressions suitable
 for any host. A good example is the configuration for a text editor, or
@@ -302,20 +508,20 @@ community <a href="https://github.com/nrdxp/nixflk/tree/community/profiles">bran
 profile should always be defined in a <code>default.nix</code>, and it should always be a
 a function taking a single attribute set as an argument, and returning a NixOS
 module which does not define any new module options. If you need to make new
-module option declarations, just use <a href="profiles/./modules.html">modules</a>.</p>
+module option declarations, just use <a href="profiles/../modules">modules</a>.</p>
 <p>These restrictions help simplify the import logic used to pass profles to
-<a href="profiles/./suites.html">suites</a>.</p>
-<h3><a class="header" href="#example-1" id="example-1">Example</a></h3>
-<p>✔<code>profiles/develop/default.nix</code>:</p>
-<pre><code class="language-nix"># good profile definition
-{  ... }:
+<a href="profiles/../suites">suites</a>.</p>
+<h3><a class="header" href="#example-4" id="example-4">Example</a></h3>
+<h4><a class="header" href="#correct-" id="correct-">Correct ✔</a></h4>
+<p>profiles/develop/default.nix:</p>
+<pre><code class="language-nix">{  ... }:
 {
   programs.zsh.enable = true;
 }
 </code></pre>
-<p>❌<code>profiles/develop.nix</code>:</p>
-<pre><code># bad profile definition
-{
+<h4><a class="header" href="#incorrect-" id="incorrect-">Incorrect ❌</a></h4>
+<p>profiles/develop.nix:</p>
+<pre><code class="language-nix">{
   options = {};
 }
 </code></pre>
@@ -331,7 +537,21 @@ individual programs.</p>
 nix expressions self contained and modular. This way we can maximize reuse
 while minimizing boilerplate. Always strive to keep your profiles as generic
 and modular as possible. Anything machine specific belongs in your
-<a href="profiles/./hosts.html">host</a> files.</p>
+<a href="profiles/../hosts">host</a> files.</p>
+<h1><a class="header" href="#secrets" id="secrets">Secrets</a></h1>
+<p>Secrets are managed using <a href="https://github.com/AGWA/git-crypt">git-crypt</a> so you can keep your flake in
+a public repository like GitHub without exposing your password or other
+sensitive data.</p>
+<p>By default, everything in the secrets folder is automatically encrypted. Just
+be sure to run <code>git-crypt init</code> before putting anything in here.</p>
+<blockquote>
+<h5><a class="header" href="#note-3" id="note-3"><em>Note:</em></a></h5>
+<p>Currently, there is <a href="https://github.com/NixOS/nix/issues/8">no mechanism</a> in nix to deploy secrets
+within the nix/store so, if they end up in the nix/store after deployment, they
+will be world readable on that machine.</p>
+<p>The author of nixflk intends to implement a workaround for this situation in
+the near future, but for the time being, simple be aware of this.</p>
+</blockquote>
 <h1><a class="header" href="#suites" id="suites">Suites</a></h1>
 <p>Suites provide a mechanism for users to easily combine and name collecitons of
 profiles. For good examples, check out the suites defined in the community
@@ -344,7 +564,7 @@ types which don't depend on hardware, such as vm's and containers.</p>
   mobileWS = workstation ++ [ profiles.laptop ];
 }
 </code></pre>
-<h2><a class="header" href="#usage" id="usage">Usage</a></h2>
+<h2><a class="header" href="#usage-1" id="usage-1">Usage</a></h2>
 <p><code>hosts/my-laptop.nix</code>:</p>
 <pre><code class="language-nix">{ suites, ... }:
 {
@@ -352,10 +572,10 @@ types which don't depend on hardware, such as vm's and containers.</p>
 }
 </code></pre>
 <h1><a class="header" href="#users" id="users">Users</a></h1>
-<p>Users are a special case of <a href="users/./profiles.html">profiles</a> that define system users
-and <a href="https://nix-community.github.io/home-manager">home-manager</a> configurations. For your convenience, home
-manager is wired in by default so all you have to worry about is declaring your
-users. For a fully fleshed out example, check out the developers personal
+<p>Users are a special case of <a href="users/../profiles">profiles</a> that define system
+users and <a href="https://nix-community.github.io/home-manager">home-manager</a> configurations. For your convenience,
+home manager is wired in by default so all you have to worry about is declaring
+your users. For a fully fleshed out example, check out the developers personal
 <a href="https://github.com/nrdxp/nixflk/tree/nrd/users/nrd/default.nix">branch</a>.</p>
 <h2><a class="header" href="#basic-usage" id="basic-usage">Basic Usage</a></h2>
 <p><code>users/myuser/default.nix</code>:</p>
@@ -374,16 +594,14 @@ users. For a fully fleshed out example, check out the developers personal
 <h2><a class="header" href="#external-usage" id="external-usage">External Usage</a></h2>
 <p>You can easily use the defined home-manager configurations outside of NixOS
 using the <code>hmActivations</code> meta-package defined in the flakes <code>legacyPackages</code>
-output. The <a href="users/../flk/flk.html">flk</a> helper script makes this even easier. Just
-make sure you have home-manager
-<a href="https://nix-community.github.io/home-manager/index.html#ch-installation">installed</a>.</p>
+output. The <a href="users/../doc/flk">flk</a> helper script makes this even easier.</p>
 <p>This is great for keeping your environment consistent across Unix systems,
 including OSX.</p>
 <h3><a class="header" href="#from-within-the-projects-devshell" id="from-within-the-projects-devshell">From within the projects devshell:</a></h3>
 <pre><code class="language-sh"># builds the nixos user defined in the NixOS host
 flk home NixOS nixos
 
-# activate
+# build and activate
 flk home NixOS nixos switch
 </code></pre>
 <h3><a class="header" href="#manually-from-outside-the-project" id="manually-from-outside-the-project">Manually from outside the project:</a></h3>
@@ -393,16 +611,7 @@ nix build &quot;github:nrdxp/nixflk#hmActivationPackages.NixOS.nixos&quot;
 # activate
 ./result/activate &amp;&amp; unlink result
 </code></pre>
-<h1><a class="header" href="#cachix" id="cachix">Cachix</a></h1>
-<p>The cachix directory simple captures the output of <code>sudo cachix use</code> for the
-developers personal cache, as well as the nix-community cache. You can easily
-add your own cache, assuming the template lives in /etc/nixos, by simply
-running <code>sudo cachix use yourcache</code>.</p>
-<p>These caches are only added to the system after a <code>nixos-rebuild switch</code>, so it
-is recommended to call <code>cachix use nrdxp</code> before the initial deployment, as it
-will save a lot of build time.</p>
-<p>In the future, users will be able to skip this step once the ability to define
-the nix.conf within the flake is fully fleshed out upstream.</p>
+<h1><a class="header" href="#flk-command" id="flk-command">flk command</a></h1>
 
                     </main>
 

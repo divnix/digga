@@ -12,7 +12,7 @@
 
   # passed to all nixos modules
   specialArgs = {
-    unstableModulesPath = "${master}/nixos/modules";
+    overrideModulesPath = "${override}/nixos/modules";
     hardware = nixos-hardware.nixosModules;
   };
 }

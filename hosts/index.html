@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../doc/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../doc/start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../doc/start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="../doc/start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Layout</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../hosts/index.html" class="active"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="../profiles/index.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="../suites/index.html"><strong aria-hidden="true">3.3.</strong> Suites</a></li><li class="chapter-item expanded "><a href="../users/index.html"><strong aria-hidden="true">3.4.</strong> Users</a></li><li class="chapter-item expanded "><a href="../cachix/index.html"><strong aria-hidden="true">3.5.</strong> Cachix</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../doc/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../doc/start/index.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../doc/start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="../doc/start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="../doc/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cachix/index.html"><strong aria-hidden="true">3.1.</strong> Cachix</a></li><li class="chapter-item expanded "><a href="../extern/index.html"><strong aria-hidden="true">3.2.</strong> Extern</a></li><li class="chapter-item expanded "><a href="../hosts/index.html" class="active"><strong aria-hidden="true">3.3.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="../modules/index.html"><strong aria-hidden="true">3.4.</strong> Modules</a></li><li class="chapter-item expanded "><a href="../overlays/index.html"><strong aria-hidden="true">3.5.</strong> Overlays</a></li><li class="chapter-item expanded "><a href="../overrides/index.html"><strong aria-hidden="true">3.6.</strong> Overrides</a></li><li class="chapter-item expanded "><a href="../pkgs/index.html"><strong aria-hidden="true">3.7.</strong> Packages</a></li><li class="chapter-item expanded "><a href="../profiles/index.html"><strong aria-hidden="true">3.8.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="../secrets/index.html"><strong aria-hidden="true">3.9.</strong> Secrets</a></li><li class="chapter-item expanded "><a href="../suites/index.html"><strong aria-hidden="true">3.10.</strong> Suites</a></li><li class="chapter-item expanded "><a href="../users/index.html"><strong aria-hidden="true">3.11.</strong> Users</a></li></ol></li><li class="chapter-item expanded "><a href="../doc/flk/index.html"><strong aria-hidden="true">4.</strong> flk command</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -166,20 +166,20 @@
                         <h1><a class="header" href="#hosts" id="hosts">Hosts</a></h1>
 <p>Nix flakes contain an output called <code>nixosConfigurations</code> declaring an
 attribute set of valid NixOS systems. To simplify the management and creation
-of these hosts, nixflk automatically imports every <code>*.nix</code> file inside this
+of these hosts, nixflk automatically imports every <em>.nix</em> file inside this
 directory to the mentioned attribute set, applying the projects defaults to
 each. The only hard requirement is that the file contain a valid NixOS module.</p>
 <p>As an example, a file <code>hosts/system.nix</code> will be available via the flake
 output <code>nixosConfigurations.system</code>. You can have as many hosts as you want
 and all of them will be automatically imported based on their name.</p>
 <p>For each host, the configuration automatically sets the <code>networking.hostName</code>
-attribute to the name of the file minus the <code>.nix</code> extension. This is for
+attribute to the name of the file minus the <em>.nix</em> extension. This is for
 convenience, since <code>nixos-rebuild</code> automatically searches for a configuration
 matching the current systems hostname if one is not specified explicitly.</p>
 <p>It is recommended that the host modules only contain configuration information
 specific to a particular piece of hardware. Anything reusable across machines
-is best saved for <a href="./profiles.html">profile modules</a>.</p>
-<p>This is a good place to import sets of profiles, called <a href="./suites.html">suites</a>,
+is best saved for <a href="../profiles">profile modules</a>.</p>
+<p>This is a good place to import sets of profiles, called <a href="../suites">suites</a>,
 that you intend to use on your machine.</p>
 <p>Additionally, this is the perfect place to import anything you might need from
 the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> repository.</p>
@@ -201,13 +201,13 @@ the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> reposit
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../doc/start/from-nixos.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../extern/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../profiles/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../modules/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -219,13 +219,13 @@ the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> reposit
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../doc/start/from-nixos.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../extern/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="../profiles/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../modules/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

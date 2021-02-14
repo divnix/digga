@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../doc/introduction.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../doc/start/quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../doc/start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="../doc/start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Layout</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../hosts/index.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="../profiles/index.html"><strong aria-hidden="true">3.2.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="../suites/index.html"><strong aria-hidden="true">3.3.</strong> Suites</a></li><li class="chapter-item expanded "><a href="../users/index.html"><strong aria-hidden="true">3.4.</strong> Users</a></li><li class="chapter-item expanded "><a href="../cachix/index.html"><strong aria-hidden="true">3.5.</strong> Cachix</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../doc/introduction.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../doc/start/index.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../doc/start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li><li class="chapter-item expanded "><a href="../doc/start/from-nixos.html"><strong aria-hidden="true">2.2.</strong> From NixOS</a></li></ol></li><li class="chapter-item expanded "><a href="../doc/layout.html"><strong aria-hidden="true">3.</strong> Layout</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cachix/index.html"><strong aria-hidden="true">3.1.</strong> Cachix</a></li><li class="chapter-item expanded "><a href="../extern/index.html"><strong aria-hidden="true">3.2.</strong> Extern</a></li><li class="chapter-item expanded "><a href="../hosts/index.html"><strong aria-hidden="true">3.3.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="../modules/index.html"><strong aria-hidden="true">3.4.</strong> Modules</a></li><li class="chapter-item expanded "><a href="../overlays/index.html"><strong aria-hidden="true">3.5.</strong> Overlays</a></li><li class="chapter-item expanded "><a href="../overrides/index.html"><strong aria-hidden="true">3.6.</strong> Overrides</a></li><li class="chapter-item expanded "><a href="../pkgs/index.html"><strong aria-hidden="true">3.7.</strong> Packages</a></li><li class="chapter-item expanded "><a href="../profiles/index.html"><strong aria-hidden="true">3.8.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="../secrets/index.html"><strong aria-hidden="true">3.9.</strong> Secrets</a></li><li class="chapter-item expanded "><a href="../suites/index.html"><strong aria-hidden="true">3.10.</strong> Suites</a></li><li class="chapter-item expanded "><a href="../users/index.html"><strong aria-hidden="true">3.11.</strong> Users</a></li></ol></li><li class="chapter-item expanded "><a href="../doc/flk/index.html"><strong aria-hidden="true">4.</strong> flk command</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -170,14 +170,15 @@ providing a sane repository structure, integrating several popular projects
 like <a href="https://nix-community.github.io/home-manager">home-manager</a>, setting clear guidelines, offering useful
 conveniences, and eliminating boilerplate so you can focus on deploying your
 systems.</p>
-<p>In addition, every package and NixOS profile is built and uploaded to a binary
-cache, so everything provided is available without building anything. This is
-especially useful for the packages that are pulled from master, as without the
-cache, rebuilds are quite frequent.</p>
 <h2><a class="header" href="#community-profiles" id="community-profiles">Community Profiles</a></h2>
-<p>There are two branches from which to choose: core and community. The commuity
-branch builds on core and includes several ready-made profiles for
-discretionary employment.</p>
+<p>There are two branches from which to choose: <a href="https://github.com/nrdxp/nixflk">core</a> and
+<a href="https://github.com/nrdxp/nixflk/tree/community">community</a>. The community branch builds on core and includes
+several ready-made profiles for discretionary use.</p>
+<p>Every package and NixOS profile declared in community is uploaded to
+<a href="../cachix">cachix</a>, so everything provided is available without building
+anything. This is especially useful for the packages that are
+<a href="../overrides">overridden</a> from master, as without the cache, rebuilds are
+quite frequent.</p>
 <h3><a class="header" href="#-advisory" id="-advisory">⚠ Advisory</a></h3>
 <p>Nixflk leverages the <a href="https://nixos.wiki/wiki/Flakes">flakes</a> feature available via an <em>experimental</em>
 branch of <a href="https://nixos.org/manual/nix/stable">nix</a>. Until nix 3.0 is released, this project should be
@@ -192,7 +193,7 @@ considered unstable.</p>
                         
 
                         
-                            <a rel="next" href="../doc/start/quick-start.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../doc/start/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -206,7 +207,7 @@ considered unstable.</p>
                 
 
                 
-                    <a rel="next" href="../doc/start/quick-start.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../doc/start/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

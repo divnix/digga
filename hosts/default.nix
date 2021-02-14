@@ -1,6 +1,6 @@
 { lib
 , nixos
-, master
+, override
 , nixos-hardware
 , pkgs
 , self
@@ -24,15 +24,15 @@ let
         let
           core = import ../profiles/core;
 
-          modOverrides = { config, unstableModulesPath, ... }:
+          modOverrides = { config, overrideModulesPath, ... }:
             let
-              unstable = import ../unstable;
-              inherit (unstable) modules disabledModules;
+              overrides = import ../overrides;
+              inherit (overrides) modules disabledModules;
             in
             {
               disabledModules = modules ++ disabledModules;
               imports = map
-                (path: "${unstableModulesPath}/${path}")
+                (path: "${overrideModulesPath}/${path}")
                 modules;
             };
 
@@ -44,7 +44,7 @@ let
 
             networking.hostName = hostName;
             nix.nixPath = [
-              "nixos-unstable=${master}"
+              "nixos-unstable=${override}"
               "nixos=${nixos}"
               "nixpkgs=${nixos}"
             ];
@@ -52,7 +52,6 @@ let
             nixpkgs = { inherit pkgs; };
 
             nix.registry = {
-              master.flake = master;
               nixflk.flake = self;
               nixpkgs.flake = nixos;
             };
