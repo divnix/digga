@@ -1,11 +1,12 @@
-{ lib
+{ extern
+, home
+, lib
 , nixos
-, override
 , nixos-hardware
+, override
 , pkgs
 , self
 , system
-, extern
 , ...
 }:
 let
@@ -36,28 +37,56 @@ let
                 modules;
             };
 
-          global = {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
+          global =
+            let
+              inherit (lock) nodes;
 
-            hardware.enableRedistributableFirmware = lib.mkDefault true;
+              lock = builtins.fromJSON (builtins.readFile ../flake.lock);
+            in
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
 
-            networking.hostName = hostName;
-            nix.nixPath = [
-              "nixos-unstable=${override}"
-              "nixos=${nixos}"
-              "nixpkgs=${nixos}"
-            ];
+              hardware.enableRedistributableFirmware = lib.mkDefault true;
 
-            nixpkgs = { inherit pkgs; };
+              networking.hostName = hostName;
 
-            nix.registry = {
-              nixflk.flake = self;
-              nixpkgs.flake = nixos;
+              nix.nixPath = [
+                "nixpkgs=${nixos}"
+                "nixos-config=${self}/compat/nixos"
+                "home-manager=${home}"
+              ];
+
+              nixpkgs = { inherit pkgs; };
+
+              nix.registry = {
+                flk.flake = self;
+
+                nixos = {
+                  exact = true;
+                  from = nodes.nixos.original;
+                  to = {
+                    inherit (nixos) lastModified narHash rev;
+
+                    path = override.outPath;
+                    type = "path";
+                  };
+                };
+
+                override = {
+                  exact = true;
+                  from = nodes.override.original;
+                  to = {
+                    inherit (override) lastModified narHash rev;
+
+                    path = override.outPath;
+                    type = "path";
+                  };
+                };
+              };
+
+              system.configurationRevision = lib.mkIf (self ? rev) self.rev;
             };
-
-            system.configurationRevision = lib.mkIf (self ? rev) self.rev;
-          };
 
           local = {
             require = [
