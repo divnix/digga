@@ -23,7 +23,6 @@ pkgs.devshell.mkShell {
     nixos-install
     nixos-generate-config
     nixos-enter
-    mdbook
   ];
 
   env = { inherit name; };
