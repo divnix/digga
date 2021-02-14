@@ -70,7 +70,7 @@
             });
 
           devShell = import ./shell {
-            inherit pkgs nixos;
+            inherit self system;
           };
 
           legacyPackages.hmActivationPackages =
