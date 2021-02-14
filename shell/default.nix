@@ -42,7 +42,11 @@ pkgs.devshell.mkShell {
 
     mapCmd = category: map (mkCommand category);
   in
-  mapCmd "main" [ flk cachix git ] ++
+  mapCmd "main"
+    (
+      [ flk git ] ++
+      lib.optional (system != "i686-linux") cachix
+    ) ++
   mapCmd "linters" [ nixpkgs-fmt editorconfig-checker ] ++
   mapCmd "documentation" [ python3Packages.grip mdbook ] ++ [
     {
