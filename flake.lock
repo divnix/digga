@@ -2,7 +2,9 @@
   "nodes": {
     "ci-agent": {
       "inputs": {
-        "flake-compat": "flake-compat",
+        "flake-compat": [
+          "flake-compat"
+        ],
         "nixos-20_09": [
           "nixos"
         ],
@@ -43,11 +45,11 @@
     "flake-compat": {
       "flake": false,
       "locked": {
-        "lastModified": 1603796912,
-        "narHash": "sha256-6ayqpH/4XiEXylNdWI3AghubqS6XuiPg3Y60jY8RTo4=",
+        "lastModified": 1606424373,
+        "narHash": "sha256-oq8d4//CJOrVj+EcOaSXvMebvuTkmBJuT5tzlfewUnQ=",
         "owner": "edolstra",
         "repo": "flake-compat",
-        "rev": "19576c2aea7f074ff0da818b21a8b0950ff6ec86",
+        "rev": "99f1c2157fba4bfe6211a321fd0ee43199025dbf",
         "type": "github"
       },
       "original": {
@@ -172,6 +174,7 @@
         "ci-agent": "ci-agent",
         "devshell": "devshell",
         "flake-utils": "flake-utils",
+        "flake-compat": "flake-compat",
         "home": "home",
         "nixos": "nixos",
         "nixos-hardware": "nixos-hardware",

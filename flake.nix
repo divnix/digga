@@ -13,6 +13,9 @@
       ci-agent.url = "github:hercules-ci/hercules-ci-agent";
       ci-agent.inputs.nixos-20_09.follows = "nixos";
       ci-agent.inputs.nixos-unstable.follows = "override";
+      ci-agent.inputs.flake-compat.follows = "flake-compat";
+      flake-compat.url = "github:edolstra/flake-compat";
+      flake-compat.flake = false;
     };
 
   outputs =
@@ -25,6 +28,7 @@
     , nur
     , devshell
     , nixos-hardware
+    , ...
     }:
     let
       inherit (flake-utils.lib) eachDefaultSystem flattenTreeSystem;
