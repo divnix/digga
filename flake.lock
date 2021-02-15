@@ -7,7 +7,7 @@
           "nixos"
         ],
         "nixos-unstable": [
-          "master"
+          "override"
         ],
         "pre-commit-hooks-nix": "pre-commit-hooks-nix"
       },
@@ -93,7 +93,7 @@
         "type": "github"
       }
     },
-    "master": {
+    "override": {
       "locked": {
         "lastModified": 1612717294,
         "narHash": "sha256-V3j1rA4a3Lzf5pdbFHzs9jUcOKB91MFO3X8nMY+lK5c=",
@@ -174,7 +174,7 @@
         "devshell": "devshell",
         "flake-utils": "flake-utils",
         "home": "home",
-        "master": "master",
+        "override": "override",
         "nixos": "nixos",
         "nixos-hardware": "nixos-hardware",
         "nur": "nur"

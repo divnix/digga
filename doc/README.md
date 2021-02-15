@@ -1,10 +1,18 @@
 # Pull Requests
+If making a change to core, or adding a feature, please be sure to update the
+relevant docs. Each directory contains its own README.md, which will
+automatically be pulled into the [mdbook](https://flk.nrdxp.dev). The book is
+rendered on every change, so the docs should always be up to date.
 
+
+## Community PRs
 While much of your work in this template may be idiosyncratic in nature. Anything
 that might be generally useful to the broader NixOS community can be synced to
-the `template` branch to provide a host of useful NixOS configurations available
-"out of the box". If you wish to contribute such an expression please follow
-these guidelines:
+the `community` branch to provide a host of useful NixOS configurations available
+"out of the box".
+
+# Style
+If you wish to contribute please follow these guidelines:
 
 * format your code with [`nixpkgs-fmt`][nixpkgs-fmt]. The default devshell
   includes a pre-commit hook that does this for you.
