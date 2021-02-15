@@ -23,7 +23,7 @@ pkgs.devshell.mkShell {
     nixos-install
     nixos-generate-config
     nixos-enter
-  ];
+  ] ++ lib.optional (system == "x86_64-linux") deploy-rs;
 
   env = { inherit name; };
 
