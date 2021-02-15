@@ -3,16 +3,19 @@
 
   inputs =
     {
-      override.url = "nixpkgs/master";
+      override.url = "nixpkgs";
       nixos.url = "nixpkgs/release-20.09";
       home.url = "github:nix-community/home-manager/release-20.09";
       home.inputs.nixpkgs.follows = "nixos";
-      flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
+      utils.url = "github:numtide/flake-utils/flatten-tree-system";
       devshell.url = "github:numtide/devshell";
       nixos-hardware.url = "github:nixos/nixos-hardware";
       ci-agent.url = "github:hercules-ci/hercules-ci-agent";
       ci-agent.inputs.nixos-20_09.follows = "nixos";
       ci-agent.inputs.nixos-unstable.follows = "override";
+      ci-agent.inputs.flake-compat.follows = "flake-compat";
+      flake-compat.url = "github:edolstra/flake-compat";
+      flake-compat.flake = false;
     };
 
   outputs =
@@ -21,13 +24,14 @@
     , home
     , nixos
     , override
-    , flake-utils
+    , utils
     , nur
     , devshell
     , nixos-hardware
+    , ...
     }:
     let
-      inherit (flake-utils.lib) eachDefaultSystem flattenTreeSystem;
+      inherit (utils.lib) eachDefaultSystem flattenTreeSystem;
       inherit (nixos.lib) recursiveUpdate;
       inherit (self.lib) overlays nixosModules genPackages genPkgs
         genHomeActivationPackages;
