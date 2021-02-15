@@ -58,22 +58,6 @@
         "type": "github"
       }
     },
-    "flake-utils": {
-      "locked": {
-        "lastModified": 1608663846,
-        "narHash": "sha256-YOAXeoNLW0IubQ6AZLGuSj5kAD5n4DYXLYReLtyds1A=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "a68df93a37cd5137ac22ffeb2d8a03acf253cc24",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "ref": "flatten-tree-system",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "home": {
       "inputs": {
         "nixpkgs": [
@@ -173,13 +157,29 @@
       "inputs": {
         "ci-agent": "ci-agent",
         "devshell": "devshell",
-        "flake-utils": "flake-utils",
         "flake-compat": "flake-compat",
         "home": "home",
         "nixos": "nixos",
         "nixos-hardware": "nixos-hardware",
         "nur": "nur",
-        "override": "override"
+        "override": "override",
+        "utils": "utils"
+      }
+    },
+    "utils": {
+      "locked": {
+        "lastModified": 1608663846,
+        "narHash": "sha256-YOAXeoNLW0IubQ6AZLGuSj5kAD5n4DYXLYReLtyds1A=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "a68df93a37cd5137ac22ffeb2d8a03acf253cc24",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "ref": "flatten-tree-system",
+        "repo": "flake-utils",
+        "type": "github"
       }
     }
   },
