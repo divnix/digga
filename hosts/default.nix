@@ -1,11 +1,12 @@
-{ lib
+{ extern
+, home
+, lib
 , nixos
-, master
 , nixos-hardware
+, override
 , pkgs
 , self
 , system
-, extern
 , ...
 }:
 let
@@ -24,41 +25,68 @@ let
         let
           core = import ../profiles/core;
 
-          modOverrides = { config, unstableModulesPath, ... }:
+          modOverrides = { config, overrideModulesPath, ... }:
             let
-              unstable = import ../unstable;
-              inherit (unstable) modules disabledModules;
+              overrides = import ../overrides;
+              inherit (overrides) modules disabledModules;
             in
             {
               disabledModules = modules ++ disabledModules;
               imports = map
-                (path: "${unstableModulesPath}/${path}")
+                (path: "${overrideModulesPath}/${path}")
                 modules;
             };
 
-          global = {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
+          global =
+            let
+              inherit (lock) nodes;
 
-            hardware.enableRedistributableFirmware = lib.mkDefault true;
+              lock = builtins.fromJSON (builtins.readFile ../flake.lock);
+            in
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
 
-            networking.hostName = hostName;
-            nix.nixPath = [
-              "nixos-unstable=${master}"
-              "nixos=${nixos}"
-              "nixpkgs=${nixos}"
-            ];
+              hardware.enableRedistributableFirmware = lib.mkDefault true;
 
-            nixpkgs = { inherit pkgs; };
+              networking.hostName = hostName;
 
-            nix.registry = {
-              master.flake = master;
-              nixflk.flake = self;
-              nixpkgs.flake = nixos;
+              nix.nixPath = [
+                "nixpkgs=${nixos}"
+                "nixos-config=${self}/compat/nixos"
+                "home-manager=${home}"
+              ];
+
+              nixpkgs = { inherit pkgs; };
+
+              nix.registry = {
+                flk.flake = self;
+
+                nixos = {
+                  exact = true;
+                  from = nodes.nixos.original;
+                  to = {
+                    inherit (nixos) lastModified narHash rev;
+
+                    path = override.outPath;
+                    type = "path";
+                  };
+                };
+
+                override = {
+                  exact = true;
+                  from = nodes.override.original;
+                  to = {
+                    inherit (override) lastModified narHash rev;
+
+                    path = override.outPath;
+                    type = "path";
+                  };
+                };
+              };
+
+              system.configurationRevision = lib.mkIf (self ? rev) self.rev;
             };
-
-            system.configurationRevision = lib.mkIf (self ? rev) self.rev;
-          };
 
           local = {
             require = [

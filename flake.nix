@@ -3,9 +3,7 @@
 
   inputs =
     {
-      # Once desired, bump master's locked revision:
-      # nix flake update --update-input master
-      master.url = "nixpkgs/master";
+      override.url = "nixpkgs/master";
       nixos.url = "nixpkgs/release-20.09";
       home.url = "github:nix-community/home-manager/release-20.09";
       home.inputs.nixpkgs.follows = "nixos";
@@ -14,7 +12,7 @@
       nixos-hardware.url = "github:nixos/nixos-hardware";
       ci-agent.url = "github:hercules-ci/hercules-ci-agent";
       ci-agent.inputs.nixos-20_09.follows = "nixos";
-      ci-agent.inputs.nixos-unstable.follows = "master";
+      ci-agent.inputs.nixos-unstable.follows = "override";
     };
 
   outputs =
@@ -22,7 +20,7 @@
     , ci-agent
     , home
     , nixos
-    , master
+    , override
     , flake-utils
     , nur
     , devshell
