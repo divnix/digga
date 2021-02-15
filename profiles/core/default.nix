@@ -12,6 +12,7 @@ in
       binutils
       coreutils
       curl
+      deploy-rs
       direnv
       dnsutils
       dosfstools
@@ -22,8 +23,8 @@ in
       iputils
       jq
       manix
-      nix-index
       moreutils
+      nix-index
       nmap
       ripgrep
       tealdeer
