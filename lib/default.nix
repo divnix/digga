@@ -43,6 +43,21 @@ let
     map fullPath (attrNames (readDir overlayDir));
 
   /**
+  Synopsis: mkNodes _nixosConfigurations_
+
+  Generate the `nodes` attribute expected by deploy-rs
+  where _nixosConfigurations_ are `nodes`.
+  **/
+  mkNodes = deploy: mapAttrs (_: config: {
+    hostname = config.config.networking.hostName;
+
+    profiles.system = {
+      user = "root";
+      path = deploy.lib.x86_64-linux.activate.nixos config;
+    };
+  });
+
+  /**
   Synopsis: importDefaults _path_
 
   Recursively import the subdirs of _path_ containing a default.nix.
@@ -72,7 +87,7 @@ let
 in
 {
   inherit importDefaults mapFilterAttrs genAttrs' pkgImport
-    pathsToImportedAttrs;
+    pathsToImportedAttrs mkNodes;
 
   overlays = pathsToImportedAttrs overlayPaths;
 
