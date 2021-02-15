@@ -93,21 +93,6 @@
         "type": "github"
       }
     },
-    "override": {
-      "locked": {
-        "lastModified": 1612717294,
-        "narHash": "sha256-V3j1rA4a3Lzf5pdbFHzs9jUcOKB91MFO3X8nMY+lK5c=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "77ffc4c2413dc4e1d269e1ec65d4b005188f8536",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "ref": "master",
-        "type": "indirect"
-      }
-    },
     "nixos": {
       "locked": {
         "lastModified": 1612690903,
@@ -152,6 +137,20 @@
         "type": "indirect"
       }
     },
+    "override": {
+      "locked": {
+        "lastModified": 1613354882,
+        "narHash": "sha256-V3j1rA4a3Lzf5pdbFHzs9jUcOKB91MFO3X8nMY+lK5c=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "77ffc4c2413dc4e1d269e1ec65d4b005188f8536",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
     "pre-commit-hooks-nix": {
       "flake": false,
       "locked": {
@@ -174,10 +173,10 @@
         "devshell": "devshell",
         "flake-utils": "flake-utils",
         "home": "home",
-        "override": "override",
         "nixos": "nixos",
         "nixos-hardware": "nixos-hardware",
-        "nur": "nur"
+        "nur": "nur",
+        "override": "override"
       }
     }
   },
