@@ -79,7 +79,7 @@ in
   genPkgs = { self }:
     let inherit (self) inputs;
     in
-    (inputs.flake-utils.lib.eachDefaultSystem
+    (inputs.utils.lib.eachDefaultSystem
       (system:
         let
           extern = import ../extern { inherit inputs; };
@@ -93,7 +93,7 @@ in
               lib = (prev.lib or { }) // {
                 inherit (nixos.lib) nixosSystem;
                 flk = self.lib;
-                utils = inputs.flake-utils.lib;
+                utils = inputs.utils.lib;
               };
             })
           ]
