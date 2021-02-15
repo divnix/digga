@@ -1,6 +1,6 @@
 # Summary
 
-- [Introduction](./doc/introduction.md)
+- [Introduction](./README.md)
 - [Quick Start](./doc/start/index.md)
   - [ISO](./doc/start/iso.md)
   - [From NixOS](./doc/start/from-nixos.md)
@@ -16,4 +16,11 @@
   - [Secrets](./secrets/README.md)
   - [Suites](./suites/README.md)
   - [Users](./users/README.md)
-- [flk command](./doc/flk/index.md)
+- [flk](./doc/flk/index.md)
+  - [up](./doc/flk/up.md)
+  - [update](./doc/flk/update.md)
+  - [get](./doc/flk/get.md)
+  - [iso](./doc/flk/iso.md)
+  - [install](./doc/flk/install.md)
+  - [home](./doc/flk/home.md)
+- [Contributing](./doc/README.md)

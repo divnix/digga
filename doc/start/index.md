@@ -25,7 +25,7 @@ version required.
 In addition, the [binary cache](../../cachix) is added for faster deployment.
 
 > ##### _Notes:_
-> - You can change `core` to [`community`](../introduction.md#community-profiles)
+> - You can change `core` to [`community`](../../index.md#community-profiles)
 >   in the call to `flk get`
 > - Flakes ignore files that have not been added to git, so be sure to stage new
 >   files before building the system.

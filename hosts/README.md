@@ -27,7 +27,7 @@ the [nixos-hardware][nixos-hardware] repository.
 
 ## Example
 
-`hosts/librem.nix`:
+hosts/librem.nix:
 ```nix
 { suites, hardware, ... }:
 {
