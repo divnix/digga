@@ -33,8 +33,13 @@ case "$1" in
 
     nixos-generate-config --dir "$DEVSHELL_ROOT/up/$HOSTNAME"
 
-    printf "{ imports = [ ../up/$HOSTNAME/configuration.nix ]; }" \
-      > "$DEVSHELL_ROOT/hosts/up-$HOSTNAME.nix"
+    printf "%s\n" \
+      "{ suites, ... }:" \
+      "{" \
+      "  imports = [" \
+      "    ../up/$HOSTNAME/configuration.nix" \
+      "  ] ++ suites.core;" \
+      "}" > "$DEVSHELL_ROOT/hosts/up-$HOSTNAME.nix"
 
     git add -f \
       "$DEVSHELL_ROOT/up/$HOSTNAME" \
