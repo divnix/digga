@@ -1,8 +1,12 @@
 final: prev: {
   nixFlakes = prev.nixFlakes.overrideAttrs
-    (self: {
-      patches = [
-        ../pkgs/tools/package-management/nix/0001-nix-command-and-flakes-by-default.patch
-      ];
-    });
+    (self:
+      let
+        oldPatches = self.patches or [ ];
+      in
+      {
+        patches = oldPatches ++ [
+          ../pkgs/tools/package-management/nix/0001-nix-command-and-flakes-by-default.patch
+        ];
+      });
 }

@@ -4,6 +4,8 @@ The only dependency is nix, so make sure you have it [installed][install-nix].
 ## Get the Template
 Here is a snippet that will get you the template without the git history:
 ```sh
+nix-shell -p cachix --run cachix use nrdxp
+
 nix-shell https://github.com/nrdxp/nixflk/archive/core.tar.gz -A shell \
   --run "flk get core"
 
@@ -14,8 +16,6 @@ nix-shell
 git init
 git add .
 git commit -m init
-
-cachix use nrdxp
 ```
 
 This will place you in a new folder named `flk` with git initialized, and a
@@ -29,6 +29,8 @@ In addition, the [binary cache](../../cachix) is added for faster deployment.
 >   in the call to `flk get`
 > - Flakes ignore files that have not been added to git, so be sure to stage new
 >   files before building the system.
+> - You can choose to simply clone the repo with git if you want to follow
+>   upstream changes.
 
 ## Next Steps:
 - [Make installable ISO](./iso.md)

@@ -14,6 +14,7 @@
       element-desktop
       manix
       nixpkgs-fmt
+      nixFlakes
       qutebrowser
       signal-desktop
       starship;
