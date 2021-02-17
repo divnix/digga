@@ -25,5 +25,8 @@ category = "documentation"
 package = "mdbook"
 category = "documentation"
 
+[[commands]]
+package = "nixFlakes"
+
 [git.hooks]
 enable = true

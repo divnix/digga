@@ -22,7 +22,7 @@ pkgs.devshell.mkShell
     nixos-install
     nixos-generate-config
     nixos-enter
-  ] ++ lib.optional (system == "x86_64-linux") pkgs.deploy-rs;
+  ];
 
   git.hooks = {
     pre-commit.text = lib.fileContents ./pre-commit.sh;
@@ -32,13 +32,11 @@ pkgs.devshell.mkShell
     {
       package = flk;
     }
-    {
-      name = "nix";
-      help = nixFlakes.meta.description;
-      command = ''
-        ${nixFlakes}/bin/nix --option experimental-features \
-          "nix-command flakes ca-references" "$@"
-      '';
-    }
-  ] ++ lib.optional (system != "i686-linux") { package = cachix; };
+  ]
+  ++ lib.optional (system != "i686-linux") { package = cachix; }
+  ++ lib.optional (system == "x86_64-linux") {
+    name = "deploy";
+    package = deploy-rs;
+    help = "A simple multi-profile Nix-flake deploy tool.";
+  };
 }
