@@ -1,0 +1,29 @@
+imports = [ "git.hooks" ]
+
+[devshell]
+packages = [
+  "git-crypt"
+]
+
+[[commands]]
+package = "git"
+category = "vcs"
+
+[[commands]]
+package = "nixpkgs-fmt"
+category = "linters"
+
+[[commands]]
+package = "editorconfig-checker"
+category = "linters"
+
+[[commands]]
+package = "python3Packages.grip"
+category = "documentation"
+
+[[commands]]
+package = "mdbook"
+category = "documentation"
+
+[git.hooks]
+enable = true

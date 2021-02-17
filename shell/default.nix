@@ -13,50 +13,32 @@ let
 
   flk = pkgs.callPackage ./flk.nix { };
 
-  inherit (flk) name;
 in
-pkgs.devshell.mkShell {
-  inherit name;
+pkgs.devshell.mkShell
+{
+  imports = [ (pkgs.devshell.importTOML ./devshell.toml) ];
 
-  packages = with pkgs; with installPkgs; [
-    git-crypt
+  packages = with installPkgs; [
     nixos-install
     nixos-generate-config
     nixos-enter
-  ] ++ lib.optional (system == "x86_64-linux") deploy-rs;
-
-  env = { inherit name; };
+  ] ++ lib.optional (system == "x86_64-linux") pkgs.deploy-rs;
 
   git.hooks = {
-    enable = true;
     pre-commit.text = lib.fileContents ./pre-commit.sh;
   };
 
-  commands = with pkgs; let
-    mkCommand = category: package: {
-      inherit package category;
-      name = package.pname or package.name;
-      help = package.meta.description;
-    };
-
-    mapCmd = category: map (mkCommand category);
-  in
-  mapCmd "main"
-    (
-      [ flk git ] ++
-      lib.optional (system != "i686-linux") cachix
-    ) ++
-  mapCmd "linters" [ nixpkgs-fmt editorconfig-checker ] ++
-  mapCmd "documentation" [ python3Packages.grip mdbook ] ++ [
+  commands = with pkgs; [
+    {
+      package = flk;
+    }
     {
       name = "nix";
       help = nixFlakes.meta.description;
-      category = "main";
       command = ''
         ${nixFlakes}/bin/nix --option experimental-features \
           "nix-command flakes ca-references" "$@"
       '';
     }
-  ];
-
+  ] ++ lib.optional (system != "i686-linux") { package = cachix; };
 }
