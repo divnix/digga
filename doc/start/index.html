@@ -167,7 +167,9 @@
 <p>The only dependency is nix, so make sure you have it <a href="https://nixos.org/manual/nix/stable/#sect-multi-user-installation">installed</a>.</p>
 <h2><a class="header" href="#get-the-template" id="get-the-template">Get the Template</a></h2>
 <p>Here is a snippet that will get you the template without the git history:</p>
-<pre><code class="language-sh">nix-shell https://github.com/nrdxp/nixflk/archive/core.tar.gz -A shell \
+<pre><code class="language-sh">nix-shell -p cachix --run cachix use nrdxp
+
+nix-shell https://github.com/nrdxp/nixflk/archive/core.tar.gz -A shell \
   --run &quot;flk get core&quot;
 
 cd flk
@@ -177,8 +179,6 @@ nix-shell
 git init
 git add .
 git commit -m init
-
-cachix use nrdxp
 </code></pre>
 <p>This will place you in a new folder named <code>flk</code> with git initialized, and a
 nix-shell that provides all the dependencies, including the unstable nix
@@ -191,6 +191,8 @@ version required.</p>
 in the call to <code>flk get</code></li>
 <li>Flakes ignore files that have not been added to git, so be sure to stage new
 files before building the system.</li>
+<li>You can choose to simply clone the repo with git if you want to follow
+upstream changes.</li>
 </ul>
 </blockquote>
 <h2><a class="header" href="#next-steps" id="next-steps">Next Steps:</a></h2>
