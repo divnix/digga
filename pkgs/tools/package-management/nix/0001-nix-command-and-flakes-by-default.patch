@@ -1,0 +1,28 @@
+From a47bbae869ff35095eb2fe4d4d5145054ea81049 Mon Sep 17 00:00:00 2001
+From: Timothy DeHerrera <tim.deh@pm.me>
+Date: Wed, 17 Feb 2021 12:26:48 -0700
+Subject: [PATCH] nix-command and flakes by default
+
+---
+ src/libstore/globals.hh | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/libstore/globals.hh b/src/libstore/globals.hh
+index eabd83e3f..e851e2a79 100644
+--- a/src/libstore/globals.hh
++++ b/src/libstore/globals.hh
+@@ -889,7 +889,10 @@ public:
+           value.
+           )"};
+
+-    Setting<Strings> experimentalFeatures{this, {}, "experimental-features",
++    Setting<Strings> experimentalFeatures{
++        this,
++        {"nix-command", "flakes", "ca-references"},
++        "experimental-features",
+         "Experimental Nix features to enable."};
+
+     bool isExperimentalFeatureEnabled(const std::string & name);
+--
+2.28.0
+
