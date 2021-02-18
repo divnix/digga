@@ -61,12 +61,12 @@ flake.nix:
 {
   # inputs omitted
 
-  outputs = { self, nixflk, nixpkgs, ... }: {
+  outputs = { self, devos, nixpkgs, ... }: {
     nixosConfigurations.myConfig = nixpkgs.lib.nixosSystem {
       system = "...";
 
       modules = [
-        nixflk.nixosModules.my-service
+        devos.nixosModules.my-service
         ({ ... }: {
           services.MyService.enable = true;
         })

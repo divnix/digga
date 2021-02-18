@@ -41,7 +41,7 @@ stdenv.mkDerivation {
   meta = with stdenv.lib; {
     description = "Simple .INI file parser in C";
     homepage = "https://github.com/benhoyt/inih";
-    maintainers = [ maintainers.nrdxp ];
+    maintainers = [ maintainers.divnix ];
     license = licenses.bsd3;
     platforms = platforms.all;
     inherit version;

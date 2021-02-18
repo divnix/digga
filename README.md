@@ -1,16 +1,16 @@
-[![Build](https://img.shields.io/github/checks-status/nrdxp/nixflk/core)](https://hercules-ci.com/github/nrdxp/nixflk/jobs)
-[![MIT License](https://img.shields.io/github/license/nrdxp/nixflk)][mit]
+[![Build](https://img.shields.io/github/checks-status/divnix/devos/core)](https://hercules-ci.com/github/divnix/devos/jobs)
+[![MIT License](https://img.shields.io/github/license/divnix/devos)][mit]
 [![NixOS 20.09](https://img.shields.io/badge/NixOS-v20.09-blue.svg?style=flat&logo=NixOS&logoColor=white)](https://nixos.org)
 
 > #### ⚠ Advisory ⚠
-> Nixflk leverages the [flakes][flakes] feature available via an _experimental_
+> DevOS leverages the [flakes][flakes] feature available via an _experimental_
 > branch of [nix][nix]. Until nix 3.0 is released, this project should be
 > considered unstable, though quite usable as flakes have been maturing
 > _well_
-> [for a while](https://github.com/nrdxp/nixflk/tree/17713c22d07c54525c728c62060a0428b76dee3b).
+> [for a while](https://github.com/divnix/devos/tree/17713c22d07c54525c728c62060a0428b76dee3b).
 
 # Introduction
-Nixflk is a template which grants a simple way to use, deploy and manage
+DevOS is a template which grants a simple way to use, deploy and manage
 [NixOS][nixos] systems for personal and productive use. It does this by
 providing a sane repository structure, integrating several popular projects
 like [home-manager][home-manager], setting clear guidelines, offering useful
@@ -48,13 +48,13 @@ quite frequent.
 - [devshell](https://github.com/numtide/devshell)
 
 # License
-Nixflk is licensed under the [MIT License][mit].
+DevOS is licensed under the [MIT License][mit].
 
 [nix]: https://nixos.org/manual/nix/stable
 [mit]: https://mit-license.org
 [nixos]: https://nixos.org/manual/nixos/stable
 [home-manager]: https://nix-community.github.io/home-manager
 [flakes]: https://nixos.wiki/wiki/Flakes
-[core]: https://github.com/nrdxp/nixflk
-[community]: https://github.com/nrdxp/nixflk/tree/community
+[core]: https://github.com/divnix/devos
+[community]: https://github.com/divnix/devos/tree/community
 [dotfiles]: https://github.com/hlissner/dotfiles

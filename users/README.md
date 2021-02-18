@@ -4,7 +4,7 @@ Users are a special case of [profiles](../profiles) that define system
 users and [home-manager][home-manager] configurations. For your convenience,
 home manager is wired in by default so all you have to worry about is declaring
 your users. For a fully fleshed out example, check out the developers personal
-[branch](https://github.com/nrdxp/nixflk/tree/nrd/users/nrd/default.nix).
+[branch](https://github.com/divnix/devos/tree/nrd/users/nrd/default.nix).
 
 ## Basic Usage
 `users/myuser/default.nix`:
@@ -42,7 +42,7 @@ flk home NixOS nixos switch
 ### Manually from outside the project:
 ```sh
 # build
-nix build "github:nrdxp/nixflk#hmActivationPackages.NixOS.nixos"
+nix build "github:divnix/devos#hmActivationPackages.NixOS.nixos"
 
 # activate
 ./result/activate && unlink result
