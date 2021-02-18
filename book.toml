@@ -4,6 +4,3 @@ language = "en"
 multilingual = false
 src = "."
 title = "devos docs"
-
-[output.html]
-site-url = "/devos/"
