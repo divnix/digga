@@ -1,6 +1,6 @@
 [[ -d "$DEVSHELL_ROOT" ]] ||
   {
-    echo "This script must be run from nixflk's devshell" >&2
+    echo "This script must be run from devos's devshell" >&2
     exit 1
   }
 
@@ -52,7 +52,7 @@ case "$1" in
 
   "get")
     if [[ "$2" == "core" || "$2" == "community" ]]; then
-      nix flake new -t "github:nrdxp/nixflk/$2" "${3:-flk}"
+      nix flake new -t "github:divnix/devos/$2" "${3:-flk}"
     else
       echo "flk get [core|community] {dest}"
       exit 1
