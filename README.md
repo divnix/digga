@@ -2,6 +2,13 @@
 [![MIT License](https://img.shields.io/github/license/nrdxp/nixflk)][mit]
 [![NixOS 20.09](https://img.shields.io/badge/NixOS-v20.09-blue.svg?style=flat&logo=NixOS&logoColor=white)](https://nixos.org)
 
+> #### ⚠ Advisory ⚠
+> Nixflk leverages the [flakes][flakes] feature available via an _experimental_
+> branch of [nix][nix]. Until nix 3.0 is released, this project should be
+> considered unstable, though quite usable as flakes have been maturing
+> _well_
+> [for a while](https://github.com/nrdxp/nixflk/tree/17713c22d07c54525c728c62060a0428b76dee3b).
+
 # Introduction
 Nixflk is a template which grants a simple way to use, deploy and manage
 [NixOS][nixos] systems for personal and productive use. It does this by
@@ -32,11 +39,6 @@ Every package and NixOS profile declared in community is uploaded to
 anything. This is especially useful for the packages that are
 [overridden](./overrides) from master, as without the cache, rebuilds are
 quite frequent.
-
-> #### ⚠ Advisory ⚠
-> Nixflk leverages the [flakes][flakes] feature available via an _experimental_
-> branch of [nix][nix]. Until nix 3.0 is released, this project should be
-> considered unstable.
 
 ## Inspiration & Art
 - [hlissner/dotfiles][dotfiles]
