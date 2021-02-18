@@ -1,7 +1,7 @@
 # Pull Requests
 If making a change to core, or adding a feature, please be sure to update the
 relevant docs. Each directory contains its own README.md, which will
-automatically be pulled into the [mdbook](https://flk.nrdxp.dev). The book is
+automatically be pulled into the [mdbook](https://devos.divnix.com). The book is
 rendered on every change, so the docs should always be up to date.
 
 

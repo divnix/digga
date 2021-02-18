@@ -18,7 +18,7 @@ conveniences, and eliminating boilerplate so you can focus on deploying your
 systems.
 
 ## Getting Started
-Check out the [guide](https://flk.nrdxp.dev/doc/start) to get up and running.
+Check out the [guide](https://devos.divnix.com/doc/start) to get up and running.
 
 ## Motivation
 NixOS provides an amazing abstraction to manage our computers, but that new
