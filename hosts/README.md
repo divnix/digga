@@ -2,7 +2,7 @@
 
 Nix flakes contain an output called `nixosConfigurations` declaring an
 attribute set of valid NixOS systems. To simplify the management and creation
-of these hosts, nixflk automatically imports every _.nix_ file inside this
+of these hosts, devos automatically imports every _.nix_ file inside this
 directory to the mentioned attribute set, applying the projects defaults to
 each. The only hard requirement is that the file contain a valid NixOS module.
 

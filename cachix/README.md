@@ -5,7 +5,7 @@ add your own cache, assuming the template lives in /etc/nixos, by simply
 running `sudo cachix use yourcache`.
 
 These caches are only added to the system after a `nixos-rebuild switch`, so it
-is recommended to call `cachix use nrdxp` before the initial deployment, as it
+is recommended to call `cachix use divnix` before the initial deployment, as it
 will save a lot of build time.
 
 In the future, users will be able to skip this step once the ability to define

@@ -1,6 +1,6 @@
 # deploy-rs
 [Deploy-rs][d-rs] is a tool for managing NixOS remote machines. It was
-chosen for nixflk after the author experienced some frustrations with the
+chosen for devos after the author experienced some frustrations with the
 stateful nature of nixops' db. It was also designed from scratch to support
 flake based deployments, and so is an excellent tool for the job.
 

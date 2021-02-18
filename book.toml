@@ -3,7 +3,7 @@ authors = ["Timothy DeHerrera"]
 language = "en"
 multilingual = false
 src = "."
-title = "nixflk docs"
+title = "devos docs"
 
 [output.html]
-site-url = "/nixflk/"
+site-url = "/devos/"

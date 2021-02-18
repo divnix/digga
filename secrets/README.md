@@ -11,7 +11,7 @@ be sure to run `git-crypt init` before putting anything in here.
 > within the nix/store so, if they end up in the nix/store after deployment, they
 > will be world readable on that machine.
 >
-> The author of nixflk intends to implement a workaround for this situation in
+> The author of devos intends to implement a workaround for this situation in
 > the near future, but for the time being, simple be aware of this.
 
 [git-crypt]: https://github.com/AGWA/git-crypt

@@ -2,7 +2,7 @@
 Profiles are simply NixOS modules which contain generic expressions suitable
 for any host. A good example is the configuration for a text editor, or
 window manager. If you need some concrete examples, just checkout the
-community [branch](https://github.com/nrdxp/nixflk/tree/community/profiles).
+community [branch](https://github.com/divnix/devos/tree/community/profiles).
 
 ## Constraints
 For the sake of consistency, there are a few minor constraints. First of all, a
@@ -41,7 +41,7 @@ you can either pull in the whole development profile, or pick and choose
 individual programs.
 
 ## Conclusion
-Profiles are the most important concept in nixflk. They allow us to keep our
+Profiles are the most important concept in devos. They allow us to keep our
 nix expressions self contained and modular. This way we can maximize reuse
 while minimizing boilerplate. Always strive to keep your profiles as generic
 and modular as possible. Anything machine specific belongs in your
