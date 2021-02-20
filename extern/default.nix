@@ -1,4 +1,7 @@
 { inputs }: with inputs;
+let
+  hm-modules = { };
+in
 {
   modules = [
     home.nixosModules.home-manager
@@ -15,6 +18,8 @@
 
   # passed to all nixos modules
   specialArgs = {
+    inherit hm-modules;
+
     overrideModulesPath = "${override}/nixos/modules";
     hardware = nixos-hardware.nixosModules;
   };
