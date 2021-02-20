@@ -18,18 +18,24 @@ structure; integrating several popular projects like
 Skip the indeterminate nature of other systems, _and_ the perceived difficulty
 of Nix. It's easier than you think!
 
-A lot will change toward 1.0.0[#121](https://github.com/divnix/devos/issues/121)
-, so stayed tuned!
-
 ## Getting Started
 Check out the [guide](https://devos.divnix.com/doc/start) to get up and running.
+
+## In the Wild
+You author maintains his own branch, so you can take inspiration, direction, or
+make critical comments about my bad [code][please]. 😜
 
 ## Motivation
 NixOS provides an amazing abstraction to manage our environment, but that new
 power can sometimes bring feelings of overwhelm and confusion. Having a turing
-complete programming language can add an unlimited potential for complexity if
-we do it wrong. Instead, we should have a community consensus on how to manage
-a NixOS system — consider this a first attempt.
+complete system can easily lead to unlimited complexity if we do it wrong.
+Instead, we should have a community consensus on how to manage a NixOS system.
+
+# Upstream
+I'd love to see this in the nix-community should anyone believe its reached a
+point of maturity to be generally useful, but I'm all for waiting until
+1.0[#121](https://github.com/divnix/devos/issues/121) to save the cache work,
+too.
 
 ___The future is declarative! 🎉___
 
@@ -63,3 +69,4 @@ DevOS is licensed under the [MIT License][mit].
 [community]: https://github.com/divnix/devos/tree/community
 [dotfiles]: https://github.com/hlissner/dotfiles
 [devshell]: https://github.com/numtide/devshell
+[please]: https://github.com/nrdxp/devos/tree/nrd
