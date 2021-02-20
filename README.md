@@ -31,7 +31,7 @@ power can sometimes bring feelings of overwhelm and confusion. Having a turing
 complete system can easily lead to unlimited complexity if we do it wrong.
 Instead, we should have a community consensus on how to manage a NixOS system.
 
-# Upstream
+## Upstream
 I'd love to see this in the nix-community should anyone believe its reached a
 point of maturity to be generally useful, but I'm all for waiting until
 1.0[#121](https://github.com/divnix/devos/issues/121) to save the cache work,
