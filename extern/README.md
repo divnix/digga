@@ -7,4 +7,14 @@ used to extend the arguments passed to all NixOS modules, allowing for
 arbitrary values to be passed from flake inputs to the rest of your
 configuration.
 
+There is also an `hmModules` attribute set for pulling home-manager modules in
+from the outside world:
+```nix
+{
+  hmModules = {
+    inherit (someFlake.hmModules) anHmModule;
+  };
+}
+```
+
 [extern]: https://github.com/divnix/devos/tree/core/extern/default.nix
