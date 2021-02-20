@@ -1,6 +1,6 @@
 { inputs }: with inputs;
 let
-  hm-modules = { };
+  hmModules = { };
 in
 {
   modules = [
