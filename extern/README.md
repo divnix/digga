@@ -21,9 +21,10 @@ flake.nix:
 
 extern/default.nix:
 ```nix
+with inputs;
 {
   hmModules = {
-    inherit doom-emacs;
+    doom-emacs = doom-emacs.hmModule;
   };
 }
 ```
@@ -34,7 +35,7 @@ users/nixos/default.nix:
 { hmModules, ... }:
 {
   home-manager.users.nixos = {
-    imports = [ hmModules.doom-emacs.hmModule ] ;
+    imports = [ hmModules.doom-emacs ] ;
 
     programs.doom-emacs.enable = true;
   };
