@@ -23,6 +23,7 @@
       naersk.inputs.nixpkgs.follows = "override";
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
+      doom-emacs.url = "github:vlaci/nix-doom-emacs";
     };
 
   outputs =

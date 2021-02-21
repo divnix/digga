@@ -1,6 +1,6 @@
 { inputs }: with inputs;
 let
-  hmModules = { };
+  hmModules = { inherit doom-emacs; };
 in
 {
   modules = [
