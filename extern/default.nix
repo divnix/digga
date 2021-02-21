@@ -18,7 +18,7 @@ in
 
   # passed to all nixos modules
   specialArgs = {
-    inherit hm-modules;
+    inherit hmModules;
 
     overrideModulesPath = "${override}/nixos/modules";
     hardware = nixos-hardware.nixosModules;
