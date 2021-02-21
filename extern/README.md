@@ -7,12 +7,36 @@ used to extend the arguments passed to all NixOS modules, allowing for
 arbitrary values to be passed from flake inputs to the rest of your
 configuration.
 
+## Home Manager
 There is also an `hmModules` attribute set for pulling home-manager modules in
 from the outside world:
+
+### Declare:
+flake.nix:
+```nix
+{
+  inputs.doom-emacs.url = "github:vlaci/nix-doom-emacs";
+}
+```
+
+extern/default.nix:
 ```nix
 {
   hmModules = {
-    inherit (someFlake.hmModules) anHmModule;
+    inherit doom-emacs;
+  };
+}
+```
+
+### Use:
+users/nixos/default.nix:
+```nix
+{ hmModules, ... }:
+{
+  home-manager.users.nixos = {
+    imports = [ hmModules.doom-emacs.hmModule ] ;
+
+    programs.doom-emacs.enable = true;
   };
 }
 ```
