@@ -336,9 +336,10 @@ from the outside world:</p>
 }
 </code></pre>
 <p>extern/default.nix:</p>
-<pre><code class="language-nix">{
+<pre><code class="language-nix">with inputs;
+{
   hmModules = {
-    inherit doom-emacs;
+    doom-emacs = doom-emacs.hmModule;
   };
 }
 </code></pre>
@@ -347,7 +348,7 @@ from the outside world:</p>
 <pre><code class="language-nix">{ hmModules, ... }:
 {
   home-manager.users.nixos = {
-    imports = [ hmModules.doom-emacs.hmModule ] ;
+    imports = [ hmModules.doom-emacs ] ;
 
     programs.doom-emacs.enable = true;
   };
