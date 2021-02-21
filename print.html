@@ -326,11 +326,30 @@ to the rest of your NixOS configuration, <a href="https://github.com/divnix/devo
 used to extend the arguments passed to all NixOS modules, allowing for
 arbitrary values to be passed from flake inputs to the rest of your
 configuration.</p>
+<h2><a class="header" href="#home-manager" id="home-manager">Home Manager</a></h2>
 <p>There is also an <code>hmModules</code> attribute set for pulling home-manager modules in
 from the outside world:</p>
+<h3><a class="header" href="#declare" id="declare">Declare:</a></h3>
+<p>flake.nix:</p>
+<pre><code class="language-nix">{
+  inputs.doom-emacs.url = &quot;github:vlaci/nix-doom-emacs&quot;;
+}
+</code></pre>
+<p>extern/default.nix:</p>
 <pre><code class="language-nix">{
   hmModules = {
-    inherit (someFlake.hmModules) anHmModule;
+    inherit doom-emacs;
+  };
+}
+</code></pre>
+<h3><a class="header" href="#use" id="use">Use:</a></h3>
+<p>users/nixos/default.nix:</p>
+<pre><code class="language-nix">{ hmModules, ... }:
+{
+  home-manager.users.nixos = {
+    imports = [ hmModules.doom-emacs.hmModule ] ;
+
+    programs.doom-emacs.enable = true;
   };
 }
 </code></pre>
