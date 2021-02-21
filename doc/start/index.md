@@ -33,7 +33,7 @@ In addition, the [binary cache](../../cachix) is added for faster deployment.
 >   upstream changes.
 
 ## Next Steps:
-- [Make installable ISO](./iso.md)
+- [Make installable ISO](./iso.md) or [Make bespoke sd card](./sd.md)
 - [Already on NixOS](./from-nixos.md)
 
 

@@ -138,6 +138,8 @@ in
         let
           modpath = "nixos/modules";
           cd = "installer/cd-dvd/installation-cd-minimal-new-kernel.nix";
+          sd_aarch64 = "installer/sd-card/sd-image-aarch64.nix";
+          sd_armv7l = "installer/sd-card/sd-image-armv7l-multiplatform.nix";
           ciConfig =
             (nixosSystem (args // {
               modules =
@@ -172,11 +174,33 @@ in
                 })
               ];
             })).config;
+
+          sdConfigAarch64 = (nixosSystem
+            (args // {
+              modules = modules ++ [
+                "${nixos}/${modpath}/${sd_aarch64}"
+                ({ config, ... }: {
+                  sdImage.imageBaseName = "nixos-sd-" + config.networking.hostName;
+                })
+              ];
+            })).config;
+
+          sdConfigArmv7l = (nixosSystem
+            (args // {
+              modules = modules ++ [
+                "${nixos}/${modpath}/${sd_armv7l}"
+                ({ config, ... }: {
+                  sdImage.imageBaseName = "nixos-sd-" + config.networking.hostName;
+                })
+              ];
+            })).config;
         in
         modules ++ [{
           system.build = {
             iso = isoConfig.system.build.isoImage;
             ci = ciConfig.system.build.toplevel;
+            sdAarch64 = sdConfigAarch64.system.build.sdImage;
+            sdArmv7l = sdConfigArmv7l.system.build.sdImage;
           };
         }];
     });

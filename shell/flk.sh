@@ -20,6 +20,8 @@ usage () {
   "update" "Update and commit the lock file" \
   "get [core|community] DEST" "Copy the desired template to DEST" \
   "iso HOST" "Generate an ISO image of HOST" \
+  "sdaarch64 HOST" "Generate an sd card image of HOST (aarch64 variant)" \
+  "sdarmv7l HOST" "Generate an sd card image of HOST (armv7l variant)" \
   "install HOST [ARGS]" "Shortcut for nixos-install" \
   "home HOST USER [switch]" "Home-manager config of USER from HOST" \
   "HOST [switch|boot|test]" "Shortcut for nixos-rebuild"
@@ -64,6 +66,18 @@ case "$1" in
   "iso")
     nix build \
       "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.iso" \
+      "${@:3}"
+    ;;
+
+  "sdaarch64")
+    nix build \
+      "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.sdAarch64" \
+      "${@:3}"
+    ;;
+
+  "sdarmv7l")
+    nix build \
+      "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.sdArmv7l" \
       "${@:3}"
     ;;
 
