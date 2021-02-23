@@ -214,7 +214,19 @@
         "nixos-hardware": "nixos-hardware",
         "nur": "nur",
         "override": "override",
+        "srcs": "srcs",
         "utils": "utils"
+      }
+    },
+    "srcs": {
+      "locked": {
+        "narHash": "sha256-Ot96/oKT5+A5kdqkfYyT45cfEiqhI5UyPdEfEZjbXaA=",
+        "path": "./pkgs",
+        "type": "path"
+      },
+      "original": {
+        "path": "./pkgs",
+        "type": "path"
       }
     },
     "utils": {

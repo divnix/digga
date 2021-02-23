@@ -23,6 +23,7 @@
       naersk.inputs.nixpkgs.follows = "override";
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
+      srcs.url = "path:./pkgs";
     };
 
   outputs =
