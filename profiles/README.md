@@ -5,14 +5,16 @@ window manager. If you need some concrete examples, just checkout the
 community [branch](https://github.com/divnix/devos/tree/community/profiles).
 
 ## Constraints
-For the sake of consistency, there are a few minor constraints. First of all, a
-profile should always be defined in a `default.nix`, and it should always be a
-a function taking a single attribute set as an argument, and returning a NixOS
-module which does not define any new module options. If you need to make new
-module option declarations, just use [modules](../modules).
+For the sake of consistency, a profile should always be defined in a
+_default.nix_ containing a valid [nixos module](https://nixos.wiki/wiki/Module)
+which ___does not___ declare any new
+[module options](https://nixos.org/manual/nixos/stable/index.html#sec-option-declarations).
+If you need to do that, use the [modules directory](../modules).
 
-These restrictions help simplify the import logic used to pass profles to
-[suites](../suites).
+> ##### _Note:_
+> [hercules-ci](../doc/integrations/hercules.md) expects all profiles to be
+> defined in a _default.nix_. Similarly, [suites](../suites) expect a
+> _default.nix_ as well.
 
 ### Example
 #### Correct ✔
@@ -39,6 +41,25 @@ personal development environment, and the subprofiles should be more concrete
 program configurations such as your text editor, and shell configs. This way,
 you can either pull in the whole development profile, or pick and choose
 individual programs.
+
+### Example
+
+profiles/develop/default.nix:
+```nix
+{
+  imports = [ ./zsh ];
+  # some generic development concerns ...
+}
+```
+
+profiles/develop/zsh/default.nix:
+```nix
+{  ... }:
+{
+  programs.zsh.enable = true;
+  # zsh specific options ...
+}
+```
 
 ## Conclusion
 Profiles are the most important concept in devos. They allow us to keep our

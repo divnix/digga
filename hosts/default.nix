@@ -23,7 +23,7 @@ let
 
       modules =
         let
-          core = import ../profiles/core;
+          core = ../profiles/core;
 
           modOverrides = { config, overrideModulesPath, ... }:
             let
