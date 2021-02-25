@@ -20,7 +20,7 @@ c.confirm_quit = ['downloads']
 # list) will work.
 # Type: List of String
 c.qt.args = [
-    'enable-native-gpu-memory-buffers'
+    'enable-gpu-rasterization'
 ]
 
 # Allow websites to request geolocations.
@@ -41,7 +41,7 @@ c.content.headers.do_not_track = True
 
 c.content.cookies.accept = "no-3rdparty"
 
-c.content.canvas_reading = False
+c.content.canvas_reading = True
 
 c.content.dns_prefetch = True
 
@@ -87,7 +87,7 @@ c.content.local_storage = True
 
 # Enable plugins in Web pages.
 # Type: Bool
-c.content.plugins = False
+c.content.plugins = True
 
 # Draw the background color and images also when the page is printed.
 # Type: Bool
@@ -100,7 +100,7 @@ c.content.private_browsing = False
 
 # Enable WebGL.
 # Type: Bool
-c.content.webgl = False
+c.content.webgl = True
 
 # Monitor load requests for cross-site scripting attempts. Suspicious
 # scripts will be blocked and reported in the inspector's JavaScript

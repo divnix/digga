@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 let inherit (builtins) readFile;
 in
 {
@@ -10,6 +10,12 @@ in
       in
       ''
         ${readFile ./config.py}
+        ${lib.optionalString
+          (config.networking.extraHosts != "")
+          "c.content.blocking.enabled = False"
+        }
+
+        c.qt.args.append('widevine-path=${pkgs.widevine-cdm}/lib/libwidevinecdm.so')
 
         config.bind(',m', 'hint links spawn -d ${mpv} {hint-url}')
         config.bind(',v', 'spawn -d ${mpv} {url}')

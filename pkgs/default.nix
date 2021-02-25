@@ -8,4 +8,5 @@ final: prev: {
   libinih = prev.callPackage ./development/libraries/libinih { };
   steamcompmgr =
     prev.callPackage ./applications/window-managers/steamcompmgr { };
+  widevine-cdm = prev.callPackage ./applications/networking/browsers/widevine { };
 }
