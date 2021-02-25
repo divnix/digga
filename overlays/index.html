@@ -163,7 +163,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#overlays" id="overlays">Overlays</a></h1>
+                        <h1 id="overlays"><a class="header" href="#overlays">Overlays</a></h1>
 <p>Writing overlays is a common occurence when using a NixOS system. Therefore,
 we want to keep the process as simple and straightforward as possible.</p>
 <p>Any <em>.nix</em> files declared in this directory will be assumed to be a valid
@@ -171,7 +171,7 @@ overlay, and will be automatically imported into all <a href="../hosts">hosts</a
 exported via <code>overlays.&lt;file-basename&gt;</code> <em>as well as</em>
 <code>packages.&lt;system&gt;.&lt;pkgName&gt;</code> (for valid systems), so all you have to do is
 write it.</p>
-<h2><a class="header" href="#example" id="example">Example</a></h2>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
 <p>overlays/kakoune.nix:</p>
 <pre><code class="language-nix">final: prev: {
   kakoune = prev.kakoune.override {

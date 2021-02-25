@@ -163,8 +163,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#from-nixos" id="from-nixos">From NixOS</a></h1>
-<h2><a class="header" href="#generate-configuration" id="generate-configuration">Generate Configuration</a></h2>
+                        <h1 id="from-nixos"><a class="header" href="#from-nixos">From NixOS</a></h1>
+<h2 id="generate-configuration"><a class="header" href="#generate-configuration">Generate Configuration</a></h2>
 <p>Assuming your happy with your existing partition layout, you can generate a
 basic NixOS configuration for your system using:</p>
 <pre><code class="language-sh">flk up
@@ -178,7 +178,7 @@ hostname <code>my-host</code>.</p>
 <p>Now might be a good time to read the docs on <a href="../../suites">suites</a> and
 <a href="../../profiles">profiles</a> and add or create any that you need.</p>
 <blockquote>
-<h5><a class="header" href="#note" id="note"><em>Note:</em></a></h5>
+<h5 id="note"><a class="header" href="#note"><em>Note:</em></a></h5>
 <p>While the <code>up</code> sub-command is provided as a convenience to quickly set up and
 install a &quot;fresh&quot; NixOS system on current hardware, committing these files is
 discouraged.</p>
@@ -186,13 +186,13 @@ discouraged.</p>
 invisible to the flake otherwise, but it is best to move what you need from
 them directly into a host module of your own making, and commit that instead.</p>
 </blockquote>
-<h1><a class="header" href="#installation" id="installation">Installation</a></h1>
+<h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
 <p>Once your ready to deploy <code>hosts/my-host.nix</code>:</p>
 <pre><code class="language-sh">flk my-host switch
 </code></pre>
 <p>This calls <code>nixos-rebuild</code> with sudo to build and install your configuration.</p>
 <blockquote>
-<h5><a class="header" href="#notes" id="notes"><em>Notes:</em></a></h5>
+<h5 id="notes"><a class="header" href="#notes"><em>Notes:</em></a></h5>
 <ul>
 <li>
 <p>Instead of <code>switch</code>, you can pass <code>build</code>, <code>test</code>, <code>boot</code>, etc just as with

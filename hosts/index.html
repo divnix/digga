@@ -163,7 +163,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#hosts" id="hosts">Hosts</a></h1>
+                        <h1 id="hosts"><a class="header" href="#hosts">Hosts</a></h1>
 <p>Nix flakes contain an output called <code>nixosConfigurations</code> declaring an
 attribute set of valid NixOS systems. To simplify the management and creation
 of these hosts, devos automatically imports every <em>.nix</em> file inside this
@@ -183,7 +183,7 @@ is best saved for <a href="../profiles">profile modules</a>.</p>
 that you intend to use on your machine.</p>
 <p>Additionally, this is the perfect place to import anything you might need from
 the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> repository.</p>
-<h2><a class="header" href="#example" id="example">Example</a></h2>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
 <p>hosts/librem.nix:</p>
 <pre><code class="language-nix">{ suites, hardware, ... }:
 {

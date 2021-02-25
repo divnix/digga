@@ -163,41 +163,59 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#profiles" id="profiles">Profiles</a></h1>
+                        <h1 id="profiles"><a class="header" href="#profiles">Profiles</a></h1>
 <p>Profiles are simply NixOS modules which contain generic expressions suitable
 for any host. A good example is the configuration for a text editor, or
 window manager. If you need some concrete examples, just checkout the
 community <a href="https://github.com/divnix/devos/tree/community/profiles">branch</a>.</p>
-<h2><a class="header" href="#constraints" id="constraints">Constraints</a></h2>
-<p>For the sake of consistency, there are a few minor constraints. First of all, a
-profile should always be defined in a <code>default.nix</code>, and it should always be a
-a function taking a single attribute set as an argument, and returning a NixOS
-module which does not define any new module options. If you need to make new
-module option declarations, just use <a href="../modules">modules</a>.</p>
-<p>These restrictions help simplify the import logic used to pass profles to
-<a href="../suites">suites</a>.</p>
-<h3><a class="header" href="#example" id="example">Example</a></h3>
-<h4><a class="header" href="#correct-" id="correct-">Correct ✔</a></h4>
+<h2 id="constraints"><a class="header" href="#constraints">Constraints</a></h2>
+<p>For the sake of consistency, a profile should always be defined in a
+<em>default.nix</em> containing a valid <a href="https://nixos.wiki/wiki/Module">nixos module</a>
+which <em><strong>does not</strong></em> declare any new
+<a href="https://nixos.org/manual/nixos/stable/index.html#sec-option-declarations">module options</a>.
+If you need to do that, use the <a href="../modules">modules directory</a>.</p>
+<blockquote>
+<h5 id="note"><a class="header" href="#note"><em>Note:</em></a></h5>
+<p><a href="../doc/integrations/hercules.html">hercules-ci</a> expects all profiles to be
+defined in a <em>default.nix</em>. Similarly, <a href="../suites">suites</a> expect a
+<em>default.nix</em> as well.</p>
+</blockquote>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<h4 id="correct-"><a class="header" href="#correct-">Correct ✔</a></h4>
 <p>profiles/develop/default.nix:</p>
 <pre><code class="language-nix">{  ... }:
 {
   programs.zsh.enable = true;
 }
 </code></pre>
-<h4><a class="header" href="#incorrect-" id="incorrect-">Incorrect ❌</a></h4>
+<h4 id="incorrect-"><a class="header" href="#incorrect-">Incorrect ❌</a></h4>
 <p>profiles/develop.nix:</p>
 <pre><code class="language-nix">{
   options = {};
 }
 </code></pre>
-<h2><a class="header" href="#subprofiles" id="subprofiles">Subprofiles</a></h2>
+<h2 id="subprofiles"><a class="header" href="#subprofiles">Subprofiles</a></h2>
 <p>Profiles can also define subprofiles. They follow the same constraints outlined
 above. A good top level profile should be a high level concern, such a your
 personal development environment, and the subprofiles should be more concrete
 program configurations such as your text editor, and shell configs. This way,
 you can either pull in the whole development profile, or pick and choose
 individual programs.</p>
-<h2><a class="header" href="#conclusion" id="conclusion">Conclusion</a></h2>
+<h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
+<p>profiles/develop/default.nix:</p>
+<pre><code class="language-nix">{
+  imports = [ ./zsh ];
+  # some generic development concerns ...
+}
+</code></pre>
+<p>profiles/develop/zsh/default.nix:</p>
+<pre><code class="language-nix">{  ... }:
+{
+  programs.zsh.enable = true;
+  # zsh specific options ...
+}
+</code></pre>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
 <p>Profiles are the most important concept in devos. They allow us to keep our
 nix expressions self contained and modular. This way we can maximize reuse
 while minimizing boilerplate. Always strive to keep your profiles as generic

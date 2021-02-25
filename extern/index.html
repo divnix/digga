@@ -163,17 +163,17 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#external-art" id="external-art">External Art</a></h1>
+                        <h1 id="external-art"><a class="header" href="#external-art">External Art</a></h1>
 <p>When you need to use a module, overlay, or pass a value from one of your inputs
 to the rest of your NixOS configuration, <a href="https://github.com/divnix/devos/tree/core/extern/default.nix">extern</a> is where you do it.</p>
 <p>Modules and overlays are self explanatory, and the <code>specialArgs</code> attribute is
 used to extend the arguments passed to all NixOS modules, allowing for
 arbitrary values to be passed from flake inputs to the rest of your
 configuration.</p>
-<h2><a class="header" href="#home-manager" id="home-manager">Home Manager</a></h2>
+<h2 id="home-manager"><a class="header" href="#home-manager">Home Manager</a></h2>
 <p>There is also an <code>hmModules</code> attribute set for pulling home-manager modules in
 from the outside world:</p>
-<h3><a class="header" href="#declare" id="declare">Declare:</a></h3>
+<h3 id="declare"><a class="header" href="#declare">Declare:</a></h3>
 <p>flake.nix:</p>
 <pre><code class="language-nix">{
   inputs.doom-emacs.url = &quot;github:vlaci/nix-doom-emacs&quot;;
@@ -187,7 +187,7 @@ from the outside world:</p>
   };
 }
 </code></pre>
-<h3><a class="header" href="#use" id="use">Use:</a></h3>
+<h3 id="use"><a class="header" href="#use">Use:</a></h3>
 <p>users/nixos/default.nix:</p>
 <pre><code class="language-nix">{ hmModules, ... }:
 {

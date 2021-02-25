@@ -163,22 +163,22 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#modules" id="modules">Modules</a></h1>
+                        <h1 id="modules"><a class="header" href="#modules">Modules</a></h1>
 <p>The modules directory is a replica of nixpkg's NixOS <a href="https://github.com/NixOS/nixpkgs/tree/master/nixos/modules">modules</a>
 , and follows the same semantics. This allows for trivial upstreaming into
 nixpkgs proper once your module is sufficiently stable.</p>
 <p>All modules linked in <em>module-list.nix</em> are automatically exported via
 <code>nixosModules.&lt;file-basename&gt;</code>, and imported into all <a href="../hosts">hosts</a>.</p>
 <blockquote>
-<h5><a class="header" href="#note" id="note"><em>Note:</em></a></h5>
+<h5 id="note"><a class="header" href="#note"><em>Note:</em></a></h5>
 <p>This is reserved for declaring brand new module options. If you just want to
 declare a coherent configuration of already existing and related NixOS options
 , use <a href="../profiles">profiles</a> instead.</p>
 </blockquote>
-<h2><a class="header" href="#semantics" id="semantics">Semantics</a></h2>
+<h2 id="semantics"><a class="header" href="#semantics">Semantics</a></h2>
 <p>In case you've never written a module for nixpkgs before, here is a brief
 outline of the process.</p>
-<h3><a class="header" href="#declaration" id="declaration">Declaration</a></h3>
+<h3 id="declaration"><a class="header" href="#declaration">Declaration</a></h3>
 <p>modules/services/service-category/my-service.nix:</p>
 <pre><code class="language-nix">{ config, lib, ... }:
 let
@@ -196,21 +196,21 @@ in
   };
 }
 </code></pre>
-<h3><a class="header" href="#import" id="import">Import</a></h3>
+<h3 id="import"><a class="header" href="#import">Import</a></h3>
 <p>modules/module-list.nix:</p>
 <pre><code class="language-nix">[
   ./services/service-category/my-service.nix
 ]
 </code></pre>
-<h2><a class="header" href="#usage" id="usage">Usage</a></h2>
-<h3><a class="header" href="#internal" id="internal">Internal</a></h3>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<h3 id="internal"><a class="header" href="#internal">Internal</a></h3>
 <p>profiles/profile-category/my-profile.nix:</p>
 <pre><code class="language-nix">{ ... }:
 {
   services.MyService.enable = true;
 }
 </code></pre>
-<h3><a class="header" href="#external" id="external">External</a></h3>
+<h3 id="external"><a class="header" href="#external">External</a></h3>
 <p>flake.nix:</p>
 <pre><code class="language-nix">{
   # inputs omitted

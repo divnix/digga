@@ -163,7 +163,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#overrides" id="overrides">Overrides</a></h1>
+                        <h1 id="overrides"><a class="header" href="#overrides">Overrides</a></h1>
 <p>By default, the NixOS systems are based on the latest release. While it is
 trivial to change this to nixos-unstable or any other branch of nixpkgs by
 changing the flake url, sometimes all we want is a single package from another
@@ -171,8 +171,8 @@ branch.</p>
 <p>This is what the overrides are for. By default, they are pulled directly from
 nixpkgs/master, but you can change the <code>override</code> flake input url to
 nixos-unstable, or even a specific sha revision.</p>
-<h2><a class="header" href="#example" id="example">Example</a></h2>
-<h3><a class="header" href="#packages" id="packages">Packages</a></h3>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<h3 id="packages"><a class="header" href="#packages">Packages</a></h3>
 <p>The override packages are defined as a regular overlay with an extra arguement
 <code>pkgs</code>. This refers to the packages built from the <code>override</code> flake.</p>
 <p>Pulling the manix package from the override flake:</p>
@@ -182,7 +182,7 @@ nixos-unstable, or even a specific sha revision.</p>
   };
 }
 </code></pre>
-<h3><a class="header" href="#modules" id="modules">Modules</a></h3>
+<h3 id="modules"><a class="header" href="#modules">Modules</a></h3>
 <p>You can also pull modules from override. Simply specify their path relative to
 the nixpkgs <a href="https://github.com/NixOS/nixpkgs/tree/master/nixos/modules">modules</a> directory. The old version will be added
 to <code>disabledModules</code> and the new version imported into the configuration.</p>
@@ -192,7 +192,7 @@ to <code>disabledModules</code> and the new version imported into the configurat
 }
 </code></pre>
 <blockquote>
-<h5><a class="header" href="#note" id="note"><em>Note:</em></a></h5>
+<h5 id="note"><a class="header" href="#note"><em>Note:</em></a></h5>
 <p>Sometimes a modules name will change from one branch to another. This is what
 the <code>disabledModules</code> list is for. If the module name changes, the old
 version will not automatically be disabled, so simply put it's old name in

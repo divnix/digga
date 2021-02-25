@@ -163,26 +163,26 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#hercules-ci" id="hercules-ci">Hercules CI</a></h1>
+                        <h1 id="hercules-ci"><a class="header" href="#hercules-ci">Hercules CI</a></h1>
 <p>If you start adding your own packages and configurations, you'll probably have
 at least a few binary artifacts. With hercules we can build every package in
 our configuration automatically, on every commit. Additionally, we can have it
 upload all our build artifacts to a binary cache like <a href="https://cachix.org">cachix</a>.</p>
 <p>This will work whether your copy is a fork, or a bare template, as long as your
 repo is hosted on GitHub.</p>
-<h2><a class="header" href="#setup" id="setup">Setup</a></h2>
+<h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
 <p>Just head over to <a href="https://hercules-ci.com">hercules-ci.com</a> to make an account.</p>
 <p>Then follow the docs to set up an <a href="https://docs.hercules-ci.com/hercules-ci/getting-started/#github">agent</a>, if you want to deploy to a
 binary cache (and of course you do), be sure <em>not</em> to skip the
 <a href="https://docs.hercules-ci.com/hercules-ci/getting-started/deploy/nixos/#_3_configure_a_binary_cache">binary-caches.json</a>.</p>
-<h2><a class="header" href="#ready-to-use" id="ready-to-use">Ready to Use</a></h2>
+<h2 id="ready-to-use"><a class="header" href="#ready-to-use">Ready to Use</a></h2>
 <p>The repo is already set up with the proper <em>nix/ci.nix</em> file, building all
 declared packages, checks, profiles and shells. So you can see if something
 breaks, and never build the same package twice!</p>
 <p>If you want to get fancy, you could even have hercules
 <a href="https://docs.hercules-ci.com/hercules-ci-effects/guide/deploy-a-nixos-machine/">deploy your configuration</a>!</p>
 <blockquote>
-<h5><a class="header" href="#note" id="note"><em>Note:</em></a></h5>
+<h5 id="note"><a class="header" href="#note"><em>Note:</em></a></h5>
 <p>Hercules doesn't have access to anything encrypted in the
 <a href="../../secrets">secrets folder</a>, so none of your secrets will accidentally get
 pushed to a cache by mistake.</p>

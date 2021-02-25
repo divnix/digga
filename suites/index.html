@@ -163,19 +163,19 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#suites" id="suites">Suites</a></h1>
+                        <h1 id="suites"><a class="header" href="#suites">Suites</a></h1>
 <p>Suites provide a mechanism for users to easily combine and name collecitons of
 profiles. For good examples, check out the suites defined in the community
 <a href="https://github.com/divnix/devos/blob/community/suites/default.nix">branch</a>.</p>
 <p>In the future, we will use suites as a mechanism for deploying various machine
 types which don't depend on hardware, such as vm's and containers.</p>
-<h2><a class="header" href="#definition" id="definition">Definition</a></h2>
+<h2 id="definition"><a class="header" href="#definition">Definition</a></h2>
 <pre><code class="language-nix">rec {
   workstation = [ profiles.develop profiles.graphical users.nixos ];
   mobileWS = workstation ++ [ profiles.laptop ];
 }
 </code></pre>
-<h2><a class="header" href="#usage" id="usage">Usage</a></h2>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <p><code>hosts/my-laptop.nix</code>:</p>
 <pre><code class="language-nix">{ suites, ... }:
 {

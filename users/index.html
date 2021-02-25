@@ -163,13 +163,13 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#users" id="users">Users</a></h1>
+                        <h1 id="users"><a class="header" href="#users">Users</a></h1>
 <p>Users are a special case of <a href="../profiles">profiles</a> that define system
 users and <a href="https://nix-community.github.io/home-manager">home-manager</a> configurations. For your convenience,
 home manager is wired in by default so all you have to worry about is declaring
 your users. For a fully fleshed out example, check out the developers personal
 <a href="https://github.com/divnix/devos/tree/nrd/users/nrd/default.nix">branch</a>.</p>
-<h2><a class="header" href="#basic-usage" id="basic-usage">Basic Usage</a></h2>
+<h2 id="basic-usage"><a class="header" href="#basic-usage">Basic Usage</a></h2>
 <p><code>users/myuser/default.nix</code>:</p>
 <pre><code class="language-nix">{ ... }:
 {
@@ -183,20 +183,20 @@ your users. For a fully fleshed out example, check out the developers personal
 }
 
 </code></pre>
-<h2><a class="header" href="#external-usage" id="external-usage">External Usage</a></h2>
+<h2 id="external-usage"><a class="header" href="#external-usage">External Usage</a></h2>
 <p>You can easily use the defined home-manager configurations outside of NixOS
 using the <code>hmActivations</code> meta-package defined in the flakes <code>legacyPackages</code>
 output. The <a href="../doc/flk">flk</a> helper script makes this even easier.</p>
 <p>This is great for keeping your environment consistent across Unix systems,
 including OSX.</p>
-<h3><a class="header" href="#from-within-the-projects-devshell" id="from-within-the-projects-devshell">From within the projects devshell:</a></h3>
+<h3 id="from-within-the-projects-devshell"><a class="header" href="#from-within-the-projects-devshell">From within the projects devshell:</a></h3>
 <pre><code class="language-sh"># builds the nixos user defined in the NixOS host
 flk home NixOS nixos
 
 # build and activate
 flk home NixOS nixos switch
 </code></pre>
-<h3><a class="header" href="#manually-from-outside-the-project" id="manually-from-outside-the-project">Manually from outside the project:</a></h3>
+<h3 id="manually-from-outside-the-project"><a class="header" href="#manually-from-outside-the-project">Manually from outside the project:</a></h3>
 <pre><code class="language-sh"># build
 nix build &quot;github:divnix/devos#hmActivationPackages.NixOS.nixos&quot;
 

@@ -163,7 +163,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#deploy-rs" id="deploy-rs">deploy-rs</a></h1>
+                        <h1 id="deploy-rs"><a class="header" href="#deploy-rs">deploy-rs</a></h1>
 <p><a href="https://github.com/serokell/deploy-rs">Deploy-rs</a> is a tool for managing NixOS remote machines. It was
 chosen for devos after the author experienced some frustrations with the
 stateful nature of nixops' db. It was also designed from scratch to support
@@ -171,7 +171,7 @@ flake based deployments, and so is an excellent tool for the job.</p>
 <p>By default, all the <a href="../../hosts">hosts</a> are also available as deploy-rs nodes,
 configured with the hostname set to <code>networking.hostName</code>; overridable via
 the command line.</p>
-<h2><a class="header" href="#usage" id="usage">Usage</a></h2>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <p>Just add your ssh key to the host:</p>
 <pre><code class="language-nix">{ ... }:
 {
@@ -200,7 +200,7 @@ the command line.</p>
 <pre><code class="language-sh">deploy &quot;flk#hostName&quot; --hostname host.example.com
 </code></pre>
 <blockquote>
-<h5><a class="header" href="#note" id="note"><em>Note:</em></a></h5>
+<h5 id="note"><a class="header" href="#note"><em>Note:</em></a></h5>
 <p>Your user will need sudo access</p>
 </blockquote>
 
