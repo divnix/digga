@@ -1,8 +1,9 @@
 name: Changelog
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - [0-9]+.[0-9]+.[0-9]+
 
 jobs:
   generate_changelog:
