@@ -24,6 +24,8 @@
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
       doom-emacs.url = "github:vlaci/nix-doom-emacs";
+      doom-emacs.inputs.nixpkgs.follows = "override";
+      doom-emacs.inputs.flake-utils.follows = "utils";
     };
 
   outputs =
