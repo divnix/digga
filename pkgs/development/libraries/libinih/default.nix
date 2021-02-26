@@ -1,16 +1,11 @@
-{ stdenv, meson, ninja, fetchFromGitHub, ... }:
-let version = "r50";
+{ stdenv, lib, meson, ninja, srcs, ... }:
+let version = "r53";
 in
 stdenv.mkDerivation {
   pname = "libinih";
   inherit version;
 
-  src = fetchFromGitHub {
-    owner = "benhoyt";
-    repo = "inih";
-    rev = "${version}";
-    hash = "sha256-GF+TVEysaXJxSBBjMsTr2IQvRKlzdEu3rlPQ88PE3nI=";
-  };
+  src = srcs.libinih;
 
   buildInputs = [ meson ninja ];
 
@@ -19,7 +14,7 @@ stdenv.mkDerivation {
     -Ddistro_install=true
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Simple .INI file parser in C";
     homepage = "https://github.com/benhoyt/inih";
     maintainers = [ maintainers.nrdxp ];

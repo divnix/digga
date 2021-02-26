@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "any-nix-shell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1612868345,
+        "narHash": "sha256-E6Q7nVPuoC81aGMYOFkmlRv1i6eoOtbYw2AeCCXMR2A=",
+        "owner": "haslersn",
+        "repo": "any-nix-shell",
+        "rev": "ea04f9bd639f175002127ad1b5715bce3d4bd9c5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "haslersn",
+        "repo": "any-nix-shell",
+        "type": "github"
+      }
+    },
     "ci-agent": {
       "inputs": {
         "flake-compat": [
@@ -277,6 +293,23 @@
         "type": "github"
       }
     },
+    "libinih": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1612730156,
+        "narHash": "sha256-hi29V40q3c3IvPH7eH3q3z1PiNN59Y0zMhgSroUsDjc=",
+        "owner": "benhoyt",
+        "repo": "inih",
+        "rev": "cb55f57d87ae840bd0f65dbe6bd22fa021a873a7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "benhoyt",
+        "ref": "r53",
+        "repo": "inih",
+        "type": "github"
+      }
+    },
     "naersk": {
       "inputs": {
         "nixpkgs": [
@@ -311,6 +344,22 @@
         "owner": "vlaci",
         "ref": "v2.1.0",
         "repo": "nix-straight.el",
+        "type": "github"
+      }
+    },
+    "nix-zsh-completions": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1589837575,
+        "narHash": "sha256-vaBfawg5F9Ey4NbWTUftjoSV3pu7uE/xdovltG0awE4=",
+        "owner": "Ma27",
+        "repo": "nix-zsh-completions",
+        "rev": "fbbbe6ddedb233d0d0fcc8d665750d183c2b57f8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Ma27",
+        "repo": "nix-zsh-completions",
         "type": "github"
       }
     },
@@ -468,6 +517,56 @@
         "type": "github"
       }
     },
+    "pure": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1613632918,
+        "narHash": "sha256-HPoibERrXGEvi7ikBGjANtcq3Xe+fqE6kh/4lME3uo4=",
+        "owner": "sindresorhus",
+        "repo": "pure",
+        "rev": "ff356fa2c7ea745bc4bc56a98632bac55c6c74a1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sindresorhus",
+        "repo": "pure",
+        "type": "github"
+      }
+    },
+    "redshift": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1566660017,
+        "narHash": "sha256-pyR7xNdi/83NSoC2WIrX8U+A6nU+vZBlePLXrQZnc1k=",
+        "owner": "minus7",
+        "repo": "redshift",
+        "rev": "7da875d34854a6a34612d5ce4bd8718c32bec804",
+        "type": "github"
+      },
+      "original": {
+        "owner": "minus7",
+        "ref": "wayland",
+        "repo": "redshift",
+        "type": "github"
+      }
+    },
+    "retroarch": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1596838013,
+        "narHash": "sha256-dzPOuT+v1JtYzvAtqZ/eVWQSYQLAWX3TyS3jXdBmDdg=",
+        "owner": "libretro",
+        "repo": "retroarch",
+        "rev": "5e551dd92b79d8127e66939835ea3c2a140c4078",
+        "type": "github"
+      },
+      "original": {
+        "owner": "libretro",
+        "ref": "v1.9.0",
+        "repo": "retroarch",
+        "type": "github"
+      }
+    },
     "revealjs": {
       "flake": false,
       "locked": {
@@ -517,15 +616,59 @@
         "type": "github"
       }
     },
-    "srcs": {
+    "sddm-chili": {
+      "flake": false,
       "locked": {
-        "narHash": "sha256-XBhr3+8SOQId5VjTEDvUoRw25tPLTY1s3JY/3wk0+5g=",
+        "lastModified": 1535340922,
+        "narHash": "sha256-wxWsdRGC59YzDcSopDRzxg8TfjjmA3LHrdWjepTuzgw=",
+        "owner": "MarianArlt",
+        "repo": "sddm-chili",
+        "rev": "6516d50176c3b34df29003726ef9708813d06271",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MarianArlt",
+        "ref": "0.1.5",
+        "repo": "sddm-chili",
+        "type": "github"
+      }
+    },
+    "srcs": {
+      "inputs": {
+        "any-nix-shell": "any-nix-shell",
+        "libinih": "libinih",
+        "nix-zsh-completions": "nix-zsh-completions",
+        "pure": "pure",
+        "redshift": "redshift",
+        "retroarch": "retroarch",
+        "sddm-chili": "sddm-chili",
+        "steamcompmgr": "steamcompmgr",
+        "wii-u-gc-adapter": "wii-u-gc-adapter"
+      },
+      "locked": {
+        "narHash": "sha256-5oi97RoJahBzCz/Ngw9/vumKuJGjHtIWAt8EUZsQj0U=",
         "path": "./pkgs",
         "type": "path"
       },
       "original": {
         "path": "./pkgs",
         "type": "path"
+      }
+    },
+    "steamcompmgr": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1609991497,
+        "narHash": "sha256-tZNZdd4oVFimUq26Onp+gdDJNQB+VoSE2srBIwdySO4=",
+        "owner": "gamer-os",
+        "repo": "steamos-compositor-plus",
+        "rev": "7b6d52c2464e1fcfb494b70414f88a7762a73339",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gamer-os",
+        "repo": "steamos-compositor-plus",
+        "type": "github"
       }
     },
     "utils": {
@@ -541,6 +684,22 @@
         "owner": "numtide",
         "ref": "flatten-tree-system",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "wii-u-gc-adapter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1601656689,
+        "narHash": "sha256-psgERfFSvaPMCtHCYdZhYW/zyLg+aMAh6DPuDeDuSoE=",
+        "owner": "ToadKing",
+        "repo": "wii-u-gc-adapter",
+        "rev": "a99223736e188822f8c6743016836ae4a4529aa1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ToadKing",
+        "repo": "wii-u-gc-adapter",
         "type": "github"
       }
     }

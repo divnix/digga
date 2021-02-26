@@ -1,8 +1,8 @@
 { stdenv
-, fetchFromGitHub
 , libudev
 , SDL
 , SDL_image
+, lib
 , libXdamage
 , libXcomposite
 , libXrender
@@ -11,16 +11,16 @@
 , pkgconfig
 , autoreconfHook
 , gnumake
+, srcs
 }:
-
+let
+  version = lib.flk.mkVersion srcs.steamcompmgr;
+in
 stdenv.mkDerivation {
-  name = "steamcompmgr";
-  src = fetchFromGitHub {
-    owner = "gamer-os";
-    repo = "steamos-compositor-plus";
-    rev = "c3855fcb5015ecdca299ee4b46b9f90c7a6788de";
-    hash = "sha256-sRthjN+pnabl67PuJS+zbUznW4ws0fub0R9bTzelg18=";
-  };
+  inherit version;
+
+  pname = "steamcompmgr";
+  src = srcs.steamcompmgr;
 
   buildInputs = [
     libudev
@@ -36,7 +36,7 @@ stdenv.mkDerivation {
     gnumake
   ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "SteamOS Compositor";
     homepage = "https://github.com/steamos-compositor-plus";
     maintainers = [ maintainers.nrdxp ];

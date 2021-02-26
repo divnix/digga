@@ -24,11 +24,17 @@
     wget
   ];
 
-  fonts = {
-    fonts = [ pkgs.dejavu_nerdfont ];
-    fontconfig.defaultFonts.monospace =
-      [ "DejaVu Sans Mono Nerd Font Complete Mono" ];
-  };
+  fonts =
+    let
+      nerdfonts = pkgs.nerdfonts.override {
+        fonts = [ "DejaVuSansMono" ];
+      };
+    in
+    {
+      fonts = [ nerdfonts ];
+      fontconfig.defaultFonts.monospace =
+        [ "DejaVu Sans Mono Nerd Font Complete Mono" ];
+    };
 
   documentation.dev.enable = true;
 

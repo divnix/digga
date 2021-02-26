@@ -1,16 +1,11 @@
-{ stdenv, fetchFromGitHub }:
-let version = "0e87bd8";
+{ lib, stdenv, srcs }:
+let version = lib.flk.mkVersion srcs.pure;
 in
 stdenv.mkDerivation {
   pname = "pure";
   inherit version;
 
-  srcs = fetchFromGitHub {
-    owner = "sindresorhus";
-    repo = "pure";
-    rev = "0e87bd897bb67049329c55174dcc643926337b01";
-    hash = "sha256-JytsTviVHphYnP5KTbSkbaiNeg2fMufYc6r0X0SQyqI=";
-  };
+  srcs = srcs.pure;
 
   buildPhase = "true";
 
@@ -19,7 +14,7 @@ stdenv.mkDerivation {
     cp -r ./ $out/share/zsh/plugins/pure
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Pretty, minimal and fast ZSH prompt";
     homepage = "https://github.com/sindresorhus/pure";
     maintainers = [ maintainers.nrdxp ];

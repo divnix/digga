@@ -1,16 +1,11 @@
-{ stdenv, fetchFromGitHub, ... }:
+{ lib, srcs, stdenv, ... }:
 let version = "0.1.5";
 in
 stdenv.mkDerivation {
   pname = "sddm-chili";
   inherit version;
 
-  src = fetchFromGitHub {
-    owner = "MarianArlt";
-    repo = "sddm-chili";
-    rev = "${version}";
-    hash = "sha256-wxWsdRGC59YzDcSopDRzxg8TfjjmA3LHrdWjepTuzgw=";
-  };
+  src = srcs.sddm-chili;
 
   installPhase = ''
     mkdir -p $out/share/sddm/themes/chili
@@ -18,7 +13,7 @@ stdenv.mkDerivation {
     cp -r * $out/share/sddm/themes/chili
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     inherit version;
     description = "The hottest theme around for SDDM";
     homepage = "https://github.com/MarianArlt/sddm-chili";
