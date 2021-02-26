@@ -242,15 +242,16 @@
     "flake-compat": {
       "flake": false,
       "locked": {
-        "lastModified": 1606424373,
-        "narHash": "sha256-oq8d4//CJOrVj+EcOaSXvMebvuTkmBJuT5tzlfewUnQ=",
-        "owner": "edolstra",
+        "lastModified": 1611461076,
+        "narHash": "sha256-ad++dTtMNeitUIKi1c66aTrVJOSf+mdZTrGrXzjDr6Q=",
+        "owner": "BBBSnowball",
         "repo": "flake-compat",
-        "rev": "99f1c2157fba4bfe6211a321fd0ee43199025dbf",
+        "rev": "a565cb46bee9fa856a6c15bc9c3bb947fbb784ec",
         "type": "github"
       },
       "original": {
-        "owner": "edolstra",
+        "owner": "BBBSnowball",
+        "ref": "pr-1",
         "repo": "flake-compat",
         "type": "github"
       }
@@ -496,6 +497,7 @@
         "nixos-hardware": "nixos-hardware",
         "nur": "nur",
         "override": "override",
+        "srcs": "srcs",
         "utils": "utils"
       }
     },
@@ -513,6 +515,17 @@
         "owner": "debug-ito",
         "repo": "rotate-text.el",
         "type": "github"
+      }
+    },
+    "srcs": {
+      "locked": {
+        "narHash": "sha256-XBhr3+8SOQId5VjTEDvUoRw25tPLTY1s3JY/3wk0+5g=",
+        "path": "./pkgs",
+        "type": "path"
+      },
+      "original": {
+        "path": "./pkgs",
+        "type": "path"
       }
     },
     "utils": {

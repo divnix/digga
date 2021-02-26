@@ -21,11 +21,12 @@
       deploy.inputs.flake-compat.follows = "flake-compat";
       naersk.url = "github:nmattia/naersk";
       naersk.inputs.nixpkgs.follows = "override";
-      flake-compat.url = "github:edolstra/flake-compat";
+      flake-compat.url = "github:BBBSnowball/flake-compat/pr-1";
       flake-compat.flake = false;
       doom-emacs.url = "github:vlaci/nix-doom-emacs";
       doom-emacs.inputs.nixpkgs.follows = "override";
       doom-emacs.inputs.flake-utils.follows = "utils";
+      srcs.url = "path:./pkgs";
     };
 
   outputs =

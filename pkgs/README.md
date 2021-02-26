@@ -14,22 +14,24 @@ the supported systems listed in the package's `meta.platforms` attribute.
 And, as usual, every package in the overlay is also available to any NixOS
 [host](../hosts).
 
+## Automatic Source Updates
+There is the added, but optional, convenience of declaring your sources in
+_pkgs/flake.nix_ as an input. This allows updates to be managed automatically
+by simply [updating](../doc/flk/update.md#updating-package-sources) the lock
+file. No more manually entering sha256 hashes!
+
+
 ## Example
 pkgs/development/libraries/libinih/default.nix:
 ```nix
-{ stdenv, meson, ninja, fetchFromGitHub, ... }:
-let version = "r50";
+{ stdenv, meson, ninja, lib, srcs, ... }:
+let version = "r53";
 in
 stdenv.mkDerivation {
   pname = "libinih";
   inherit version;
 
-  src = fetchFromGitHub {
-    owner = "benhoyt";
-    repo = "inih";
-    rev = "${version}";
-    hash = "sha256-GF+TVEysaXJxSBBjMsTr2IQvRKlzdEu3rlPQ88PE3nI=";
-  };
+  src = srcs.libinih;
 
   buildInputs = [ meson ninja ];
 
@@ -38,7 +40,7 @@ stdenv.mkDerivation {
     -Ddistro_install=true
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Simple .INI file parser in C";
     homepage = "https://github.com/benhoyt/inih";
     maintainers = [ maintainers.divnix ];
@@ -53,6 +55,18 @@ pkgs/default.nix:
 ```nix
 final: prev: {
   libinih = prev.callPackage ./development/libraries/libinih { };
+}
+```
+
+pkgs/flake.nix:
+```nix
+{
+  description = "Package sources";
+
+  inputs = {
+    libinih.url = "github:benhoyt/inih/r53";
+    libinih.flake = false;
+  };
 }
 ```
 
