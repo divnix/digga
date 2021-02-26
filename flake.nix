@@ -21,8 +21,9 @@
       deploy.inputs.flake-compat.follows = "flake-compat";
       naersk.url = "github:nmattia/naersk";
       naersk.inputs.nixpkgs.follows = "override";
-      flake-compat.url = "github:edolstra/flake-compat";
+      flake-compat.url = "github:BBBSnowball/flake-compat/pr-1";
       flake-compat.flake = false;
+      srcs.url = "path:./pkgs";
     };
 
   outputs =

@@ -179,8 +179,10 @@ considered unstable, though quite usable as flakes have been maturing
 <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p>DevOS grants a simple way to use, deploy and manage <a href="https://nixos.org/manual/nixos/stable">NixOS</a> systems for
 personal and productive use. It does this by providing a convenient repository
-structure; integrating several popular projects like
-<a href="https://nix-community.github.io/home-manager">home-manager</a>, and <a href="https://github.com/numtide/devshell">devshell</a>.</p>
+structure, integrating several popular projects like
+<a href="https://nix-community.github.io/home-manager">home-manager</a>, and <a href="https://github.com/numtide/devshell">devshell</a>, and offering useful
+conveniences like
+<a href="./pkgs#automatic-source-updates">automatic source updates</a>.</p>
 <p>Skip the indeterminate nature of other systems, <em>and</em> the perceived difficulty
 of Nix. It's easier than you think!</p>
 <h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
@@ -521,21 +523,21 @@ And all the packages are exported via <code>packages.&lt;system&gt;.&lt;pkg-name
 the supported systems listed in the package's <code>meta.platforms</code> attribute.</p>
 <p>And, as usual, every package in the overlay is also available to any NixOS
 <a href="pkgs/../hosts">host</a>.</p>
+<h2 id="automatic-source-updates"><a class="header" href="#automatic-source-updates">Automatic Source Updates</a></h2>
+<p>There is the added, but optional, convenience of declaring your sources in
+<em>pkgs/flake.nix</em> as an input. This allows updates to be managed automatically
+by simply <a href="pkgs/../doc/flk/update.html#updating-package-sources">updating</a> the lock
+file. No more manually entering sha256 hashes!</p>
 <h2 id="example-3"><a class="header" href="#example-3">Example</a></h2>
 <p>pkgs/development/libraries/libinih/default.nix:</p>
-<pre><code class="language-nix">{ stdenv, meson, ninja, fetchFromGitHub, ... }:
-let version = &quot;r50&quot;;
+<pre><code class="language-nix">{ stdenv, meson, ninja, lib, srcs, ... }:
+let version = &quot;r53&quot;;
 in
 stdenv.mkDerivation {
   pname = &quot;libinih&quot;;
   inherit version;
 
-  src = fetchFromGitHub {
-    owner = &quot;benhoyt&quot;;
-    repo = &quot;inih&quot;;
-    rev = &quot;${version}&quot;;
-    hash = &quot;sha256-GF+TVEysaXJxSBBjMsTr2IQvRKlzdEu3rlPQ88PE3nI=&quot;;
-  };
+  src = srcs.libinih;
 
   buildInputs = [ meson ninja ];
 
@@ -544,7 +546,7 @@ stdenv.mkDerivation {
     -Ddistro_install=true
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = &quot;Simple .INI file parser in C&quot;;
     homepage = &quot;https://github.com/benhoyt/inih&quot;;
     maintainers = [ maintainers.divnix ];
@@ -557,6 +559,16 @@ stdenv.mkDerivation {
 <p>pkgs/default.nix:</p>
 <pre><code class="language-nix">final: prev: {
   libinih = prev.callPackage ./development/libraries/libinih { };
+}
+</code></pre>
+<p>pkgs/flake.nix:</p>
+<pre><code class="language-nix">{
+  description = &quot;Package sources&quot;;
+
+  inputs = {
+    libinih.url = &quot;github:benhoyt/inih/r53&quot;;
+    libinih.flake = false;
+  };
 }
 </code></pre>
 <h1 id="profiles"><a class="header" href="#profiles">Profiles</a></h1>
@@ -714,6 +726,13 @@ compatible with devos. There is a short explanation in the the getting started
 <pre><code class="language-sh">nix flake update --recreate-lock-file --commit-lock-file
 </code></pre>
 <p>As it sounds, this will update your lock file, and commit it.</p>
+<h2 id="updating-package-sources"><a class="header" href="#updating-package-sources">Updating Package Sources</a></h2>
+<p>If you pass an input name then it will only update that input.</p>
+<p>For example, you can update any
+<a href="doc/flk/../../pkgs#automatic-source-updates">package sources</a> you may have declared
+in <em>pkgs/flake.nix</em>:</p>
+<pre><code class="language-sh">flk update srcs
+</code></pre>
 <h1 id="get"><a class="header" href="#get">get</a></h1>
 <p>The <code>get</code> subcommand is useful for getting a bare copy of devos without the
 git history. You can pull either the core or community branches.</p>
