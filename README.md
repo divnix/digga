@@ -12,8 +12,10 @@
 # Introduction
 DevOS grants a simple way to use, deploy and manage [NixOS][nixos] systems for
 personal and productive use. It does this by providing a convenient repository
-structure; integrating several popular projects like
-[home-manager][home-manager], and [devshell][devshell].
+structure, integrating several popular projects like
+[home-manager][home-manager], and [devshell][devshell], and offering useful
+conveniences like
+[automatic source updates](./pkgs#automatic-source-updates).
 
 Skip the indeterminate nature of other systems, _and_ the perceived difficulty
 of Nix. It's easier than you think!
