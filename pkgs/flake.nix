@@ -5,10 +5,8 @@
     # git ls-remote https://github.com/libretro/retroarch
     retroarch.url = "github:libretro/retroarch/v1.9.0";
     retroarch.flake = false;
-    # git ls-remote https://github.com/haslersn/any-nix-shell
     any-nix-shell.url = "github:haslersn/any-nix-shell";
     any-nix-shell.flake = false;
-    # git ls-remote https://github.com/Ma27/nix-zsh-completions
     nix-zsh-completions.url = "github:Ma27/nix-zsh-completions";
     nix-zsh-completions.flake = false;
     redshift.url = "github:minus7/redshift/wayland";
