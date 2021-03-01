@@ -1,4 +1,4 @@
-{ nixos, ... }:
+{ nixos, pkgs, ... }:
 let
   inherit (builtins) attrNames attrValues isAttrs readDir listToAttrs mapAttrs
     pathExists filter;
