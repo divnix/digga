@@ -76,4 +76,50 @@ flake.nix:
 }
 ```
 
+## Extend Modules
+
+This folder also is a good place to extend modules beyond what nixpkgs provides, such
+as for example to amend them with [RFC42][RFC42]:
+
+modules/services/cluster/k3s/extended.nix
+```nix
+{ pkgs, config, lib, ... }:
+
+let
+
+  cfg = config.services.k3s;
+  settingsFormat = pkgs.formats.yaml {};
+
+in
+{
+
+  ##### interface
+
+  cfg.settings = lib.mkOption {
+    settings = lib.mkOption {
+      type = lib.types.submodule {
+        freeformType = settingsFormat.type;
+      };
+      default = { };
+      description = ''
+        Configuration for k3s server & agent, see
+        <link xlink:href="https://rancher.com/docs/k3s/latest/en/installation/install-options/#configuration-file"/>,
+        <link xlink:href="https://rancher.com/docs/k3s/latest/en/installation/install-options/server-config/"/>&
+        <link xlink:href="https://rancher.com/docs/k3s/latest/en/installation/install-options/agent-config/"/>
+        for supported values.
+      '';
+    };
+  };
+
+  ##### implementation
+
+  config = lib.mkIf cfg.enable {
+    # /etc/rancher/k3s/config.yaml
+    environment.etc."rancher/k3s".source = format.generate "config.yaml" cfg.settings;
+  };
+
+}
+```
+
 [nixpkgs-modules]: https://github.com/NixOS/nixpkgs/tree/master/nixos/modules
+[RFC42]: https://github.com/NixOS/rfcs/pull/42
