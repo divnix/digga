@@ -20,26 +20,32 @@ conveniences like
 Skip the indeterminate nature of other systems, _and_ the perceived difficulty
 of Nix. It's easier than you think!
 
+### Status
+Alpha. A lot of the implementation is less than perfect, and huge redesigns
+_will_ happen. There are unstable versions (0._x_._x_) to help users keep
+track of changes and progress.
+
 ## Getting Started
 Check out the [guide](https://devos.divnix.com/doc/start) to get up and running.
 
 ## In the Wild
 You author maintains his own branch, so you can take inspiration, direction, or
-make critical comments about my bad [code][please]. 😜
+make critical comments about the [code][please]. 😜
 
 ## Motivation
 NixOS provides an amazing abstraction to manage our environment, but that new
 power can sometimes bring feelings of overwhelm and confusion. Having a turing
 complete system can easily lead to unlimited complexity if we do it wrong.
 Instead, we should have a community consensus on how to manage a NixOS system.
+Help us reach that goal!
+
+___The future is declarative! 🎉___
 
 ## Upstream
 I'd love to see this in the nix-community should anyone believe its reached a
 point of maturity to be generally useful, but I'm all for waiting until
 1.0[#121](https://github.com/divnix/devos/issues/121) to save the cache work,
 too.
-
-___The future is declarative! 🎉___
 
 ## Community Profiles
 There are two branches from which to choose: [core][core] and
