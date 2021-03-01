@@ -63,7 +63,7 @@
               inherit (pkgs) lib;
             });
 
-          overlay = import ./pkgs;
+          overlay = import ./pkgs { inherit nixos; };
 
           lib = import ./lib { inherit nixos pkgs; };
 

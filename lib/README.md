@@ -82,6 +82,15 @@ lib/default.nix:
 }
 ```
 
+You can then access this library function via `pkgs.myLib`:
+
+```nix
+{ pkgs, ... }:
+
+pkgs.myLib.mkCustomI3BindSym { "..." };
+
+```
+
 [nixpkgs-lib]: https://github.com/NixOS/nixpkgs/tree/master/lib
 [nixpkgs-pkgs-lib]: https://github.com/NixOS/nixpkgs/tree/master/pkgs/pkgs-lib
 [nixpkgs-pkgs-build-support]: https://github.com/NixOS/nixpkgs/tree/master/pkgs/build-support
