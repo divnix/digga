@@ -64,20 +64,12 @@ let
 
                 nixos = {
                   exact = true;
-                  from = nodes.nixos.original;
+                  from = {
+                    id = "nixos";
+                    type = "indirect";
+                  };
                   to = {
                     inherit (nixos) lastModified narHash rev;
-
-                    path = override.outPath;
-                    type = "path";
-                  };
-                };
-
-                override = {
-                  exact = true;
-                  from = nodes.override.original;
-                  to = {
-                    inherit (override) lastModified narHash rev;
 
                     path = override.outPath;
                     type = "path";
