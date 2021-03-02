@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/divnix/devos/tree/HEAD)
+## [v0.8.0](https://github.com/divnix/devos/tree/v0.8.0) (2021-03-02)
 
 **Implemented enhancements:**
 
