@@ -9,6 +9,7 @@
 
 **Fixed bugs:**
 
+- My emacsGcc overlay is not working  [\#146](https://github.com/divnix/devos/issues/146)
 - local flake registry freezes branches [\#142](https://github.com/divnix/devos/issues/142)
 - nixos-option no longer works after collect garbage [\#138](https://github.com/divnix/devos/issues/138)
 - Profiles imports are brittle, causing failure if imported twice [\#136](https://github.com/divnix/devos/issues/136)
