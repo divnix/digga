@@ -6,7 +6,7 @@
     retroarch.flake = false;
     any-nix-shell.url = "github:haslersn/any-nix-shell";
     any-nix-shell.flake = false;
-    nix-zsh-completions.url = "github:Ma27/nix-zsh-completions";
+    nix-zsh-completions.url = "github:Ma27/nix-zsh-completions/flakes";
     nix-zsh-completions.flake = false;
     redshift.url = "github:minus7/redshift/wayland";
     redshift.flake = false;

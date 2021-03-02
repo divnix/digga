@@ -350,15 +350,16 @@
     "nix-zsh-completions": {
       "flake": false,
       "locked": {
-        "lastModified": 1589837575,
-        "narHash": "sha256-vaBfawg5F9Ey4NbWTUftjoSV3pu7uE/xdovltG0awE4=",
+        "lastModified": 1600188236,
+        "narHash": "sha256-3HVYez/wt7EP8+TlhTppm968Wl8x5dXuGU0P+8xNDpo=",
         "owner": "Ma27",
         "repo": "nix-zsh-completions",
-        "rev": "fbbbe6ddedb233d0d0fcc8d665750d183c2b57f8",
+        "rev": "939c48c182e9d018eaea902b1ee9d00a415dba86",
         "type": "github"
       },
       "original": {
         "owner": "Ma27",
+        "ref": "flakes",
         "repo": "nix-zsh-completions",
         "type": "github"
       }
@@ -646,7 +647,7 @@
         "wii-u-gc-adapter": "wii-u-gc-adapter"
       },
       "locked": {
-        "narHash": "sha256-5oi97RoJahBzCz/Ngw9/vumKuJGjHtIWAt8EUZsQj0U=",
+        "narHash": "sha256-ookb283yOj5qw26tXoTuM+cbBJUFF+OvO7uvK6Tn8jM=",
         "path": "./pkgs",
         "type": "path"
       },
