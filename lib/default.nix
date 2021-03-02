@@ -117,8 +117,8 @@ in
               };
             })
           ]
-          ++ (attrValues self.overlays)
-          ++ extern.overlays;
+          ++ extern.overlays
+          ++ (attrValues self.overlays);
         in
         { pkgs = pkgImport nixos overlays system; }
       )
