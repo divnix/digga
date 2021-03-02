@@ -4,7 +4,7 @@ The only dependency is nix, so make sure you have it [installed][install-nix].
 ## Get the Template
 Here is a snippet that will get you the template without the git history:
 ```sh
-nix-shell -p cachix --run cachix use nrdxp
+nix-shell -p cachix --run "cachix use nrdxp"
 
 nix-shell https://github.com/divnix/devos/archive/core.tar.gz -A shell \
   --run "flk get core"
