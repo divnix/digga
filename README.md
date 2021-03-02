@@ -29,7 +29,7 @@ track of changes and progress.
 Check out the [guide](https://devos.divnix.com/doc/start) to get up and running.
 
 ## In the Wild
-You author maintains his own branch, so you can take inspiration, direction, or
+The author maintains his own branch, so you can take inspiration, direction, or
 make critical comments about the [code][please]. 😜
 
 ## Motivation
