@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  changelog:
+    name: Update Changelog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get version from tag
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: |
+          export CURRENT_VERSION=${GITHUB_TAG/refs\/tags\/v/}
+          echo "::set-env name=CURRENT_VERSION::$CURRENT_VERSION"
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: core
+      - name: Update Changelog
+        uses: heinrichreimer/github-changelog-generator-action@v2.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issues: true
+          issuesWoLabels: true
+          pullRequests: true
+          prWoLabels: true
+          addSections: '{"documentation":{"prefix":"**Documentation:**","labels":["documentation"]}}'
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update Changelog for tag ${{ env.CURRENT_VERSION }}
+          file_pattern: CHANGELOG.md
+
+  release_notes:
+    name: Create Release Notes
+    runs-on: ubuntu-latest
+    needs: changelog
+    steps:
+      - name: Get version from tag
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: |
+          export CURRENT_VERSION=${GITHUB_TAG/refs\/tags\/v/}
+          echo "::set-env name=CURRENT_VERSION::$CURRENT_VERSION"
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: core
+
+      - name: Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v1
+        with:
+          version: ${{ env.CURRENT_VERSION }}
+          path: ./CHANGELOG.md
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: ${{ steps.changelog_reader.outputs.log_entry }}
+          draft: false
+          prerelease: false
