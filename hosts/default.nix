@@ -64,7 +64,7 @@ let
 
           local = {
             require = [
-              (import "${toString ./.}/${hostName}.nix")
+              "${toString ./.}/${hostName}.nix"
             ];
           };
 
