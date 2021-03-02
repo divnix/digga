@@ -167,7 +167,7 @@
 <p>The only dependency is nix, so make sure you have it <a href="https://nixos.org/manual/nix/stable/#sect-multi-user-installation">installed</a>.</p>
 <h2 id="get-the-template"><a class="header" href="#get-the-template">Get the Template</a></h2>
 <p>Here is a snippet that will get you the template without the git history:</p>
-<pre><code class="language-sh">nix-shell -p cachix --run cachix use nrdxp
+<pre><code class="language-sh">nix-shell -p cachix --run &quot;cachix use nrdxp&quot;
 
 nix-shell https://github.com/divnix/devos/archive/core.tar.gz -A shell \
   --run &quot;flk get core&quot;
