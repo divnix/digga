@@ -8,6 +8,7 @@
   - [Cachix](./cachix/README.md)
   - [Extern](./extern/README.md)
   - [Hosts](./hosts/README.md)
+  - [Lib](./lib/README.md)
   - [Modules](./modules/README.md)
   - [Overlays](./overlays/README.md)
   - [Overrides](./overrides/README.md)
