@@ -66,7 +66,7 @@
 
           overlay = import ./pkgs;
 
-          lib = import ./lib { inherit nixos; };
+          lib = import ./lib { inherit nixos pkgs; };
 
           templates.flk.path = ./.;
 
