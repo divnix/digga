@@ -87,7 +87,6 @@ modules/services/cluster/k3s/extended.nix
 
 let
 
-  cfg = config.services.k3s;
   settingsFormat = pkgs.formats.yaml {};
 
 in
@@ -95,7 +94,7 @@ in
 
   ##### interface
 
-  cfg.settings = lib.mkOption {
+  options.services.k3s = lib.mkOption {
     settings = lib.mkOption {
       type = lib.types.submodule {
         freeformType = settingsFormat.type;
