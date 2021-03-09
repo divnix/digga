@@ -37,52 +37,34 @@ let
                 modules;
             };
 
-          global =
-            let
-              inherit (lock) nodes;
+          global = {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
 
-              lock = builtins.fromJSON (builtins.readFile ../flake.lock);
-            in
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
+            hardware.enableRedistributableFirmware = lib.mkDefault true;
 
-              hardware.enableRedistributableFirmware = lib.mkDefault true;
+            networking.hostName = hostName;
 
-              networking.hostName = hostName;
+            nix.nixPath = [
+              "nixpkgs=${nixos}"
+              "nixos-config=${self}/compat/nixos"
+              "home-manager=${home}"
+            ];
 
-              nix.nixPath = [
-                "nixpkgs=${nixos}"
-                "nixos-config=${self}/compat/nixos"
-                "home-manager=${home}"
-              ];
+            nixpkgs = { inherit pkgs; };
 
-              nixpkgs = { inherit pkgs; };
-
-              nix.registry = {
-                flk.flake = self;
-
-                nixos = {
-                  exact = true;
-                  from = {
-                    id = "nixos";
-                    type = "indirect";
-                  };
-                  to = {
-                    inherit (nixos) lastModified narHash rev;
-
-                    path = override.outPath;
-                    type = "path";
-                  };
-                };
-              };
-
-              system.configurationRevision = lib.mkIf (self ? rev) self.rev;
+            nix.registry = {
+              devos.flake = self;
+              nixos.flake = nixos;
+              override.flake = override;
             };
+
+            system.configurationRevision = lib.mkIf (self ? rev) self.rev;
+          };
 
           local = {
             require = [
-              (import "${toString ./.}/${hostName}.nix")
+              "${toString ./.}/${hostName}.nix"
             ];
           };
 

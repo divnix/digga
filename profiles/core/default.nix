@@ -67,7 +67,8 @@ in
         ns = "n search --no-update-lock-file";
         nf = "n flake";
         nepl = "n repl '<nixpkgs>'";
-        srch = "nsni";
+        srch = "ns nixos";
+        orch = "ns override";
         nrb = ifSudo "sudo nixos-rebuild";
         mn = ''
           manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | sk --preview="manix '{}'" | xargs manix
@@ -94,21 +95,7 @@ in
         dn = ifSudo "s systemctl stop";
         jtl = "journalctl";
 
-      } // lib.mapAttrs'
-        (n: v:
-          let
-            prefix = lib.concatStrings (lib.take 2 (lib.stringToCharacters n));
-            ref = from:
-              if from ? ref
-              then "ns ${from.id}/${from.ref}"
-              else "ns ${from.id}";
-          in
-          lib.nameValuePair
-            "ns${prefix}"
-            (ref v.from)
-        )
-        config.nix.registry;
-
+      };
   };
 
   fonts = {
