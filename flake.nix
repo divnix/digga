@@ -41,14 +41,11 @@
     , ...
     }:
     let
-      inherit (utils.lib) eachDefaultSystem flattenTreeSystem;
-      inherit (nixos.lib) recursiveUpdate;
-      inherit (self.lib) overlays nixosModules genPackages genPkgs
-        genHomeActivationPackages mkNodes;
+      inherit (self) lib;
 
       extern = import ./extern { inherit inputs; };
 
-      pkgs' = genPkgs { inherit self; };
+      pkgs' = lib.genPkgs { inherit self; };
 
       outputs =
         let
@@ -56,10 +53,10 @@
           pkgs = pkgs'.${system};
         in
         {
-          inherit nixosModules overlays;
+          inherit (lib) nixosModules overlays;
 
           nixosConfigurations =
-            import ./hosts (recursiveUpdate inputs {
+            import ./hosts (nixos.lib.recursiveUpdate inputs {
               inherit pkgs system extern;
               inherit (pkgs) lib;
             });
@@ -74,18 +71,18 @@
 
           defaultTemplate = self.templates.flk;
 
-          deploy.nodes = mkNodes deploy self.nixosConfigurations;
+          deploy.nodes = lib.mkNodes deploy self.nixosConfigurations;
 
           checks = builtins.mapAttrs
             (system: deployLib: deployLib.deployChecks self.deploy)
             deploy.lib;
         };
 
-      systemOutputs = eachDefaultSystem (system:
+      systemOutputs = utils.lib.eachDefaultSystem (system:
         let pkgs = pkgs'.${system}; in
         {
-          packages = flattenTreeSystem system
-            (genPackages {
+          packages = utils.lib.flattenTreeSystem system
+            (lib.genPackages {
               inherit self pkgs;
             });
 
@@ -94,9 +91,9 @@
           };
 
           legacyPackages.hmActivationPackages =
-            genHomeActivationPackages { inherit self; };
+            lib.genHomeActivationPackages { inherit self; };
         }
       );
     in
-    recursiveUpdate outputs systemOutputs;
+    nixos.lib.recursiveUpdate outputs systemOutputs;
 }

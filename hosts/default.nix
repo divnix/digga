@@ -10,13 +10,12 @@
 , ...
 }:
 let
-  inherit (lib.flk) recImport nixosSystemExtended defaultImports;
-  inherit (builtins) attrValues removeAttrs;
+  inherit (lib) dev;
 
   suites = import ../suites { inherit lib; };
 
   config = hostName:
-    nixosSystemExtended {
+    dev.nixosSystemExtended {
       inherit system;
 
       specialArgs = extern.specialArgs // { inherit suites; };
@@ -70,7 +69,7 @@ let
 
           # Everything in `./modules/list.nix`.
           flakeModules =
-            attrValues self.nixosModules;
+            builtins.attrValues self.nixosModules;
 
         in
         flakeModules ++ [
@@ -82,7 +81,7 @@ let
 
     };
 
-  hosts = recImport {
+  hosts = dev.recImport {
     dir = ./.;
     _import = config;
   };

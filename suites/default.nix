@@ -1,10 +1,9 @@
 { lib }:
 let
-  inherit (builtins) mapAttrs isFunction;
-  inherit (lib.flk) mkProfileAttrs profileMap;
+  inherit (lib) dev;
 
-  profiles = mkProfileAttrs (toString ../profiles);
-  users = mkProfileAttrs (toString ../users);
+  profiles = dev.mkProfileAttrs (toString ../profiles);
+  users = dev.mkProfileAttrs (toString ../users);
 
   allProfiles =
     let defaults = lib.collect (x: x ? default) profiles;
@@ -19,6 +18,6 @@ let
     base = [ users.nixos users.root ];
   };
 in
-mapAttrs (_: v: profileMap v) suites // {
+lib.mapAttrs (_: v: dev.profileMap v) suites // {
   inherit allProfiles allUsers;
 }

@@ -1,19 +1,17 @@
 { nixos, pkgs, ... }:
 let
-  inherit (builtins) attrNames attrValues isAttrs readDir listToAttrs mapAttrs
-    pathExists filter;
-
-  inherit (nixos.lib) fold filterAttrs hasSuffix mapAttrs' nameValuePair removeSuffix
-    recursiveUpdate genAttrs nixosSystem mkForce substring optionalAttrs;
-
+  inherit (nixos) lib;
   # mapFilterAttrs ::
   #   (name -> value -> bool )
   #   (name -> value -> { name = any; value = any; })
   #   attrs
-  mapFilterAttrs = seive: f: attrs: filterAttrs seive (mapAttrs' f attrs);
+  mapFilterAttrs = seive: f: attrs:
+    lib.filterAttrs
+      seive
+      (lib.mapAttrs' f attrs);
 
   # Generate an attribute set by mapping a function over a list of values.
-  genAttrs' = values: f: listToAttrs (map f values);
+  genAttrs' = values: f: lib.listToAttrs (map f values);
 
   # pkgImport :: Nixpkgs -> Overlays -> System -> Pkgs
   pkgImport = nixpkgs: overlays: system:
@@ -28,10 +26,10 @@ let
   #
   pathsToImportedAttrs = paths:
     let
-      paths' = filter (hasSuffix ".nix") paths;
+      paths' = lib.filter (lib.hasSuffix ".nix") paths;
     in
     genAttrs' paths' (path: {
-      name = removeSuffix ".nix" (baseNameOf path);
+      name = lib.removeSuffix ".nix" (baseNameOf path);
       value = import path;
     });
 
@@ -40,7 +38,7 @@ let
       overlayDir = ../overlays;
       fullPath = name: overlayDir + "/${name}";
     in
-    map fullPath (attrNames (readDir overlayDir));
+    map fullPath (lib.attrNames (builtins.readDir overlayDir));
 
   /**
   Synopsis: mkNodes _nixosConfigurations_
@@ -48,7 +46,7 @@ let
   Generate the `nodes` attribute expected by deploy-rs
   where _nixosConfigurations_ are `nodes`.
   **/
-  mkNodes = deploy: mapAttrs (_: config: {
+  mkNodes = deploy: lib.mapAttrs (_: config: {
     hostname = config.config.networking.hostName;
 
     profiles.system = {
@@ -70,21 +68,21 @@ let
     let
       imports =
         let
-          files = readDir dir;
+          files = builtins.readDir dir;
 
           p = n: v:
             v == "directory"
             && n != "profiles";
         in
-        filterAttrs p files;
+        lib.filterAttrs p files;
 
       f = n: _:
-        optionalAttrs
-          (pathExists "${dir}/${n}/default.nix")
+        lib.optionalAttrs
+          (lib.pathExists "${dir}/${n}/default.nix")
           { default = "${dir}/${n}"; }
         // mkProfileAttrs "${dir}/${n}";
     in
-    mapAttrs f imports;
+    lib.mapAttrs f imports;
 
 in
 {
@@ -93,7 +91,7 @@ in
 
   overlays = pathsToImportedAttrs overlayPaths;
 
-  mkVersion = src: "${substring 0 8 src.lastModifiedDate}_${src.shortRev}";
+  mkVersion = src: "${lib.substring 0 8 src.lastModifiedDate}_${src.shortRev}";
 
   genPkgs = { self }:
     let inherit (self) inputs;
@@ -111,14 +109,15 @@ in
             (final: prev: {
               srcs = self.inputs.srcs.inputs;
               lib = (prev.lib or { }) // {
-                inherit (nixos.lib) nixosSystem;
-                flk = self.lib;
+                inherit (lib) nixosSystem;
+
+                dev = self.lib;
                 utils = inputs.utils.lib;
               };
             })
           ]
           ++ extern.overlays
-          ++ (attrValues self.overlays);
+          ++ (lib.attrValues self.overlays);
         in
         { pkgs = pkgImport nixos overlays system; }
       )
@@ -130,25 +129,25 @@ in
     mapFilterAttrs
       (_: v: v != null)
       (n: v:
-        if n != "default.nix" && hasSuffix ".nix" n && v == "regular"
+        if n != "default.nix" && lib.hasSuffix ".nix" n && v == "regular"
         then
-          let name = removeSuffix ".nix" n; in nameValuePair (name) (_import name)
+          let name = lib.removeSuffix ".nix" n; in lib.nameValuePair (name) (_import name)
         else
-          nameValuePair ("") (null))
-      (readDir dir);
+          lib.nameValuePair ("") (null))
+      (builtins.readDir dir);
 
   nixosSystemExtended = { modules, ... } @ args:
-    nixosSystem (args // {
+    lib.nixosSystem (args // {
       modules =
         let
           modpath = "nixos/modules";
           cd = "installer/cd-dvd/installation-cd-minimal-new-kernel.nix";
           ciConfig =
-            (nixosSystem (args // {
+            (lib.nixosSystem (args // {
               modules =
                 let
                   # remove host module
-                  modules' = filter (x: ! x ? require) modules;
+                  modules' = lib.filter (x: ! x ? require) modules;
                 in
                 modules' ++ [
                   ({ suites, ... }: {
@@ -163,7 +162,7 @@ in
                 ];
             })).config;
 
-          isoConfig = (nixosSystem
+          isoConfig = (lib.nixosSystem
             (args // {
               modules = modules ++ [
                 "${nixos}/${modpath}/${cd}"
@@ -171,9 +170,9 @@ in
                   isoImage.isoBaseName = "nixos-" + config.networking.hostName;
                   # confilcts with networking.wireless which might be slightly
                   # more useful on a stick
-                  networking.networkmanager.enable = mkForce false;
+                  networking.networkmanager.enable = lib.mkForce false;
                   # confilcts with networking.wireless
-                  networking.wireless.iwd.enable = mkForce false;
+                  networking.wireless.iwd.enable = lib.mkForce false;
                 })
               ];
             })).config;
@@ -197,16 +196,16 @@ in
       modulesAttrs = pathsToImportedAttrs moduleList;
 
     in
-    recursiveUpdate cachixAttrs modulesAttrs;
+    lib.recursiveUpdate cachixAttrs modulesAttrs;
 
   genHomeActivationPackages = { self }:
     let hmConfigs =
-      builtins.mapAttrs
+      lib.mapAttrs
         (_: config: config.config.home-manager.users)
         self.nixosConfigurations;
     in
-    mapAttrs
-      (_: x: mapAttrs
+    lib.mapAttrs
+      (_: x: lib.mapAttrs
         (_: cfg: cfg.home.activationPackage)
         x)
       hmConfigs;
@@ -214,17 +213,17 @@ in
   genPackages = { self, pkgs }:
     let
       inherit (self) overlay overlays;
-      packagesNames = attrNames (overlay null null)
-        ++ attrNames (fold
-        (attr: sum: recursiveUpdate sum attr)
+      packagesNames = lib.attrNames (overlay null null)
+        ++ lib.attrNames (lib.fold
+        (attr: sum: lib.recursiveUpdate sum attr)
         { }
-        (attrValues
-          (mapAttrs (_: v: v null null) overlays)
+        (lib.attrValues
+          (lib.mapAttrs (_: v: v null null) overlays)
         )
       );
     in
-    fold
-      (key: sum: recursiveUpdate sum {
+    lib.fold
+      (key: sum: lib.recursiveUpdate sum {
         ${key} = pkgs.${key};
       })
       { }
