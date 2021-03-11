@@ -42,10 +42,11 @@
     }:
     let
       inherit (self) lib;
+      inherit (lib) os;
 
       extern = import ./extern { inherit inputs; };
 
-      pkgs' = lib.genPkgs { inherit self; };
+      pkgs' = os.genPkgs { inherit self; };
 
       outputs =
         let
@@ -53,15 +54,19 @@
           pkgs = pkgs'.${system};
         in
         {
-          inherit (lib) nixosModules overlays;
-
           nixosConfigurations =
             import ./hosts (nixos.lib.recursiveUpdate inputs {
               inherit pkgs system extern;
               inherit (pkgs) lib;
             });
 
+          nixosModules =
+            let moduleList = import ./modules/module-list.nix;
+            in lib.pathsToImportedAttrs moduleList;
+
           overlay = import ./pkgs;
+
+          overlays = lib.pathsToImportedAttrs (lib.pathsIn ./overlays);
 
           lib = import ./lib { inherit nixos pkgs; };
 
@@ -71,7 +76,7 @@
 
           defaultTemplate = self.templates.flk;
 
-          deploy.nodes = lib.mkNodes deploy self.nixosConfigurations;
+          deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
 
           checks = builtins.mapAttrs
             (system: deployLib: deployLib.deployChecks self.deploy)
@@ -82,7 +87,7 @@
         let pkgs = pkgs'.${system}; in
         {
           packages = utils.lib.flattenTreeSystem system
-            (lib.genPackages {
+            (os.genPackages {
               inherit self pkgs;
             });
 
@@ -91,7 +96,7 @@
           };
 
           legacyPackages.hmActivationPackages =
-            lib.genHomeActivationPackages { inherit self; };
+            os.genHomeActivationPackages { inherit self; };
         }
       );
     in

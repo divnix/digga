@@ -2,8 +2,8 @@
 let
   inherit (lib) dev;
 
-  profiles = dev.mkProfileAttrs (toString ../profiles);
-  users = dev.mkProfileAttrs (toString ../users);
+  profiles = dev.os.mkProfileAttrs (toString ../profiles);
+  users = dev.os.mkProfileAttrs (toString ../users);
 
   allProfiles =
     let defaults = lib.collect (x: x ? default) profiles;
@@ -18,6 +18,6 @@ let
     base = [ users.nixos users.root ];
   };
 in
-lib.mapAttrs (_: v: dev.profileMap v) suites // {
+lib.mapAttrs (_: v: dev.os.profileMap v) suites // {
   inherit allProfiles allUsers;
 }

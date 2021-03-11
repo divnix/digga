@@ -15,7 +15,7 @@ let
   suites = import ../suites { inherit lib; };
 
   config = hostName:
-    dev.nixosSystemExtended {
+    dev.os.nixosSystemExtended {
       inherit system;
 
       specialArgs = extern.specialArgs // { inherit suites; };
@@ -81,7 +81,7 @@ let
 
     };
 
-  hosts = dev.recImport {
+  hosts = dev.os.recImport {
     dir = ./.;
     _import = config;
   };
