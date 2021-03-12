@@ -15,7 +15,7 @@ let
   suites = import ../suites { inherit lib; };
 
   config = hostName:
-    dev.os.nixosSystemExtended {
+    dev.os.devosSystem {
       inherit system;
 
       specialArgs = extern.specialArgs // { inherit suites; };

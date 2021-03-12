@@ -27,26 +27,14 @@
       srcs.url = "path:./pkgs";
     };
 
-  outputs =
-    inputs@{ ci-agent
-    , deploy
-    , devshell
-    , home
-    , nixos
-    , nixos-hardware
-    , nur
-    , override
-    , self
-    , utils
-    , ...
-    }:
+  outputs = inputs@{ deploy, nixos, nur, self, utils, ... }:
     let
       inherit (self) lib;
       inherit (lib) os;
 
       extern = import ./extern { inherit inputs; };
 
-      pkgs' = os.genPkgs { inherit self; };
+      pkgs' = os.mkPkgs { inherit self; };
 
       outputs =
         let
@@ -65,15 +53,12 @@
             in lib.pathsToImportedAttrs moduleList;
 
           overlay = import ./pkgs;
-
           overlays = lib.pathsToImportedAttrs (lib.pathsIn ./overlays);
 
           lib = import ./lib { inherit nixos pkgs; };
 
           templates.flk.path = ./.;
-
           templates.flk.description = "flk template";
-
           defaultTemplate = self.templates.flk;
 
           deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
@@ -87,7 +72,7 @@
         let pkgs = pkgs'.${system}; in
         {
           packages = utils.lib.flattenTreeSystem system
-            (os.genPackages {
+            (os.mkPackages {
               inherit self pkgs;
             });
 
@@ -96,7 +81,7 @@
           };
 
           legacyPackages.hmActivationPackages =
-            os.genHomeActivationPackages { inherit self; };
+            os.mkHomeActivation { inherit self; };
         }
       );
     in
