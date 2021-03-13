@@ -1,0 +1,10 @@
+status = [
+  "ci/hercules/evaluation",
+  "ci/hercules/derivations"
+]
+
+required_approvals = 1
+
+up_to_date_approvals = true
+
+delete_merged_branches = true
