@@ -6,25 +6,6 @@ lib.nixosSystem (args // {
     let
       modpath = "nixos/modules";
       cd = "installer/cd-dvd/installation-cd-minimal-new-kernel.nix";
-      ciConfig =
-        (lib.nixosSystem (args // {
-          modules =
-            let
-              # remove host module
-              modules' = lib.filter (x: ! x ? require) modules;
-            in
-            modules' ++ [
-              ({ suites, ... }: {
-                imports = with suites;
-                  allProfiles ++ allUsers;
-
-                boot.loader.systemd-boot.enable = true;
-                boot.loader.efi.canTouchEfiVariables = true;
-
-                fileSystems."/" = { device = "/dev/disk/by-label/nixos"; };
-              })
-            ];
-        })).config;
 
       isoConfig = (lib.nixosSystem
         (args // {
@@ -44,7 +25,6 @@ lib.nixosSystem (args // {
     modules ++ [{
       system.build = {
         iso = isoConfig.system.build.isoImage;
-        ci = ciConfig.system.build.toplevel;
       };
     }];
 })

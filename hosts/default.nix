@@ -80,9 +80,9 @@ let
       modules = modules ++ [
         local
         {
+          lib = { inherit specialArgs; };
           lib.testModule = {
             imports = modules;
-            _module.args = specialArgs;
           };
         }
       ];

@@ -63,9 +63,14 @@
 
           deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
 
-          checks = builtins.mapAttrs
-            (system: deployLib: deployLib.deployChecks self.deploy)
-            deploy.lib;
+          checks =
+            let
+              tests = import ./tests { inherit self pkgs; };
+              deployChecks = builtins.mapAttrs
+                (system: deployLib: deployLib.deployChecks self.deploy)
+                deploy.lib;
+            in
+            nixos.lib.recursiveUpdate tests deployChecks;
         };
 
       systemOutputs = utils.lib.eachDefaultSystem (system:

@@ -26,8 +26,6 @@ let
     )
     default.outputs;
 
-  ciDrvs = lib.mapAttrs (_: system: filterSystems system) systemOutputs // {
-    nixos = default.nixosConfigurations.NixOS.config.system.build.ci;
-  };
+  ciDrvs = lib.mapAttrs (_: system: filterSystems system) systemOutputs;
 in
 recurseIntoAttrsRecursive ciDrvs
