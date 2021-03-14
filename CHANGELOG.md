@@ -4,15 +4,12 @@
 
 **Fixed bugs:**
 
+- Expected that not all packages are exported? [\#151](https://github.com/divnix/devos/issues/151)
 - Segmentation fault when generating iso [\#150](https://github.com/divnix/devos/issues/150)
 
 **Documentation:**
 
 - lib: can depend on pkgs \(a la nixpkgs\#pkgs/pkgs-lib\) [\#147](https://github.com/divnix/devos/pull/147)
-
-**Merged pull requests:**
-
-- hosts: fix \#142 [\#143](https://github.com/divnix/devos/pull/143)
 
 ## [v0.8.0](https://github.com/divnix/devos/tree/v0.8.0) (2021-03-02)
 
@@ -30,6 +27,7 @@
 
 **Merged pull requests:**
 
+- hosts: fix \#142 [\#143](https://github.com/divnix/devos/pull/143)
 - profiles: simplify profiles to suites [\#139](https://github.com/divnix/devos/pull/139)
 - pkgs: automatic source management [\#135](https://github.com/divnix/devos/pull/135)
 
@@ -43,7 +41,6 @@
 
 **Fixed bugs:**
 
-- Expected that not all packages are exported? [\#151](https://github.com/divnix/devos/issues/151)
 - Missing shebang from flk.sh [\#131](https://github.com/divnix/devos/issues/131)
 - Rename Meta Issue [\#128](https://github.com/divnix/devos/issues/128)
 - specialisations break the `system` argument [\#46](https://github.com/divnix/devos/issues/46)
