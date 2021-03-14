@@ -12,7 +12,7 @@ rec {
   # Generate an attribute set by mapping a function over a list of values.
   genAttrs' = values: f: lib.listToAttrs (map f values);
 
-  # Convert a list to file paths to attribute set
+  # Convert a list of file paths to attribute set
   # that has the filenames stripped of nix extension as keys
   # and imported content of the file as value.
   #
