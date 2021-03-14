@@ -27,28 +27,14 @@
       srcs.url = "path:./pkgs";
     };
 
-  outputs =
-    inputs@{ ci-agent
-    , deploy
-    , devshell
-    , home
-    , nixos
-    , nixos-hardware
-    , nur
-    , override
-    , self
-    , utils
-    , ...
-    }:
+  outputs = inputs@{ deploy, nixos, nur, self, utils, ... }:
     let
-      inherit (utils.lib) eachDefaultSystem flattenTreeSystem;
-      inherit (nixos.lib) recursiveUpdate;
-      inherit (self.lib) overlays nixosModules genPackages genPkgs
-        genHomeActivationPackages mkNodes;
+      inherit (self) lib;
+      inherit (lib) os;
 
       extern = import ./extern { inherit inputs; };
 
-      pkgs' = genPkgs { inherit self; };
+      pkgs' = os.mkPkgs { inherit self; };
 
       outputs =
         let
@@ -56,36 +42,42 @@
           pkgs = pkgs'.${system};
         in
         {
-          inherit nixosModules overlays;
-
           nixosConfigurations =
-            import ./hosts (recursiveUpdate inputs {
+            import ./hosts (nixos.lib.recursiveUpdate inputs {
               inherit pkgs system extern;
               inherit (pkgs) lib;
             });
 
+          nixosModules =
+            let moduleList = import ./modules/module-list.nix;
+            in lib.pathsToImportedAttrs moduleList;
+
           overlay = import ./pkgs;
+          overlays = lib.pathsToImportedAttrs (lib.pathsIn ./overlays);
 
           lib = import ./lib { inherit nixos pkgs; };
 
           templates.flk.path = ./.;
-
           templates.flk.description = "flk template";
-
           defaultTemplate = self.templates.flk;
 
-          deploy.nodes = mkNodes deploy self.nixosConfigurations;
+          deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
 
-          checks = builtins.mapAttrs
-            (system: deployLib: deployLib.deployChecks self.deploy)
-            deploy.lib;
+          checks =
+            let
+              tests = import ./tests { inherit self pkgs; };
+              deployChecks = builtins.mapAttrs
+                (system: deployLib: deployLib.deployChecks self.deploy)
+                deploy.lib;
+            in
+            nixos.lib.recursiveUpdate tests deployChecks;
         };
 
-      systemOutputs = eachDefaultSystem (system:
+      systemOutputs = utils.lib.eachDefaultSystem (system:
         let pkgs = pkgs'.${system}; in
         {
-          packages = flattenTreeSystem system
-            (genPackages {
+          packages = utils.lib.flattenTreeSystem system
+            (os.mkPackages {
               inherit self pkgs;
             });
 
@@ -94,9 +86,9 @@
           };
 
           legacyPackages.hmActivationPackages =
-            genHomeActivationPackages { inherit self; };
+            os.mkHomeActivation { inherit self; };
         }
       );
     in
-    recursiveUpdate outputs systemOutputs;
+    nixos.lib.recursiveUpdate outputs systemOutputs;
 }

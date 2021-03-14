@@ -4,6 +4,8 @@ relevant docs. Each directory contains its own README.md, which will
 automatically be pulled into the [mdbook](https://devos.divnix.com). The book is
 rendered on every change, so the docs should always be up to date.
 
+We also use [BORS](https://bors.tech) to ensure that all pull requests pass the
+test suite once at least one review is completed.
 
 ## Community PRs
 While much of your work in this template may be idiosyncratic in nature. Anything

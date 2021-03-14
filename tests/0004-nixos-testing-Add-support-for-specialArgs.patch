@@ -1,0 +1,61 @@
+From 9f33ab62d99c98e3f5bddd64532f15f482cf01b2 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Janne=20He=C3=9F?= <janne@hess.ooo>
+Date: Tue, 2 Jun 2020 16:27:07 +0200
+Subject: [PATCH 04/22] nixos/testing: Add support for specialArgs
+
+Since using flakes disallows the usage of <unstable> (which I use in
+some tests), this adds an alternative. By setting specialArgs, all VMs
+can get the `unstable` flake input as an arg. This is not possible with
+extraConfigurations, as that would lead to infinite recursions.
+---
+ nixos/lib/build-vms.nix      | 8 +++++---
+ nixos/lib/testing-python.nix | 4 +++-
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/nixos/lib/build-vms.nix b/nixos/lib/build-vms.nix
+index 1bad63b9194..b1575fc13bb 100644
+--- a/nixos/lib/build-vms.nix
++++ b/nixos/lib/build-vms.nix
+@@ -3,8 +3,10 @@
+   minimal ? false
+ , # Ignored
+   config ? null
+-  # Nixpkgs, for qemu, lib and more
+-, pkgs
++, # Nixpkgs, for qemu, lib and more
++  pkgs
++, # !!! See comment about args in lib/modules.nix
++  specialArgs ? {}
+ , # NixOS configuration to add to the VMs
+   extraConfigurations ? []
+ }:
+@@ -31,7 +33,7 @@ rec {
+     nodes: configurations:
+ 
+     import ./eval-config.nix {
+-      inherit system;
++      inherit system specialArgs;
+       modules = configurations ++ extraConfigurations;
+       baseModules =  (import ../modules/module-list.nix) ++
+         [ ../modules/virtualisation/qemu-vm.nix
+diff --git a/nixos/lib/testing-python.nix b/nixos/lib/testing-python.nix
+index 76a2022082c..498f97336c0 100644
+--- a/nixos/lib/testing-python.nix
++++ b/nixos/lib/testing-python.nix
+@@ -4,10 +4,12 @@
+ , minimal ? false
+   # Ignored
+ , config ? {}
++  # !!! See comment about args in lib/modules.nix
++, specialArgs ? {}
+   # Modules to add to each VM
+ , extraConfigurations ? [] }:
+ 
+-with import ./build-vms.nix { inherit system pkgs minimal extraConfigurations; };
++with import ./build-vms.nix { inherit system pkgs minimal specialArgs extraConfigurations; };
+ with pkgs;
+ 
+ rec {
+-- 
+2.29.2
+

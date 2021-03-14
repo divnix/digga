@@ -16,38 +16,31 @@ And, as usual, every package in the overlay is also available to any NixOS
 
 ## Automatic Source Updates
 There is the added, but optional, convenience of declaring your sources in
-_pkgs/flake.nix_ as an input. This allows updates to be managed automatically
-by simply [updating](../doc/flk/update.md#updating-package-sources) the lock
-file. No more manually entering sha256 hashes!
+_pkgs/flake.nix_ as an input. You can then access them from the `srcs` package.
+This allows updates to be managed automatically by simply
+[updating](../doc/flk/update.md#updating-package-sources) the lock file. No
+more manually entering sha256 hashes!
 
+As an added bonus, version strings are also generated automatically from either
+the flake ref, or the date and git revision of the source. For examples,
+definitely checkout the [community branch](../#community-profiles).
 
 ## Example
 pkgs/development/libraries/libinih/default.nix:
 ```nix
 { stdenv, meson, ninja, lib, srcs, ... }:
-let version = "r53";
-in
+let inherit (srcs) libinih; in
 stdenv.mkDerivation {
   pname = "libinih";
-  inherit version;
 
-  src = srcs.libinih;
+  # version will resolve to 53, as specified in the final example below
+  inherit (libinih) version;
+
+  src = libinih;
 
   buildInputs = [ meson ninja ];
 
-  mesonFlags = ''
-    -Ddefault_library=shared
-    -Ddistro_install=true
-  '';
-
-  meta = with lib; {
-    description = "Simple .INI file parser in C";
-    homepage = "https://github.com/benhoyt/inih";
-    maintainers = [ maintainers.divnix ];
-    license = licenses.bsd3;
-    platforms = platforms.all;
-    inherit version;
-  };
+  # ...
 }
 ```
 
