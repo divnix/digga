@@ -14,10 +14,8 @@ lib.makeExtensible (self:
 
     attrs = callLibs ./attrs.nix;
     os = callLibs ./devos;
-    strings = callLibs ./strings.nix;
     lists = callLibs ./lists.nix;
 
     inherit (attrs) mapFilterAttrs genAttrs' pathsToImportedAttrs concatAttrs;
-    inherit (strings) mkVersion;
     inherit (lists) pathsIn;
   })
