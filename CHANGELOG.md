@@ -4,12 +4,17 @@
 
 **Fixed bugs:**
 
+- `flk update` fails because of obsolete flag [\#159](https://github.com/divnix/devos/issues/159)
 - Expected that not all packages are exported? [\#151](https://github.com/divnix/devos/issues/151)
 - Segmentation fault when generating iso [\#150](https://github.com/divnix/devos/issues/150)
 
 **Documentation:**
 
 - lib: can depend on pkgs \(a la nixpkgs\#pkgs/pkgs-lib\) [\#147](https://github.com/divnix/devos/pull/147)
+
+**Closed issues:**
+
+- mn alias: sk: command not found \(core\) [\#162](https://github.com/divnix/devos/issues/162)
 
 ## [v0.8.0](https://github.com/divnix/devos/tree/v0.8.0) (2021-03-02)
 
