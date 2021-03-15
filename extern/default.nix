@@ -9,11 +9,13 @@ in
   ];
 
   overlays = [
+    nix.overlay
     nur.overlay
     devshell.overlay
     (final: prev: {
       deploy-rs = deploy.packages.${prev.system}.deploy-rs;
     })
+    pkgs.overlay
   ];
 
   # passed to all nixos modules

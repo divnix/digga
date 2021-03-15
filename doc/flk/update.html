@@ -165,15 +165,20 @@
                     <main>
                         <h1 id="update"><a class="header" href="#update">update</a></h1>
 <p>The <code>update</code> subcommand is a simple alias for:</p>
-<pre><code class="language-sh">nix flake update --recreate-lock-file --commit-lock-file
+<pre><code class="language-sh">nix flake update
 </code></pre>
-<p>As it sounds, this will update your lock file, and commit it.</p>
+<p>As it sounds, this will update your lock file.</p>
 <h2 id="updating-package-sources"><a class="header" href="#updating-package-sources">Updating Package Sources</a></h2>
-<p>If you pass an input name then it will only update that input.</p>
+<p>If you pass directory name then it will update that input if the directory
+contains a flake.nix, with an optional arguement to update only a specific
+input in the subflake.</p>
 <p>For example, you can update any
 <a href="../../pkgs#automatic-source-updates">package sources</a> you may have declared
 in <em>pkgs/flake.nix</em>:</p>
-<pre><code class="language-sh">flk update srcs
+<pre><code class="language-sh">flk update pkgs
+</code></pre>
+<p>or just its <em>nixpkgs</em>:</p>
+<pre><code class="language-sh">flk update pkgs nixpkgs
 </code></pre>
 
                     </main>

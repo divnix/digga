@@ -152,6 +152,25 @@
         "type": "github"
       }
     },
+    "nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1615476733,
+        "narHash": "sha256-iae4JMAl2KAaPhUGLMf4/DEejWjs5fWfEU1ccVF8s6Q=",
+        "owner": "NixOS",
+        "repo": "nix",
+        "rev": "8127094f767b6caae145bc395a504ca62f30af3e",
+        "type": "github"
+      },
+      "original": {
+        "id": "nix",
+        "type": "indirect"
+      }
+    },
     "nixos": {
       "locked": {
         "lastModified": 1614531331,
@@ -210,6 +229,22 @@
         "type": "indirect"
       }
     },
+    "pkgs": {
+      "inputs": {
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "narHash": "sha256-sBVaeGxxs7sk7PodW1mqJbF0CqUqUar0GUdd+OPnZ8o=",
+        "path": "./pkgs",
+        "type": "path"
+      },
+      "original": {
+        "path": "./pkgs",
+        "type": "path"
+      }
+    },
     "pre-commit-hooks-nix": {
       "flake": false,
       "locked": {
@@ -235,23 +270,13 @@
         "flake-compat": "flake-compat",
         "home": "home",
         "naersk": "naersk",
+        "nix": "nix",
         "nixos": "nixos",
         "nixos-hardware": "nixos-hardware",
         "nur": "nur",
         "override": "override",
-        "srcs": "srcs",
+        "pkgs": "pkgs",
         "utils": "utils"
-      }
-    },
-    "srcs": {
-      "locked": {
-        "narHash": "sha256-Ot96/oKT5+A5kdqkfYyT45cfEiqhI5UyPdEfEZjbXaA=",
-        "path": "./pkgs",
-        "type": "path"
-      },
-      "original": {
-        "path": "./pkgs",
-        "type": "path"
       }
     },
     "utils": {
