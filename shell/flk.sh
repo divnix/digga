@@ -50,9 +50,14 @@ case "$1" in
 
   "update")
     if [[ -n "$2" ]]; then
-      nix flake update --update-input "$2" --commit-lock-file "$DEVSHELL_ROOT"
+      if [[ -n "$3" ]]; then
+        (cd $2; nix flake list-inputs --update-input "$3")
+      else
+        (cd $2; nix flake update)
+      fi
+      nix flake list-inputs --update-input "$2" "$DEVSHELL_ROOT"
     else
-      nix flake update --recreate-lock-file --commit-lock-file "$DEVSHELL_ROOT"
+      nix flake update "$DEVSHELL_ROOT"
     fi
     ;;
 

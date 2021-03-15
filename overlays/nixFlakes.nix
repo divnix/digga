@@ -1,5 +1,5 @@
 final: prev: {
-  nixFlakes = prev.nixFlakes.overrideAttrs
+  nixFlakes = final.nix.overrideAttrs
     (self:
       let
         oldPatches = self.patches or [ ];

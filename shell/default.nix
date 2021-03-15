@@ -22,6 +22,7 @@ pkgs.devshell.mkShell
     nixos-install
     nixos-generate-config
     nixos-enter
+    pkgs.nixFlakes
   ];
 
   git.hooks = {

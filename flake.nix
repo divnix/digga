@@ -22,12 +22,14 @@
       home.inputs.nixpkgs.follows = "nixos";
       naersk.url = "github:nmattia/naersk";
       naersk.inputs.nixpkgs.follows = "override";
+      nix.inputs.nixpkgs.follows = "nixos";
       nixos-hardware.url = "github:nixos/nixos-hardware";
       utils.url = "github:numtide/flake-utils/flatten-tree-system";
-      srcs.url = "path:./pkgs";
+      pkgs.url = "path:./pkgs";
+      pkgs.inputs.nixpkgs.follows = "nixos";
     };
 
-  outputs = inputs@{ deploy, nixos, nur, self, utils, ... }:
+  outputs = inputs@{ deploy, nixos, nur, nix, self, utils, ... }:
     let
       inherit (self) lib;
       inherit (lib) os;
