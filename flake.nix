@@ -62,20 +62,21 @@
         defaultTemplate = self.templates.flk;
 
         deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
-
-        checks =
-          let
-            tests = import ./tests { inherit self pkgs; };
-            deployChecks = builtins.mapAttrs
-              (system: deployLib: deployLib.deployChecks self.deploy)
-              deploy.lib;
-          in
-          nixos.lib.recursiveUpdate tests deployChecks;
       };
 
       systemOutputs = utils.lib.eachDefaultSystem (system:
         let pkgs = multiPkgs.${system}; in
         {
+          checks =
+            let
+              tests = nixos.lib.optionalAttrs (system == "x86_64-linux")
+                (import ./tests { inherit self pkgs; });
+              deployHosts = nixos.lib.filterAttrs
+                (n: _: self.nixosConfigurations.${n}.config.nixpkgs.system == system) self.deploy.nodes;
+              deployChecks = deploy.lib.${system}.deployChecks { nodes = deployHosts; };
+            in
+            nixos.lib.recursiveUpdate tests deployChecks;
+
           packages = utils.lib.flattenTreeSystem system
             (os.mkPackages { inherit pkgs; });
 
