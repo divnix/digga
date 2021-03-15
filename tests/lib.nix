@@ -59,4 +59,11 @@ lib.runTests {
       f = false;
     };
   };
+
+  testRgxToString = lib.testAllTrue [
+    (rgxToString ".+x" "vxk" == "vx")
+    (rgxToString "^fo" "foo" == "fo")
+    (rgxToString "a?" "a" == "a")
+    (rgxToString "hat" "foohatbar" == "hat")
+  ];
 }
