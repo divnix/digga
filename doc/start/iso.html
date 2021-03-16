@@ -197,6 +197,14 @@ ssh nixos@fe80::47%eno1  # where eno1 is your network interface on which you are
 <p><em>Note: the <a href="https://tools.ietf.org/html/rfc7404">static link-local IPv6 address</a> and <a href="https://en.wikipedia.org/wiki/Multicast_DNS">MulticastDNS</a> is only
 configured on the live installer. If you wish to enable <a href="https://en.wikipedia.org/wiki/Multicast_DNS">MulticastDNS</a>
 for your environment, you ought to configure that in a regular <a href="../../profiles">profile</a>.</em></p>
+<h2 id="iso-image-nix-store--cache"><a class="header" href="#iso-image-nix-store--cache">ISO image nix store &amp; cache</a></h2>
+<p>The iso image holds the store to the live environment and <em>also</em> acts as a binay cache
+to the installer. To considerably speed up things, the image already includes all flake
+<code>inputs</code> as well as the <code>devshell</code> closures.</p>
+<p>While you <em>could</em> provision any machine with a single stick, a bespoke iso maximises
+those local cache hits.</p>
+<p>For hosts that don't differ too much, a common usb stick might be ok, whereas when
+there are bigger differences, a bespoke usb stick will be considerably faster.</p>
 <h2 id="eui-64-lla--host-identity"><a class="header" href="#eui-64-lla--host-identity">EUI-64 LLA &amp; Host Identity</a></h2>
 <p>The iso's IPv6 Link Local Address (LLA) is configured with a static 64-bit Extended
 Unique Identifiers (EUI-64) that is derived from the host interface's Message
@@ -229,10 +237,6 @@ $ nix develop
 $ flk install NixOS --impure # use same host as above
 </code></pre>
 <!-- TODO: find out why --impure is necesary / PRs welcome! -->
-<p><em>Note: You <em>could</em> install another machine than the one your iso was built for,
-but the iso doesn't carry all the necesary build artifacts so the target would
-start to build the missing parts on demand instead of substituting them from
-the iso itself.</em></p>
 
                     </main>
 

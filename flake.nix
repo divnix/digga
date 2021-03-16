@@ -57,7 +57,7 @@
           overlay = import ./pkgs;
           overlays = lib.pathsToImportedAttrs (lib.pathsIn ./overlays);
 
-          lib = import ./lib { inherit nixos pkgs self; };
+          lib = import ./lib { inherit nixos pkgs self inputs; };
 
           templates.flk.path = ./.;
           templates.flk.description = "flk template";
