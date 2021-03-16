@@ -75,6 +75,8 @@ let
 
         _module.args = {
           inherit self;
+          hosts = builtins.mapAttrs (_: host: host.config)
+            (removeAttrs hosts [ hostName ]);
         };
       };
     in
