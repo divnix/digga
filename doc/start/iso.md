@@ -46,6 +46,18 @@ _Note: the [static link-local IPv6 address][staticLLA] and [MulticastDNS][mDNS] 
 configured on the live installer. If you wish to enable [MulticastDNS][mDNS]
 for your environment, you ought to configure that in a regular [profile](../../profiles)._
 
+## ISO image nix store & cache
+
+The iso image holds the store to the live environment and _also_ acts as a binay cache
+to the installer. To considerably speed up things, the image already includes all flake
+`inputs` as well as the `devshell` closures.
+
+While you _could_ provision any machine with a single stick, a bespoke iso maximises
+those local cache hits.
+
+For hosts that don't differ too much, a common usb stick might be ok, whereas when
+there are bigger differences, a bespoke usb stick will be considerably faster.
+
 ## EUI-64 LLA & Host Identity
 
 The iso's IPv6 Link Local Address (LLA) is configured with a static 64-bit Extended
@@ -96,11 +108,6 @@ $ flk install NixOS --impure # use same host as above
 ```
 
 <!-- TODO: find out why --impure is necesary / PRs welcome! -->
-
-_Note: You _could_ install another machine than the one your iso was built for,
-but the iso doesn't carry all the necesary build artifacts so the target would
-start to build the missing parts on demand instead of substituting them from
-the iso itself._
 
 [manual]: https://nixos.org/manual/nixos/stable/index.html#sec-installation-partitioning
 [mDNS]: https://en.wikipedia.org/wiki/Multicast_DNS
