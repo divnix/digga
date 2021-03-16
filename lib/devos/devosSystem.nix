@@ -18,6 +18,9 @@ lib.nixosSystem (args // {
                 target = "/devos/";
               }];
               nix.registry = lib.mapAttrs (n: v: { flake = v; }) inputs;
+              isoImage.storeContents = [
+                self.devShell.${config.nixpkgs.system}
+              ];
               # confilcts with networking.wireless which might be slightly
               # more useful on a stick
               networking.networkmanager.enable = lib.mkForce false;
