@@ -72,6 +72,10 @@ let
         ];
 
         networking = { inherit hostName; };
+
+        _module.args = {
+          inherit self;
+        };
       };
     in
     dev.os.devosSystem {

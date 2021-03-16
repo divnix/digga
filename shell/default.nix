@@ -2,7 +2,7 @@
 , system ? builtins.currentSystem
 }:
 let
-  pkgs = (self.lib.os.mkPkgs { inherit self; }).${system};
+  pkgs = (self.lib.os.mkPkgs).${system};
 
   inherit (pkgs) lib;
 
