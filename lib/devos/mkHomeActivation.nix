@@ -1,6 +1,5 @@
-{ lib, ... }:
+{ lib, self, ... }:
 
-{ self }:
 let hmConfigs =
   lib.mapAttrs
     (_: config: config.config.home-manager.users)

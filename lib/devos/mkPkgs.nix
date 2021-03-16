@@ -1,6 +1,5 @@
-{ lib, dev, nixos, ... }:
+{ lib, dev, nixos, self, ... }:
 
-{ self }:
 let inherit (self) inputs;
 in
 (inputs.utils.lib.eachDefaultSystem
