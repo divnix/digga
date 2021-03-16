@@ -17,7 +17,7 @@ usage () {
 
   printf "  %-30s %s\n\n" \
   "up" "Generate $DEVSHELL_ROOT/hosts/up-$HOSTNAME.nix" \
-  "update [INPUT]" "Update and commit the lock file" \
+  "update [INPUT]" "Update and commit the lock file, or specific input" \
   "get (core|community) [DEST]" "Copy the desired template to DEST" \
   "iso HOST" "Generate an ISO image of HOST" \
   "install HOST [ARGS]" "Shortcut for nixos-install" \

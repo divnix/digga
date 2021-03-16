@@ -3,7 +3,7 @@
 
   inputs =
     {
-      nixos.url = "nixpkgs/release-20.09";
+      nixos.url = "nixpkgs/nixos-unstable";
       override.url = "nixpkgs";
       ci-agent = {
         url = "github:hercules-ci/hercules-ci-agent";
