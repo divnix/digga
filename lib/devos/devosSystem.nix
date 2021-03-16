@@ -1,4 +1,4 @@
-{ lib, nixos, self, ... }:
+{ lib, nixos, self, inputs, ... }:
 
 { modules, ... } @ args:
 lib.nixosSystem (args // {
@@ -17,6 +17,7 @@ lib.nixosSystem (args // {
                 source = self;
                 target = "/devos/";
               }];
+              nix.registry = lib.mapAttrs (n: v: { flake = v; }) inputs;
               # confilcts with networking.wireless which might be slightly
               # more useful on a stick
               networking.networkmanager.enable = lib.mkForce false;
