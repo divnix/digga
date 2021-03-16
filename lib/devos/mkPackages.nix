@@ -1,6 +1,6 @@
-{ lib, dev, ... }:
+{ lib, dev, self, ... }:
 
-{ self, pkgs }:
+{ pkgs }:
 let
   inherit (self) overlay overlays;
   packagesNames = lib.attrNames (overlay null null)

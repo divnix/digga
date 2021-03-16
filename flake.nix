@@ -36,7 +36,7 @@
 
       extern = import ./extern { inherit inputs; };
 
-      pkgs' = os.mkPkgs { inherit self; };
+      pkgs' = os.mkPkgs;
 
       outputs =
         let
@@ -57,7 +57,7 @@
           overlay = import ./pkgs;
           overlays = lib.pathsToImportedAttrs (lib.pathsIn ./overlays);
 
-          lib = import ./lib { inherit nixos pkgs; };
+          lib = import ./lib { inherit nixos pkgs self; };
 
           templates.flk.path = ./.;
           templates.flk.description = "flk template";
@@ -79,16 +79,14 @@
         let pkgs = pkgs'.${system}; in
         {
           packages = utils.lib.flattenTreeSystem system
-            (os.mkPackages {
-              inherit self pkgs;
-            });
+            (os.mkPackages { inherit pkgs; });
 
           devShell = import ./shell {
             inherit self system;
           };
 
           legacyPackages.hmActivationPackages =
-            os.mkHomeActivation { inherit self; };
+            os.mkHomeActivation;
         }
       );
     in
