@@ -3,9 +3,9 @@
 , lib
 , nixos
 , override
-, pkgs
+, multiPkgs
 , self
-, system
+, defaultSystem
 , ...
 }:
 let
@@ -27,7 +27,7 @@ let
           modules;
       };
 
-    global = {
+    global = { config, ... }: {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
 
@@ -39,7 +39,7 @@ let
         "home-manager=${home}"
       ];
 
-      nixpkgs = { inherit pkgs; };
+      nixpkgs.pkgs = lib.mkDefault multiPkgs.${config.nixpkgs.system};
 
       nix.registry = {
         devos.flake = self;
@@ -79,7 +79,8 @@ let
       };
     in
     dev.os.devosSystem {
-      inherit system specialArgs;
+      inherit specialArgs;
+      system = defaultSystem;
       modules = modules // { inherit local lib; };
     };
 

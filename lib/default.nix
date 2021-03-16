@@ -1,4 +1,4 @@
-args@{ nixos, pkgs, self, ... }:
+args@{ nixos, self, ... }:
 let inherit (nixos) lib; in
 lib.makeExtensible (final:
   let callLibs = file: import file
