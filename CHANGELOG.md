@@ -2,8 +2,23 @@
 
 ## [Unreleased](https://github.com/divnix/devos/tree/HEAD)
 
+**Implemented enhancements:**
+
+- doc: quickstart "ISO. What next?" [\#167](https://github.com/divnix/devos/issues/167)
+- Integrate Android AOSP putting mobile under control [\#149](https://github.com/divnix/devos/issues/149)
+- Inoculate host identity on first use [\#132](https://github.com/divnix/devos/issues/132)
+- kubenix support [\#130](https://github.com/divnix/devos/issues/130)
+- Local CA \(between hosts\) [\#104](https://github.com/divnix/devos/issues/104)
+- Q5: git annex for machine state [\#68](https://github.com/divnix/devos/issues/68)
+- name space ./pkgs overlays [\#60](https://github.com/divnix/devos/issues/60)
+- remap global keys easily [\#57](https://github.com/divnix/devos/issues/57)
+- make pass state part of this repo's structure [\#56](https://github.com/divnix/devos/issues/56)
+- Incorporate ./shells [\#38](https://github.com/divnix/devos/issues/38)
+- Encrypt with \(r\)age [\#37](https://github.com/divnix/devos/issues/37)
+
 **Fixed bugs:**
 
+- Help adding easy-hls-nix to devos [\#174](https://github.com/divnix/devos/issues/174)
 - `flk update` fails because of obsolete flag [\#159](https://github.com/divnix/devos/issues/159)
 - Expected that not all packages are exported? [\#151](https://github.com/divnix/devos/issues/151)
 - Segmentation fault when generating iso [\#150](https://github.com/divnix/devos/issues/150)
@@ -15,6 +30,7 @@
 **Closed issues:**
 
 - mn alias: sk: command not found \(core\) [\#162](https://github.com/divnix/devos/issues/162)
+- FRRouting router implementation [\#154](https://github.com/divnix/devos/issues/154)
 
 ## [v0.8.0](https://github.com/divnix/devos/tree/v0.8.0) (2021-03-02)
 
