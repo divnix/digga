@@ -4,6 +4,8 @@
 
 **Implemented enhancements:**
 
+- pin inputs into iso live registry [\#190](https://github.com/divnix/devos/issues/190)
+- Pass 'self' to lib [\#169](https://github.com/divnix/devos/issues/169)
 - doc: quickstart "ISO. What next?" [\#167](https://github.com/divnix/devos/issues/167)
 - Integrate Android AOSP putting mobile under control [\#149](https://github.com/divnix/devos/issues/149)
 - Inoculate host identity on first use [\#132](https://github.com/divnix/devos/issues/132)
@@ -31,6 +33,10 @@
 
 - mn alias: sk: command not found \(core\) [\#162](https://github.com/divnix/devos/issues/162)
 - FRRouting router implementation [\#154](https://github.com/divnix/devos/issues/154)
+
+**Merged pull requests:**
+
+- iso: copy input closourse into iso to avoide re-download [\#191](https://github.com/divnix/devos/pull/191)
 
 ## [v0.8.0](https://github.com/divnix/devos/tree/v0.8.0) (2021-03-02)
 
