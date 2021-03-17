@@ -152,25 +152,6 @@
         "type": "github"
       }
     },
-    "nix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixos"
-        ]
-      },
-      "locked": {
-        "lastModified": 1615911544,
-        "narHash": "sha256-2V0qJ9EaPjOetEzEx0vxP+dxKOX8ZXJi7PIlLjkxymA=",
-        "owner": "NixOS",
-        "repo": "nix",
-        "rev": "66fa1c7375e4b3073a16df4678cf1d37446ed20b",
-        "type": "github"
-      },
-      "original": {
-        "id": "nix",
-        "type": "indirect"
-      }
-    },
     "nixos": {
       "locked": {
         "lastModified": 1615797423,
@@ -270,7 +251,6 @@
         "flake-compat": "flake-compat",
         "home": "home",
         "naersk": "naersk",
-        "nix": "nix",
         "nixos": "nixos",
         "nixos-hardware": "nixos-hardware",
         "nur": "nur",
