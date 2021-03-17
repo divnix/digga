@@ -3,6 +3,7 @@
 - [Introduction](./README.md)
 - [Quick Start](./doc/start/index.md)
   - [ISO](./doc/start/iso.md)
+  - [Bootstrapping](./doc/start/bootstrapping.md)
   - [From NixOS](./doc/start/from-nixos.md)
 - [Layout](./doc/layout.md)
   - [Cachix](./cachix/README.md)

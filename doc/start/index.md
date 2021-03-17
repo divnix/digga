@@ -34,6 +34,7 @@ In addition, the [binary cache](../../cachix) is added for faster deployment.
 
 ## Next Steps:
 - [Make installable ISO](./iso.md)
+- [Bootstrap Host](./bootstrapping.md)
 - [Already on NixOS](./from-nixos.md)
 
 

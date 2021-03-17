@@ -44,6 +44,6 @@ deploy "flk#hostName" --hostname host.example.com
 ```
 
 > ##### _Note:_
-> Your user will need sudo access
+> Your user will need **passwordless** sudo access
 
 [d-rs]: https://github.com/serokell/deploy-rs
