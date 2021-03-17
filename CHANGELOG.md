@@ -27,6 +27,7 @@
 
 **Documentation:**
 
+- doc: split iso [\#193](https://github.com/divnix/devos/issues/193)
 - lib: can depend on pkgs \(a la nixpkgs\#pkgs/pkgs-lib\) [\#147](https://github.com/divnix/devos/pull/147)
 
 **Closed issues:**
@@ -36,6 +37,7 @@
 
 **Merged pull requests:**
 
+- doc: enact bootstrapping section [\#196](https://github.com/divnix/devos/pull/196)
 - iso: copy input closourse into iso to avoide re-download [\#191](https://github.com/divnix/devos/pull/191)
 - add hosts module arg [\#164](https://github.com/divnix/devos/pull/164)
 
