@@ -37,6 +37,7 @@
 **Merged pull requests:**
 
 - iso: copy input closourse into iso to avoide re-download [\#191](https://github.com/divnix/devos/pull/191)
+- add hosts module arg [\#164](https://github.com/divnix/devos/pull/164)
 
 ## [v0.8.0](https://github.com/divnix/devos/tree/v0.8.0) (2021-03-02)
 
