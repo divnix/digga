@@ -4,12 +4,13 @@
 lib.nixosSystem (args // {
   modules =
     let
+      moduleList = builtins.attrValues modules;
       modpath = "nixos/modules";
       cd = "installer/cd-dvd/installation-cd-minimal-new-kernel.nix";
 
       isoConfig = (lib.nixosSystem
         (args // {
-          modules = modules ++ [
+          modules = moduleList ++ [
             "${nixos}/${modpath}/${cd}"
             ({ config, ... }: {
               isoImage.isoBaseName = "nixos-" + config.networking.hostName;
@@ -58,7 +59,7 @@ lib.nixosSystem (args // {
           ];
         })).config;
     in
-    modules ++ [{
+    moduleList ++ [{
       system.build = {
         iso = isoConfig.system.build.isoImage;
       };
