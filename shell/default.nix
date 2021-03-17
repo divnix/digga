@@ -22,7 +22,6 @@ pkgs.devshell.mkShell
     nixos-install
     nixos-generate-config
     nixos-enter
-    pkgs.nixFlakes
   ];
 
   git.hooks = {
@@ -30,8 +29,13 @@ pkgs.devshell.mkShell
   };
 
   commands = with pkgs; [
+    { package = flk; }
     {
-      package = flk;
+      name = "nix";
+      help = pkgs.nixFlakes.meta.description;
+      command = ''
+        ${pkgs.nixFlakes}/bin/nix --experimental-features "nix-command flakes ca-references" "${"\${@}"}"
+      '';
     }
   ]
   ++ lib.optional (system != "i686-linux") { package = cachix; }
