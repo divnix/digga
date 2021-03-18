@@ -7,6 +7,8 @@ lib.nixosSystem (args // {
       moduleList = builtins.attrValues modules;
       modpath = "nixos/modules";
 
+      fullHostConfig = (lib.nixosSystem (args // { modules = moduleList; })).config;
+
       isoConfig = (lib.nixosSystem
         (args // {
           modules = moduleList ++ [
@@ -27,6 +29,9 @@ lib.nixosSystem (args // {
               }];
               isoImage.storeContents = [
                 self.devShell.${config.nixpkgs.system}
+                # include also closures that are "switched off" by the
+                # above profile filter on the local config attribute
+                fullHostConfig.system.build.toplevel
               ];
 
               # confilcts with networking.wireless which might be slightly
