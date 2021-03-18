@@ -37,6 +37,7 @@
 
 **Merged pull requests:**
 
+- hosts/devosSystem: pass modules as attrset [\#198](https://github.com/divnix/devos/pull/198)
 - doc: enact bootstrapping section [\#196](https://github.com/divnix/devos/pull/196)
 - iso: copy input closourse into iso to avoide re-download [\#191](https://github.com/divnix/devos/pull/191)
 - add hosts module arg [\#164](https://github.com/divnix/devos/pull/164)
