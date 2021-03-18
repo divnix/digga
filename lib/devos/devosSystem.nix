@@ -31,7 +31,6 @@ lib.nixosSystem (args // {
               ];
               environment.systemPackages = hostConfig.environment.systemPackages;
 
-              networking.hostName = hostConfig.networking.hostName;
               # confilcts with networking.wireless which might be slightly
               # more useful on a stick
               networking.networkmanager.enable = lib.mkForce false;
