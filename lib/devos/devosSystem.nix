@@ -12,7 +12,11 @@ lib.nixosSystem (args // {
         (args // {
           modules = moduleList ++ [
             "${nixos}/${modpath}/${cd}"
-            ({ config, ... }: {
+            ({ config, suites, ... }: {
+
+              # avoid unwanted systemd service startups
+              disabledModules = lib.remove modules.core suites.allProfiles;
+
               isoImage.isoBaseName = "nixos-" + config.networking.hostName;
               isoImage.contents = [{
                 source = self;
