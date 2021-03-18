@@ -10,11 +10,14 @@ lib.nixosSystem (args // {
 
       hostConfig = (lib.nixosSystem (args // { modules = moduleList; })).config;
 
+      isoModules = (builtins.attrValues (builtins.removeAttrs modules [ "local" "lib" ]));
+
       isoConfig = (lib.nixosSystem
         (args // {
-          modules = moduleList ++ [
+          modules = isoModules ++ [
             "${nixos}/${modpath}/${cd}"
-            ({ config, ... }: {
+            ({ config, suites, ... }: {
+              imports = suites.base;
               isoImage.isoBaseName = "nixos-" + config.networking.hostName;
               isoImage.contents = [{
                 source = self;
