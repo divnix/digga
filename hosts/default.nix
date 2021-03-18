@@ -13,54 +13,46 @@ let
 
   suites = import ../suites { inherit lib; };
 
-  modules =
-    let
-      core = ../profiles/core;
-      modOverrides = { config, overrideModulesPath, ... }:
-        let
-          overrides = import ../overrides;
-          inherit (overrides) modules disabledModules;
-        in
-        {
-          disabledModules = modules ++ disabledModules;
-          imports = map
-            (path: "${overrideModulesPath}/${path}")
-            modules;
-        };
-
-      global = {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-
-        hardware.enableRedistributableFirmware = lib.mkDefault true;
-
-        nix.nixPath = [
-          "nixpkgs=${nixos}"
-          "nixos-config=${self}/compat/nixos"
-          "home-manager=${home}"
-        ];
-
-        nixpkgs = { inherit pkgs; };
-
-        nix.registry = {
-          devos.flake = self;
-          nixos.flake = nixos;
-          override.flake = override;
-        };
-
-        system.configurationRevision = lib.mkIf (self ? rev) self.rev;
+  modules = {
+    core = ../profiles/core;
+    modOverrides = { config, overrideModulesPath, ... }:
+      let
+        overrides = import ../overrides;
+        inherit (overrides) modules disabledModules;
+      in
+      {
+        disabledModules = modules ++ disabledModules;
+        imports = map
+          (path: "${overrideModulesPath}/${path}")
+          modules;
       };
 
-      # Everything in `./modules/list.nix`.
-      flakeModules =
-        builtins.attrValues self.nixosModules;
+    global = {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
 
-    in
-    flakeModules ++ [
-      core
-      global
-      modOverrides
-    ] ++ extern.modules;
+      hardware.enableRedistributableFirmware = lib.mkDefault true;
+
+      nix.nixPath = [
+        "nixpkgs=${nixos}"
+        "nixos-config=${self}/compat/nixos"
+        "home-manager=${home}"
+      ];
+
+      nixpkgs = { inherit pkgs; };
+
+      nix.registry = {
+        devos.flake = self;
+        nixos.flake = nixos;
+        override.flake = override;
+      };
+
+      system.configurationRevision = lib.mkIf (self ? rev) self.rev;
+    };
+
+    # Everything in `./modules/list.nix`.
+    flakeModules = { imports = builtins.attrValues self.nixosModules ++ extern.modules; };
+  };
 
   specialArgs = extern.specialArgs // { inherit suites; };
 
@@ -79,19 +71,16 @@ let
             (removeAttrs hosts [ hostName ]);
         };
       };
+      lib = {
+        lib = { inherit specialArgs; };
+        lib.testModule = {
+          imports = builtins.attrValues modules;
+        };
+      };
     in
     dev.os.devosSystem {
       inherit system specialArgs;
-
-      modules = modules ++ [
-        local
-        {
-          lib = { inherit specialArgs; };
-          lib.testModule = {
-            imports = modules;
-          };
-        }
-      ];
+      modules = modules // { inherit local lib; };
     };
 
   hosts = dev.os.recImport
