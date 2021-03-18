@@ -11,6 +11,19 @@ let mkProfileAttrs =
   Example:
   let profiles = mkProfileAttrs ./profiles; in
   assert profiles ? core.default; 0
+
+  Example folder layout:
+  profiles/core/default.nix
+  profiles/core/sub/default.nix
+  profiles/code/ignored-no-default-nix/
+  profiles/other/default.nix
+
+  Example result:
+  {
+    core = { default = "..." };
+    sub = { default = "..." };
+    other = { default = "..." };
+  }
   **/
   dir:
   let
