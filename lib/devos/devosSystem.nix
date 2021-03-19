@@ -25,9 +25,7 @@ lib.nixosSystem (args // {
               nix.registry = lib.mapAttrs (n: v: { flake = v; }) inputs;
               isoImage.storeContents = [
                 self.devShell.${config.nixpkgs.system}
-                self.devShell.${config.nixpkgs.system}.drvPath
                 hostConfig.system.build.toplevel
-                hostConfig.system.build.toplevel.drvPath
               ];
               environment.systemPackages = hostConfig.environment.systemPackages;
 
