@@ -33,6 +33,8 @@ lib.nixosSystem (args // {
                 # above profile filter on the local config attribute
                 fullHostConfig.system.build.toplevel
               ];
+              # still pull in tools of deactivated profiles
+              environment.systemPackages = fullHostConfig.environment.systemPackages;
 
               # confilcts with networking.wireless which might be slightly
               # more useful on a stick
