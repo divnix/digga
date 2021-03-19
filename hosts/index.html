@@ -183,6 +183,11 @@ is best saved for <a href="../profiles">profile modules</a>.</p>
 that you intend to use on your machine.</p>
 <p>Additionally, this is the perfect place to import anything you might need from
 the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> repository.</p>
+<blockquote>
+<h5 id="note"><a class="header" href="#note"><em>Note:</em></a></h5>
+<p>Set <code>nixpkgs.system</code> to the architecture of this host, default is &quot;x86_64-linux&quot;. 
+Keep in mind that not all packages are available for all architectures.</p>
+</blockquote>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
 <p>hosts/librem.nix:</p>
 <pre><code class="language-nix">{ suites, hardware, ... }:

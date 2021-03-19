@@ -454,6 +454,11 @@ is best saved for <a href="hosts/../profiles">profile modules</a>.</p>
 that you intend to use on your machine.</p>
 <p>Additionally, this is the perfect place to import anything you might need from
 the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> repository.</p>
+<blockquote>
+<h5 id="note-1"><a class="header" href="#note-1"><em>Note:</em></a></h5>
+<p>Set <code>nixpkgs.system</code> to the architecture of this host, default is &quot;x86_64-linux&quot;. 
+Keep in mind that not all packages are available for all architectures.</p>
+</blockquote>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
 <p>hosts/librem.nix:</p>
 <pre><code class="language-nix">{ suites, hardware, ... }:
@@ -551,7 +556,7 @@ nixpkgs proper once your module is sufficiently stable.</p>
 <p>All modules linked in <em>module-list.nix</em> are automatically exported via
 <code>nixosModules.&lt;file-basename&gt;</code>, and imported into all <a href="modules/../hosts">hosts</a>.</p>
 <blockquote>
-<h5 id="note-1"><a class="header" href="#note-1"><em>Note:</em></a></h5>
+<h5 id="note-2"><a class="header" href="#note-2"><em>Note:</em></a></h5>
 <p>This is reserved for declaring brand new module options. If you just want to
 declare a coherent configuration of already existing and related NixOS options
 , use <a href="modules/../profiles">profiles</a> instead.</p>
@@ -661,7 +666,7 @@ to <code>disabledModules</code> and the new version imported into the configurat
 }
 </code></pre>
 <blockquote>
-<h5 id="note-2"><a class="header" href="#note-2"><em>Note:</em></a></h5>
+<h5 id="note-3"><a class="header" href="#note-3"><em>Note:</em></a></h5>
 <p>Sometimes a modules name will change from one branch to another. This is what
 the <code>disabledModules</code> list is for. If the module name changes, the old
 version will not automatically be disabled, so simply put it's old name in
@@ -779,7 +784,7 @@ sensitive data.</p>
 <p>By default, everything in the secrets folder is automatically encrypted. Just
 be sure to run <code>git-crypt init</code> before putting anything in here.</p>
 <blockquote>
-<h5 id="note-3"><a class="header" href="#note-3"><em>Note:</em></a></h5>
+<h5 id="note-4"><a class="header" href="#note-4"><em>Note:</em></a></h5>
 <p>Currently, there is <a href="https://github.com/NixOS/nix/issues/8">no mechanism</a> in nix to deploy secrets
 within the nix/store so, if they end up in the nix/store after deployment, they
 will be world readable on that machine.</p>
@@ -985,7 +990,7 @@ the command line.</p>
 <pre><code class="language-sh">deploy &quot;flk#hostName&quot; --hostname host.example.com
 </code></pre>
 <blockquote>
-<h5 id="note-4"><a class="header" href="#note-4"><em>Note:</em></a></h5>
+<h5 id="note-5"><a class="header" href="#note-5"><em>Note:</em></a></h5>
 <p>Your user will need <strong>passwordless</strong> sudo access</p>
 </blockquote>
 <h1 id="hercules-ci"><a class="header" href="#hercules-ci">Hercules CI</a></h1>
@@ -1007,7 +1012,7 @@ breaks, and never build the same package twice!</p>
 <p>If you want to get fancy, you could even have hercules
 <a href="https://docs.hercules-ci.com/hercules-ci-effects/guide/deploy-a-nixos-machine/">deploy your configuration</a>!</p>
 <blockquote>
-<h5 id="note-5"><a class="header" href="#note-5"><em>Note:</em></a></h5>
+<h5 id="note-6"><a class="header" href="#note-6"><em>Note:</em></a></h5>
 <p>Hercules doesn't have access to anything encrypted in the
 <a href="doc/integrations/../../secrets">secrets folder</a>, so none of your secrets will accidentally get
 pushed to a cache by mistake.</p>
