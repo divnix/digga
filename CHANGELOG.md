@@ -32,8 +32,10 @@
 
 **Closed issues:**
 
+- potential naming clash [\#200](https://github.com/divnix/devos/issues/200)
 - mn alias: sk: command not found \(core\) [\#162](https://github.com/divnix/devos/issues/162)
 - FRRouting router implementation [\#154](https://github.com/divnix/devos/issues/154)
+- ARM aarch64 Support [\#72](https://github.com/divnix/devos/issues/72)
 
 **Merged pull requests:**
 
@@ -58,6 +60,7 @@
 
 **Merged pull requests:**
 
+- Multi-arch support for hosts\(nixosConfigurations\) [\#161](https://github.com/divnix/devos/pull/161)
 - hosts: fix \#142 [\#143](https://github.com/divnix/devos/pull/143)
 - profiles: simplify profiles to suites [\#139](https://github.com/divnix/devos/pull/139)
 - pkgs: automatic source management [\#135](https://github.com/divnix/devos/pull/135)
