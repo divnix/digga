@@ -25,6 +25,10 @@ that you intend to use on your machine.
 Additionally, this is the perfect place to import anything you might need from
 the [nixos-hardware][nixos-hardware] repository.
 
+> ##### _Note:_
+> Set `nixpkgs.system` to the architecture of this host, default is "x86_64-linux". 
+> Keep in mind that not all packages are available for all architectures.
+
 ## Example
 
 hosts/librem.nix:
