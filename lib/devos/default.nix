@@ -11,6 +11,8 @@
 
   mkNodes = dev.callLibs ./mkNodes.nix;
 
+  mkSuites = dev.callLibs ./mkSuites.nix;
+
   mkProfileAttrs = dev.callLibs ./mkProfileAttrs.nix;
 
   mkPkgs = dev.callLibs ./mkPkgs.nix;
