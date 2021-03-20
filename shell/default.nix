@@ -1,9 +1,8 @@
 { self ? (import ../compat).defaultNix
 , system ? builtins.currentSystem
+, pkgs ? import <nixpkgs> {}
 }:
 let
-  pkgs = (self.lib.os.mkPkgs).${system};
-
   inherit (pkgs) lib;
 
   installPkgs = (lib.nixosSystem {
