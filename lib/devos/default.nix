@@ -14,6 +14,8 @@
 
   evalDevosArgs = dev.callLibs ./evalDevosArgs.nix;
 
+  mkDevos = dev.callLibs ./mkDevos.nix;
+
   mkNodes = dev.callLibs ./mkNodes.nix;
 
   mkHosts = dev.callLibs ./mkHosts.nix;
