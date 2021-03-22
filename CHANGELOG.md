@@ -20,6 +20,7 @@
 
 **Fixed bugs:**
 
+- iso: systemd service startup [\#194](https://github.com/divnix/devos/issues/194)
 - Help adding easy-hls-nix to devos [\#174](https://github.com/divnix/devos/issues/174)
 - `flk update` fails because of obsolete flag [\#159](https://github.com/divnix/devos/issues/159)
 - Expected that not all packages are exported? [\#151](https://github.com/divnix/devos/issues/151)
@@ -39,10 +40,12 @@
 
 **Merged pull requests:**
 
+- iso: avoid systemd service startup [\#202](https://github.com/divnix/devos/pull/202)
 - hosts/devosSystem: pass modules as attrset [\#198](https://github.com/divnix/devos/pull/198)
 - doc: enact bootstrapping section [\#196](https://github.com/divnix/devos/pull/196)
 - iso: copy input closourse into iso to avoide re-download [\#191](https://github.com/divnix/devos/pull/191)
 - add hosts module arg [\#164](https://github.com/divnix/devos/pull/164)
+- Multi-arch support for hosts\(nixosConfigurations\) [\#161](https://github.com/divnix/devos/pull/161)
 
 ## [v0.8.0](https://github.com/divnix/devos/tree/v0.8.0) (2021-03-02)
 
@@ -60,7 +63,6 @@
 
 **Merged pull requests:**
 
-- Multi-arch support for hosts\(nixosConfigurations\) [\#161](https://github.com/divnix/devos/pull/161)
 - hosts: fix \#142 [\#143](https://github.com/divnix/devos/pull/143)
 - profiles: simplify profiles to suites [\#139](https://github.com/divnix/devos/pull/139)
 - pkgs: automatic source management [\#135](https://github.com/divnix/devos/pull/135)
