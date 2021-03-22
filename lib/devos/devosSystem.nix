@@ -6,27 +6,42 @@ lib.nixosSystem (args // {
     let
       moduleList = builtins.attrValues modules;
       modpath = "nixos/modules";
-      cd = "installer/cd-dvd/installation-cd-minimal-new-kernel.nix";
+
+      fullHostConfig = (lib.nixosSystem (args // { modules = moduleList; })).config;
 
       isoConfig = (lib.nixosSystem
         (args // {
           modules = moduleList ++ [
-            "${nixos}/${modpath}/${cd}"
-            ({ config, ... }: {
+
+            "${nixos}/${modpath}/installer/cd-dvd/installation-cd-minimal-new-kernel.nix"
+
+            ({ config, suites, ... }: {
+
+              # avoid unwanted systemd service startups
+              disabledModules = lib.remove modules.core suites.allProfiles;
+
+              nix.registry = lib.mapAttrs (n: v: { flake = v; }) inputs;
+
               isoImage.isoBaseName = "nixos-" + config.networking.hostName;
               isoImage.contents = [{
                 source = self;
                 target = "/devos/";
               }];
-              nix.registry = lib.mapAttrs (n: v: { flake = v; }) inputs;
               isoImage.storeContents = [
                 self.devShell.${config.nixpkgs.system}
+                # include also closures that are "switched off" by the
+                # above profile filter on the local config attribute
+                fullHostConfig.system.build.toplevel
               ];
+              # still pull in tools of deactivated profiles
+              environment.systemPackages = fullHostConfig.environment.systemPackages;
+
               # confilcts with networking.wireless which might be slightly
               # more useful on a stick
               networking.networkmanager.enable = lib.mkForce false;
               # confilcts with networking.wireless
               networking.wireless.iwd.enable = lib.mkForce false;
+
               # Set up a link-local boostrap network
               # See also: https://github.com/NixOS/nixpkgs/issues/75515#issuecomment-571661659
               networking.usePredictableInterfaceNames = lib.mkForce true; # so prefix matching works
