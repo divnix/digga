@@ -20,6 +20,7 @@
 
 **Fixed bugs:**
 
+- Cachix caches aren't added to the configuration [\#208](https://github.com/divnix/devos/issues/208)
 - iso: systemd service startup [\#194](https://github.com/divnix/devos/issues/194)
 - Help adding easy-hls-nix to devos [\#174](https://github.com/divnix/devos/issues/174)
 - `flk update` fails because of obsolete flag [\#159](https://github.com/divnix/devos/issues/159)
@@ -40,6 +41,7 @@
 
 **Merged pull requests:**
 
+- hosts: add cachix [\#210](https://github.com/divnix/devos/pull/210)
 - iso: avoid systemd service startup [\#202](https://github.com/divnix/devos/pull/202)
 - hosts/devosSystem: pass modules as attrset [\#198](https://github.com/divnix/devos/pull/198)
 - doc: enact bootstrapping section [\#196](https://github.com/divnix/devos/pull/196)
@@ -67,6 +69,7 @@
 
 - hosts: fix \#142 [\#143](https://github.com/divnix/devos/pull/143)
 - profiles: simplify profiles to suites [\#139](https://github.com/divnix/devos/pull/139)
+- pkgs: automatic source management [\#135](https://github.com/divnix/devos/pull/135)
 
 ## [0.7.0](https://github.com/divnix/devos/tree/0.7.0) (2021-02-20)
 
@@ -127,7 +130,6 @@
 
 **Merged pull requests:**
 
-- pkgs: automatic source management [\#135](https://github.com/divnix/devos/pull/135)
 - deploy-rs: init support [\#120](https://github.com/divnix/devos/pull/120)
 - core: fix \#115 [\#116](https://github.com/divnix/devos/pull/116)
 - doc: begin work on new documentation [\#113](https://github.com/divnix/devos/pull/113)
