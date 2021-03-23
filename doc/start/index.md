@@ -33,6 +33,7 @@ In addition, the [binary cache](../../cachix) is added for faster deployment.
 >   upstream changes.
 
 ## Next Steps:
+- [Use Devos as a library!](./mkflake.md)
 - [Make installable ISO](./iso.md)
 - [Bootstrap Host](./bootstrapping.md)
 - [Already on NixOS](./from-nixos.md)
