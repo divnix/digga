@@ -36,6 +36,7 @@ In addition, the [binary cache](../../cachix) is added for faster deployment.
 - [Make installable ISO](./iso.md)
 - [Bootstrap Host](./bootstrapping.md)
 - [Already on NixOS](./from-nixos.md)
+- [Use mkDevos](./mkDevos.md)
 
 
 [install-nix]: https://nixos.org/manual/nix/stable/#sect-multi-user-installation
