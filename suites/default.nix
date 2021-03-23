@@ -3,6 +3,7 @@ let
   inherit (lib) dev;
 
   profiles = dev.os.mkProfileAttrs (toString ../profiles);
+  userProfiles = dev.os.mkProfileAttrs (toString ../users/profiles);
   users = dev.os.mkProfileAttrs (toString ../users);
 
   allProfiles =
@@ -17,7 +18,18 @@ let
   suites = with profiles; rec {
     base = [ users.nixos users.root ];
   };
+
+  # available as 'suites' within the home-manager configuration
+  userSuites = with userProfiles; rec {
+    base = [ direnv git ];
+  };
+
 in
-lib.mapAttrs (_: v: dev.os.profileMap v) suites // {
-  inherit allProfiles allUsers;
+{
+  system = lib.mapAttrs (_: v: dev.os.profileMap v) suites // {
+    inherit allProfiles allUsers;
+  };
+  user = lib.mapAttrs (_: v: dev.os.profileMap v) userSuites // {
+    allProfiles = userProfiles;
+  };
 }

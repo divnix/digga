@@ -18,7 +18,7 @@
       devshell.url = "github:numtide/devshell";
       flake-compat.url = "github:BBBSnowball/flake-compat/pr-1";
       flake-compat.flake = false;
-      home.url = "github:nix-community/home-manager/release-20.09";
+      home.url = "github:nix-community/home-manager";
       home.inputs.nixpkgs.follows = "nixos";
       naersk.url = "github:nmattia/naersk";
       naersk.inputs.nixpkgs.follows = "override";
@@ -47,8 +47,14 @@
             });
           });
 
+        homeConfigurations = os.mkHomeConfigurations;
+
         nixosModules =
           let moduleList = import ./modules/module-list.nix;
+          in lib.pathsToImportedAttrs moduleList;
+
+        homeModules =
+          let moduleList = import ./users/modules/module-list.nix;
           in lib.pathsToImportedAttrs moduleList;
 
         overlay = import ./pkgs;
@@ -82,9 +88,6 @@
           devShell = import ./shell {
             inherit self system;
           };
-
-          legacyPackages.hmActivationPackages =
-            os.mkHomeActivation;
         }
       );
     in

@@ -81,7 +81,7 @@ case "$1" in
     ;;
 
   "home")
-    ref="$DEVSHELL_ROOT/#hmActivationPackages.$2.$3"
+    ref="$DEVSHELL_ROOT/#homeConfigurations.$3@$2.home.activationPackage"
 
     if [[ "$4" == "switch" ]]; then
       nix build "$ref" && result/activate &&
