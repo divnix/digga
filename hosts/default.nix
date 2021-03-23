@@ -13,6 +13,13 @@ let
 
   suites = import ../suites { inherit lib; };
 
+  experimentalFeatures = [
+    "flakes"
+    "nix-command"
+    "ca-references"
+    "ca-derivations"
+  ];
+
   modules = {
     core = ../profiles/core;
     modOverrides = { config, overrideModulesPath, ... }:
@@ -46,6 +53,12 @@ let
         nixos.flake = nixos;
         override.flake = override;
       };
+
+      nix.extraOptions = ''
+        experimental-features = ${lib.concatStringsSep " "
+          experimentalFeatures
+        }
+      '';
 
       system.configurationRevision = lib.mkIf (self ? rev) self.rev;
     };
