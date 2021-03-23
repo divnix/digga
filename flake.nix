@@ -51,6 +51,10 @@
           let moduleList = import ./modules/module-list.nix;
           in lib.pathsToImportedAttrs moduleList;
 
+        homeModules =
+          let moduleList = import ./users/modules/module-list.nix;
+          in lib.pathsToImportedAttrs moduleList;
+
         overlay = import ./pkgs;
         overlays = lib.pathsToImportedAttrs (lib.pathsIn ./overlays);
 

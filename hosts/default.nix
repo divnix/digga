@@ -35,8 +35,12 @@ let
       };
 
     global = { config, ... }: {
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+
+        sharedModules = extern.userModules ++ (builtins.attrValues self.homeModules);
+      };
 
       hardware.enableRedistributableFirmware = lib.mkDefault true;
 
