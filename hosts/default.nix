@@ -35,8 +35,13 @@ let
       };
 
     global = { config, ... }: {
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+
+        extraSpecialArgs = extern.userSpecialArgs // { suites = suites.user; };
+        sharedModules = extern.userModules ++ (builtins.attrValues self.homeModules);
+      };
 
       hardware.enableRedistributableFirmware = lib.mkDefault true;
 
@@ -67,7 +72,7 @@ let
     flakeModules = { imports = builtins.attrValues self.nixosModules ++ extern.modules; };
   };
 
-  specialArgs = extern.specialArgs // { inherit suites; };
+  specialArgs = extern.specialArgs // { suites = suites.system; };
 
   mkHostConfig = hostName:
     let

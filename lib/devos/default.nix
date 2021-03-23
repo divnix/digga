@@ -19,7 +19,7 @@
 
   devosSystem = dev.callLibs ./devosSystem.nix;
 
-  mkHomeActivation = dev.callLibs ./mkHomeActivation.nix;
+  mkHomeConfigurations = dev.callLibs ./mkHomeConfigurations.nix;
 
   mkPackages = dev.callLibs ./mkPackages.nix;
 }

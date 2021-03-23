@@ -73,10 +73,29 @@ lib.nixosSystem (args // {
             })
           ];
         })).config;
+      hmConfig = (lib.nixosSystem
+        (args // {
+          modules = moduleList ++ [
+            ({ config, ... }: {
+              home-manager.useUserPackages = lib.mkForce false;
+              home-manager.sharedModules = [
+                {
+                  home.packages = config.environment.systemPackages;
+                  home.sessionVariables = {
+                    inherit (config.environment.sessionVariables) NIX_PATH;
+                  };
+                  xdg.configFile."nix/registry.json".text =
+                    config.environment.etc."nix/registry.json".text;
+                }
+              ];
+            })
+          ];
+        })).config;
     in
     moduleList ++ [{
       system.build = {
         iso = isoConfig.system.build.isoImage;
+        homes = hmConfig.home-manager.users;
       };
     }];
 })

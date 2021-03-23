@@ -183,10 +183,16 @@ your users. For a fully fleshed out example, check out the developers personal
 }
 
 </code></pre>
+<h2 id="home-manager"><a class="header" href="#home-manager">Home Manager</a></h2>
+<p>Home Manager support follows the same principles as regular nixos configurations.
+All modules defined in <a href="./modules/module-list.nix">user modules</a> will be imported to 
+Home Manager. All profiles are availabe in <a href="../suites/default.nix">suites</a> as userProfiles.
+The <code>userSuites</code> output will be available in your Home Manager Configuration as
+the special argument, <code>suites</code>.</p>
 <h2 id="external-usage"><a class="header" href="#external-usage">External Usage</a></h2>
 <p>You can easily use the defined home-manager configurations outside of NixOS
-using the <code>hmActivations</code> meta-package defined in the flakes <code>legacyPackages</code>
-output. The <a href="../doc/flk">flk</a> helper script makes this even easier.</p>
+using the <code>homeConfigurations</code> flake output. The <a href="../doc/flk">flk</a> helper 
+script makes this even easier.</p>
 <p>This is great for keeping your environment consistent across Unix systems,
 including OSX.</p>
 <h3 id="from-within-the-projects-devshell"><a class="header" href="#from-within-the-projects-devshell">From within the projects devshell:</a></h3>
@@ -198,7 +204,7 @@ flk home NixOS nixos switch
 </code></pre>
 <h3 id="manually-from-outside-the-project"><a class="header" href="#manually-from-outside-the-project">Manually from outside the project:</a></h3>
 <pre><code class="language-sh"># build
-nix build &quot;github:divnix/devos#hmActivationPackages.NixOS.nixos&quot;
+nix build &quot;github:divnix/devos#homeConfigurations.nixos@NixOS.home.activationPackage&quot;
 
 # activate
 ./result/activate &amp;&amp; unlink result
