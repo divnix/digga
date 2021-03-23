@@ -39,6 +39,7 @@ let
         useGlobalPkgs = true;
         useUserPackages = true;
 
+        extraSpecialArgs = extern.userSpecialArgs // { suites = suites.user; };
         sharedModules = extern.userModules ++ (builtins.attrValues self.homeModules);
       };
 
@@ -71,7 +72,7 @@ let
     flakeModules = { imports = builtins.attrValues self.nixosModules ++ extern.modules; };
   };
 
-  specialArgs = extern.specialArgs // { inherit suites; };
+  specialArgs = extern.specialArgs // { suites = suites.system; };
 
   mkHostConfig = hostName:
     let

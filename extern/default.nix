@@ -24,4 +24,7 @@
   userModules = [
   ];
 
+  # passed to all home-manager modules
+  userSpecialArgs = {
+  };
 }
