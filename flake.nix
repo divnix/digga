@@ -47,6 +47,8 @@
             });
           });
 
+        homeConfigurations = os.mkHomeConfigurations;
+
         nixosModules =
           let moduleList = import ./modules/module-list.nix;
           in lib.pathsToImportedAttrs moduleList;
@@ -86,9 +88,6 @@
           devShell = import ./shell {
             inherit self system;
           };
-
-          legacyPackages.hmActivationPackages =
-            os.mkHomeActivation;
         }
       );
     in

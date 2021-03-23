@@ -42,7 +42,7 @@ flk home NixOS nixos switch
 ### Manually from outside the project:
 ```sh
 # build
-nix build "github:divnix/devos#hmActivationPackages.NixOS.nixos"
+nix build "github:divnix/devos#homeConfigurations.nixos@NixOS.home.activationPackage"
 
 # activate
 ./result/activate && unlink result
