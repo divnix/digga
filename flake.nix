@@ -18,7 +18,7 @@
       devshell.url = "github:numtide/devshell";
       flake-compat.url = "github:BBBSnowball/flake-compat/pr-1";
       flake-compat.flake = false;
-      home.url = "github:nix-community/home-manager/release-20.09";
+      home.url = "github:nix-community/home-manager";
       home.inputs.nixpkgs.follows = "nixos";
       naersk.url = "github:nmattia/naersk";
       naersk.inputs.nixpkgs.follows = "override";
