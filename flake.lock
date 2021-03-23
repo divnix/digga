@@ -17,11 +17,11 @@
         "pre-commit-hooks-nix": "pre-commit-hooks-nix"
       },
       "locked": {
-        "lastModified": 1614270488,
-        "narHash": "sha256-WC7qF0BYB7RdfnEPk9du029bkxhbNTw4MAOpYDm1KNI=",
+        "lastModified": 1615131736,
+        "narHash": "sha256-z4Er9Cj3WpBDO/saLxqb7IypEvVP0/1AnO6rY5NB03Y=",
         "owner": "hercules-ci",
         "repo": "hercules-ci-agent",
-        "rev": "6adf883b66f9dcfe8b9a44e689b1ac7819077bde",
+        "rev": "a1513a51e8efb96e990a562e6e724e17f2789978",
         "type": "github"
       },
       "original": {
@@ -139,60 +139,41 @@
         ]
       },
       "locked": {
-        "lastModified": 1614333665,
-        "narHash": "sha256-6y22hmT4iWY1v5uggGhrH22QDZxBnsfO5+83s9mb1Js=",
+        "lastModified": 1614785451,
+        "narHash": "sha256-TPw8kQvr2UNCuvndtY+EjyXp6Q5GEW2l9UafXXh1XmI=",
         "owner": "nmattia",
         "repo": "naersk",
-        "rev": "a2a4b60a9ed541794906977be771b9cfe325d57a",
+        "rev": "e0fe990b478a66178a58c69cf53daec0478ca6f9",
         "type": "github"
       },
       "original": {
         "owner": "nmattia",
         "repo": "naersk",
         "type": "github"
-      }
-    },
-    "nix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixos"
-        ]
-      },
-      "locked": {
-        "lastModified": 1615476733,
-        "narHash": "sha256-iae4JMAl2KAaPhUGLMf4/DEejWjs5fWfEU1ccVF8s6Q=",
-        "owner": "NixOS",
-        "repo": "nix",
-        "rev": "8127094f767b6caae145bc395a504ca62f30af3e",
-        "type": "github"
-      },
-      "original": {
-        "id": "nix",
-        "type": "indirect"
       }
     },
     "nixos": {
       "locked": {
-        "lastModified": 1614531331,
-        "narHash": "sha256-/69RG5ZI84MMN+ZD99A+MtPzyNDtwfcEFIUsuijwQPw=",
+        "lastModified": 1615797423,
+        "narHash": "sha256-5NGDZXPQzuoxf/42NiyC9YwwhwzfMfIRrz3aT0XHzSc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "df8e3bd110921621d175fad88c9e67909b7cb3d3",
+        "rev": "266dc8c3d052f549826ba246d06787a219533b8f",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "release-20.09",
+        "ref": "nixos-unstable",
         "type": "indirect"
       }
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1614460257,
-        "narHash": "sha256-hFR865O5gIuFNiwFyx/K2g8AeLvGy/f3/SHalF85zuM=",
+        "lastModified": 1615652054,
+        "narHash": "sha256-jqXKU8Ovpi7MmPRqGf2FB3QOPcZtGwO2MFc0AYiOPjg=",
         "owner": "nixos",
         "repo": "nixos-hardware",
-        "rev": "c9b965a43e582765f797f8b75d50cb2874b30f30",
+        "rev": "31f61b90ddb9257b94888ee17ccf96236e180c76",
         "type": "github"
       },
       "original": {
@@ -203,11 +184,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1614639970,
-        "narHash": "sha256-RM2s9f7UPCzTHm1J5q1iI1RGytw5CwLOj4cnEGwYWos=",
+        "lastModified": 1615921934,
+        "narHash": "sha256-nURGM869KKA1+c1SHHsXKYcPXhHIuxWBjNXjJ90OzRQ=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "f5f8df943c5e9cb722fc56ea79f1c688de7d26bd",
+        "rev": "faf862e8cf009edfa38ecc61188f7a6ace293552",
         "type": "github"
       },
       "original": {
@@ -217,11 +198,11 @@
     },
     "override": {
       "locked": {
-        "lastModified": 1614652644,
-        "narHash": "sha256-/XTMCbKcbTHf96KL+eAal6FrnLAtUAuJPPrDU9Ze9J0=",
+        "lastModified": 1615926763,
+        "narHash": "sha256-yeq8A3EPNuQVlsxlEQrIRsklfJwJK0Us6jtcG/u8wNs=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "66d7cb4fa8b583f120e25bc86a2f5f2345f3b976",
+        "rev": "b702a56d417647de4090ac56c0f18bdc7e646610",
         "type": "github"
       },
       "original": {
@@ -236,7 +217,7 @@
         ]
       },
       "locked": {
-        "narHash": "sha256-sBVaeGxxs7sk7PodW1mqJbF0CqUqUar0GUdd+OPnZ8o=",
+        "narHash": "sha256-XG4TOZObj2Wd8KiqnHgtlWjjMbJOIJB7+DxUFzMCXw8=",
         "path": "./pkgs",
         "type": "path"
       },
@@ -270,7 +251,6 @@
         "flake-compat": "flake-compat",
         "home": "home",
         "naersk": "naersk",
-        "nix": "nix",
         "nixos": "nixos",
         "nixos-hardware": "nixos-hardware",
         "nur": "nur",

@@ -9,7 +9,6 @@ in
   ];
 
   overlays = [
-    nix.overlay
     nur.overlay
     devshell.overlay
     (final: prev: {
