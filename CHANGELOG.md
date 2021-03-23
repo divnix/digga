@@ -47,6 +47,7 @@
 - iso: copy input closourse into iso to avoide re-download [\#191](https://github.com/divnix/devos/pull/191)
 - add hosts module arg [\#164](https://github.com/divnix/devos/pull/164)
 - Multi-arch support for hosts\(nixosConfigurations\) [\#161](https://github.com/divnix/devos/pull/161)
+- Improve Home Manager support: profiles/suites, modules, extern, flake outputs [\#156](https://github.com/divnix/devos/pull/156)
 
 ## [v0.8.0](https://github.com/divnix/devos/tree/v0.8.0) (2021-03-02)
 
@@ -66,7 +67,6 @@
 
 - hosts: fix \#142 [\#143](https://github.com/divnix/devos/pull/143)
 - profiles: simplify profiles to suites [\#139](https://github.com/divnix/devos/pull/139)
-- pkgs: automatic source management [\#135](https://github.com/divnix/devos/pull/135)
 
 ## [0.7.0](https://github.com/divnix/devos/tree/0.7.0) (2021-02-20)
 
@@ -127,6 +127,7 @@
 
 **Merged pull requests:**
 
+- pkgs: automatic source management [\#135](https://github.com/divnix/devos/pull/135)
 - deploy-rs: init support [\#120](https://github.com/divnix/devos/pull/120)
 - core: fix \#115 [\#116](https://github.com/divnix/devos/pull/116)
 - doc: begin work on new documentation [\#113](https://github.com/divnix/devos/pull/113)
