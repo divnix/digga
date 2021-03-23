@@ -43,6 +43,7 @@
 - iso: avoid systemd service startup [\#202](https://github.com/divnix/devos/pull/202)
 - hosts/devosSystem: pass modules as attrset [\#198](https://github.com/divnix/devos/pull/198)
 - doc: enact bootstrapping section [\#196](https://github.com/divnix/devos/pull/196)
+- flake: nixos -\> nixos-unstable [\#192](https://github.com/divnix/devos/pull/192)
 - iso: copy input closourse into iso to avoide re-download [\#191](https://github.com/divnix/devos/pull/191)
 - add hosts module arg [\#164](https://github.com/divnix/devos/pull/164)
 - Multi-arch support for hosts\(nixosConfigurations\) [\#161](https://github.com/divnix/devos/pull/161)
