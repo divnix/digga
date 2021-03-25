@@ -2,8 +2,13 @@
 You can also use devos as a flake input and get the advantage of using
 nix flakes to sync with upstream changes in devos.
 
-To do this you will need the template and nix unstable. Edit your flake.nix to
-add devos as an input:
+You can either use the default template or use the 'mkdevos' template which only
+includes the necessary files for `mkDevos` usage. It can be pulled with:
+```sh
+nix flake init -t github:divnix/devos#mkdevos
+```
+
+Once you have a template, edit your flake.nix to add devos as an input:
 ```nix
 inputs = {
   ...
@@ -15,10 +20,7 @@ then replace the outputs section with this:
 outputs = { self, devos, ... }: devos.lib.mkDevos { inherit self; };
 ```
 
-Now you can update devos as you would any other flake input:
-```sh
-nix flake update --update-input devos
-```
+Now you can sync with upstream devos changes just like any other flake input.
 
 If you would like to change your directory's structure, you can pass
 arguments to `mkDevos` to outline where certain things are. You can take a 
@@ -28,9 +30,8 @@ the arguments that it can take.
 > ##### Notes:
 > - All inputs used in devos must also be added to your flake, due to an
 >   [issue](https://github.com/NixOS/nix/pull/4641) with the `follows` attribute.
-> - Optionally, you can safely delete [lib](../../lib), [tests](../../tests) and
->   the [core profile](../../profiles/core)
 > - You can append `/community` to the `devos.url` to get access to community modules
->   which can be added in [extern](../../extern).
+>   and packages which can be added in [extern](../../extern).
+> - Many folders in devos will no longer be needed and can, optionally, be deleted.
 > - To use community profiles, you will have to copy them to your tree
 > - If you use this method, you will no longer be able to edit devos internals.
