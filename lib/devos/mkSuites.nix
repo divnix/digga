@@ -1,14 +1,8 @@
 { lib, dev, ... }:
 
-{ users, profiles, userProfiles, suites }:
+{ users, profiles, userProfiles, suites } @ args:
 let
   inherit (dev) os;
-
-  args = {
-    users = os.mkProfileAttrs (toString users);
-    profiles = os.mkProfileAttrs (toString profiles);
-    userProfiles = os.mkProfileAttrs (toString userProfiles);
-  };
 
   definedSuites = suites {
     inherit (args) users profiles userProfiles;
