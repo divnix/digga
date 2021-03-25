@@ -53,7 +53,8 @@ let
         nixos.lib.recursiveUpdate tests deployChecks;
 
       packages = utils.lib.flattenTreeSystem system
-        (os.mkPackages { inherit pkgs; });
+        (os.mkPackages { inherit pkgs; })
+        // { devosOptionsDoc = cfg.genDoc pkgs; };
 
       devShell = import "${devos}/shell" {
         inherit self pkgs system;
