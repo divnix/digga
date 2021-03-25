@@ -80,7 +80,6 @@ lib.nixosSystem (args // {
               home-manager.useUserPackages = lib.mkForce false;
               home-manager.sharedModules = [
                 {
-                  home.packages = config.environment.systemPackages;
                   home.sessionVariables = {
                     inherit (config.environment.sessionVariables) NIX_PATH;
                   };
