@@ -25,7 +25,8 @@ let
           description = "Path to directory containing host configurations";
         };
         packages = mkOption {
-          type = functionTo inputAttrs;
+          # functionTo changes arg names which breaks flake check
+          type = types.anything;
           default = importIf "${self}/pkgs" (final: prev: {});
           defaultText = "\${self}/pkgs";
           description = ''
