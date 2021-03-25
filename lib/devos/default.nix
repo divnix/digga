@@ -7,8 +7,8 @@
       config = { allowUnfree = true; };
     };
 
-  importIf = path: if builtins.isPath path || builtins.isString path
-    then import path else path;
+  importIf = path: fallback:
+    if builtins.pathExists path then import path else fallback;
 
   profileMap = map (profile: profile.default);
 

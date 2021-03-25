@@ -10,10 +10,8 @@ let
       cfg = config;
       inherit (cfg) self;
 
-      pathOr = x: with types; oneOf [ path x ];
       inputAttrs = types.functionTo types.attrs;
-
-          in
+    in
     {
       options = with types; {
         self = mkOption {
@@ -27,10 +25,9 @@ let
           description = "Path to directory containing host configurations";
         };
         packages = mkOption {
-          type = pathOr (functionTo inputAttrs);
-          default = "${self}/pkgs";
+          type = functionTo inputAttrs;
+          default = importIf "${self}/pkgs" (final: prev: {});
           defaultText = "\${self}/pkgs";
-          apply = importIf;
           description = ''
             Overlay for custom packages that will be included in treewide 'pkgs'.
             This should follow the standard nixpkgs overlay format - two argument function
@@ -38,38 +35,41 @@ let
           '';
         };
         modules = mkOption {
-          default = "${self}/modules/module-list.nix";
+          type = listOf anything;
+          default = importIf "${self}/modules/module-list.nix" [];
           defaultText = "\${self}/modules/module-list.nix";
-          type = pathOr (listOf anything);
-          apply = x: dev.pathsToImportedAttrs (importIf x);
+          apply = dev.pathsToImportedAttrs;
           description = "list of modules to include in confgurations";
         };
         userModules = mkOption {
-          default = "${self}/users/modules/module-list.nix";
+          type = listOf anything;
+          default = importIf "${self}/users/modules/module-list.nix" [];
           defaultText = "\${self}/users/modules/module-list.nix";
-          type = pathOr (listOf anything);
-          apply = x: dev.pathsToImportedAttrs (importIf x);
+          apply = dev.pathsToImportedAttrs;
           description = "list of modules to include in home-manager configurations";
         };
         profiles = mkOption {
           type = path;
           default = "${self}/profiles";
           defaultText = "\${self}/profiles";
+          apply = os.mkProfileAttrs;
           description = "path to profiles folder";
         };
         userProfiles = mkOption {
           type = path;
           default = "${self}/users/profiles";
           defaultText = "\${self}/users/profiles";
+          apply = os.mkProfileAttrs;
           description = "path to user profiles folder";
         };
         suites = mkOption {
-          type = pathOr inputAttrs;
-          default = "${self}/suites";
+          type = inputAttrs;
+          default = importIf "${self}/suites"
+            ({...}: {user = {}; system = {};});
           defaultText = "\${self}/suites";
-          apply = x: os.mkSuites {
+          apply = suites: os.mkSuites {
+            inherit suites;
             inherit (config) profiles users userProfiles;
-            suites = importIf x;
           };
           description = ''
             function with inputs 'users' and 'profiles' that returns attribute 'system'
@@ -80,19 +80,28 @@ let
           type = path;
           default = "${self}/users";
           defaultText = "\${self}/users";
+          apply = os.mkProfileAttrs;
           description = "path to folder containing user profiles";
         };
-        extern = mkOption {
-          type = pathOr inputAttrs;
-          default = "${self}/extern";
-          defaultText = "\${self}/extern";
-          apply = x: (importIf x) { inputs = inputs // self.inputs; };
-          description = ''
-            Function with argument 'inputs' with all devos and this flake's inputs.
-            The function should return an attribute set with modules, overlays, and
-            specialArgs to be included across devos
-          '';
-        };
+        extern =
+          let
+            defaults = {
+              modules = []; overlays = []; specialArgs = {};
+              userModules = []; userSpecialArgs = [];
+            };
+          in
+          mkOption {
+            type = inputAttrs;
+            default = importIf "${self}/extern" ({...}: defaults);
+            defaultText = "\${self}/extern";
+            # So unneeded extern attributes can safely be deleted
+            apply = x: defaults // (x { inputs = inputs // self.inputs; });
+            description = ''
+              Function with argument 'inputs' with all devos and this flake's inputs.
+              The function should return an attribute set with modules, overlays, and
+              specialArgs to be included across devos
+            '';
+          };
         overlays = mkOption {
           type = path;
           default = "${self}/overlays";
@@ -100,13 +109,17 @@ let
           apply = x: dev.pathsToImportedAttrs (dev.pathsIn x);
           description = "path to folder containing overlays which will be applied to pkgs";
         };
-        overrides = mkOption {
-          type = pathOr attrs;
-          default = "${self}/overrides";
-          defaultText = "\${self}/overrides";
-          apply = importIf;
-          description = "attrset of packages and modules that will be pulled from nixpkgs master";
-        };
+        overrides =
+          let
+            defaults = { modules = []; disabledModules = []; packages = _: _: _: {}; };
+          in
+          mkOption {
+            type = attrs;
+            default = importIf "${self}/overrides" defaults;
+            apply = x: defaults // x;
+            defaultText = "\${self}/overrides";
+            description = "attrset of packages and modules that will be pulled from nixpkgs master";
+          };
         genDoc = mkOption {
           type = functionTo attrs;
           internal = true;
