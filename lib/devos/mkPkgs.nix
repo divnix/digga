@@ -1,8 +1,6 @@
-{ lib, dev, nixos, self, ... }:
+{ lib, dev, nixos, self, inputs, ... }:
 
 { extern, overrides }:
-let inherit (self) inputs;
-in
 (inputs.utils.lib.eachDefaultSystem
   (system:
     let
