@@ -26,7 +26,10 @@ let
         };
         packages = mkOption {
           # functionTo changes arg names which breaks flake check
-          type = types.anything;
+          type = types.anything // {
+            check = builtins.isFunction;
+            description = "Nixpkgs overlay";
+          };
           default = importIf "${self}/pkgs" (final: prev: {});
           defaultText = "\${self}/pkgs";
           description = ''
