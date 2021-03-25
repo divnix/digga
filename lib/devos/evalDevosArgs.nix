@@ -66,20 +66,23 @@ let
           apply = os.mkProfileAttrs;
           description = "path to user profiles folder";
         };
-        suites = mkOption {
-          type = inputAttrs;
-          default = importIf "${self}/suites"
-            ({...}: {user = {}; system = {};});
-          defaultText = "\${self}/suites";
-          apply = suites: os.mkSuites {
-            inherit suites;
-            inherit (config) profiles users userProfiles;
+        suites =
+          let
+            defaults = { user = {}; system = {}; };
+          in
+          mkOption {
+            type = inputAttrs;
+            default = importIf "${self}/suites" ({...}: defaults);
+            defaultText = "\${self}/suites";
+            apply = suites: defaults // os.mkSuites {
+              inherit suites;
+              inherit (config) profiles users userProfiles;
+            };
+            description = ''
+              function with inputs 'users' and 'profiles' that returns attribute 'system'
+              which defines suites passed to configurations as the suites specialArg
+            '';
           };
-          description = ''
-            function with inputs 'users' and 'profiles' that returns attribute 'system'
-            which defines suites passed to configurations as the suites specialArg
-          '';
-        };
         users = mkOption {
           type = path;
           default = "${self}/users";
@@ -136,17 +139,17 @@ let
             ## ${name}
             ${value.description}
 
-            ${optionalString (hasAttr "type" value ) ''
+            ${optionalString (value ? type) ''
               *_Type_*:
               ${value.type}
             ''}
-            ${optionalString (hasAttr "default" value) ''
+            ${optionalString (value ? default) ''
               *_Default_*
               ```
-              ${builtins.toJSON value.default or ""}
+              ${builtins.toJSON value.default}
               ```
             ''}
-            ${optionalString (hasAttr "example" value) ''
+            ${optionalString (value ? example) ''
               *_Example_*
               ```
               ${value.example}
