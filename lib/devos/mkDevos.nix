@@ -3,14 +3,14 @@ let
   devos = self;
 in
 
-{ ... } @ args:
+{ self, ... } @ args:
 let
   inherit (self) lib;
   inherit (lib) os;
 
   inherit (inputs) utils deploy;
 
-  cfg = os.evalDevosArgs { inherit args; };
+  cfg = (os.evalDevosArgs { inherit args; }).config;
 
   multiPkgs = os.mkPkgs { inherit (cfg) extern overrides; };
 
