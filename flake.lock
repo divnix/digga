@@ -216,7 +216,7 @@
         ]
       },
       "locked": {
-        "narHash": "sha256-XG4TOZObj2Wd8KiqnHgtlWjjMbJOIJB7+DxUFzMCXw8=",
+        "narHash": "sha256-8Xx9gpptVG5H114Tpv+Xfn1gUtXcDUaUnjH3x3KFiso=",
         "path": "./pkgs",
         "type": "path"
       },
