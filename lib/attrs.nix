@@ -21,7 +21,9 @@ rec {
       paths' = lib.filter (lib.hasSuffix ".nix") paths;
     in
     genAttrs' paths' (path: {
-      name = lib.removeSuffix ".nix" (baseNameOf path);
+      name = lib.removeSuffix ".nix"
+        # Safe as long this is just used as a name
+        (builtins.unsafeDiscardStringContext (baseNameOf path));
       value = import path;
     });
 
