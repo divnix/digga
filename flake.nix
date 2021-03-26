@@ -28,79 +28,34 @@
       pkgs.inputs.nixpkgs.follows = "nixos";
     };
 
-  outputs = inputs@{ deploy, nixos, nur, self, utils, ... }:
-    let
-      inherit (self) lib;
-      inherit (lib) os;
+    outputs = inputs@{ deploy, nixos, nur, self, utils, ... }:
+      let
+        lib = import ./lib { inherit self nixos inputs; };
 
-      extern = import ./extern { inherit inputs; };
-      overrides = import ./overrides;
-
-      multiPkgs = os.mkPkgs {
-        inherit extern overrides;
-      };
-
-      suites = os.mkSuites {
-        suites = import ./suites;
-        users = os.mkProfileAttrs "${self}/users";
-        profiles = os.mkProfileAttrs "${self}/profiles";
-        userProfiles = os.mkProfileAttrs "${self}/users/profiles";
-      };
-
-      outputs = {
-        nixosConfigurations = os.mkHosts {
-          dir = "${self}/hosts";
+        out = lib.mkFlake {
+          inherit self;
+          hosts = ./hosts;
+          packages = import ./pkgs;
+          suites = import ./suites;
+          extern = import ./extern;
           overrides = import ./overrides;
-          inherit multiPkgs suites extern;
+          overlays = ./overlays;
+          profiles = ./profiles;
+          userProfiles = ./users/profiles;
+          modules = import ./modules/module-list.nix;
+          userModules = import ./users/modules/module-list.nix;
         };
 
-        homeConfigurations = os.mkHomeConfigurations;
-
-        nixosModules =
-          let moduleList = import ./modules/module-list.nix;
-          in lib.pathsToImportedAttrs moduleList;
-
-        homeModules =
-          let moduleList = import ./users/modules/module-list.nix;
-          in lib.pathsToImportedAttrs moduleList;
-
-        overlay = import ./pkgs;
-        overlays = lib.pathsToImportedAttrs (lib.pathsIn ./overlays);
-
-        lib = import ./lib { inherit nixos self inputs; };
-
+      in nixos.lib.recursiveUpdate out {
+        defaultTemplate = self.templates.flk;
         templates.flk.path = ./.;
         templates.flk.description = "flk template";
-        defaultTemplate = self.templates.flk;
-
-        deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
+        templates.mkflake.path =
+          let
+            excludes = [ "lib" "tests" "cachix" "nix" "theme" ".github" "bors.toml" "cachix.nix" ];
+            filter = path: type: ! builtins.elem (baseNameOf path) excludes;
+          in
+            builtins.filterSource filter ./.;
+        templates.mkflake.description = "template with necessary folders for mkFlake usage";
       };
-
-      systemOutputs = utils.lib.eachDefaultSystem (system:
-        let
-          pkgs = multiPkgs.${system};
-          # all packages that are defined in ./pkgs
-          legacyPackages = os.mkPackages { inherit pkgs; };
-        in
-        {
-          checks =
-            let
-              tests = nixos.lib.optionalAttrs (system == "x86_64-linux")
-                (import ./tests { inherit self pkgs; });
-              deployHosts = nixos.lib.filterAttrs
-                (n: _: self.nixosConfigurations.${n}.config.nixpkgs.system == system) self.deploy.nodes;
-              deployChecks = deploy.lib.${system}.deployChecks { nodes = deployHosts; };
-            in
-            nixos.lib.recursiveUpdate tests deployChecks;
-
-          inherit legacyPackages;
-          packages = lib.filterPackages system legacyPackages;
-
-          devShell = import ./shell {
-            inherit self system extern overrides;
-          };
-        }
-      );
-    in
-    nixos.lib.recursiveUpdate outputs systemOutputs;
 }
