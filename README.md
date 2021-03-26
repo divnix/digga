@@ -14,7 +14,7 @@ personal and productive use. A sane repository structure is provided,
 integrating several popular projects like [home-manager][home-manager],
 [devshell][devshell], and [more](./doc/integrations).
 
-Stiving for ___nix first™___ solutions with unobstrusive implementations,
+Striving for ___nix first™___ solutions with unobstrusive implementations,
 a [flake centric][flake-doc] approach is taken for useful conveniences such as
 [automatic source updates](./pkgs#automatic-source-updates).
 
