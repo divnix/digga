@@ -8,7 +8,7 @@ in
 { self, ... } @ args:
 let
 
-  cfg = (lib.evalFlakeArgs { inherit args; }).config;
+  cfg = (evalFlakeArgs { inherit args; }).config;
 
   multiPkgs = os.mkPkgs { inherit (cfg) extern overrides; };
 
