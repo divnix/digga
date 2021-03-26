@@ -1,13 +1,11 @@
-{ lib, dev, nixos, self, ... }:
+{ lib, dev, nixos, self, inputs, ... }:
 
-let inherit (self) inputs;
-in
+{ extern, overrides }:
 (inputs.utils.lib.eachDefaultSystem
   (system:
     let
-      extern = import ../../extern { inherit inputs; };
       overridePkgs = dev.os.pkgImport inputs.override [ ] system;
-      overridesOverlay = (import ../../overrides).packages;
+      overridesOverlay = overrides.packages;
 
       overlays = [
         (overridesOverlay overridePkgs)
