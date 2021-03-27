@@ -1,6 +1,6 @@
 [![Bors enabled](https://bors.tech/images/badge_small.svg)](https://app.bors.tech/repositories/32678)
 [![MIT License](https://img.shields.io/github/license/divnix/devos)][mit]
-[![NixOS 20.09](https://img.shields.io/badge/NixOS-v20.09-blue.svg?style=flat&logo=NixOS&logoColor=white)](https://nixos.org)
+[![NixOS](https://img.shields.io/badge/NixOS-unstable-blue.svg?style=flat&logo=NixOS&logoColor=white)](https://nixos.org)
 
 > #### ⚠ Advisory ⚠
 > DevOS requires the [flakes][flakes] feature available via an _experimental_
