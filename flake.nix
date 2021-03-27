@@ -89,7 +89,7 @@
             (os.mkPackages { inherit pkgs; });
 
           devShell = import ./shell {
-            inherit self system;
+            inherit self system extern overrides;
           };
         }
       );
