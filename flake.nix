@@ -55,7 +55,7 @@
 
         homeModules =
           let moduleList = import ./users/modules/module-list.nix;
-          in lib.pathsToImportedAttrs moduleList;
+          in moduleList;
 
         overlay = import ./pkgs;
         overlays = lib.pathsToImportedAttrs (lib.pathsIn ./overlays);
@@ -81,7 +81,8 @@
               tests = nixos.lib.optionalAttrs (system == "x86_64-linux")
                 (import ./tests { inherit self pkgs; });
               deployHosts = nixos.lib.filterAttrs
-                (n: _: self.nixosConfigurations.${n}.config.nixpkgs.system == system) self.deploy.nodes;
+                (n: _: self.nixosConfigurations.${n}.config.nixpkgs.system == system)
+                self.deploy.nodes;
               deployChecks = deploy.lib.${system}.deployChecks { nodes = deployHosts; };
             in
             nixos.lib.recursiveUpdate tests deployChecks;

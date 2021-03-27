@@ -69,7 +69,7 @@ let
     };
 
     # Everything in `./modules/list.nix`.
-    flakeModules = { imports = builtins.attrValues self.nixosModules ++ extern.modules; };
+    flakeModules = { imports = self.nixosModules ++ extern.modules; };
 
     cachix = ../cachix.nix;
   };
