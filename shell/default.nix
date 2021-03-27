@@ -1,8 +1,12 @@
 { self ? (import ../compat).defaultNix
 , system ? builtins.currentSystem
+, extern ? import ../extern { inherit (self) inputs; }
+, overrides ? import ../overrides
 }:
 let
-  pkgs = (self.lib.os.mkPkgs).${system};
+  pkgs = (self.lib.os.mkPkgs {
+    inherit overrides extern;
+  }).${system};
 
   inherit (pkgs) lib;
 
