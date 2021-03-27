@@ -23,7 +23,7 @@
       naersk.url = "github:nmattia/naersk";
       naersk.inputs.nixpkgs.follows = "override";
       nixos-hardware.url = "github:nixos/nixos-hardware";
-      utils.url = "github:numtide/flake-utils/flatten-tree-system";
+      utils.url = "github:numtide/flake-utils";
       pkgs.url = "path:./pkgs";
       pkgs.inputs.nixpkgs.follows = "nixos";
     };
@@ -70,7 +70,11 @@
       };
 
       systemOutputs = utils.lib.eachDefaultSystem (system:
-        let pkgs = multiPkgs.${system}; in
+        let
+          pkgs = multiPkgs.${system};
+          # all packages that are defined in ./pkgs
+          legacyPackages = os.mkPackages { inherit pkgs; };
+        in
         {
           checks =
             let
@@ -82,8 +86,8 @@
             in
             nixos.lib.recursiveUpdate tests deployChecks;
 
-          packages = utils.lib.flattenTreeSystem system
-            (os.mkPackages { inherit pkgs; });
+          inherit legacyPackages;
+          packages = lib.filterPackages system legacyPackages;
 
           devShell = import ./shell {
             inherit self system;

@@ -260,16 +260,15 @@
     },
     "utils": {
       "locked": {
-        "lastModified": 1608663846,
-        "narHash": "sha256-YOAXeoNLW0IubQ6AZLGuSj5kAD5n4DYXLYReLtyds1A=",
+        "lastModified": 1614513358,
+        "narHash": "sha256-LakhOx3S1dRjnh0b5Dg3mbZyH0ToC9I8Y2wKSkBaTzU=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "a68df93a37cd5137ac22ffeb2d8a03acf253cc24",
+        "rev": "5466c5bbece17adaab2d82fae80b46e807611bf3",
         "type": "github"
       },
       "original": {
         "owner": "numtide",
-        "ref": "flatten-tree-system",
         "repo": "flake-utils",
         "type": "github"
       }
