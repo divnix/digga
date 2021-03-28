@@ -46,13 +46,15 @@ lib.runTests {
   testPathsToImportedAttrs = {
     expr =
       pathsToImportedAttrs [
-        ./testPathsToImportedAttrs/foo.nix
-        ./testPathsToImportedAttrs/bar.nix
-        ./testPathsToImportedAttrs/t.nix
-        ./testPathsToImportedAttrs/f.nix
+        "${self}/tests/testPathsToImportedAttrs/dir"
+        "${self}/tests/testPathsToImportedAttrs/foo.nix"
+        "${self}/tests/testPathsToImportedAttrs/bar.nix"
+        "${self}/tests/testPathsToImportedAttrs/t.nix"
+        "${self}/tests/testPathsToImportedAttrs/f.nix"
       ];
 
     expected = {
+      dir = { a = 5; };
       foo = { bar = 1; };
       bar = { foo = 2; };
       t = true;
