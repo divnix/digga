@@ -40,15 +40,19 @@
         inherit extern overrides;
       };
 
+      suites = os.mkSuites {
+        suites = import ./suites;
+        users = os.mkProfileAttrs "${self}/users";
+        profiles = os.mkProfileAttrs "${self}/profiles";
+        userProfiles = os.mkProfileAttrs "${self}/users/profiles";
+      };
+
       outputs = {
-        nixosConfigurations =
-          import ./hosts (nixos.lib.recursiveUpdate inputs {
-            inherit multiPkgs extern;
-            defaultSystem = "x86_64-linux";
-            lib = nixos.lib.extend (final: prev: {
-              dev = self.lib;
-            });
-          });
+        nixosConfigurations = os.mkHosts {
+          dir = "${self}/hosts";
+          overrides = import ./overrides;
+          inherit multiPkgs suites extern;
+        };
 
         homeConfigurations = os.mkHomeConfigurations;
 

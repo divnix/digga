@@ -1,17 +1,8 @@
-{ extern
-, home
-, lib
-, nixos
-, override
-, multiPkgs
-, self
-, defaultSystem
-, ...
-}:
-let
-  inherit (lib) dev;
+{ lib, dev, nixos, inputs, self, ... }:
 
-  suites = import ../suites { inherit lib; };
+{ dir, extern, suites, overrides, multiPkgs, ... }:
+let
+  defaultSystem = "x86_64-linux";
 
   experimentalFeatures = [
     "flakes"
@@ -21,10 +12,9 @@ let
   ];
 
   modules = {
-    core = ../profiles/core;
+    core = "${self}/profiles/core";
     modOverrides = { config, overrideModulesPath, ... }:
       let
-        overrides = import ../overrides;
         inherit (overrides) modules disabledModules;
       in
       {
@@ -48,7 +38,7 @@ let
       nix.nixPath = [
         "nixpkgs=${nixos}"
         "nixos-config=${self}/compat/nixos"
-        "home-manager=${home}"
+        "home-manager=${inputs.home}"
       ];
 
       nixpkgs.pkgs = lib.mkDefault multiPkgs.${config.nixpkgs.system};
@@ -56,7 +46,7 @@ let
       nix.registry = {
         devos.flake = self;
         nixos.flake = nixos;
-        override.flake = override;
+        override.flake = inputs.override;
       };
 
       nix.extraOptions = ''
@@ -71,7 +61,7 @@ let
     # Everything in `./modules/list.nix`.
     flakeModules = { imports = builtins.attrValues self.nixosModules ++ extern.modules; };
 
-    cachix = ../cachix.nix;
+    cachix = ../../cachix.nix;
   };
 
   specialArgs = extern.specialArgs // { suites = suites.system; };
@@ -80,7 +70,7 @@ let
     let
       local = {
         require = [
-          "${toString ./.}/${hostName}.nix"
+          "${dir}/${hostName}.nix"
         ];
 
         networking = { inherit hostName; };
@@ -106,7 +96,7 @@ let
 
   hosts = dev.os.recImport
     {
-      dir = ./.;
+      inherit dir;
       _import = mkHostConfig;
     };
 in

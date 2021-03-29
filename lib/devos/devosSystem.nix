@@ -18,7 +18,10 @@ lib.nixosSystem (args // {
             ({ config, suites, ... }: {
 
               # avoid unwanted systemd service startups
-              disabledModules = lib.remove modules.core suites.allProfiles;
+              # all strings in disabledModules get appended to modulesPath
+              # so convert each to list which can be coerced to string
+              disabledModules = map (x: [ x ])
+                (lib.remove modules.core suites.allProfiles);
 
               nix.registry = lib.mapAttrs (n: v: { flake = v; }) inputs;
 

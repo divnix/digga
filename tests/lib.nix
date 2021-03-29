@@ -66,4 +66,24 @@ lib.runTests {
     (rgxToString "a?" "a" == "a")
     (rgxToString "hat" "foohatbar" == "hat")
   ];
+
+  testSuites =
+    let
+      profiles = os.mkProfileAttrs (toString ./profiles);
+      users = "";
+      userProfiles = "";
+      suites = { profiles, ... }: {
+        system.bar = [ profiles.foo ];
+      };
+    in
+    {
+      expr = os.mkSuites { inherit profiles users userProfiles suites; };
+      expected = {
+        system = {
+          bar = [ profiles.foo.default ];
+          allProfiles = [ profiles.foo.default profiles.t.default ];
+          allUsers = [];
+        };
+      };
+    };
 }
