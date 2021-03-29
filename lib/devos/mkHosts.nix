@@ -1,6 +1,6 @@
 { lib, dev, nixos, inputs, self, ... }:
 
-{ dir, extern, suites, overrides, multiPkgs, ... }:
+{ dir, devos, extern, suites, overrides, multiPkgs, ... }:
 let
   defaultSystem = "x86_64-linux";
 
@@ -12,7 +12,7 @@ let
   ];
 
   modules = {
-    core = "${self}/profiles/core";
+    core = "${devos}/profiles/core";
     modOverrides = { config, overrideModulesPath, ... }:
       let
         inherit (overrides) modules disabledModules;
@@ -61,7 +61,7 @@ let
     # Everything in `./modules/list.nix`.
     flakeModules = { imports = builtins.attrValues self.nixosModules ++ extern.modules; };
 
-    cachix = ../../cachix.nix;
+    cachix = "${devos}/cachix.nix";
   };
 
   specialArgs = extern.specialArgs // { suites = suites.system; };
