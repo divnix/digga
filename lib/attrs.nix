@@ -40,4 +40,6 @@ rec {
         lib.isDerivation v && !meta.broken && builtins.elem system platforms);
     in
       lib.filterAttrs filter packages;
+
+  safeReadDir = path: lib.optionalAttrs (builtins.pathExists path) (builtins.readDir path);
 }

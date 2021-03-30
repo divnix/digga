@@ -17,7 +17,7 @@ lib.makeExtensible (final:
     lists = callLibs ./lists.nix;
     strings = callLibs ./strings.nix;
 
-    inherit (attrs) mapFilterAttrs genAttrs'
+    inherit (attrs) mapFilterAttrs genAttrs' safeReadDir
       pathsToImportedAttrs concatAttrs filterPackages;
     inherit (lists) pathsIn;
     inherit (strings) rgxToString;
