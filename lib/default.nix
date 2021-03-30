@@ -17,6 +17,7 @@ lib.makeExtensible (final:
     lists = callLibs ./lists.nix;
     strings = callLibs ./strings.nix;
 
+    mkFlake = callLibs ./mkFlake;
     evalFlakeArgs = callLibs ./mkFlake/evalArgs.nix;
 
     inherit (attrs) mapFilterAttrs genAttrs' safeReadDir
