@@ -25,7 +25,7 @@ let
           modules;
       };
 
-    global = { config, ... }: {
+    global = { config, pkgs, ... }: {
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
@@ -34,7 +34,31 @@ let
         sharedModules = extern.userModules ++ (builtins.attrValues self.homeModules);
       };
 
+      devos.defaults = {
+        shell = lib.mkDefault true;
+        fonts = lib.mkDefault true;
+        packages = lib.mkDefault true;
+      };
+
+      users.mutableUsers = false;
+
+      services.earlyoom.enable = true;
       hardware.enableRedistributableFirmware = lib.mkDefault true;
+
+      nix.package = pkgs.nixFlakes;
+
+      nix = {
+        autoOptimiseStore = true;
+        gc.automatic = true;
+        optimise.automatic = true;
+
+        useSandbox = true;
+
+        allowedUsers = [ "@wheel" ];
+        trustedUsers = [ "root" "@wheel" ];
+      };
+
+      nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
       nix.nixPath = [
         "nixpkgs=${nixos}"
@@ -54,6 +78,11 @@ let
         experimental-features = ${lib.concatStringsSep " "
           experimentalFeatures
         }
+        min-free = 536870912
+        keep-outputs = true
+        keep-derivations = true
+        fallback = true
+
       '';
 
       system.configurationRevision = lib.mkIf (self ? rev) self.rev;
