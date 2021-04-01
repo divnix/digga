@@ -30,7 +30,10 @@ let
     overlay = cfg.packages;
     inherit (cfg) overlays;
 
-    lib = import "${devos}/lib" { inherit self nixos inputs; };
+    lib = import "${devos}/lib" {
+      inherit self nixos;
+      inputs = inputs // self.inputs;
+    };
 
     deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
   };
