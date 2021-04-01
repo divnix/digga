@@ -9,4 +9,4 @@ dev.mapFilterAttrs
       let name = lib.removeSuffix ".nix" n; in lib.nameValuePair (name) (_import name)
     else
       lib.nameValuePair ("") (null))
-  (builtins.readDir dir)
+  (dev.safeReadDir dir)
