@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, dev, ... }:
 
 let mkProfileAttrs =
   /**
@@ -16,7 +16,7 @@ let mkProfileAttrs =
   let
     imports =
       let
-        files = builtins.readDir dir;
+        files = dev.safeReadDir dir;
 
         p = n: v:
           v == "directory"

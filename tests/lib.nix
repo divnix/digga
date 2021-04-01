@@ -69,6 +69,14 @@ lib.runTests {
     (rgxToString "hat" "foohatbar" == "hat")
   ];
 
+  testSafeReadDir = {
+    expr = safeReadDir "${self}/tests/profiles" // safeReadDir "${self}/nonexistentdir";
+    expected = {
+      foo = "directory";
+      t = "directory";
+    };
+  };
+
   testSuites =
     let
       profiles = os.mkProfileAttrs (toString ./profiles);
