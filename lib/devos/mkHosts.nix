@@ -12,7 +12,7 @@ let
   ];
 
   modules = {
-    core = "${devos}/profiles/core";
+    core = toString ../../profiles/core;
     modOverrides = { config, overrideModulesPath, ... }:
       let
         inherit (overrides) modules disabledModules;
