@@ -1,11 +1,11 @@
-{ pkgs, lib, dev, ... }:
+{ pkgs, lib }:
 let
   libTests = pkgs.runCommandNoCC "devos-lib-tests"
     {
       buildInputs = [
         pkgs.nix
         (
-          let tests = import ./lib.nix { inherit pkgs lib dev; }; in
+          let tests = import ./lib.nix { inherit pkgs lib; }; in
             if tests == [ ] then null
             else throw (builtins.toJSON tests)
         )

@@ -1,5 +1,5 @@
-{ pkgs, lib, dev, ... }:
-with dev;
+{ pkgs, lib }:
+with lib;
 lib.runTests {
   testConcatAttrs = {
     expr = concatAttrs [{ foo = 1; } { bar = 2; } { baz = 3; }];
