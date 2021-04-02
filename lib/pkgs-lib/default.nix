@@ -1,8 +1,8 @@
-args@{ lib, dev, utils, nixos, ... }:
+args@{ lib, dev, utils, nixpkgs, ... }:
 lib.genAttrs utils.lib.defaultSystems (system:
   lib.makeExtensible (final:
     let
-      pkgs = import nixos { inherit system; };
+      pkgs = import nixpkgs { inherit system; };
       callLibs = file: import file
         (args // {
           inherit pkgs system;

@@ -1,4 +1,4 @@
-{ lib, dev, nixos, inputs, self, ... }:
+{ lib, dev, nixpkgs, inputs, self, ... }:
 
 { dir, extern, suites, overrides, multiPkgs, ... }:
 let
@@ -36,7 +36,7 @@ let
       hardware.enableRedistributableFirmware = lib.mkDefault true;
 
       nix.nixPath = [
-        "nixpkgs=${nixos}"
+        "nixpkgs=${nixpkgs}"
         "nixos-config=${self}/compat/nixos"
         "home-manager=${inputs.home}"
       ];
@@ -45,7 +45,7 @@ let
 
       nix.registry = {
         devos.flake = self;
-        nixos.flake = nixos;
+        nixos.flake = nixpkgs;
         override.flake = inputs.override;
       };
 

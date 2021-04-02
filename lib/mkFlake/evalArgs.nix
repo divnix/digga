@@ -1,8 +1,8 @@
-{ self, dev, nixos, inputs, utils, ... }:
+{ self, dev, lib, inputs, utils, ... }:
 
 { args }:
 let
-  argOpts = with nixos.lib; { config, ... }:
+  argOpts = with lib; { config, ... }:
     let
       inherit (dev) os;
 
@@ -25,7 +25,7 @@ let
         description = "valid Nixpkgs overlay";
       };
       systemType = types.enum config.supportedSystems;
-      flakeType = with types; (addCheck attrs nixos.lib.isStorePath) // {
+      flakeType = with types; (addCheck attrs lib.isStorePath) // {
         description = "nix flake";
       };
 
@@ -54,10 +54,10 @@ let
         options = with types; {
           input = mkOption {
             type = flakeType;
-            default = inputs.nixos;
+            default = inputs.nixpkgs;
             description = ''
               nixpkgs flake input to use for this channel
-            '';
+           '';
           };
           overlays = mkOption {
             type = pathTo (listOf overlayType);
@@ -199,7 +199,7 @@ let
           let
             default = {
               nixpkgs = {
-                input = inputs.nixos;
+                input = inputs.nixpkgs;
               };
             };
           in
@@ -228,6 +228,6 @@ let
       };
     };
 in
-nixos.lib.evalModules {
+lib.evalModules {
   modules = [ argOpts args ];
 }

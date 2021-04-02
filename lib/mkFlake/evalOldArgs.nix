@@ -1,8 +1,8 @@
-{ self, dev, nixos, inputs, ... }:
+{ self, dev, lib, inputs, ... }:
 
 { args }:
 let
-  argOpts = with nixos.lib; { config, options, ... }:
+  argOpts = with lib; { config, options, ... }:
     let
       inherit (dev) os;
 
@@ -17,7 +17,7 @@ let
     {
       options = with types; {
         self = mkOption {
-          type = addCheck attrs nixos.lib.isStorePath;
+          type = addCheck attrs lib.isStorePath;
           description = "The flake to create the devos outputs for";
         };
         hosts = mkOption {
@@ -149,6 +149,6 @@ let
       };
     };
 in
-nixos.lib.evalModules {
+lib.evalModules {
   modules = [ argOpts args ];
 }

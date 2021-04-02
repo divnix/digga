@@ -1,4 +1,4 @@
-{ pkgs, system, inputs, nixos, lib, ... }:
+{ pkgs, system, inputs, nixpkgs, lib, ... }:
 let
   mkChecks = { hosts, nodes, homes ? { } }:
     let
@@ -17,7 +17,7 @@ let
   mkTest = host:
     let
       nixosTesting =
-        (import "${nixos}/nixos/lib/testing-python.nix" {
+        (import "${nixpkgs}/nixos/lib/testing-python.nix" {
           inherit system;
           inherit (host.config.lib) specialArgs;
           inherit pkgs;
