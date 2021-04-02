@@ -1,15 +1,12 @@
-{ self, nixos, inputs, dev, ... }:
+{ dev, inputs, ... }:
 let
+  inherit (dev) os; # TODO: find a more approriate naming scheme
+  inherit (inputs) utils, deploy; # TODO: make this direct inputs of future devos-lib flake
   evalFlakeArgs = dev.callLibs ./evalArgs.nix;
-  devos = self;
 in
 
 { self, ... } @ args:
 let
-  inherit (self) lib;
-  inherit (lib) os;
-
-  inherit (inputs) utils deploy;
 
   cfg = (evalFlakeArgs { inherit args; }).config;
 
@@ -17,7 +14,7 @@ let
 
   outputs = {
     nixosConfigurations = os.mkHosts {
-      inherit devos multiPkgs;
+      inherit self multiPkgs;
       inherit (cfg) extern suites overrides;
       dir = cfg.hosts;
     };
@@ -44,7 +41,7 @@ let
       checks =
         let
           tests = nixos.lib.optionalAttrs (system == "x86_64-linux")
-            (import "${devos}/tests" { inherit pkgs; self = devos; });
+            (import "${self}/tests" { inherit self pkgs; });
           deployHosts = nixos.lib.filterAttrs
             (n: _: self.nixosConfigurations.${n}.config.nixpkgs.system == system) self.deploy.nodes;
           deployChecks = deploy.lib.${system}.deployChecks { nodes = deployHosts; };
@@ -54,7 +51,7 @@ let
       inherit legacyPackages;
       packages = lib.filterPackages system legacyPackages;
 
-      devShell = import "${devos}/shell" {
+      devShell = import "${self}/shell" {
         inherit self system;
       };
     });
