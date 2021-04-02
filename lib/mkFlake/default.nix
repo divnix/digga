@@ -1,4 +1,4 @@
-{ dev, nixos, inputs, ... }:
+{ dev, inputs, ... }:
 let
   inherit (dev) os;
   inherit (inputs) utils deploy;

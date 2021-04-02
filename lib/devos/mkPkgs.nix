@@ -1,4 +1,4 @@
-{ lib, dev, nixos, self, inputs, ... }:
+{ lib, dev, nixpkgs, self, inputs, ... }:
 
 { extern, overrides }:
 (inputs.utils.lib.eachDefaultSystem
@@ -22,6 +22,6 @@
       ++ extern.overlays
       ++ (lib.attrValues self.overlays);
     in
-    { pkgs = dev.os.pkgImport nixos overlays system; }
+    { pkgs = dev.os.pkgImport nixpkgs overlays system; }
   )
 ).pkgs

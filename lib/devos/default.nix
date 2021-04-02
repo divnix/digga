@@ -1,4 +1,4 @@
-{ lib, nixos, dev, ... }:
+{ lib, dev, ... }:
 {
   # pkgImport :: Nixpkgs -> Overlays -> System -> Pkgs
   pkgImport = nixpkgs: overlays: system:
