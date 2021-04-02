@@ -1,10 +1,10 @@
-{ lib, dev, self, ... }:
+{ lib, self, ... }:
 
 { pkgs }:
 let
   inherit (self) overlay overlays;
   packagesNames = lib.attrNames (overlay null null)
-    ++ lib.attrNames (dev.concatAttrs
+    ++ lib.attrNames (lib.concatAttrs
     (lib.attrValues
       (lib.mapAttrs (_: v: v null null) overlays)
     )

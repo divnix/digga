@@ -1,4 +1,4 @@
-{ lib, dev, nixos, inputs, ... }:
+{ lib, nixos, inputs, ... }:
 
 { self, dir, extern, suites, overrides, multiPkgs, ... }:
 let
@@ -88,13 +88,13 @@ let
         };
       };
     in
-    dev.os.devosSystem {
+    lib.os.devosSystem {
       inherit specialArgs;
       system = defaultSystem;
       modules = modules // { inherit local lib; };
     };
 
-  hosts = dev.os.recImport
+  hosts = lib.os.recImport
     {
       inherit dir;
       _import = mkHostConfig;

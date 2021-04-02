@@ -1,8 +1,8 @@
-{ dev, inputs, ... }:
+{ lib, inputs, ... }:
 let
-  inherit (dev) os; # TODO: find a more approriate naming scheme
-  inherit (inputs) utils, deploy; # TODO: make this direct inputs of future devos-lib flake
-  evalFlakeArgs = dev.callLibs ./evalArgs.nix;
+  inherit (lib) os; # TODO: find a more approriate naming scheme
+  inherit (inputs) utils deploy; # TODO: make this direct inputs of future devos-lib flake
+  evalFlakeArgs = lib.callLibs ./evalArgs.nix;
 in
 
 { self, ... } @ args:
