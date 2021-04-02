@@ -1,5 +1,6 @@
-{ self, nixos, inputs, ... }:
+{ self, nixos, inputs, dev, ... }:
 let
+  evalFlakeArgs = dev.callLibs ./evalArgs.nix;
   devos = self;
 in
 
@@ -10,7 +11,7 @@ let
 
   inherit (inputs) utils deploy;
 
-  cfg = (lib.evalFlakeArgs { inherit args; }).config;
+  cfg = (evalFlakeArgs { inherit args; }).config;
 
   multiPkgs = os.mkPkgs { inherit (cfg) extern overrides; };
 

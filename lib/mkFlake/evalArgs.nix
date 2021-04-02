@@ -143,38 +143,7 @@ let
           apply = x: default // x;
           description = "attrset of packages and modules that will be pulled from nixpkgs master";
         };
-        genDoc = mkOption {
-          type = functionTo attrs;
-          internal = true;
-          description = "function that returns a generated options doc derivation given nixpkgs";
-        };
       };
-      config.genDoc =
-        let
-          singleDoc = name: value: ''
-            ## ${name}
-            ${value.description}
-
-            ${optionalString (value ? type) ''
-              *_Type_*:
-              ${value.type}
-            ''}
-            ${optionalString (value ? default) ''
-              *_Default_*
-              ```
-              ${builtins.toJSON value.default}
-              ```
-            ''}
-            ${optionalString (value ? example) ''
-              *_Example_*
-              ```
-              ${value.example}
-              ```
-            ''}
-          '';
-        in
-          pkgs: with pkgs; writeText "devosOptions.md"
-            (concatStringsSep "" (mapAttrsToList singleDoc (nixosOptionsDoc { inherit options; }).optionsNix));
     };
 in
   nixos.lib.evalModules {
