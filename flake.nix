@@ -57,5 +57,8 @@
           in
             builtins.filterSource filter ./.;
         templates.mkflake.description = "template with necessary folders for mkFlake usage";
+      } // {
+        inherit lib;
       };
+
 }
