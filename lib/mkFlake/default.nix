@@ -58,5 +58,5 @@ let
       };
     });
 in
- nixos.lib.recursiveUpdate outputs systemOutputs
+ outputs // systemOutputs
 

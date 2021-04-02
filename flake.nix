@@ -31,22 +31,20 @@
     outputs = inputs@{ deploy, nixos, nur, self, utils, ... }:
       let
         lib = import ./lib { inherit self nixos inputs; };
-
-        out = lib.mkFlake {
-          inherit self;
-          hosts = ./hosts;
-          packages = import ./pkgs;
-          suites = import ./suites;
-          extern = import ./extern;
-          overrides = import ./overrides;
-          overlays = ./overlays;
-          profiles = ./profiles;
-          userProfiles = ./users/profiles;
-          modules = import ./modules/module-list.nix;
-          userModules = import ./users/modules/module-list.nix;
-        };
-
-      in nixos.lib.recursiveUpdate out {
+      in lib.mkFlake {
+        inherit self;
+        hosts = ./hosts;
+        packages = import ./pkgs;
+        suites = import ./suites;
+        extern = import ./extern;
+        overrides = import ./overrides;
+        overlays = ./overlays;
+        profiles = ./profiles;
+        userProfiles = ./users/profiles;
+        modules = import ./modules/module-list.nix;
+        userModules = import ./users/modules/module-list.nix;
+      } // {
+        inherit lib;
         defaultTemplate = self.templates.flk;
         templates.flk.path = ./.;
         templates.flk.description = "flk template";
@@ -57,8 +55,6 @@
           in
             builtins.filterSource filter ./.;
         templates.mkflake.description = "template with necessary folders for mkFlake usage";
-      } // {
-        inherit lib;
       };
 
 }
