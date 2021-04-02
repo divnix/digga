@@ -31,8 +31,8 @@
     outputs = inputs@{ deploy, nixos, nur, self, utils, ... }:
       let
         lib = import ./lib { inherit self nixos inputs; };
-
-        out = lib.mkFlake {
+      in
+        lib.mkFlake {
           inherit self;
           hosts = ./hosts;
           packages = import ./pkgs;
@@ -44,18 +44,16 @@
           userProfiles = ./users/profiles;
           modules = import ./modules/module-list.nix;
           userModules = import ./users/modules/module-list.nix;
+        } // {
+          defaultTemplate = self.templates.flk;
+          templates.flk.path = ./.;
+          templates.flk.description = "flk template";
+          templates.mkflake.path =
+            let
+              excludes = [ "lib" "tests" "cachix" "nix" "theme" ".github" "bors.toml" "cachix.nix" ];
+              filter = path: type: ! builtins.elem (baseNameOf path) excludes;
+            in
+              builtins.filterSource filter ./.;
+          templates.mkflake.description = "template with necessary folders for mkFlake usage";
         };
-
-      in nixos.lib.recursiveUpdate out {
-        defaultTemplate = self.templates.flk;
-        templates.flk.path = ./.;
-        templates.flk.description = "flk template";
-        templates.mkflake.path =
-          let
-            excludes = [ "lib" "tests" "cachix" "nix" "theme" ".github" "bors.toml" "cachix.nix" ];
-            filter = path: type: ! builtins.elem (baseNameOf path) excludes;
-          in
-            builtins.filterSource filter ./.;
-        templates.mkflake.description = "template with necessary folders for mkFlake usage";
-      };
 }
