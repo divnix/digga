@@ -1,11 +1,9 @@
-{ self, dev, nixos, inputs, ... }:
+{ self, lib, inputs, ... }:
 
 { args }:
 let
-  argOpts = with nixos.lib; { config, options, ... }:
+  argOpts = with lib; { config, options, ... }:
     let
-      inherit (dev) os;
-
       inherit (config) self;
 
       inputAttrs = with types; functionTo attrs;
@@ -17,7 +15,7 @@ let
     {
       options = with types; {
         self = mkOption {
-          type = addCheck attrs nixos.lib.isStorePath;
+          type = addCheck attrs isStorePath;
           description = "The flake to create the devos outputs for";
         };
         hosts = mkOption {
@@ -48,7 +46,7 @@ let
         modules = mkOption {
           type = listOf moduleType;
           default = [];
-          apply = dev.pathsToImportedAttrs;
+          apply = pathsToImportedAttrs;
           description = ''
             list of modules to include in confgurations and export in 'nixosModules' output
           '';
@@ -56,7 +54,7 @@ let
         userModules = mkOption {
           type = listOf moduleType;
           default = [];
-          apply = dev.pathsToImportedAttrs;
+          apply = pathsToImportedAttrs;
           description = ''
             list of modules to include in home-manager configurations and export in
             'homeModules' output
@@ -130,7 +128,7 @@ let
           type = path;
           default = "${self}/overlays";
           defaultText = "\${self}/overlays";
-          apply = x: dev.pathsToImportedAttrs (dev.pathsIn (toString x));
+          apply = x: pathsToImportedAttrs (pathsIn (toString x));
           description = ''
             path to folder containing overlays which will be applied to pkgs and exported in
             the 'overlays' output
@@ -143,40 +141,9 @@ let
           apply = x: default // x;
           description = "attrset of packages and modules that will be pulled from nixpkgs master";
         };
-        genDoc = mkOption {
-          type = functionTo attrs;
-          internal = true;
-          description = "function that returns a generated options doc derivation given nixpkgs";
-        };
       };
-      config.genDoc =
-        let
-          singleDoc = name: value: ''
-            ## ${name}
-            ${value.description}
-
-            ${optionalString (value ? type) ''
-              *_Type_*:
-              ${value.type}
-            ''}
-            ${optionalString (value ? default) ''
-              *_Default_*
-              ```
-              ${builtins.toJSON value.default}
-              ```
-            ''}
-            ${optionalString (value ? example) ''
-              *_Example_*
-              ```
-              ${value.example}
-              ```
-            ''}
-          '';
-        in
-          pkgs: with pkgs; writeText "devosOptions.md"
-            (concatStringsSep "" (mapAttrsToList singleDoc (nixosOptionsDoc { inherit options; }).optionsNix));
     };
 in
-  nixos.lib.evalModules {
+  lib.evalModules {
     modules = [ argOpts args ];
   }

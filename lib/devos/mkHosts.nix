@@ -1,6 +1,6 @@
-{ lib, dev, nixos, inputs, self, ... }:
+{ lib, nixos, inputs, ... }:
 
-{ dir, devos, extern, suites, overrides, multiPkgs, ... }:
+{ self, dir, extern, suites, overrides, multiPkgs, ... }:
 let
   defaultSystem = "x86_64-linux";
 
@@ -44,7 +44,7 @@ let
       nixpkgs.pkgs = lib.mkDefault multiPkgs.${config.nixpkgs.system};
 
       nix.registry = {
-        devos.flake = self;
+        self.flake = self;
         nixos.flake = nixos;
         override.flake = inputs.override;
       };
@@ -61,7 +61,7 @@ let
     # Everything in `./modules/list.nix`.
     flakeModules = { imports = builtins.attrValues self.nixosModules ++ extern.modules; };
 
-    cachix = "${devos}/cachix.nix";
+    cachix = "${self}/cachix.nix";
   };
 
   specialArgs = extern.specialArgs // { suites = suites.system; };
@@ -88,13 +88,13 @@ let
         };
       };
     in
-    dev.os.devosSystem {
+    lib.os.devosSystem {
       inherit specialArgs;
       system = defaultSystem;
       modules = modules // { inherit local lib; };
     };
 
-  hosts = dev.os.recImport
+  hosts = lib.os.recImport
     {
       inherit dir;
       _import = mkHostConfig;

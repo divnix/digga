@@ -1,22 +1,20 @@
-{ self, nixos, inputs, ... }:
+{ lib, inputs, ... }:
 let
-  devos = self;
+  inherit (lib) os; # TODO: find a more approriate naming scheme
+  inherit (inputs) utils deploy; # TODO: make this direct inputs of future devos-lib flake
+  evalFlakeArgs = lib.callLibs ./evalArgs.nix;
 in
 
 { self, ... } @ args:
 let
-  inherit (self) lib;
-  inherit (lib) os;
 
-  inherit (inputs) utils deploy;
-
-  cfg = (lib.evalFlakeArgs { inherit args; }).config;
+  cfg = (evalFlakeArgs { inherit args; }).config;
 
   multiPkgs = os.mkPkgs { inherit (cfg) extern overrides; };
 
   outputs = {
     nixosConfigurations = os.mkHosts {
-      inherit devos multiPkgs;
+      inherit self multiPkgs;
       inherit (cfg) extern suites overrides;
       dir = cfg.hosts;
     };
@@ -29,11 +27,6 @@ let
 
     overlay = cfg.packages;
     inherit (cfg) overlays;
-
-    lib = import "${devos}/lib" {
-      inherit self nixos;
-      inputs = inputs // self.inputs;
-    };
 
     deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
   };
@@ -48,7 +41,7 @@ let
       checks =
         let
           tests = nixos.lib.optionalAttrs (system == "x86_64-linux")
-            (import "${devos}/tests" { inherit pkgs; self = devos; });
+            (import "${self}/tests" { inherit self pkgs; });
           deployHosts = nixos.lib.filterAttrs
             (n: _: self.nixosConfigurations.${n}.config.nixpkgs.system == system) self.deploy.nodes;
           deployChecks = deploy.lib.${system}.deployChecks { nodes = deployHosts; };
@@ -58,10 +51,10 @@ let
       inherit legacyPackages;
       packages = lib.filterPackages system legacyPackages;
 
-      devShell = import "${devos}/shell" {
+      devShell = import "${self}/shell" {
         inherit self system;
       };
     });
 in
- nixos.lib.recursiveUpdate outputs systemOutputs
+ outputs // systemOutputs
 
