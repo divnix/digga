@@ -12,7 +12,6 @@ let
   ];
 
   modules = {
-    core = "${self}/profiles/core";
     modOverrides = { config, overrideModulesPath, ... }:
       let
         inherit (overrides) modules disabledModules;
@@ -24,7 +23,7 @@ let
           modules;
       };
 
-    global = { config, ... }: {
+    global = { config, pkgs, ... }: {
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
@@ -32,6 +31,7 @@ let
         extraSpecialArgs = extern.userSpecialArgs // { suites = suites.user; };
         sharedModules = extern.userModules ++ (builtins.attrValues self.homeModules);
       };
+      users.mutableUsers = lib.mkDefault false;
 
       hardware.enableRedistributableFirmware = lib.mkDefault true;
 
@@ -48,6 +48,8 @@ let
         nixos.flake = nixos;
         override.flake = inputs.override;
       };
+
+      nix.package = pkgs.nixFlakes;
 
       nix.extraOptions = ''
         experimental-features = ${lib.concatStringsSep " "

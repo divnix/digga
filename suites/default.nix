@@ -2,7 +2,7 @@
 
 {
   system = with profiles; rec {
-    base = [ users.nixos users.root ];
+    base = [ core users.nixos users.root ];
   };
   user = with userProfiles; rec {
     base = [ direnv git ];
