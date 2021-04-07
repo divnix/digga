@@ -158,10 +158,11 @@ Such function would have the following top level API
 , nixosUserProfiles ? ./users
 , nixosSpecialArgs ? { } # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/13#issuecomment-814512835
 , nixosHosts ? ./hosts
+, nixosSuites = ./suites;
 , hmModules ? ./users/modules
 , hmProfiles ? ./users/profiles
+, hmSuites = ./users/suites;
 , hmSpecialArgs ? { }
-, suites ? ./suites
 , ... # passed through
 }
 ```
