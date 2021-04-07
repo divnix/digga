@@ -49,11 +49,11 @@ The devos-lib onion:
 - `divnix/devos` (the lib)
 
 While flake-utils-plus exports a generic [`utils.systemFlake`](https://github.com/gytis-ivaskevicius/flake-utils-plus/blob/51cb739c9c9c2258bc70747eb7bc22975ae244bd/flake.nix#L37) user function 
-and is restricted from including dependencies, devos-lib should export a `devos.systemFlake` kwithout such restrictions and that can include
+and is restricted from including dependencies, devos-lib should export a `devos.systemFlake` without such restrictions and that can include
 additional (eventually third-party mediated) generatros, such as `deploy-rs`, while implementing a strict superset of
 `utils.systemFlake` api and, on the other hand, a `devos.mkFlake` with importer amenities included and a slightly different api for convenience.
 
-Such function would have the following top level API
+### `devos.systemFlake`
 
 ```nix
 # devos.systemFlake
@@ -92,6 +92,36 @@ Such function would have the following top level API
 , ... # passed through / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14}
 ```
 
+### `devos.mkFlake`
+
+This is all about importer amentities over `devos.systemFlake`.
+
+For example people should be able to define either paths or functions as arguments.
+Also we might consider special (import !only!) magic like reducing:
+
+```nix
+{
+  nixos = {
+    modules = ./modules;
+    profiles = ./profiles;
+    specialArgs = { }; # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/13#issuecomment-814512835
+    hosts = ./hosts;
+    suites = ./suites;
+  };
+}
+```
+
+to
+
+```nix
+{
+  nixos = ./os; # with default fallback folder naming scheme
+}
+```
+
+#### Part 1: Passthrough API from `devos.systemFlake`
+
+We should not change the api here, but rather seek upstream amendmend.
 ```nix
 # devos.mkFlake
 {
@@ -106,10 +136,20 @@ Such function would have the following top level API
     patches = [ ];
   }
 , channelsConfig ? { }
+# TODO: two dimensions: 
+# - shared vs. "per-host"
+# - external (consuming other devos flakes) vs internal
 , sharedModules ? [ ] 
 , sharedOverlays ? [ ]
+, ... # passed through
+}
+```
 
-# allow setting thos ine a variety of (polished ways)
+#### Part 2: Devos NixOS/hm/... configuration API
+```nix
+# devos.mkFlake
+{
+# allow setting those in a variety of (polished ways)
 # like suites = { one = {}; two = {};}; instead of ./suites
 , nixos ? {
     modules = ./modules;
@@ -123,6 +163,5 @@ Such function would have the following top level API
     specialArgs = { };
     suites = ./users/suites;
   }
-, ... # passed through
 }
 ```
