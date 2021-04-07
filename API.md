@@ -63,8 +63,8 @@ Such function would have the following top level API
 , defaultSystem ? "x86_64-linux"
 , supportedSystems ? flake-utils.lib.defaultSystems
 , name # or inputs, see: https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/12
-, nixosConfigurations ? { }
-, nixosProfiles ? { NAME = { 
+, nixosConfigurations ? { } # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
+, nixosHosts ? { NAME = { # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/16
     system = "...";
     channelName = "...";
     extraArgs = { };
@@ -79,7 +79,7 @@ Such function would have the following top level API
 , channelsConfig ? { }
 , sharedModules ? [ ] 
 , sharedOverlays ? [ ]
-, nixosSpecialArgs ? { }
+, nixosSpecialArgs ? { } # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/13#issuecomment-814512835
 
 , hmConfigurations ? { }
 , hmProfiles ? { NAME = { 
@@ -101,9 +101,9 @@ Such function would have the following top level API
 , defaultSystem ? "x86_64-linux"
 , supportedSystems ? flake-utils.lib.defaultSystems
 , name # or inputs, see: https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/12
-, nixosConfigurations ? { } # escape hatch
-, hmConfigurations ? { } # escape hatch
-, deployConfigurations ? { } # escape hatch
+, nixosConfigurations ? { }  # escape hatch / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
+, hmConfigurations ? { }     # escape hatch / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
+, deployConfigurations ? { } # escape hatch / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
 , channels ? {
     input = "...";
     overlaysBuilder = channels: [ (final: prev: { })];
@@ -117,16 +117,19 @@ Such function would have the following top level API
 , nixosModules ? [ ]
 , nixosProfiles ? [ ]
 , nixosUserProfiles ? [ ]
-, nixosSpecialArgs ? [ ]
+, nixosSpecialArgs ? { } # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/13#issuecomment-814512835
+, nixosHosts ? { NAME = {    # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/16
+    system = "...";
+    channelName = "...";
+    extraArgs = { };
+    modules = [ ];
+  };}
+, nixosSuites = { };
 , hmModules ? [ ]
 , hmProfiles ? [ ]
 , hmSpecialArgs ? { }
-
-
-  # TODO
-  , suites
-  , hosts
-
+, hmSuites = { };
+, ... # passed through
 }
 ```
 
@@ -137,12 +140,12 @@ Such function would have the following top level API
 , defaultSystem ? "x86_64-linux"
 , supportedSystems ? flake-utils.lib.defaultSystems
 , name # or inputs, see: https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/12
-, nixosConfigurations ? { } # escape hatch
-, hmConfigurations ? { } # escape hatch
-, deployConfigurations ? { } # escape hatch
+, nixosConfigurations ? { }  # escape hatch / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
+, hmConfigurations ? { }     # escape hatch / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
+, deployConfigurations ? { } # escape hatch / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
 , channels ? {
     input = "...";
-    overlaysBuilder = channels: [ (final: prev: { })];
+    overlaysBuilder = channels: [ (final: prev: { })]; # TODO: do we want another interface here? Also: how to handle module backports?
     config = { };
     patches = [ ];
   }
@@ -153,12 +156,12 @@ Such function would have the following top level API
 , nixosModules ? ./modules
 , nixosProfiles ? ./profiles
 , nixosUserProfiles ? ./users
-, nixosSpecialArgs ? { }
+, nixosSpecialArgs ? { } # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/13#issuecomment-814512835
+, nixosHosts ? ./hosts
 , hmModules ? ./users/modules
 , hmProfiles ? ./users/profiles
 , hmSpecialArgs ? { }
-
-, hosts ? ./hosts
 , suites ? ./suites
+, ... # passed through
 }
 ```
