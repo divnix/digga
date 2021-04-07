@@ -63,7 +63,6 @@ Such function would have the following top level API
 , defaultSystem ? "x86_64-linux"
 , supportedSystems ? flake-utils.lib.defaultSystems
 , name # or inputs, see: https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/12
-, nixosConfigurations ? { } # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
 , nixosHosts ? { NAME = { # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/16
     system = "...";
     channelName = "...";
@@ -90,8 +89,7 @@ Such function would have the following top level API
   
 , deployConfigurations ? { }
 
-, ... # passed through
-}
+, ... # passed through / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14}
 ```
 
 ```nix
@@ -101,9 +99,6 @@ Such function would have the following top level API
 , defaultSystem ? "x86_64-linux"
 , supportedSystems ? flake-utils.lib.defaultSystems
 , name # or inputs, see: https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/12
-, nixosConfigurations ? { }  # escape hatch / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
-, hmConfigurations ? { }     # escape hatch / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
-, deployConfigurations ? { } # escape hatch / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
 , channels ? {
     input = "...";
     overlaysBuilder = channels: [ (final: prev: { })]; # TODO: do we want another interface here? Also: how to handle module backports?
