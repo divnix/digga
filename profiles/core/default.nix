@@ -2,7 +2,6 @@
 let inherit (lib) fileContents;
 in
 {
-  nix.package = pkgs.nixFlakes;
 
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
@@ -144,7 +143,5 @@ in
   };
 
   services.earlyoom.enable = true;
-
-  users.mutableUsers = false;
 
 }
