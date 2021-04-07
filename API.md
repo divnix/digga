@@ -95,45 +95,6 @@ Such function would have the following top level API
 ```
 
 ```nix
-# devos.mkFlake'
-{
-  self
-, defaultSystem ? "x86_64-linux"
-, supportedSystems ? flake-utils.lib.defaultSystems
-, name # or inputs, see: https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/12
-, nixosConfigurations ? { }  # escape hatch / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
-, hmConfigurations ? { }     # escape hatch / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
-, deployConfigurations ? { } # escape hatch / https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/14
-, channels ? {
-    input = "...";
-    overlaysBuilder = channels: [ (final: prev: { })];
-    config = { };
-    patches = [ ];
-  }
-, channelsConfig ? { }
-, sharedModules ? [ ] 
-, sharedOverlays ? [ ]
-
-, nixosModules ? [ ]
-, nixosProfiles ? [ ]
-, nixosUserProfiles ? [ ]
-, nixosSpecialArgs ? { } # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/13#issuecomment-814512835
-, nixosHosts ? { NAME = {    # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/16
-    system = "...";
-    channelName = "...";
-    extraArgs = { };
-    modules = [ ];
-  };}
-, nixosSuites = { };
-, hmModules ? [ ]
-, hmProfiles ? [ ]
-, hmSpecialArgs ? { }
-, hmSuites = { };
-, ... # passed through
-}
-```
-
-```nix
 # devos.mkFlake
 {
   self
@@ -153,16 +114,20 @@ Such function would have the following top level API
 , sharedModules ? [ ] 
 , sharedOverlays ? [ ]
 
-, nixosModules ? ./modules
-, nixosProfiles ? ./profiles
-, nixosUserProfiles ? ./users
-, nixosSpecialArgs ? { } # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/13#issuecomment-814512835
-, nixosHosts ? ./hosts
-, nixosSuites = ./suites;
-, hmModules ? ./users/modules
-, hmProfiles ? ./users/profiles
-, hmSuites = ./users/suites;
-, hmSpecialArgs ? { }
+# allow setting thos ine a variety of (polished ways)
+# like suites = { one = {}; two = {};}; instead of ./suites
+, nixos ? {
+    modules = ./modules;
+    profiles = ./profiles;
+    specialArgs = { }; # https://github.com/gytis-ivaskevicius/flake-utils-plus/issues/13#issuecomment-814512835
+    hosts = ./hosts;
+    suites = ./suites;
+, hm ? {
+    modules = ./users/modules;
+    profiles = ./users/profiles;
+    specialArgs = { };
+    suites = ./users/suites;
+  }
 , ... # passed through
 }
 ```
