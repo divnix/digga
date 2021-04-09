@@ -108,7 +108,7 @@ let
           let
             defaults = {
               modules = []; overlays = []; specialArgs = {};
-              userModules = []; userSpecialArgs = [];
+              userModules = []; userSpecialArgs = {};
             };
           in
           mkOption {
