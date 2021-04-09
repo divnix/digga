@@ -2,7 +2,7 @@
 {
   pathsIn = dir:
     let
-      fullPath = name: "${dir}/${name}";
+      fullPath = name: "${toString dir}/${name}";
     in
     map fullPath (lib.attrNames (dev.safeReadDir dir));
 }
