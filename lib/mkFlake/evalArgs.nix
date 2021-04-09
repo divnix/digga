@@ -66,7 +66,7 @@ let
           type = path;
           default = "${self}/profiles";
           defaultText = "\${self}/profiles";
-          apply = x: os.mkProfileAttrs (x);
+          apply = x: os.mkProfileAttrs (toString x);
           description = "path to profiles folder that can be collected into suites";
         };
         userProfiles = mkOption {
