@@ -28,6 +28,7 @@ in
       ripgrep
       skim
       tealdeer
+      usbutils
       utillinux
       whois
     ];
