@@ -25,6 +25,5 @@
   ];
 
   # passed to all home-manager modules
-  userSpecialArgs = {
-  };
+  userSpecialArgs = { };
 }

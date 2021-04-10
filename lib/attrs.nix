@@ -37,9 +37,9 @@ rec {
     let
       # Everything that nix flake check requires for the packages output
       filter = (n: v: with v; let platforms = meta.hydraPlatforms or meta.platforms or [ ]; in
-        lib.isDerivation v && !meta.broken && builtins.elem system platforms);
+      lib.isDerivation v && !meta.broken && builtins.elem system platforms);
     in
-      lib.filterAttrs filter packages;
+    lib.filterAttrs filter packages;
 
   safeReadDir = path: lib.optionalAttrs (builtins.pathExists path) (builtins.readDir path);
 }

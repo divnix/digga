@@ -10,7 +10,7 @@ let
 
       inputAttrs = with types; functionTo attrs;
       moduleType = with types; anything // {
-        inherit (submodule {}) check;
+        inherit (submodule { }) check;
         description = "valid module";
       };
     in
@@ -36,7 +36,7 @@ let
             check = builtins.isFunction;
             description = "Nixpkgs overlay";
           };
-          default = (final: prev: {});
+          default = (final: prev: { });
           defaultText = "(final: prev: {})";
           description = ''
             Overlay for custom packages that will be included in treewide 'pkgs'.
@@ -47,7 +47,7 @@ let
         };
         modules = mkOption {
           type = listOf moduleType;
-          default = [];
+          default = [ ];
           apply = dev.pathsToImportedAttrs;
           description = ''
             list of modules to include in confgurations and export in 'nixosModules' output
@@ -55,7 +55,7 @@ let
         };
         userModules = mkOption {
           type = listOf moduleType;
-          default = [];
+          default = [ ];
           apply = dev.pathsToImportedAttrs;
           description = ''
             list of modules to include in home-manager configurations and export in
@@ -78,7 +78,7 @@ let
         };
         suites =
           let
-            defaults = { user = {}; system = {}; };
+            defaults = { user = { }; system = { }; };
           in
           mkOption {
             type = inputAttrs;
@@ -107,8 +107,11 @@ let
         extern =
           let
             defaults = {
-              modules = []; overlays = []; specialArgs = {};
-              userModules = []; userSpecialArgs = {};
+              modules = [ ];
+              overlays = [ ];
+              specialArgs = { };
+              userModules = [ ];
+              userSpecialArgs = { };
             };
           in
           mkOption {
@@ -138,7 +141,7 @@ let
         };
         overrides = mkOption rec {
           type = attrs;
-          default = { modules = []; disabledModules = []; packages = _: _: _: {}; };
+          default = { modules = [ ]; disabledModules = [ ]; packages = _: _: _: { }; };
           defaultText = "{ modules = []; disabledModules = []; packages = {}; }";
           apply = x: default // x;
           description = "attrset of packages and modules that will be pulled from nixpkgs master";
@@ -146,6 +149,6 @@ let
       };
     };
 in
-  nixos.lib.evalModules {
-    modules = [ argOpts args ];
-  }
+nixos.lib.evalModules {
+  modules = [ argOpts args ];
+}
