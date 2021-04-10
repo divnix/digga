@@ -30,7 +30,7 @@
 
   outputs = inputs@{ deploy, nixos, nur, self, utils, ... }:
     let
-      lib = import ./lib { inherit self nixos inputs; };
+      lib = import ./lib { inherit self nixos utils inputs; };
     in
     lib.mkFlake
       {
