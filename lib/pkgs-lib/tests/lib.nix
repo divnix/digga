@@ -1,6 +1,5 @@
-{ self, pkgs }:
-let inherit (self.inputs.nixos) lib; in
-with self.lib;
+{ pkgs, lib, dev, ... }:
+with dev;
 lib.runTests {
   testConcatAttrs = {
     expr = concatAttrs [{ foo = 1; } { bar = 2; } { baz = 3; }];
@@ -28,29 +27,24 @@ lib.runTests {
     expected = { foobar = 1; };
   };
 
-  testPathsIn =
-    let testPaths = pkgs.runCommandNoCC "test-paths-in" { } ''
-      mkdir -p $out/{foo,bar,baz}
-    '';
-    in
-    {
-      expr = pathsIn testPaths;
+  testPathsIn = {
+    expr = pathsIn (toString ./testPathsIn);
 
-      expected = [
-        "${testPaths}/bar"
-        "${testPaths}/baz"
-        "${testPaths}/foo"
-      ];
-    };
+    expected = map toString [
+      ./testPathsIn/bar
+      ./testPathsIn/baz
+      ./testPathsIn/foo
+    ];
+  };
 
   testPathsToImportedAttrs = {
     expr =
       pathsToImportedAttrs [
-        "${self}/tests/testPathsToImportedAttrs/dir"
-        "${self}/tests/testPathsToImportedAttrs/foo.nix"
-        "${self}/tests/testPathsToImportedAttrs/bar.nix"
-        "${self}/tests/testPathsToImportedAttrs/t.nix"
-        "${self}/tests/testPathsToImportedAttrs/f.nix"
+        (toString ./testPathsToImportedAttrs/dir)
+        ./testPathsToImportedAttrs/foo.nix
+        ./testPathsToImportedAttrs/bar.nix
+        ./testPathsToImportedAttrs/t.nix
+        ./testPathsToImportedAttrs/f.nix
       ];
 
     expected = {
@@ -70,7 +64,7 @@ lib.runTests {
   ];
 
   testSafeReadDir = {
-    expr = safeReadDir "${self}/tests/profiles" // safeReadDir "${self}/nonexistentdir";
+    expr = safeReadDir ./profiles // safeReadDir ./nonexistentdir;
     expected = {
       foo = "directory";
       t = "directory";

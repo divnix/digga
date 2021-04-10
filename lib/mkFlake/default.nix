@@ -34,27 +34,21 @@ let
   systemOutputs = utils.lib.eachDefaultSystem (system:
     let
       pkgs = multiPkgs.${system};
+      pkgs-lib = dev.pkgs-lib.${system};
       # all packages that are defined in ./pkgs
       legacyPackages = os.mkPackages { inherit pkgs; };
     in
     {
-      checks =
-        let
-          tests = nixos.lib.optionalAttrs (system == "x86_64-linux")
-            (import "${self}/tests" { inherit self pkgs; });
-          deployHosts = nixos.lib.filterAttrs
-            (n: _: self.nixosConfigurations.${n}.config.nixpkgs.system == system)
-            self.deploy.nodes;
-          deployChecks = deploy.lib.${system}.deployChecks { nodes = deployHosts; };
-        in
-        nixos.lib.recursiveUpdate tests deployChecks;
+      checks = pkgs-lib.tests.mkChecks {
+        inherit (self.deploy) nodes;
+        hosts = self.nixosConfigurations;
+        homes = self.homeConfigurations;
+      };
 
       inherit legacyPackages;
       packages = dev.filterPackages system legacyPackages;
 
-      devShell = import "${self}/shell" {
-        inherit self system;
-      };
+      devShell = pkgs-lib.shell;
     });
 in
 outputs // systemOutputs

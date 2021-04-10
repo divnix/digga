@@ -1,25 +1,23 @@
-{ self ? (import ../compat).defaultNix
-, system ? builtins.currentSystem
-, extern ? import ../extern { inherit (self) inputs; }
-, overrides ? import ../overrides
-}:
+{ lib, dev, inputs, system, nixos, ... }:
 let
-  pkgs = (self.lib.os.mkPkgs {
-    inherit overrides extern;
-  }).${system};
+  overlays = [
+    inputs.devshell.overlay
+    (final: prev: {
+      deploy-rs =
+        inputs.deploy.packages.${prev.system}.deploy-rs;
+    })
+  ];
 
-  inherit (pkgs) lib;
+  pkgs = dev.os.pkgImport nixos overlays system;
+
+  flk = pkgs.callPackage ./flk.nix { };
 
   installPkgs = (lib.nixosSystem {
     inherit system;
     modules = [ ];
   }).config.system.build;
-
-  flk = pkgs.callPackage ./flk.nix { };
-
 in
-pkgs.devshell.mkShell
-{
+pkgs.devshell.mkShell {
   imports = [ (pkgs.devshell.importTOML ./devshell.toml) ];
 
   packages = with installPkgs; [
