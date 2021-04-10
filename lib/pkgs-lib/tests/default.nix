@@ -1,17 +1,29 @@
-{ self, pkgs }:
+{ pkgs-lib, pkgs, system, inputs, nixos, lib, ... }:
 let
-  inherit (self.inputs) nixos;
-  inherit (self.nixosConfigurations.NixOS.config.lib) testModule specialArgs;
+  mkChecks = { hosts, nodes, homes ? { } }:
+    let
+      deployHosts = lib.filterAttrs
+        (n: _: hosts.${n}.config.nixpkgs.system == system)
+        nodes;
+      deployChecks = inputs.deploy.lib.${system}.deployChecks { nodes = deployHosts; };
+      tests =
+        { libTests = libTests; }
+        // lib.optionalAttrs (deployHosts != { }) {
+          profilesTest = profilesTest (hosts.${(builtins.head (builtins.attrNames deployHosts))});
+        } // lib.mapAttrs (n: v: v.home.activationPackage) homes;
 
-  mkTest =
+    in
+    lib.recursiveUpdate tests deployChecks;
+
+  mkTest = host:
     let
       nixosTesting =
         (import "${nixos}/nixos/lib/testing-python.nix" {
-          inherit (pkgs.stdenv.hostPlatform) system;
-          inherit specialArgs;
+          inherit system;
+          inherit (host.config.lib) specialArgs;
           inherit pkgs;
           extraConfigurations = [
-            testModule
+            host.config.lib.testModule
           ];
         });
     in
@@ -27,9 +39,8 @@ let
         else loadedTest;
     in
     nixosTesting.makeTest calledTest;
-in
-{
-  profilesTest = mkTest {
+
+  profilesTest = host: mkTest host {
     name = "profiles";
 
     machine = { suites, ... }: {
@@ -41,14 +52,12 @@ in
     '';
   };
 
-  homeTest = self.homeConfigurations."nixos@NixOS".home.activationPackage;
-
   libTests = pkgs.runCommandNoCC "devos-lib-tests"
     {
       buildInputs = [
         pkgs.nix
         (
-          let tests = import ./lib.nix { inherit self pkgs; };
+          let tests = pkgs-lib.callLibs ./lib.nix;
           in
           if tests == [ ]
           then null
@@ -70,5 +79,5 @@ in
 
     touch $out
   '';
-}
-
+in
+{ inherit mkTest libTests profilesTest mkChecks; }

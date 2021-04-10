@@ -19,6 +19,8 @@ lib.makeExtensible (final:
 
     mkFlake = callLibs ./mkFlake;
 
+    pkgs-lib = callLibs ./pkgs-lib;
+
     inherit (attrs) mapFilterAttrs genAttrs' safeReadDir
       pathsToImportedAttrs concatAttrs filterPackages;
     inherit (lists) pathsIn;
