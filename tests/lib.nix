@@ -92,7 +92,7 @@ lib.runTests {
         system = {
           bar = [ profiles.foo.default ];
           allProfiles = [ profiles.foo.default profiles.t.default ];
-          allUsers = [];
+          allUsers = [ ];
         };
       };
     };
