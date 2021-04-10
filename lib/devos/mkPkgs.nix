@@ -1,13 +1,14 @@
-{ lib, dev, nixos, self, inputs, ... }:
+{ lib, dev, nixos, inputs, ... }:
 
-{ extern, overrides }:
+# main overlay and extra overlays
+{ overlay, overlays, extern, overrides }:
 (inputs.utils.lib.eachDefaultSystem
   (system:
     let
       overridePkgs = dev.os.pkgImport inputs.override [ ] system;
       overridesOverlay = overrides.packages;
 
-      overlays = [
+      allOverlays = [
         (final: prev: {
           lib = prev.lib.extend (lfinal: lprev: {
             inherit dev;
@@ -17,11 +18,11 @@
           });
         })
         (overridesOverlay overridePkgs)
-        self.overlay
+        overlay
       ]
       ++ extern.overlays
-      ++ (lib.attrValues self.overlays);
+      ++ (lib.attrValues overlays);
     in
-    { pkgs = dev.os.pkgImport nixos overlays system; }
+    { pkgs = dev.os.pkgImport nixos allOverlays system; }
   )
 ).pkgs

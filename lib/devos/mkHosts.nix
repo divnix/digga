@@ -1,6 +1,6 @@
-{ lib, dev, nixos, inputs, self, ... }:
+{ lib, dev, nixos, inputs, ... }:
 
-{ dir, extern, suites, overrides, multiPkgs, ... }:
+{ self, dir, extern, suites, overrides, multiPkgs, ... }:
 let
   defaultSystem = "x86_64-linux";
 
@@ -91,7 +91,7 @@ let
       };
     in
     dev.os.devosSystem {
-      inherit specialArgs;
+      inherit self specialArgs;
       system = defaultSystem;
       modules = modules // { inherit local lib; };
     };

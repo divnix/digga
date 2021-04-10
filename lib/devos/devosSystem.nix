@@ -1,6 +1,9 @@
-{ lib, nixos, self, inputs, ... }:
+{ lib, nixos, inputs, ... }:
 
-{ modules, ... } @ args:
+{ self, modules, ... } @ allArgs:
+let
+  args = builtins.removeAttrs allArgs [ "self" ];
+in
 lib.nixosSystem (args // {
   modules =
     let

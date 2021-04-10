@@ -10,7 +10,10 @@ let
 
   cfg = (evalFlakeArgs { inherit args; }).config;
 
-  multiPkgs = os.mkPkgs { inherit (cfg) extern overrides; };
+  multiPkgs = os.mkPkgs {
+    inherit (cfg) extern overrides;
+    inherit (self) overlay overlays;
+  };
 
   outputs = {
     nixosConfigurations = os.mkHosts {
@@ -19,7 +22,7 @@ let
       dir = cfg.hosts;
     };
 
-    homeConfigurations = os.mkHomeConfigurations;
+    homeConfigurations = os.mkHomeConfigurations self.nixosConfigurations;
 
     nixosModules = cfg.modules;
 
@@ -36,7 +39,10 @@ let
       pkgs = multiPkgs.${system};
       pkgs-lib = dev.pkgs-lib.${system};
       # all packages that are defined in ./pkgs
-      legacyPackages = os.mkPackages { inherit pkgs; };
+      legacyPackages = os.mkPackages {
+        inherit (self) overlay overlays;
+        inherit pkgs;
+      };
     in
     {
       checks = pkgs-lib.tests.mkChecks {
