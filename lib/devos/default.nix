@@ -7,7 +7,7 @@
       config = { allowUnfree = true; };
     };
 
-  profileMap = map (profile: profile.default);
+  profileMap = list: map (profile: profile.default) (lib.flatten list);
 
   mkNodes = dev.callLibs ./mkNodes.nix;
 
