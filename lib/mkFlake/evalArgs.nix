@@ -1,4 +1,4 @@
-{ self, dev, nixos, inputs, ... }:
+{ self, dev, nixos, inputs, utils, ... }:
 
 { args }:
 let
@@ -9,15 +9,22 @@ let
       inherit (config) self;
 
       inputAttrs = with types; functionTo attrs;
+
       moduleType = with types; anything // {
         inherit (submodule { }) check;
         description = "valid module";
       };
+      overlayType = types.anything // {
+        check = builtins.isFunction;
+        description = "valid Nixpkgs overlay";
+      };
+      systemType = types.enum (builtins.attrValues config.supportedSystems);
+      flakeType = with types; addCheck attrs nixos.lib.isStorePath;
 
       pathTo = elemType: mkOptionType {
         name = "pathTo";
         description = "path that evaluates to a(n) ${elemType.name}";
-        check = x: elemType.check x;
+        check = x: elemType.check (maybeImport x);
         merge = loc: defs:
           (lib.mergeDefinitions loc elemType (map
             (x: {
@@ -30,16 +37,88 @@ let
         substSubModules = m: pathTo (elemType.substSubModules m);
       };
 
-      conceptsModule = { path, ... }: {
-        options = {
-          hosts = mkOption {
-            type = path;
-            default = "${self}/hosts";
-            defaultText = "\${self}/hosts";
-            apply = toString;
+      channelsModule = {
+        options = with types; {
+          input = mkOption {
+            type = flakeType;
+            default = inputs.nixos;
             description = ''
-              Path to directory containing host configurations that will be exported
-              to the 'nixosConfigurations' output.
+              nixpkgs flake input to use for this channel
+            '';
+          };
+          overlays = mkOption {
+            type = pathTo (listOf overlayType);
+            default = [ ];
+            description = ''
+              overlays to apply to this channel
+              these will get exported under the 'overlays' flake output as <channel>/<name>
+            '';
+          };
+          externalOverlays = mkOption {
+            type = pathTo (listOf overlayType);
+            default = [];
+            description = ''
+              overlays to apply to the channel that don't get exported to the flake output
+              useful to include overlays from inputs
+            '';
+          };
+          config = mkOption {
+            type = pathTo attrs;
+            default = {};
+            description = ''
+              nixpkgs config for this channel
+            '';
+          };
+        };
+      };
+
+      configsModule = { name, ... }: {
+        options = with types; {
+          system = mkOption {
+            type = systemType;
+            default = config.defaultSystem;
+            description = ''
+              system for this config
+            '';
+          };
+          channelName = mkOption {
+            type = types.enum (builtins.attrValues self.channels);
+            default = "nixpkgs";
+            description = ''
+              Channel this config should follow
+            '';
+          };
+          modules = mkOption {
+            type = pathTo moduleType;
+            default = [ ];
+            description = ''
+              The configuration for this config
+            '';
+          };
+          externalmodules = mkOption {
+            type = pathTo moduleType;
+            default = [ ];
+            description = ''
+              The configuration for this config
+            '';
+          };
+        };
+      };
+
+      conceptsModule = { name, ... }: {
+        options = with types; {
+          configDefaults = mkOption {
+            type = submodule configType;
+            default = {};
+            description = ''
+              defaults for all configs
+            '';
+          };
+          configs = mkOption {
+            type = attrsOf (submodule configType);
+            default = { };
+            description = ''
+              configurations to include in the ${name}Configurations output
             '';
           };
           modules = mkOption {
@@ -47,7 +126,15 @@ let
             default = [ ];
             apply = dev.pathsToImportedAttrs;
             description = ''
-              list of modules to include in confgurations and export in 'nixosModules' output
+              list of modules to include in confgurations and export in '${name}Modules' output
+            '';
+          };
+          externalModules = mkOption {
+            type = pathTo (listOf moduleType);
+            default = [ ];
+            apply = dev.pathsToImportedAttrs;
+            description = ''
+              list of modules to include in confguration but these are not exported to the '${name}Modules' output
             '';
           };
           profiles = mkOption {
@@ -65,10 +152,9 @@ let
               inherit (config) profiles;
             };
             description = ''
-              Function with inputs 'users' and 'profiles' that returns attribute set
-              with user and system suites. The former for Home Manager and the latter
-              for nixos configurations.
-              These can be accessed through the 'suites' specialArg in each config system.
+              Function with the input of 'profiles' that returns an attribute set
+              with the suites for this config system.
+              These can be accessed through the 'suites' special argument.
             '';
           };
         };
@@ -77,23 +163,14 @@ let
     {
       options = with types; {
         self = mkOption {
-          type = addCheck attrs nixos.lib.isStorePath;
+          type = flakeType;
           description = "The flake to create the devos outputs for";
         };
-        defaultSystem = mkOption {
-          type = enum (nixos.lib.platforms.all);
-          default = "x86_64-linux";
-          description = "The default system for your hosts";
-        };
-        packages = mkOption {
-          # functionTo changes arg names which breaks flake check
-          default = (final: prev: { });
-          defaultText = "(final: prev: {})";
+        supportedSystems = mkOption {
+          type = listOf str;
+          default = utils.lib.defaultSystems;
           description = ''
-            Overlay for custom packages that will be included in treewide 'pkgs'.
-            This should follow the standard nixpkgs overlay format - two argument function
-            that returns an attrset.
-            These packages will be exported to the 'packages' and 'legacyPackages' outputs.
+            The systems supported by this flake
           '';
         };
         nixos = mkOption {
@@ -103,14 +180,11 @@ let
             hosts, modules, suites, and profiles for nixos
           '';
         };
-        overlays = mkOption {
-          type = path;
-          default = "${self}/overlays";
-          defaultText = "\${self}/overlays";
-          apply = x: dev.pathsToImportedAttrs (dev.pathsIn (toString x));
+        home = mkOption {
+          type = type.submodule conceptsModule;
+          default = {};
           description = ''
-            path to folder containing overlays which will be applied to pkgs and exported in
-            the 'overlays' output
+            hosts, modules, suites, and profiles for home-manager
           '';
         };
       };
