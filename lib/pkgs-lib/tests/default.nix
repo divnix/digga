@@ -10,7 +10,7 @@ let
         { libTests = libTests; }
         // lib.optionalAttrs (deployHosts != { }) {
           profilesTest = profilesTest (hosts.${(builtins.head (builtins.attrNames deployHosts))});
-        } // lib.mapAttrs (n: v: v.home.activationPackage) homes;
+        } // lib.mapAttrs (n: v: v.activationPackage) homes;
 
     in
     lib.recursiveUpdate tests deployChecks;
