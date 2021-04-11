@@ -94,10 +94,12 @@ lib.nixosSystem (args // {
           ];
         })).config;
     in
-    moduleList ++ [{
-      system.build = {
-        iso = isoConfig.system.build.isoImage;
-        homes = hmConfig.home-manager.users;
-      };
-    }];
+    moduleList ++ [
+      ({options, ... }: {
+        system.build = {
+          iso = isoConfig.system.build.isoImage;
+          homes = lib.optionalAttrs (options ? home-manager) hmConfig.home-manager.users;
+        };
+      })
+    ];
 })
