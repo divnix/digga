@@ -13,6 +13,66 @@ let
         inherit (submodule { }) check;
         description = "valid module";
       };
+
+      pathTo = elemType: mkOptionType {
+        name = "pathTo";
+        description = "path that evaluates to a(n) ${elemType.name}";
+        check = x: elemType.check x;
+        merge = loc: defs:
+          (lib.mergeDefinitions loc elemType (map
+            (x: {
+              inherit (x) file;
+              value = maybeImport x.value;
+            })
+          defs)).mergedValue;
+        getSubOptions = elemType.getSubOptions;
+        getSubModules = elemType.getSubModules;
+        substSubModules = m: pathTo (elemType.substSubModules m);
+      };
+
+      conceptsModule = { path, ... }: {
+        options = {
+          hosts = mkOption {
+            type = path;
+            default = "${self}/hosts";
+            defaultText = "\${self}/hosts";
+            apply = toString;
+            description = ''
+              Path to directory containing host configurations that will be exported
+              to the 'nixosConfigurations' output.
+            '';
+          };
+          modules = mkOption {
+            type = pathTo (listOf moduleType);
+            default = [ ];
+            apply = dev.pathsToImportedAttrs;
+            description = ''
+              list of modules to include in confgurations and export in 'nixosModules' output
+            '';
+          };
+          profiles = mkOption {
+            type = path;
+            default = "${self}/profiles";
+            defaultText = "\${self}/profiles";
+            apply = x: os.mkProfileAttrs (toString x);
+            description = "path to profiles folder that can be collected into suites";
+          };
+          suites = mkOption {
+            type = pathTo inputAttrs;
+            default = _: {};
+            apply = suites: os.mkSuites {
+              inherit suites;
+              inherit (config) profiles;
+            };
+            description = ''
+              Function with inputs 'users' and 'profiles' that returns attribute set
+              with user and system suites. The former for Home Manager and the latter
+              for nixos configurations.
+              These can be accessed through the 'suites' specialArg in each config system.
+            '';
+          };
+        };
+      };
     in
     {
       options = with types; {
@@ -20,22 +80,13 @@ let
           type = addCheck attrs nixos.lib.isStorePath;
           description = "The flake to create the devos outputs for";
         };
-        hosts = mkOption {
-          type = path;
-          default = "${self}/hosts";
-          defaultText = "\${self}/hosts";
-          apply = toString;
-          description = ''
-            Path to directory containing host configurations that will be exported
-            to the 'nixosConfigurations' output.
-          '';
+        defaultSystem = mkOption {
+          type = enum (nixos.lib.platforms.all);
+          default = "x86_64-linux";
+          description = "The default system for your hosts";
         };
         packages = mkOption {
           # functionTo changes arg names which breaks flake check
-          type = types.anything // {
-            check = builtins.isFunction;
-            description = "Nixpkgs overlay";
-          };
           default = (final: prev: { });
           defaultText = "(final: prev: {})";
           description = ''
@@ -45,90 +96,13 @@ let
             These packages will be exported to the 'packages' and 'legacyPackages' outputs.
           '';
         };
-        modules = mkOption {
-          type = listOf moduleType;
-          default = [ ];
-          apply = dev.pathsToImportedAttrs;
+        nixos = mkOption {
+          type = types.submodule conceptsModule;
+          default = {};
           description = ''
-            list of modules to include in confgurations and export in 'nixosModules' output
+            hosts, modules, suites, and profiles for nixos
           '';
         };
-        userModules = mkOption {
-          type = listOf moduleType;
-          default = [ ];
-          apply = dev.pathsToImportedAttrs;
-          description = ''
-            list of modules to include in home-manager configurations and export in
-            'homeModules' output
-          '';
-        };
-        profiles = mkOption {
-          type = path;
-          default = "${self}/profiles";
-          defaultText = "\${self}/profiles";
-          apply = x: os.mkProfileAttrs (toString x);
-          description = "path to profiles folder that can be collected into suites";
-        };
-        userProfiles = mkOption {
-          type = path;
-          default = "${self}/users/profiles";
-          defaultText = "\${self}/users/profiles";
-          apply = x: os.mkProfileAttrs (toString x);
-          description = "path to user profiles folder that can be collected into userSuites";
-        };
-        suites =
-          let
-            defaults = { user = { }; system = { }; };
-          in
-          mkOption {
-            type = inputAttrs;
-            default = { ... }: defaults;
-            defaultText = "{ user = {}; system = {}; }";
-            apply = suites: defaults // os.mkSuites {
-              inherit suites;
-              inherit (config) profiles users userProfiles;
-            };
-            description = ''
-              Function with inputs 'users' and 'profiles' that returns attribute set
-              with user and system suites. The former for Home Manager and the latter
-              for nixos configurations.
-              These can be accessed through the 'suites' specialArg in each config system.
-            '';
-          };
-        users = mkOption {
-          type = path;
-          default = "${self}/users";
-          defaultText = "\${self}/users";
-          apply = x: os.mkProfileAttrs (toString x);
-          description = ''
-            path to folder containing profiles that define system users
-          '';
-        };
-        extern =
-          let
-            defaults = {
-              modules = [ ];
-              overlays = [ ];
-              specialArgs = { };
-              userModules = [ ];
-              userSpecialArgs = { };
-            };
-          in
-          mkOption {
-            type = inputAttrs;
-            default = { ... }: defaults;
-            defaultText = ''
-              { modules = []; overlays = []; specialArgs = []; userModules = []; userSpecialArgs = []; }
-            '';
-            # So unneeded extern attributes can safely be deleted
-            apply = x: defaults // (x { inputs = inputs // self.inputs; });
-            description = ''
-              Function with argument 'inputs' that contains all devos and ''${self}'s inputs.
-              The function should return an attribute set with modules, overlays, and
-              specialArgs to be included across nixos and home manager configurations.
-              Only attributes that are used should be returned.
-            '';
-          };
         overlays = mkOption {
           type = path;
           default = "${self}/overlays";
@@ -138,13 +112,6 @@ let
             path to folder containing overlays which will be applied to pkgs and exported in
             the 'overlays' output
           '';
-        };
-        overrides = mkOption rec {
-          type = attrs;
-          default = { modules = [ ]; disabledModules = [ ]; packages = _: _: _: { }; };
-          defaultText = "{ modules = []; disabledModules = []; packages = {}; }";
-          apply = x: default // x;
-          description = "attrset of packages and modules that will be pulled from nixpkgs master";
         };
       };
     };
