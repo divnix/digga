@@ -1,150 +1,229 @@
-{ self, dev, nixos, inputs, ... }:
+{ self, dev, nixos, inputs, utils, ... }:
 
 { args }:
 let
-  argOpts = with nixos.lib; { config, options, ... }:
+  argOpts = with nixos.lib; { config, ... }:
     let
       inherit (dev) os;
 
       inherit (config) self;
 
-      inputAttrs = with types; functionTo attrs;
+      maybeImport = obj:
+        if (builtins.typeOf obj == "path") || (builtins.typeOf obj == "string") then
+          import obj
+        else
+          obj;
+
+      /* Custom types needed for arguments */
+
       moduleType = with types; anything // {
         inherit (submodule { }) check;
         description = "valid module";
+      };
+      overlayType = types.anything // {
+        check = builtins.isFunction;
+        description = "valid Nixpkgs overlay";
+      };
+      systemType = types.enum (builtins.attrValues config.supportedSystems);
+      flakeType = with types; (addCheck attrs nixos.lib.isStorePath) // {
+        description = "nix flake";
+      };
+
+      # Applys maybeImport during merge and before check
+      # To simplify apply keys and improve type checking
+      pathTo = elemType: mkOptionType {
+        name = "pathTo";
+        description = "path that evaluates to a(n) ${elemType.name}";
+        check = x: elemType.check (maybeImport x);
+        merge = loc: defs:
+          (mergeDefinitions loc elemType (map
+            (x: {
+              inherit (x) file;
+              value = maybeImport x.value;
+            })
+            defs)).mergedValue;
+        getSubOptions = elemType.getSubOptions;
+        getSubModules = elemType.getSubModules;
+        substSubModules = m: pathTo (elemType.substSubModules m);
+      };
+
+
+      /* Submodules needed for API containers */
+
+      channelsModule = {
+        options = with types; {
+          input = mkOption {
+            type = flakeType;
+            default = inputs.nixos;
+            description = ''
+              nixpkgs flake input to use for this channel
+            '';
+          };
+          overlays = mkOption {
+            type = pathTo (listOf overlayType);
+            default = [ ];
+            description = ''
+              overlays to apply to this channel
+              these will get exported under the 'overlays' flake output as <channel>/<name>
+            '';
+          };
+          externalOverlays = mkOption {
+            type = pathTo (listOf overlayType);
+            default = [ ];
+            description = ''
+              overlays to apply to the channel that don't get exported to the flake output
+              useful to include overlays from inputs
+            '';
+          };
+          config = mkOption {
+            type = pathTo attrs;
+            default = { };
+            description = ''
+              nixpkgs config for this channel
+            '';
+          };
+        };
+      };
+
+      configModule = { name, ... }: {
+        options = with types; {
+          system = mkOption {
+            type = systemType;
+            default = "x86_64-linux";
+            description = ''
+              system for this config
+            '';
+          };
+          channelName = mkOption {
+            type = types.enum (builtins.attrValues self.channels);
+            default = "nixpkgs";
+            description = ''
+              Channel this config should follow
+            '';
+          };
+          modules = mkOption {
+            type = pathTo moduleType;
+            default = [ ];
+            description = ''
+              The configuration for this config
+            '';
+          };
+          externalmodules = mkOption {
+            type = pathTo moduleType;
+            default = [ ];
+            description = ''
+              The configuration for this config
+            '';
+          };
+        };
+      };
+
+      # Home-manager's configs get exported automatically from nixos.hosts
+      # So there is no need for a config options in the home namespace
+      # This is only needed for nixos
+      includeConfigsModule = {
+        options = with types; {
+          configDefaults = mkOption {
+            type = submodule configModule;
+            default = { };
+            description = ''
+              defaults for all configs
+            '';
+          };
+          configs = mkOption {
+            type = pathTo (attrsOf (submodule configModule));
+            default = { };
+            description = ''
+              configurations to include in the ${name}Configurations output
+            '';
+          };
+        };
+      };
+
+      # Options to import: modules, profiles, suites
+      importsModule = { name, ... }: {
+        options = with types; {
+          modules = mkOption {
+            type = pathTo (listOf moduleType);
+            default = [ ];
+            apply = dev.pathsToImportedAttrs;
+            description = ''
+              list of modules to include in confgurations and export in '${name}Modules' output
+            '';
+          };
+          externalModules = mkOption {
+            type = pathTo (listOf moduleType);
+            default = [ ];
+            apply = dev.pathsToImportedAttrs;
+            description = ''
+              list of modules to include in confguration but these are not exported to the '${name}Modules' output
+            '';
+          };
+          profiles = mkOption {
+            type = path;
+            default = "${self}/profiles";
+            defaultText = "\${self}/profiles";
+            apply = x: os.mkProfileAttrs (toString x);
+            description = "path to profiles folder that can be collected into suites";
+          };
+          suites = mkOption {
+            type = pathTo (functionTo attrs);
+            default = _: { };
+            apply = suites: os.mkSuites {
+              inherit suites;
+              inherit (config) profiles;
+            };
+            description = ''
+              Function with the input of 'profiles' that returns an attribute set
+              with the suites for this config system.
+              These can be accessed through the 'suites' special argument.
+            '';
+          };
+        };
       };
     in
     {
       options = with types; {
         self = mkOption {
-          type = addCheck attrs nixos.lib.isStorePath;
+          type = flakeType;
           description = "The flake to create the devos outputs for";
         };
-        hosts = mkOption {
-          type = path;
-          default = "${self}/hosts";
-          defaultText = "\${self}/hosts";
-          apply = toString;
+        supportedSystems = mkOption {
+          type = listOf str;
+          default = utils.lib.defaultSystems;
           description = ''
-            Path to directory containing host configurations that will be exported
-            to the 'nixosConfigurations' output.
+            The systems supported by this flake
           '';
         };
-        packages = mkOption {
-          # functionTo changes arg names which breaks flake check
-          type = types.anything // {
-            check = builtins.isFunction;
-            description = "Nixpkgs overlay";
-          };
-          default = (final: prev: { });
-          defaultText = "(final: prev: {})";
-          description = ''
-            Overlay for custom packages that will be included in treewide 'pkgs'.
-            This should follow the standard nixpkgs overlay format - two argument function
-            that returns an attrset.
-            These packages will be exported to the 'packages' and 'legacyPackages' outputs.
-          '';
-        };
-        modules = mkOption {
-          type = listOf moduleType;
-          default = [ ];
-          apply = dev.pathsToImportedAttrs;
-          description = ''
-            list of modules to include in confgurations and export in 'nixosModules' output
-          '';
-        };
-        userModules = mkOption {
-          type = listOf moduleType;
-          default = [ ];
-          apply = dev.pathsToImportedAttrs;
-          description = ''
-            list of modules to include in home-manager configurations and export in
-            'homeModules' output
-          '';
-        };
-        profiles = mkOption {
-          type = path;
-          default = "${self}/profiles";
-          defaultText = "\${self}/profiles";
-          apply = x: os.mkProfileAttrs (toString x);
-          description = "path to profiles folder that can be collected into suites";
-        };
-        userProfiles = mkOption {
-          type = path;
-          default = "${self}/users/profiles";
-          defaultText = "\${self}/users/profiles";
-          apply = x: os.mkProfileAttrs (toString x);
-          description = "path to user profiles folder that can be collected into userSuites";
-        };
-        suites =
+        channels =
           let
-            defaults = { user = { }; system = { }; };
-          in
-          mkOption {
-            type = inputAttrs;
-            default = { ... }: defaults;
-            defaultText = "{ user = {}; system = {}; }";
-            apply = suites: defaults // os.mkSuites {
-              inherit suites;
-              inherit (config) profiles users userProfiles;
-            };
-            description = ''
-              Function with inputs 'users' and 'profiles' that returns attribute set
-              with user and system suites. The former for Home Manager and the latter
-              for nixos configurations.
-              These can be accessed through the 'suites' specialArg in each config system.
-            '';
-          };
-        users = mkOption {
-          type = path;
-          default = "${self}/users";
-          defaultText = "\${self}/users";
-          apply = x: os.mkProfileAttrs (toString x);
-          description = ''
-            path to folder containing profiles that define system users
-          '';
-        };
-        extern =
-          let
-            defaults = {
-              modules = [ ];
-              overlays = [ ];
-              specialArgs = { };
-              userModules = [ ];
-              userSpecialArgs = { };
+            default = {
+              nixpkgs = {
+                input = inputs.nixos;
+              };
             };
           in
           mkOption {
-            type = inputAttrs;
-            default = { ... }: defaults;
-            defaultText = ''
-              { modules = []; overlays = []; specialArgs = []; userModules = []; userSpecialArgs = []; }
-            '';
-            # So unneeded extern attributes can safely be deleted
-            apply = x: defaults // (x { inputs = inputs // self.inputs; });
+            type = attrsOf (submodule channelsModule);
+            inherit default;
+            apply = x: default // x;
             description = ''
-              Function with argument 'inputs' that contains all devos and ''${self}'s inputs.
-              The function should return an attribute set with modules, overlays, and
-              specialArgs to be included across nixos and home manager configurations.
-              Only attributes that are used should be returned.
+              nixpkgs channels to create
             '';
           };
-        overlays = mkOption {
-          type = path;
-          default = "${self}/overlays";
-          defaultText = "\${self}/overlays";
-          apply = x: dev.pathsToImportedAttrs (dev.pathsIn (toString x));
+        nixos = mkOption {
+          type = submodule [ includeConfigsModule importsModule ];
+          default = { };
           description = ''
-            path to folder containing overlays which will be applied to pkgs and exported in
-            the 'overlays' output
+            hosts, modules, suites, and profiles for nixos
           '';
         };
-        overrides = mkOption rec {
-          type = attrs;
-          default = { modules = [ ]; disabledModules = [ ]; packages = _: _: _: { }; };
-          defaultText = "{ modules = []; disabledModules = []; packages = {}; }";
-          apply = x: default // x;
-          description = "attrset of packages and modules that will be pulled from nixpkgs master";
+        home = mkOption {
+          type = submodule importsModule;
+          default = { };
+          description = ''
+            hosts, modules, suites, and profiles for home-manager
+          '';
         };
       };
     };
