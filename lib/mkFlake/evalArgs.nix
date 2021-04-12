@@ -8,8 +8,14 @@ let
 
       inherit (config) self;
 
-      inputAttrs = with types; functionTo attrs;
+      maybeImport = obj:
+        if (builtins.typeOf obj == "path") || (builtins.typeOf obj == "string") then
+          import obj
+        else
+          obj;
 
+      # Custom types needed for arguments
+      inputAttrs = with types; functionTo attrs;
       moduleType = with types; anything // {
         inherit (submodule { }) check;
         description = "valid module";
@@ -37,6 +43,7 @@ let
         substSubModules = m: pathTo (elemType.substSubModules m);
       };
 
+      # Submodules needed for API containers
       channelsModule = {
         options = with types; {
           input = mkOption {
@@ -105,60 +112,66 @@ let
         };
       };
 
-      conceptsModule = { name, ... }: {
-        options = with types; {
+      conceptsModule = { name, ... }: mkMerge [
+        # Home-manager's configs get exported automatically from nixos.hosts
+        # So there is no need for a config options in the home namespace
+        (optionalAttrs (name != "home") {
           configDefaults = mkOption {
             type = submodule configType;
-            default = {};
+            default = { };
             description = ''
               defaults for all configs
             '';
           };
           configs = mkOption {
-            type = attrsOf (submodule configType);
+            type = pathTo (attrsOf (submodule configType));
             default = { };
             description = ''
               configurations to include in the ${name}Configurations output
             '';
           };
-          modules = mkOption {
-            type = pathTo (listOf moduleType);
-            default = [ ];
-            apply = dev.pathsToImportedAttrs;
-            description = ''
-              list of modules to include in confgurations and export in '${name}Modules' output
-            '';
-          };
-          externalModules = mkOption {
-            type = pathTo (listOf moduleType);
-            default = [ ];
-            apply = dev.pathsToImportedAttrs;
-            description = ''
-              list of modules to include in confguration but these are not exported to the '${name}Modules' output
-            '';
-          };
-          profiles = mkOption {
-            type = path;
-            default = "${self}/profiles";
-            defaultText = "\${self}/profiles";
-            apply = x: os.mkProfileAttrs (toString x);
-            description = "path to profiles folder that can be collected into suites";
-          };
-          suites = mkOption {
-            type = pathTo inputAttrs;
-            default = _: {};
-            apply = suites: os.mkSuites {
-              inherit suites;
-              inherit (config) profiles;
+        })
+        {
+          options = with types; {
+            modules = mkOption {
+              type = pathTo (listOf moduleType);
+              default = [ ];
+              apply = dev.pathsToImportedAttrs;
+              description = ''
+                list of modules to include in confgurations and export in '${name}Modules' output
+              '';
             };
-            description = ''
-              Function with the input of 'profiles' that returns an attribute set
-              with the suites for this config system.
-              These can be accessed through the 'suites' special argument.
-            '';
+            externalModules = mkOption {
+              type = pathTo (listOf moduleType);
+              default = [ ];
+              apply = dev.pathsToImportedAttrs;
+              description = ''
+                list of modules to include in confguration but these are not exported to the '${name}Modules' output
+              '';
+            };
+            profiles = mkOption {
+              type = path;
+              default = "${self}/profiles";
+              defaultText = "\${self}/profiles";
+              apply = x: os.mkProfileAttrs (toString x);
+              description = "path to profiles folder that can be collected into suites";
+            };
+            suites = mkOption {
+              type = pathTo inputAttrs;
+              default = _: {};
+              apply = suites: os.mkSuites {
+                inherit suites;
+                inherit (config) profiles;
+              };
+              description = ''
+                Function with the input of 'profiles' that returns an attribute set
+                with the suites for this config system.
+                These can be accessed through the 'suites' special argument.
+              '';
+            };
           };
-        };
-      };
+        }
+      ];
     in
     {
       options = with types; {
@@ -172,6 +185,15 @@ let
           description = ''
             The systems supported by this flake
           '';
+        };
+        channels = mkOption {
+          type = attrsOf (submodule channelsModule);
+          default = {
+            nixpkgs = {
+              input = inputs.nixos;
+            };
+          };
+          description =
         };
         nixos = mkOption {
           type = types.submodule conceptsModule;
