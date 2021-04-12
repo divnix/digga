@@ -17,7 +17,10 @@ lib.makeExtensible (final:
     lists = callLibs ./lists.nix;
     strings = callLibs ./strings.nix;
 
-    mkFlake = callLibs ./mkFlake;
+    mkFlake = {
+      __functor = callLibs ./mkFlake;
+      evalArgs = callLibs ./mkFlake/evalArgs.nix;
+    };
 
     pkgs-lib = callLibs ./pkgs-lib;
 

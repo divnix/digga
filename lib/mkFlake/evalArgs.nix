@@ -24,7 +24,7 @@ let
         check = builtins.isFunction;
         description = "valid Nixpkgs overlay";
       };
-      systemType = types.enum (builtins.attrValues config.supportedSystems);
+      systemType = types.enum config.supportedSystems;
       flakeType = with types; (addCheck attrs nixos.lib.isStorePath) // {
         description = "nix flake";
       };
@@ -85,7 +85,7 @@ let
         };
       };
 
-      configModule = { name, ... }: {
+      configModule = {
         options = with types; {
           system = mkOption {
             type = systemType;
@@ -95,7 +95,7 @@ let
             '';
           };
           channelName = mkOption {
-            type = types.enum (builtins.attrValues self.channels);
+            type = types.enum (builtins.attrValues config.channels);
             default = "nixpkgs";
             description = ''
               Channel this config should follow
@@ -108,7 +108,7 @@ let
               The configuration for this config
             '';
           };
-          externalmodules = mkOption {
+          externalModules = mkOption {
             type = pathTo moduleType;
             default = [ ];
             description = ''
@@ -121,7 +121,7 @@ let
       # Home-manager's configs get exported automatically from nixos.hosts
       # So there is no need for a config options in the home namespace
       # This is only needed for nixos
-      includeConfigsModule = {
+      includeConfigsModule = { name, ... }: {
         options = with types; {
           configDefaults = mkOption {
             type = submodule configModule;

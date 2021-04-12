@@ -2,13 +2,12 @@
 let
   inherit (dev) os;
   inherit (inputs) utils deploy;
-  evalFlakeArgs = dev.callLibs ./evalArgs.nix;
 in
 
-{ self, ... } @ args:
+_: { self, ... } @ args:
 let
 
-  cfg = (evalFlakeArgs { inherit args; }).config;
+  cfg = (dev.mkFlake.evalArgs { inherit args; }).config;
 
   multiPkgs = os.mkPkgs { inherit (cfg) extern overrides; };
 
