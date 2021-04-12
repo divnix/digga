@@ -15,6 +15,7 @@ lib.genAttrs utils.lib.defaultSystems (system:
 
       tests = callLibs ./tests;
       shell = callLibs ./shell;
+      mkFlakeDoc = callLibs ./mkFlakeDoc.nix;
     }
   )
 )
