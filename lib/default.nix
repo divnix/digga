@@ -20,6 +20,7 @@ lib.makeExtensible (final:
     mkFlake = {
       __functor = callLibs ./mkFlake;
       evalArgs = callLibs ./mkFlake/evalArgs.nix;
+      evalOldArgs = callLibs ./mkFlake/evalOldArgs.nix;
     };
 
     pkgs-lib = callLibs ./pkgs-lib;

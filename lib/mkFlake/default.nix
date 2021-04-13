@@ -7,7 +7,7 @@ in
 _: { self, ... } @ args:
 let
 
-  cfg = (dev.mkFlake.evalArgs { inherit args; }).config;
+  cfg = (dev.mkFlake.evalOldArgs { inherit args; }).config;
 
   multiPkgs = os.mkPkgs { inherit (cfg) extern overrides; };
 
