@@ -1,11 +1,11 @@
-{ pkgs, system, inputs, nixpkgs, lib, ... }:
+{ pkgs, system, deploy, nixpkgs, lib, ... }:
 let
   mkChecks = { hosts, nodes, homes ? { } }:
     let
       deployHosts = lib.filterAttrs
         (n: _: hosts.${n}.config.nixpkgs.system == system)
         nodes;
-      deployChecks = inputs.deploy.lib.${system}.deployChecks { nodes = deployHosts; };
+      deployChecks = deploy.lib.${system}.deployChecks { nodes = deployHosts; };
       tests =
         lib.optionalAttrs (deployHosts != { }) {
           profilesTest = profilesTest (hosts.${(builtins.head (builtins.attrNames deployHosts))});

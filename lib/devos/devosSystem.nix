@@ -1,4 +1,4 @@
-{ lib, nixpkgs, userSelf, inputs, ... }:
+{ lib, nixpkgs, userSelf, userFlakeInputs, ... }:
 
 { modules, ... } @ args:
 lib.nixosSystem (args // {
@@ -23,7 +23,7 @@ lib.nixosSystem (args // {
               disabledModules = map (x: [ x ])
                 (lib.remove modules.core suites.allProfiles);
 
-              nix.registry = lib.mapAttrs (n: v: { flake = v; }) inputs;
+              nix.registry = lib.mapAttrs (n: v: { flake = v; }) userFlakeInputs;
 
               isoImage.isoBaseName = "nixos-" + config.networking.hostName;
               isoImage.contents = [{
