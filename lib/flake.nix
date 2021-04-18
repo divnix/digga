@@ -5,14 +5,14 @@
     {
       deploy.url = "github:serokell/deploy-rs";
       deploy.inputs = {
-        utils.follows = "flake-utils";
+        utils.follows = "utils";
       };
       devshell.url = "github:numtide/devshell";
-      flake-utils.url = "github:numtide/flake-utils";
+      utils.url = "github:numtide/flake-utils";
       
     };
 
-  outputs = inputs@{ self, nixpkgs, deploy, devshell, flake-utils, ... }: let
+  outputs = inputs@{ self, nixpkgs, deploy, devshell, utils, ... }: let
 
     inherit (nixpkgs) lib;
 
@@ -48,7 +48,9 @@
         inherit (strings) rgxToString;
       });
 
-  in {
+  in
+
+  {
 
     # ... but don't force that choice onto the user
     lib = {
@@ -57,16 +59,22 @@
     };
 
 
-    checks = flake-utils.lib.eachDefaultSystem (system: let
-      nixpkgs = import nixpkgs { inherit system; overlays = []; config = {}; };
+  }
+
+  //
+
+  utils.lib.eachDefaultSystem (system:
+    let
+      nixpkgs' = import nixpkgs { inherit system; overlays = []; config = {}; };
     in
       {
-        tests = import ./tests {
-          inherit (nixpkgs) pkgs;
-          inherit (self) lib;
+        checks = {
+          tests = import ./tests {
+            inherit (nixpkgs') pkgs;
+            lib = combinedLib;
+          };
         };
       }
-    );
-  };
+  );
 
 }
