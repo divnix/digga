@@ -1,8 +1,8 @@
-{ lib, dev, self, ... }:
+{ lib, dev, userSelf, ... }:
 
 { pkgs }:
 let
-  inherit (self) overlay overlays;
+  inherit (userSelf) overlay overlays;
   packagesNames = lib.attrNames (overlay null null)
     ++ lib.attrNames (dev.concatAttrs
     (lib.attrValues

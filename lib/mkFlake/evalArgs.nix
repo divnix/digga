@@ -1,4 +1,4 @@
-{ self, dev, lib, inputs, utils, ... }:
+{ userSelf, dev, lib, inputs, utils, ... }:
 
 { args }:
 let
@@ -161,8 +161,8 @@ let
           };
           profiles = mkOption {
             type = path;
-            default = "${self}/profiles";
-            defaultText = "\${self}/profiles";
+            default = "${userSelf}/profiles";
+            defaultText = "\${userSelf}/profiles";
             apply = x: os.mkProfileAttrs (toString x);
             description = "path to profiles folder that can be collected into suites";
           };

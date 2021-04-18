@@ -1,4 +1,4 @@
-{ self, dev, lib, inputs, ... }:
+{ userSelf, dev, lib, inputs, ... }:
 
 { args }:
 let
@@ -22,8 +22,8 @@ let
         };
         hosts = mkOption {
           type = path;
-          default = "${self}/hosts";
-          defaultText = "\${self}/hosts";
+          default = "${userSelf}/hosts";
+          defaultText = "\${userSelf}/hosts";
           apply = toString;
           description = ''
             Path to directory containing host configurations that will be exported
@@ -64,15 +64,15 @@ let
         };
         profiles = mkOption {
           type = path;
-          default = "${self}/profiles";
-          defaultText = "\${self}/profiles";
+          default = "${userSelf}/profiles";
+          defaultText = "\${userSelf}/profiles";
           apply = x: os.mkProfileAttrs (toString x);
           description = "path to profiles folder that can be collected into suites";
         };
         userProfiles = mkOption {
           type = path;
-          default = "${self}/users/profiles";
-          defaultText = "\${self}/users/profiles";
+          default = "${userSelf}/users/profiles";
+          defaultText = "\${userSelf}/users/profiles";
           apply = x: os.mkProfileAttrs (toString x);
           description = "path to user profiles folder that can be collected into userSuites";
         };
@@ -97,8 +97,8 @@ let
           };
         users = mkOption {
           type = path;
-          default = "${self}/users";
-          defaultText = "\${self}/users";
+          default = "${userSelf}/users";
+          defaultText = "\${userSelf}/users";
           apply = x: os.mkProfileAttrs (toString x);
           description = ''
             path to folder containing profiles that define system users
@@ -121,9 +121,9 @@ let
               { modules = []; overlays = []; specialArgs = []; userModules = []; userSpecialArgs = []; }
             '';
             # So unneeded extern attributes can safely be deleted
-            apply = x: defaults // (x { inputs = inputs // self.inputs; });
+            apply = x: defaults // (x { inputs = inputs // userSelf.inputs; });
             description = ''
-              Function with argument 'inputs' that contains all devos and ''${self}'s inputs.
+              Function with argument 'inputs' that contains all devos and ''${userSelf}'s inputs.
               The function should return an attribute set with modules, overlays, and
               specialArgs to be included across nixos and home manager configurations.
               Only attributes that are used should be returned.
@@ -131,8 +131,8 @@ let
           };
         overlays = mkOption {
           type = path;
-          default = "${self}/overlays";
-          defaultText = "\${self}/overlays";
+          default = "${userSelf}/overlays";
+          defaultText = "\${userSelf}/overlays";
           apply = x: dev.pathsToImportedAttrs (dev.pathsIn (toString x));
           description = ''
             path to folder containing overlays which will be applied to pkgs and exported in
