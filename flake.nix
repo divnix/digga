@@ -8,11 +8,11 @@
       devos.url = "path:./lib"; # TODO: outfactor into separate repo
       devos.inputs = {
         nixpkgs.follows = "nixos";
-        deploy.inputs = {
-          flake-compat.follows = "flake-compat";
-          naersk.follows = "naersk";
-          nixpkgs.follows = "nixos";
-        };
+        # deploy.inputs = {
+        #   flake-compat.follows = "flake-compat";
+        #   naersk.follows = "naersk";
+        #   nixpkgs.follows = "nixos";
+        # };
       };
 
       ci-agent = {
