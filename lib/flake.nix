@@ -30,6 +30,11 @@
         lists = callLibs ./lists.nix;
         strings = callLibs ./strings.nix;
       in
+
+      utils.lib
+
+      //
+
       {
         inherit callLibs;
 
@@ -47,18 +52,18 @@
           pathsToImportedAttrs concatAttrs filterPackages;
         inherit (lists) pathsIn;
         inherit (strings) rgxToString;
-      });
+      }
+    );
 
   in
 
   {
 
     # ... but don't force that choice onto the user
-    lib = {
+    lib = utils.lib // {
       mkFlake = combinedLib.mkFlake;
       pkgs-lib = combinedLib.pkgs-lib;
     };
-
 
   }
 
