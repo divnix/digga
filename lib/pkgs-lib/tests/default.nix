@@ -1,4 +1,4 @@
-{ pkgs-lib, pkgs, system, inputs, nixos, lib, ... }:
+{ pkgs, system, inputs, nixos, lib, ... }:
 let
   mkChecks = { hosts, nodes, homes ? { } }:
     let
@@ -7,8 +7,7 @@ let
         nodes;
       deployChecks = inputs.deploy.lib.${system}.deployChecks { nodes = deployHosts; };
       tests =
-        { libTests = libTests; }
-        // lib.optionalAttrs (deployHosts != { }) {
+        lib.optionalAttrs (deployHosts != { }) {
           profilesTest = profilesTest (hosts.${(builtins.head (builtins.attrNames deployHosts))});
         } // lib.mapAttrs (n: v: v.activationPackage) homes;
 
@@ -51,33 +50,5 @@ let
       machine.systemctl("is-system-running --wait")
     '';
   };
-
-  libTests = pkgs.runCommandNoCC "devos-lib-tests"
-    {
-      buildInputs = [
-        pkgs.nix
-        (
-          let tests = pkgs-lib.callLibs ./lib.nix;
-          in
-          if tests == [ ]
-          then null
-          else throw (builtins.toJSON tests)
-        )
-      ];
-    } ''
-    datadir="${pkgs.nix}/share"
-    export TEST_ROOT=$(pwd)/test-tmp
-    export NIX_BUILD_HOOK=
-    export NIX_CONF_DIR=$TEST_ROOT/etc
-    export NIX_LOCALSTATE_DIR=$TEST_ROOT/var
-    export NIX_LOG_DIR=$TEST_ROOT/var/log/nix
-    export NIX_STATE_DIR=$TEST_ROOT/var/nix
-    export NIX_STORE_DIR=$TEST_ROOT/store
-    export PAGER=cat
-    cacheDir=$TEST_ROOT/binary-cache
-    nix-store --init
-
-    touch $out
-  '';
 in
-{ inherit mkTest libTests profilesTest mkChecks; }
+{ inherit mkTest profilesTest mkChecks; }
