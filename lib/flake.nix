@@ -21,14 +21,17 @@
       let callLibs = file: import file
         ({
           lib = final;
-          userFlakeInputs = {}; # TODO: Erm, this must become a proper argument to mkFlake
+          userFlakeNixos = {};
+          userFlakeSelf = {};
+          userFlakeInputs = {}; # TODO: Erm, theese must become proper arguments to mkFlake
         } // inputs);
       in
       with final;
       let
-        attrs = callLibs ./attrs.nix;
-        lists = callLibs ./lists.nix;
-        strings = callLibs ./strings.nix;
+
+        attrs = import ./attrs.nix { lib = prev; };
+        lists = import ./lists.nix { lib = prev; };
+        strings = import ./strings.nix { lib = prev; };
       in
 
       utils.lib
@@ -38,7 +41,7 @@
       {
         inherit callLibs;
 
-        os = callLibs ./devos;
+        os = import ./devos { lib = final; };
 
         mkFlake = {
           __functor = callLibs ./mkFlake;
@@ -46,7 +49,10 @@
           evalOldArgs = callLibs ./mkFlake/evalOldArgs.nix;
         };
 
-        pkgs-lib = callLibs ./pkgs-lib;
+        pkgs-lib = import ./pkgs-lib {
+          lib = final;
+          inherit nixpkgs deploy devshell;
+        };
 
         inherit (attrs) mapFilterAttrs genAttrs' safeReadDir
           pathsToImportedAttrs concatAttrs filterPackages;

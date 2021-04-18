@@ -1,4 +1,4 @@
-args@{ lib, nixpkgs, ... }:
+args@{ lib, nixpkgs, deploy, devshell }:
 lib.genAttrs lib.defaultSystems (system:
   lib.makeExtensible (final:
     let

@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib }:
 rec {
   # mapFilterAttrs ::
   #   (name -> value -> bool )
