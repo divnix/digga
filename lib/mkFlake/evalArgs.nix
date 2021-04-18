@@ -1,10 +1,10 @@
-{ userSelf, dev, lib, inputs, utils, ... }:
+{ userSelf, lib, inputs, utils, ... }:
 
 { args }:
 let
   argOpts = with lib; { config, ... }:
     let
-      inherit (dev) os;
+      inherit (lib) os;
 
       inherit (config) self;
 
@@ -146,7 +146,7 @@ let
           modules = mkOption {
             type = pathTo (listOf moduleType);
             default = [ ];
-            apply = dev.pathsToImportedAttrs;
+            apply = lib.pathsToImportedAttrs;
             description = ''
               list of modules to include in confgurations and export in '${name}Modules' output
             '';
@@ -154,7 +154,7 @@ let
           externalModules = mkOption {
             type = pathTo (listOf moduleType);
             default = [ ];
-            apply = dev.pathsToImportedAttrs;
+            apply = lib.pathsToImportedAttrs;
             description = ''
               list of modules to include in confguration but these are not exported to the '${name}Modules' output
             '';

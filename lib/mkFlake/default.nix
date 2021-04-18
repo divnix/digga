@@ -1,4 +1,4 @@
-{ dev, inputs, ... }:
+{ lib, inputs, ... }:
 let
   inherit (dev) os;
   inherit (inputs) utils deploy;
@@ -9,7 +9,7 @@ let
 
   userSelf = self;
 
-  cfg = (dev.mkFlake.evalOldArgs { inherit args; }).config;
+  cfg = (lib.mkFlake.evalOldArgs { inherit args; }).config;
 
   multiPkgs = os.mkPkgs { inherit (cfg) extern overrides; };
 
@@ -35,7 +35,7 @@ let
   systemOutputs = utils.lib.eachDefaultSystem (system:
     let
       pkgs = multiPkgs.${system};
-      pkgs-lib = dev.pkgs-lib.${system};
+      pkgs-lib = lib.pkgs-lib.${system};
       # all packages that are defined in ./pkgs
       legacyPackages = os.mkPackages { inherit pkgs; };
     in
@@ -47,7 +47,7 @@ let
       };
 
       inherit legacyPackages;
-      packages = dev.filterPackages system legacyPackages;
+      packages = lib.filterPackages system legacyPackages;
 
       devShell = pkgs-lib.shell;
     });

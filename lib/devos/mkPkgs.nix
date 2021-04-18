@@ -1,16 +1,16 @@
-{ lib, dev, nixpkgs, userSelf, inputs, ... }:
+{ lib, nixpkgs, userSelf, inputs, ... }:
 
 { extern, overrides }:
 (inputs.utils.lib.eachDefaultSystem
   (system:
     let
-      overridePkgs = dev.os.pkgImport inputs.override [ ] system;
+      overridePkgs = lib.os.pkgImport inputs.override [ ] system;
       overridesOverlay = overrides.packages;
 
       overlays = [
         (final: prev: {
           lib = prev.lib.extend (lfinal: lprev: {
-            inherit dev;
+            inherit lib;
             inherit (lib) nixosSystem;
 
             utils = inputs.utils.lib;
@@ -22,6 +22,6 @@
       ++ extern.overlays
       ++ (lib.attrValues userSelf.overlays);
     in
-    { pkgs = dev.os.pkgImport nixpkgs overlays system; }
+    { pkgs = lib.os.pkgImport nixpkgs overlays system; }
   )
 ).pkgs
