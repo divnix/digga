@@ -1,4 +1,4 @@
-{ userFlakeSelf, lib, nixpkgs, utils, ... }:
+{ userFlakeSelf, lib, nixpkgs, ... }:
 
 { args }:
 let
@@ -190,7 +190,7 @@ let
         };
         supportedSystems = mkOption {
           type = listOf str;
-          default = utils.lib.defaultSystems;
+          default = lib.defaultSystems;
           description = ''
             The systems supported by this flake
           '';

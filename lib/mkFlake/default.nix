@@ -1,4 +1,4 @@
-{ lib, utils, deploy, ... }:
+{ lib, deploy, ... }:
 let
   inherit (dev) os;
 in
@@ -31,7 +31,7 @@ let
     deploy.nodes = os.mkNodes deploy userFlakeSelf.nixosConfigurations;
   };
 
-  systemOutputs = utils.lib.eachDefaultSystem (system:
+  systemOutputs = lib.eachDefaultSystem (system:
     let
       pkgs = multiPkgs.${system};
       pkgs-lib = lib.pkgs-lib.${system};

@@ -12,8 +12,6 @@
           lib = prev.lib.extend (lfinal: lprev: {
             inherit lib;
             inherit (lib) nixosSystem;
-
-            utils = inputs.utils.lib;
           });
         })
         (overridesOverlay overridePkgs)
