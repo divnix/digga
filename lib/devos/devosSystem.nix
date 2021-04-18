@@ -1,4 +1,4 @@
-{ lib, nixpkgs, self, inputs, ... }:
+{ lib, nixpkgs, userSelf, inputs, ... }:
 
 { modules, ... } @ args:
 lib.nixosSystem (args // {
@@ -27,11 +27,11 @@ lib.nixosSystem (args // {
 
               isoImage.isoBaseName = "nixos-" + config.networking.hostName;
               isoImage.contents = [{
-                source = self;
+                source = userSelf;
                 target = "/devos/";
               }];
               isoImage.storeContents = [
-                self.devShell.${config.nixpkgs.system}
+                userSelf.devShell.${config.nixpkgs.system}
                 # include also closures that are "switched off" by the
                 # above profile filter on the local config attribute
                 fullHostConfig.system.build.toplevel

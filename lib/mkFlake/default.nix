@@ -7,13 +7,15 @@ in
 _: { self, ... } @ args:
 let
 
+  userSelf = self;
+
   cfg = (dev.mkFlake.evalOldArgs { inherit args; }).config;
 
   multiPkgs = os.mkPkgs { inherit (cfg) extern overrides; };
 
   outputs = {
     nixosConfigurations = os.mkHosts {
-      inherit self multiPkgs;
+      inherit userSelf multiPkgs;
       inherit (cfg) extern suites overrides;
       dir = cfg.hosts;
     };
@@ -27,7 +29,7 @@ let
     overlay = cfg.packages;
     inherit (cfg) overlays;
 
-    deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
+    deploy.nodes = os.mkNodes deploy userSelf.nixosConfigurations;
   };
 
   systemOutputs = utils.lib.eachDefaultSystem (system:
@@ -39,9 +41,9 @@ let
     in
     {
       checks = pkgs-lib.tests.mkChecks {
-        inherit (self.deploy) nodes;
-        hosts = self.nixosConfigurations;
-        homes = self.homeConfigurations;
+        inherit (userSelf.deploy) nodes;
+        hosts = userSelf.nixosConfigurations;
+        homes = userSelf.homeConfigurations;
       };
 
       inherit legacyPackages;
