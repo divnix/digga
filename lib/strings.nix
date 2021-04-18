@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib }:
 {
   # returns matching part of _regex_ _string_; null indicates failure.
   rgxToString = regex: string:
