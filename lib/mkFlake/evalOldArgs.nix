@@ -1,10 +1,10 @@
-{ userSelf, dev, lib, inputs, ... }:
+{ userSelf, lib, inputs, ... }:
 
 { args }:
 let
   argOpts = with lib; { config, options, ... }:
     let
-      inherit (dev) os;
+      inherit (lib) os;
 
       inherit (config) self;
 
@@ -48,7 +48,7 @@ let
         modules = mkOption {
           type = listOf moduleType;
           default = [ ];
-          apply = dev.pathsToImportedAttrs;
+          apply = lib.pathsToImportedAttrs;
           description = ''
             list of modules to include in confgurations and export in 'nixosModules' output
           '';
@@ -56,7 +56,7 @@ let
         userModules = mkOption {
           type = listOf moduleType;
           default = [ ];
-          apply = dev.pathsToImportedAttrs;
+          apply = lib.pathsToImportedAttrs;
           description = ''
             list of modules to include in home-manager configurations and export in
             'homeModules' output
@@ -133,7 +133,7 @@ let
           type = path;
           default = "${userSelf}/overlays";
           defaultText = "\${userSelf}/overlays";
-          apply = x: dev.pathsToImportedAttrs (dev.pathsIn (toString x));
+          apply = x: lib.pathsToImportedAttrs (lib.pathsIn (toString x));
           description = ''
             path to folder containing overlays which will be applied to pkgs and exported in
             the 'overlays' output

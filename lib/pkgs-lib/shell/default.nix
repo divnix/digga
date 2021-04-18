@@ -1,4 +1,4 @@
-{ lib, dev, inputs, system, nixpkgs, ... }:
+{ lib, inputs, system, nixpkgs, ... }:
 let
   overlays = [
     inputs.devshell.overlay
@@ -8,7 +8,7 @@ let
     })
   ];
 
-  pkgs = dev.os.pkgImport nixpkgs overlays system;
+  pkgs = lib.os.pkgImport nixpkgs overlays system;
 
   flk = pkgs.callPackage ./flk.nix { };
 

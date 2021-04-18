@@ -21,7 +21,6 @@
       let callLibs = file: import file
         ({
           lib = final;
-          dev = final;
           inputs = inputs;
         } // inputs);
       in
