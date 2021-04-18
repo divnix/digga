@@ -1,10 +1,10 @@
-{ lib, inputs, system, nixpkgs, ... }:
+{ lib, devshell, deploy, system, nixpkgs, ... }:
 let
   overlays = [
-    inputs.devshell.overlay
+    devshell.overlay
     (final: prev: {
       deploy-rs =
-        inputs.deploy.packages.${prev.system}.deploy-rs;
+        deploy.packages.${prev.system}.deploy-rs;
     })
   ];
 

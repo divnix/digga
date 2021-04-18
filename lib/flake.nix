@@ -21,7 +21,7 @@
       let callLibs = file: import file
         ({
           lib = final;
-          inputs = inputs;
+          userFlakeInputs = {}; # TODO: Erm, this must become a proper argument to mkFlake
         } // inputs);
       in
       with final;

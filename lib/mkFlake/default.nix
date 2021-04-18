@@ -1,7 +1,6 @@
-{ lib, inputs, ... }:
+{ lib, utils, deploy, ... }:
 let
   inherit (dev) os;
-  inherit (inputs) utils deploy;
 in
 
 _: { self, ... } @ args:

@@ -1,10 +1,10 @@
-{ lib, nixpkgs, userSelf, inputs, ... }:
+{ lib, nixpkgs, userSelf, utils, userFlakeInputs, ... }:
 
 { extern, overrides }:
-(inputs.utils.lib.eachDefaultSystem
+(utils.lib.eachDefaultSystem
   (system:
     let
-      overridePkgs = lib.os.pkgImport inputs.override [ ] system;
+      overridePkgs = lib.os.pkgImport userFlakeInputs.override [ ] system;
       overridesOverlay = overrides.packages;
 
       overlays = [
