@@ -26,13 +26,15 @@
         } // inputs);
       in
       with final;
+      let
+        attrs = callLibs ./attrs.nix;
+        lists = callLibs ./lists.nix;
+        strings = callLibs ./strings.nix;
+      in
       {
         inherit callLibs;
 
-        attrs = callLibs ./attrs.nix;
         os = callLibs ./devos;
-        lists = callLibs ./lists.nix;
-        strings = callLibs ./strings.nix;
 
         mkFlake = {
           __functor = callLibs ./mkFlake;
