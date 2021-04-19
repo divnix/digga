@@ -1,4 +1,6 @@
-{ lib, userFlakeSelf, ... }:
+{ lib }:
+
+{ userFlakeSelf }:
 
 { pkgs }:
 let

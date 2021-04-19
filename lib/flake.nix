@@ -14,24 +14,19 @@
 
   outputs = inputs@{ self, nixpkgs, deploy, devshell, utils, ... }: let
 
-    inherit (nixpkgs) lib;
-
-    # We work with a combined lib, internally ...
-    combinedLib = lib.extend (final: prev:
-      let callLibs = file: import file
-        ({
-          lib = final;
-          userFlakeNixos = {};
-          userFlakeSelf = {};
-          userFlakeInputs = {}; # TODO: Erm, theese must become proper arguments to mkFlake
-        } // inputs);
-      in
-      with final;
+    lib = nixpkgs.lib.makeExtensible (self:
       let
+        callLibs = file: import file
+          ({
+            lib = self;
+            userFlakeNixos = {};
+            userFlakeSelf = {};
+            userFlakeInputs = {}; # TODO: Erm, theese must become proper arguments to mkFlake
+          } // inputs);
 
-        attrs = import ./attrs.nix { lib = prev; };
-        lists = import ./lists.nix { lib = prev; };
-        strings = import ./strings.nix { lib = prev; };
+        attrs = import ./attrs.nix { lib = nixpkgs.lib // self; };
+        lists = import ./lists.nix { lib = nixpkgs.lib // self; };
+        strings = import ./strings.nix { lib = nixpkgs.lib // self; };
       in
 
       utils.lib
@@ -39,9 +34,10 @@
       //
 
       {
-        inherit callLibs;
-
-        os = import ./devos { lib = final; };
+        os = import ./devos {
+          lib = nixpkgs.lib // self;
+          inherit utils;
+        };
 
         mkFlake = {
           __functor = callLibs ./mkFlake;
@@ -50,12 +46,17 @@
         };
 
         pkgs-lib = import ./pkgs-lib {
-          lib = final;
+          lib = nixpkgs.lib // self;
           inherit nixpkgs deploy devshell;
         };
 
-        inherit (attrs) mapFilterAttrs genAttrs' safeReadDir
-          pathsToImportedAttrs concatAttrs filterPackages;
+        inherit (attrs)
+          mapFilterAttrs
+          genAttrs'
+          safeReadDir
+          pathsToImportedAttrs
+          concatAttrs
+          filterPackages;
         inherit (lists) pathsIn;
         inherit (strings) rgxToString;
       }
@@ -65,10 +66,9 @@
 
   {
 
-    # ... but don't force that choice onto the user
     lib = utils.lib // {
-      mkFlake = combinedLib.mkFlake;
-      pkgs-lib = combinedLib.pkgs-lib;
+      inherit (lib)
+        mkFlake;
     };
 
   }
@@ -83,7 +83,7 @@
         checks = {
           tests = import ./tests {
             inherit (nixpkgs') pkgs;
-            lib = combinedLib;
+            lib = nixpkgs.lib // lib;
           };
         };
       }

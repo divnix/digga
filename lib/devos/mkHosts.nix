@@ -1,6 +1,6 @@
-{ lib, nixpkgs, userFlakeInputs, userFlakeSelf, ... }:
+{ lib  }:
 
-{ dir, extern, suites, overrides, multiPkgs, ... }:
+{ dir, extern, suites, overrides, multiPkgs, userFlakeNixOS, userFlakeInputs, userFlakeSelf }:
 let
   defaultSystem = "x86_64-linux";
 
@@ -36,7 +36,7 @@ let
       hardware.enableRedistributableFirmware = lib.mkDefault true;
 
       nix.nixPath = [
-        "nixpkgs=${nixpkgs}"
+        "nixpkgs=${userFlakeNixOS}"
         "nixos-config=${userFlakeSelf}/compat/nixos"
         "home-manager=${userFlakeInputs.home}"
       ];
@@ -45,7 +45,7 @@ let
 
       nix.registry = {
         devos.flake = userFlakeSelf;
-        nixos.flake = nixpkgs;
+        nixos.flake = userFlakeNixOS;
         override.flake = userFlakeInputs.override;
       };
 
