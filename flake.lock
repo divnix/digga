@@ -75,13 +75,13 @@
       "inputs": {
         "deploy": "deploy",
         "devshell": "devshell",
-        "flake-utils": "flake-utils",
         "nixpkgs": [
           "nixos"
-        ]
+        ],
+        "utils": "utils_2"
       },
       "locked": {
-        "narHash": "sha256-077+hIF3WGvzgD3DeykCCKFL4xsgnE3ONaCNDnxH1t4=",
+        "narHash": "sha256-/SJJ8u/qBnCtMbMxBmDNBDnLWnmro2ioi35gL45hP9w=",
         "path": "./lib",
         "type": "path"
       },
@@ -135,21 +135,6 @@
         "owner": "BBBSnowball",
         "ref": "pr-1",
         "repo": "flake-compat",
-        "type": "github"
-      }
-    },
-    "flake-utils": {
-      "locked": {
-        "lastModified": 1618217525,
-        "narHash": "sha256-WGrhVczjXTiswQaoxQ+0PTfbLNeOQM6M36zvLn78AYg=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "c6169a2772643c4a93a0b5ac1c61e296cba68544",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
         "type": "github"
       }
     },
@@ -342,6 +327,21 @@
         "owner": "numtide",
         "repo": "flake-utils",
         "rev": "3982c9903e93927c2164caa727cd3f6a0e6d14cc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "utils_2": {
+      "locked": {
+        "lastModified": 1618217525,
+        "narHash": "sha256-WGrhVczjXTiswQaoxQ+0PTfbLNeOQM6M36zvLn78AYg=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c6169a2772643c4a93a0b5ac1c61e296cba68544",
         "type": "github"
       },
       "original": {
