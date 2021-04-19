@@ -63,7 +63,11 @@ let
     # Everything in `./modules/list.nix`.
     flakeModules = { imports = builtins.attrValues self.nixosModules ++ extern.modules; };
 
-    cachix = ../../cachix.nix;
+    cachix = let rootCachix = ../../cachix.nix; in
+      if builtins.pathExists rootCachix
+      then rootCachix
+      else { }
+    ;
   };
 
   specialArgs = extern.specialArgs // { suites = suites.system; };
