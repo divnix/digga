@@ -1,6 +1,8 @@
 { lib  }:
 
-{ dir, extern, suites, overrides, multiPkgs, userFlakeNixOS, userFlakeInputs, userFlakeSelf }:
+{ userFlakeNixOS, userFlakeInputs, userFlakeSelf }:
+
+{ dir, extern, suites, overrides, multiPkgs }:
 let
   defaultSystem = "x86_64-linux";
 
@@ -91,6 +93,8 @@ let
       };
     in
     lib.os.devosSystem {
+      inherit userFlakeNixOS userFlakeInputs userFlakeSelf;
+    } {
       inherit specialArgs;
       system = defaultSystem;
       modules = modules // { inherit local lib; };

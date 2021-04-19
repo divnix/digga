@@ -3,23 +3,30 @@ let
   inherit (dev) os;
 in
 
-_: { self, ... } @ args:
+_: { self, inputs, nixos, ... } @ args:
 let
 
   userFlakeSelf = self;
+  userFlakeInputs = inputs;
+  userFlakeNixOS = nixos;
 
   cfg = (lib.mkFlake.evalOldArgs { inherit args; }).config;
 
-  multiPkgs = os.mkPkgs { inherit (cfg) extern overrides; };
+  multiPkgs = os.mkPkgs
+    { inherit userFlakeSelf userFlakeInputs userFlakeNixOS; }
+    { inherit (cfg) extern overrides; };
 
   outputs = {
-    nixosConfigurations = os.mkHosts {
-      inherit userFlakeSelf multiPkgs;
-      inherit (cfg) extern suites overrides;
-      dir = cfg.hosts;
-    };
+    nixosConfigurations = os.mkHosts
+      { inherit userFlakeSelf userFlakeInputs userFlakeNixOS; }
+      {
+        inherit multiPkgs;
+        inherit (cfg) extern suites overrides;
+        dir = cfg.hosts;
+      };
 
-    homeConfigurations = os.mkHomeConfigurations;
+    homeConfigurations = os.mkHomeConfigurations
+      { inherit userFlakeSelf; };
 
     nixosModules = cfg.modules;
 
@@ -36,7 +43,9 @@ let
       pkgs = multiPkgs.${system};
       pkgs-lib = lib.pkgs-lib.${system};
       # all packages that are defined in ./pkgs
-      legacyPackages = os.mkPackages { inherit pkgs; };
+      legacyPackages = os.mkPackages
+        { inherit userFlakeSelf; }
+        { inherit pkgs; };
     in
     {
       checks = pkgs-lib.tests.mkChecks {
