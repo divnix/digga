@@ -28,7 +28,7 @@ are unstable versions (0._x_._x_) to help users keep track of changes and
 progress.
 
 ## Getting Started
-Check out the [guide](https://devos.divnix.com/doc/start) to get up and running.
+Check out the [guide](https://devos.divnix.com/start) to get up and running.
 
 ## In the Wild
 The author maintains his own branch, so you can take inspiration, direction, or
