@@ -1,4 +1,6 @@
-{ lib, userFlakeSelf, ... }:
+{ lib }:
+
+{ userFlakeSelf }:
 
 with lib;
 let

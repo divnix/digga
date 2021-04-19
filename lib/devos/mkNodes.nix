@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib }:
 
 /**
   Synopsis: mkNodes _nixosConfigurations_

@@ -1,6 +1,6 @@
-{ lib, nixpkgs, userFlakeSelf, utils, userFlakeInputs, ... }:
+{ lib, utils }:
 
-{ extern, overrides }:
+{ extern, overrides, userFlakeNixOS, userFlakeSelf, userFlakeInputs }:
 (utils.lib.eachDefaultSystem
   (system:
     let
@@ -20,6 +20,6 @@
       ++ extern.overlays
       ++ (lib.attrValues userFlakeSelf.overlays);
     in
-    { pkgs = lib.os.pkgImport nixpkgs overlays system; }
+    { pkgs = lib.os.pkgImport userFlakeNixOS overlays system; }
   )
 ).pkgs

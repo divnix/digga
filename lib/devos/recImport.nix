@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib }:
 
 { dir, _import ? base: import "${dir}/${base}.nix" }:
 lib.mapFilterAttrs
