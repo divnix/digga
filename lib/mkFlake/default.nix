@@ -1,6 +1,6 @@
-{ lib, deploy, ... }:
+{ lib, deploy }:
 let
-  inherit (dev) os;
+  inherit (lib) os;
 in
 
 _: { self, inputs, nixos, ... } @ args:
@@ -10,7 +10,11 @@ let
   userFlakeInputs = inputs;
   userFlakeNixOS = nixos;
 
-  cfg = (lib.mkFlake.evalOldArgs { inherit args; }).config;
+  cfg = (
+    lib.mkFlake.evalOldArgs
+      { inherit userFlakeSelf userFlakeInputs; }
+      { inherit args; }
+  ).config;
 
   multiPkgs = os.mkPkgs
     { inherit userFlakeSelf userFlakeInputs userFlakeNixOS; }

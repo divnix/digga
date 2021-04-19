@@ -1,4 +1,6 @@
-{ userFlakeSelf, lib, inputs, ... }:
+{ lib }:
+
+{ userFlakeSelf, userFlakeInputs }:
 
 { args }:
 let
@@ -121,7 +123,7 @@ let
               { modules = []; overlays = []; specialArgs = []; userModules = []; userSpecialArgs = []; }
             '';
             # So unneeded extern attributes can safely be deleted
-            apply = x: defaults // (x { inputs = inputs // userFlakeSelf.inputs; });
+            apply = x: defaults // (x { inputs = userFlakeInputs // userFlakeSelf.inputs; });
             description = ''
               Function with argument 'inputs' that contains all devos and ''${userFlakeSelf}'s inputs.
               The function should return an attribute set with modules, overlays, and

@@ -16,14 +16,6 @@
 
     lib = nixpkgs.lib.makeExtensible (self:
       let
-        callLibs = file: import file
-          ({
-            lib = self;
-            userFlakeNixos = {};
-            userFlakeSelf = {};
-            userFlakeInputs = {}; # TODO: Erm, theese must become proper arguments to mkFlake
-          } // inputs);
-
         attrs = import ./attrs.nix { lib = nixpkgs.lib // self; };
         lists = import ./lists.nix { lib = nixpkgs.lib // self; };
         strings = import ./strings.nix { lib = nixpkgs.lib // self; };
@@ -40,9 +32,12 @@
         };
 
         mkFlake = {
-          __functor = callLibs ./mkFlake;
-          evalArgs = callLibs ./mkFlake/evalArgs.nix;
-          evalOldArgs = callLibs ./mkFlake/evalOldArgs.nix;
+          __functor = import ./mkFlake {
+            lib = nixpkgs.lib // self;
+            inherit deploy;
+          };
+          evalArgs = import  ./mkFlake/evalArgs.nix { lib = nixpkgs.lib // self; };
+          evalOldArgs = import  ./mkFlake/evalOldArgs.nix { lib = nixpkgs.lib // self; };
         };
 
         pkgs-lib = import ./pkgs-lib {

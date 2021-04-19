@@ -1,4 +1,6 @@
-{ userFlakeSelf, lib, nixpkgs, ... }:
+{ lib }:
+
+{ userFlakeSelf, userFlakeNixOS }:
 
 { args }:
 let
@@ -54,7 +56,7 @@ let
         options = with types; {
           input = mkOption {
             type = flakeType;
-            default = nixpkgs;
+            default = userFlakeNixOS;
             description = ''
               nixpkgs flake input to use for this channel
            '';
@@ -199,7 +201,7 @@ let
           let
             default = {
               nixpkgs = {
-                input = nixpkgs;
+                input = userFlakeNixOS;
               };
             };
           in
