@@ -1,4 +1,4 @@
-{ userSelf, lib, nixpkgs, utils, ... }:
+{ userFlakeSelf, lib, nixpkgs, utils, ... }:
 
 { args }:
 let
@@ -161,8 +161,8 @@ let
           };
           profiles = mkOption {
             type = path;
-            default = "${userSelf}/profiles";
-            defaultText = "\${userSelf}/profiles";
+            default = "${userFlakeSelf}/profiles";
+            defaultText = "\${userFlakeSelf}/profiles";
             apply = x: os.mkProfileAttrs (toString x);
             description = "path to profiles folder that can be collected into suites";
           };

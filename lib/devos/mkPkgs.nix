@@ -1,4 +1,4 @@
-{ lib, nixpkgs, userSelf, utils, userFlakeInputs, ... }:
+{ lib, nixpkgs, userFlakeSelf, utils, userFlakeInputs, ... }:
 
 { extern, overrides }:
 (utils.lib.eachDefaultSystem
@@ -17,10 +17,10 @@
           });
         })
         (overridesOverlay overridePkgs)
-        userSelf.overlay
+        userFlakeSelf.overlay
       ]
       ++ extern.overlays
-      ++ (lib.attrValues userSelf.overlays);
+      ++ (lib.attrValues userFlakeSelf.overlays);
     in
     { pkgs = lib.os.pkgImport nixpkgs overlays system; }
   )

@@ -1,4 +1,4 @@
-{ lib, nixpkgs, userFlakeInputs, userSelf, ... }:
+{ lib, nixpkgs, userFlakeInputs, userFlakeSelf, ... }:
 
 { dir, extern, suites, overrides, multiPkgs, ... }:
 let
@@ -29,7 +29,7 @@ let
         useUserPackages = true;
 
         extraSpecialArgs = extern.userSpecialArgs // { suites = suites.user; };
-        sharedModules = extern.userModules ++ (builtins.attrValues userSelf.homeModules);
+        sharedModules = extern.userModules ++ (builtins.attrValues userFlakeSelf.homeModules);
       };
       users.mutableUsers = lib.mkDefault false;
 
@@ -37,14 +37,14 @@ let
 
       nix.nixPath = [
         "nixpkgs=${nixpkgs}"
-        "nixos-config=${userSelf}/compat/nixos"
+        "nixos-config=${userFlakeSelf}/compat/nixos"
         "home-manager=${userFlakeInputs.home}"
       ];
 
       nixpkgs.pkgs = lib.mkDefault multiPkgs.${config.nixpkgs.system};
 
       nix.registry = {
-        devos.flake = userSelf;
+        devos.flake = userFlakeSelf;
         nixos.flake = nixpkgs;
         override.flake = userFlakeInputs.override;
       };
@@ -57,11 +57,11 @@ let
         }
       '';
 
-      system.configurationRevision = lib.mkIf (userSelf ? rev) userSelf.rev;
+      system.configurationRevision = lib.mkIf (userFlakeSelf ? rev) userFlakeSelf.rev;
     };
 
     # Everything in `./modules/list.nix`.
-    flakeModules = { imports = builtins.attrValues userSelf.nixosModules ++ extern.modules; };
+    flakeModules = { imports = builtins.attrValues userFlakeSelf.nixosModules ++ extern.modules; };
 
     cachix = ../../cachix.nix;
   };
@@ -78,7 +78,7 @@ let
         networking = { inherit hostName; };
 
         _module.args = {
-          self = userSelf;
+          self = userFlakeSelf;
           hosts = builtins.mapAttrs (_: host: host.config)
             (removeAttrs hosts [ hostName ]);
         };
