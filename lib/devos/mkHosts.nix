@@ -37,7 +37,7 @@ let
 
       nix.nixPath = [
         "nixpkgs=${nixos}"
-        "nixos-config=${self}/compat/nixos"
+        "nixos-config=${self}/lib/compat/nixos"
         "home-manager=${inputs.home}"
       ];
 

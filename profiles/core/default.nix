@@ -77,7 +77,7 @@ in
         '';
 
         # fix nixos-option
-        nixos-option = "nixos-option -I nixpkgs=${toString ../../compat}";
+        nixos-option = "nixos-option -I nixpkgs=${toString ../../lib/compat}";
 
         # sudo
         s = ifSudo "sudo -E ";
