@@ -1,6 +1,8 @@
 { lib, utils }:
 
-{ extern, overrides, userFlakeNixOS, userFlakeSelf, userFlakeInputs }:
+{ userFlakeNixOS, userFlakeSelf, userFlakeInputs }:
+
+{ extern, overrides }:
 (utils.lib.eachDefaultSystem
   (system:
     let
