@@ -4,7 +4,7 @@ chosen for devos after the author experienced some frustrations with the
 stateful nature of nixops' db. It was also designed from scratch to support
 flake based deployments, and so is an excellent tool for the job.
 
-By default, all the [hosts](../../hosts) are also available as deploy-rs nodes,
+By default, all the [hosts](../concepts/hosts.md) are also available as deploy-rs nodes,
 configured with the hostname set to `networking.hostName`; overridable via
 the command line.
 

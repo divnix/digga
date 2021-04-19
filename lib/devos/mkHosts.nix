@@ -37,7 +37,7 @@ let
 
       nix.nixPath = [
         "nixpkgs=${nixos}"
-        "nixos-config=${self}/compat/nixos"
+        "nixos-config=${self}/lib/compat/nixos"
         "home-manager=${inputs.home}"
       ];
 
@@ -63,7 +63,11 @@ let
     # Everything in `./modules/list.nix`.
     flakeModules = { imports = builtins.attrValues self.nixosModules ++ extern.modules; };
 
-    cachix = ../../cachix.nix;
+    cachix = let rootCachix = ../../cachix.nix; in
+      if builtins.pathExists rootCachix
+      then rootCachix
+      else { }
+    ;
   };
 
   specialArgs = extern.specialArgs // { suites = suites.system; };

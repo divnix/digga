@@ -55,10 +55,10 @@ There are two branches from which to choose: [core][core] and
 several ready-made profiles for discretionary use.
 
 Every package and NixOS profile declared in community is uploaded to
-[cachix](./cachix), so everything provided is available without building
-anything. This is especially useful for the packages that are
-[overridden](./overrides) from master, as without the cache, rebuilds are
-quite frequent.
+[cachix](./integrations/cachix.md), so everything provided is available
+without building anything. This is especially useful for the packages that are
+[overridden](./concepts/overrides.md) from master, as without the cache,
+rebuilds are quite frequent.
 
 ## Inspiration & Art
 - [hlissner/dotfiles][dotfiles]

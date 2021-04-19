@@ -1,1 +1,1 @@
-(import ./compat).shellNix
+(import ./lib/compat).shellNix

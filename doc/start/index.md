@@ -22,7 +22,7 @@ This will place you in a new folder named `flk` with git initialized, and a
 nix-shell that provides all the dependencies, including the unstable nix
 version required.
 
-In addition, the [binary cache](../../cachix) is added for faster deployment.
+In addition, the [binary cache](../integrations/cachix.md) is added for faster deployment.
 
 > ##### _Notes:_
 > - You can change `core` to [`community`](../../index.md#community-profiles)

@@ -4,13 +4,13 @@ The modules directory is a replica of nixpkg's NixOS [modules][nixpkgs-modules]
 nixpkgs proper once your module is sufficiently stable.
 
 All modules linked in _module-list.nix_ are automatically exported via
-`nixosModules.<file-basename>`, and imported into all [hosts](../hosts).
+`nixosModules.<file-basename>`, and imported into all [hosts](../concepts/hosts.md).
 
 
 > ##### _Note:_
 > This is reserved for declaring brand new module options. If you just want to
 > declare a coherent configuration of already existing and related NixOS options
-> , use [profiles](../profiles) instead.
+> , use [profiles](../concepts/profiles.md) instead.
 
 ## Semantics
 In case you've never written a module for nixpkgs before, here is a brief

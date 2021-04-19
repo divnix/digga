@@ -6,6 +6,8 @@ profiles. For good examples, check out the suites defined in the community
 In the future, we will use suites as a mechanism for deploying various machine
 types which don't depend on hardware, such as vm's and containers.
 
+They are defined in `profiles/suites.nix`.
+
 ## Definition
 ```nix
 rec {

@@ -17,16 +17,16 @@ matching the current systems hostname if one is not specified explicitly.
 
 It is recommended that the host modules only contain configuration information
 specific to a particular piece of hardware. Anything reusable across machines
-is best saved for [profile modules](../profiles).
+is best saved for [profile modules](./profiles.md).
 
-This is a good place to import sets of profiles, called [suites](../suites),
+This is a good place to import sets of profiles, called [suites](./suites.md),
 that you intend to use on your machine.
 
 Additionally, this is the perfect place to import anything you might need from
 the [nixos-hardware][nixos-hardware] repository.
 
 > ##### _Note:_
-> Set `nixpkgs.system` to the architecture of this host, default is "x86_64-linux". 
+> Set `nixpkgs.system` to the architecture of this host, default is "x86_64-linux".
 > Keep in mind that not all packages are available for all architectures.
 
 ## Example
