@@ -39,7 +39,7 @@
         packages = import ./pkgs;
         suites = import ./suites;
         extern = import ./extern;
-        overrides = import ./overrides;
+        overrides = import ./extern/overrides.nix;
         overlays = ./overlays;
         profiles = ./profiles;
         userProfiles = ./users/profiles;
