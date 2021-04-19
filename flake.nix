@@ -37,7 +37,7 @@
         inherit self;
         hosts = ./hosts;
         packages = import ./pkgs;
-        suites = import ./suites;
+        suites = import ./profiles/suites.nix;
         extern = import ./extern;
         overrides = import ./extern/overrides.nix;
         overlays = ./overlays;
