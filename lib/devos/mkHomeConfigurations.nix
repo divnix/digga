@@ -1,4 +1,4 @@
-{ lib, userSelf, ... }:
+{ lib, userFlakeSelf, ... }:
 
 with lib;
 let
@@ -6,7 +6,7 @@ let
     mapAttrs' (user: v: nameValuePair "${user}@${host}" v.home)
       config.config.system.build.homes;
 
-  hmConfigs = mapAttrs mkHomes userSelf.nixosConfigurations;
+  hmConfigs = mapAttrs mkHomes userFlakeSelf.nixosConfigurations;
 
 in
 foldl recursiveUpdate { } (attrValues hmConfigs)
