@@ -1,6 +1,6 @@
 # DevOS 2.0
 
-- We want to be a god ecosystem citizen, therefore we want to rebase on [`gytis/flake-utils-plus`](https://github.com/gytis-ivaskevicius/flake-utils-plus).
+- We want to be a good ecosystem citizen, therefore we want to rebase on [`gytis/flake-utils-plus`](https://github.com/gytis-ivaskevicius/flake-utils-plus).
 - `gytis/flake-utils-plus` is designed to be incorporated in upstream flake-utils. As the name suggests, it wraps and extends `flake-utils` for nixos related use cases.
 - `devos-lib` shall be another layer that wraps `flakes-utils-plus` and adds accoustomed devos amentities, such as:
   - automagic importers, for pure convenience, but without prescribing a particular folder layout (that is something for devos templates to achieve).
