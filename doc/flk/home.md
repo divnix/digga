@@ -4,5 +4,5 @@ NixOS, providing an awesome mechanism for keeping your environments
 synchronized, even when using other systems.
 
 ## Usage
-The [users](../../users/index.md#external-usage) page contains a good usage
+The [users](../concepts/users.md#external-usage) page contains a good usage
 example.

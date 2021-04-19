@@ -2,4 +2,4 @@ result
 up
 hosts/up-*
 .direnv
-book
+doc/index.html

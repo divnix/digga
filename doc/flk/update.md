@@ -11,8 +11,8 @@ contains a flake.nix, with an optional arguement to update only a specific
 input in the subflake.
 
 For example, you can update any
-[package sources](../../pkgs#automatic-source-updates) you may have declared
-in _pkgs/flake.nix_:
+[package sources](../outputs/pkgs.md#automatic-source-updates) you may have
+declared in _pkgs/flake.nix_:
 ```sh
 flk update pkgs
 ```
