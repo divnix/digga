@@ -1,20 +1,9 @@
-args@{ lib, nixpkgs, deploy, devshell }:
-lib.genAttrs lib.defaultSystems (system:
-  lib.makeExtensible (final:
-    let
-      pkgs = import nixpkgs { inherit system; };
-      callLibs = file: import file
-        (args // {
-          inherit pkgs system;
-          pkgs-lib = final;
-        });
-    in
-    with final;
-    {
-      inherit callLibs;
+{ lib, nixpkgs, deploy, devshell }:
 
-      tests = callLibs ./tests;
-      shell = callLibs ./shell;
+lib.genAttrs
+  lib.defaultSystems (system:
+    {
+      tests = import ./tests { inherit lib deploy nixpkgs pkgs system; };
+      shell = import ./shell { inherit lib devshell deploy nixpkgs system; };
     }
   )
-)

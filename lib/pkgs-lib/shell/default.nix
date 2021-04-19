@@ -1,14 +1,17 @@
-{ lib, devshell, deploy, system, nixpkgs, ... }:
+{ lib, nixpkgs, devshell, deploy, system }:
 let
   overlays = [
+
     devshell.overlay
+
     (final: prev: {
       deploy-rs =
         deploy.packages.${prev.system}.deploy-rs;
     })
+
   ];
 
-  pkgs = lib.os.pkgImport nixpkgs overlays system;
+  pkgs = import nixpkgs { inherit system overlays;; config = {}; };
 
   flk = pkgs.callPackage ./flk.nix { };
 

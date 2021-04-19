@@ -1,5 +1,7 @@
-{ pkgs, system, deploy, nixpkgs, lib, ... }:
+{ lib, nixpkgs, deploy, system }:
 let
+  pkgs = import nixpkgs { inherit system; overlays = []; config = {}; };
+
   mkChecks = { hosts, nodes, homes ? { } }:
     let
       deployHosts = lib.filterAttrs
