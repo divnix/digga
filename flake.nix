@@ -35,7 +35,7 @@
 
   outputs = inputs@{ self, devos, nixos, nur, ... }:
     devos.lib.mkFlake {
-      inherit self;
+      inherit self inputs nixos;
       hosts = ./hosts;
       packages = import ./pkgs;
       suites = import ./suites;

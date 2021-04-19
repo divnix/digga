@@ -22,6 +22,14 @@ let
           type = addCheck attrs lib.isStorePath;
           description = "The flake to create the devos outputs for";
         };
+        nixos = mkOption {
+          type = addCheck attrs lib.isStorePath;
+          description = "The default nixpkgs channel of the devos";
+        };
+        inputs = mkOption {
+          type = addCheck attrs lib.isStorePath;
+          description = "All inptus of the devos";
+        };
         hosts = mkOption {
           type = path;
           default = "${userFlakeSelf}/hosts";

@@ -65,7 +65,7 @@ let
     # Everything in `./modules/list.nix`.
     flakeModules = { imports = builtins.attrValues userFlakeSelf.nixosModules ++ extern.modules; };
 
-    cachix = ../../cachix.nix;
+    cachix = "${userFlakeSelf}/cachix.nix";
   };
 
   specialArgs = extern.specialArgs // { suites = suites.system; };
@@ -84,12 +84,12 @@ let
           hosts = builtins.mapAttrs (_: host: host.config)
             (removeAttrs hosts [ hostName ]);
         };
-      };
-      lib = {
+
         lib = { inherit specialArgs; };
         lib.testModule = {
           imports = builtins.attrValues modules;
         };
+
       };
     in
     lib.os.devosSystem {
@@ -97,7 +97,7 @@ let
     } {
       inherit specialArgs;
       system = defaultSystem;
-      modules = modules // { inherit local lib; };
+      modules = modules // { inherit local; };
     };
 
   hosts = lib.os.recImport

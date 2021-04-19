@@ -1,6 +1,6 @@
 { lib }:
 
-{ userFlakeNixos, userFlakeSelf, userFlakeInputs }:
+{ userFlakeNixOS, userFlakeSelf, userFlakeInputs }:
 
 { modules, ... } @ args:
 lib.nixosSystem (args // {
@@ -15,7 +15,7 @@ lib.nixosSystem (args // {
         (args // {
           modules = moduleList ++ [
 
-            "${userFlakeNixos}/${modpath}/installer/cd-dvd/installation-cd-minimal-new-kernel.nix"
+            "${userFlakeNixOS}/${modpath}/installer/cd-dvd/installation-cd-minimal-new-kernel.nix"
 
             ({ config, suites, ... }: {
 

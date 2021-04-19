@@ -11,7 +11,7 @@ let
 
   ];
 
-  pkgs = import nixpkgs { inherit system overlays;; config = {}; };
+  pkgs = import nixpkgs { inherit system overlays; config = {}; };
 
   flk = pkgs.callPackage ./flk.nix { };
 

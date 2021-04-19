@@ -11,7 +11,6 @@ in
       binutils
       coreutils
       curl
-      deploy-rs
       direnv
       dnsutils
       dosfstools
