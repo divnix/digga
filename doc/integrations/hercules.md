@@ -15,7 +15,7 @@ binary cache (and of course you do), be sure _not_ to skip the
 [binary-caches.json][cache].
 
 ## Ready to Use
-The repo is already set up with the proper _nix/ci.nix_ file, building all
+The repo is already set up with the proper _default.nix_ file, building all
 declared packages, checks, profiles and shells. So you can see if something
 breaks, and never build the same package twice!
 
