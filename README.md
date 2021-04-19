@@ -28,7 +28,7 @@ are unstable versions (0._x_._x_) to help users keep track of changes and
 progress.
 
 ## Getting Started
-Check out the [guide](https://devos.divnix.com/doc/start) to get up and running.
+Check out the [guide](https://devos.divnix.com/start) to get up and running.
 
 ## In the Wild
 The author maintains his own branch, so you can take inspiration, direction, or
@@ -55,10 +55,10 @@ There are two branches from which to choose: [core][core] and
 several ready-made profiles for discretionary use.
 
 Every package and NixOS profile declared in community is uploaded to
-[cachix](./cachix), so everything provided is available without building
-anything. This is especially useful for the packages that are
-[overridden](./overrides) from master, as without the cache, rebuilds are
-quite frequent.
+[cachix](./integrations/cachix.md), so everything provided is available
+without building anything. This is especially useful for the packages that are
+[overridden](./concepts/overrides.md) from master, as without the cache,
+rebuilds are quite frequent.
 
 ## Inspiration & Art
 - [hlissner/dotfiles][dotfiles]

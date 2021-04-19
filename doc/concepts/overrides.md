@@ -1,6 +1,6 @@
 # Overrides
-By default, the NixOS systems are based on the latest release. While it is
-trivial to change this to nixos-unstable or any other branch of nixpkgs by
+By default, the NixOS systems are based on unstable. While it is trivial to
+change this to a stable release, or any other branch of nixpkgs by
 changing the flake url, sometimes all we want is a single package from another
 branch.
 
@@ -8,6 +8,7 @@ This is what the overrides are for. By default, they are pulled directly from
 nixpkgs/master, but you can change the `override` flake input url to
 nixos-unstable, or even a specific sha revision.
 
+They are defined in the `extern/overrides.nix` file.
 
 ## Example
 

@@ -2,6 +2,7 @@
 let inherit (lib) fileContents;
 in
 {
+  imports = [ ../cachix ];
 
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
@@ -75,7 +76,7 @@ in
         '';
 
         # fix nixos-option
-        nixos-option = "nixos-option -I nixpkgs=${toString ../../compat}";
+        nixos-option = "nixos-option -I nixpkgs=${toString ../../lib/compat}";
 
         # sudo
         s = ifSudo "sudo -E ";

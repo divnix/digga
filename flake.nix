@@ -38,9 +38,9 @@
       inherit self inputs nixos;
       hosts = ./hosts;
       packages = import ./pkgs;
-      suites = import ./suites;
+      suites = import ./profiles/suites.nix;
       extern = import ./extern;
-      overrides = import ./overrides;
+      overrides = import ./extern/overrides.nix;
       overlays = ./overlays;
       profiles = ./profiles;
       userProfiles = ./users/profiles;

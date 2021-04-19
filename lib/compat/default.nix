@@ -1,7 +1,7 @@
 let
   inherit (lock.nodes.flake-compat.locked) rev narHash;
 
-  lock = builtins.fromJSON (builtins.readFile ../flake.lock);
+  lock = builtins.fromJSON (builtins.readFile "${../..}/flake.lock");
   flake = (import
     (
       fetchTarball {
@@ -10,7 +10,7 @@ let
       }
     )
     {
-      src = ../.;
+      src = ../../.;
     });
 in
 flake

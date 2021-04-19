@@ -15,8 +15,8 @@ your region. Keep in mind that `networking.hostName` with be automatically
 set to the filename of your hosts file, so `hosts/my-host.nix` will have the
 hostname `my-host`.
 
-Now might be a good time to read the docs on [suites](../../suites) and
-[profiles](../../profiles) and add or create any that you need.
+Now might be a good time to read the docs on [suites](../concepts/suites.md) and
+[profiles](../concepts/profiles.md) and add or create any that you need.
 
 > ##### _Note:_
 > While the `up` sub-command is provided as a convenience to quickly set up and

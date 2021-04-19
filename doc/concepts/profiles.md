@@ -12,17 +12,17 @@ is maintained to help get up to speed on their usage.
 For the sake of consistency, a profile should always be defined in a
 ___default.nix___ containing a [nixos module config][config].
 A profile's directory is used for quick modularization of
-[interelated bits](./#subprofiles).
+[interelated bits](./profiles.md#subprofiles).
 
 > ##### _Notes:_
-> * For _declaring_ module options, there's the [modules](../modules) directory.
+> * For _declaring_ module options, there's the [modules](../outputs/modules.md) directory.
 > * This directory takes inspiration from
 >   [upstream](https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles)
 >   .
 > * Sticking to a simple [spec][spec] has refreshing advantages.
->   [hercules-ci](../doc/integrations/hercules.md) expects all profiles to be
+>   [hercules-ci](../integrations/hercules.md) expects all profiles to be
 >   defined in a ___default.nix___, allowing them to be built automatically when
->   added. Congruently, [suites](../suites) expect ___default.nix___ to avoid
+>   added. Congruently, [suites](suites.md) expect ___default.nix___ to avoid
 >   having to manage their paths manually.
 
 ## Subprofiles
@@ -56,7 +56,7 @@ profiles/develop/zsh/default.nix:
 Profiles are the most important concept in DevOS. They allow us to keep our
 Nix expressions self contained and modular. This way we can maximize reuse
 across hosts while minimizing boilerplate. Remember, anything machine
-specific belongs in your [host](../hosts) files instead.
+specific belongs in your [host](hosts.md) files instead.
 
 [definition]: https://nixos.org/manual/nixos/stable/index.html#sec-option-definitions
 [declaration]: https://nixos.org/manual/nixos/stable/index.html#sec-option-declarations
