@@ -82,63 +82,63 @@ let
         };
       };
 
-      configModule = {
+      hostModule = {
         options = with types; {
           system = mkOption {
             type = systemType;
             default = "x86_64-linux";
             description = ''
-              system for this config
+              system for this host
             '';
           };
           channelName = mkOption {
             type = types.enum (builtins.attrValues config.channels);
             default = "nixpkgs";
             description = ''
-              Channel this config should follow
+              Channel this host should follow
             '';
           };
           modules = mkOption {
             type = pathToListOf moduleType;
             default = [ ];
             description = ''
-              The configuration for this config
+              The configuration for this host
             '';
           };
         };
       };
 
-      # This is only needed for configDefaults
-      # modules in each config don't get exported
+      # This is only needed for hostDefaults
+      # modules in each host don't get exported
       externalModulesModule = {
         options = {
           externalModules = mkOption {
             type = pathToListOf moduleType;
             default = [ ];
             description = ''
-              The configuration for this config
+              The configuration for this host
             '';
           };
         };
       };
 
       # Home-manager's configs get exported automatically from nixos.hosts
-      # So there is no need for a config options in the home namespace
+      # So there is no need for a host options in the home namespace
       # This is only needed for nixos
-      includeConfigsModule = { name, ... }: {
+      includeHostsModule = { name, ... }: {
         options = with types; {
-          configDefaults = mkOption {
-            type = submodule [ configModule externalModulesModule ];
+          hostDefaults = mkOption {
+            type = submodule [ hostModule externalModulesModule ];
             default = { };
             description = ''
-              Defaults for all configs.
-              the modules passed under configDefault will be exported
+              Defaults for all hosts.
+              the modules passed under hostDefaults will be exported
               to the '${name}Modules' flake output.
-              They will also be added to all configs.
+              They will also be added to all hosts.
             '';
           };
-          configs = mkOption {
-            type = attrsOf (submodule configModule);
+          hosts = mkOption {
+            type = attrsOf (submodule hostModule);
             default = { };
             description = ''
               configurations to include in the ${name}Configurations output
@@ -204,8 +204,8 @@ let
               nixpkgs channels to create
             '';
           };
-        nixos = mkOption {
-          type = submodule [ includeConfigsModule importsModule ];
+        os = mkOption {
+          type = submodule [ includeHostsModule importsModule ];
           default = { };
           description = ''
             hosts, modules, suites, and profiles for nixos
