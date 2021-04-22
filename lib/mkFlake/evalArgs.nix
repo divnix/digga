@@ -18,37 +18,32 @@ let
 
       /* Custom types needed for arguments */
 
-      moduleType = with types; anything // {
+      moduleType = with types; pathTo (anything // {
         inherit (submodule { }) check;
         description = "valid module";
-      };
-      overlayType = types.anything // {
+      });
+      overlayType = pathTo (types.anything // {
         check = builtins.isFunction;
         description = "valid Nixpkgs overlay";
-      };
+      });
       systemType = types.enum config.supportedSystems;
       flakeType = with types; (addCheck attrs lib.isStorePath) // {
         description = "nix flake";
       };
 
-      # Applys maybeImport during merge and before check
+      # Apply maybeImport during merge and before check
       # To simplify apply keys and improve type checking
-      pathTo = elemType: mkOptionType {
-        name = "pathTo";
-        description = "path that evaluates to a(n) ${elemType.name}";
-        check = x: elemType.check (maybeImport x);
-        merge = loc: defs:
-          (mergeDefinitions loc elemType (map
-            (x: {
-              inherit (x) file;
-              value = maybeImport x.value;
-            })
-            defs)).mergedValue;
-        getSubOptions = elemType.getSubOptions;
-        getSubModules = elemType.getSubModules;
-        substSubModules = m: pathTo (elemType.substSubModules m);
-      };
+      pathTo = elemType: coercedTo path maybeImort elemType;
 
+      # Accepts single item or a list
+      # apply keys end up with a list
+      # This should not be used if expecting a nested list
+      # all lists will get flattened by this
+      coercedListOf = elemType:
+        let coerceToList = x: flatten (singleton x); in
+        with types; coercedTo elemType coerceToList (listOf elemType);
+
+      pathToListOf = x: pathTo (coercedListOf x);
 
       /* Submodules needed for API containers */
 
@@ -62,7 +57,7 @@ let
            '';
           };
           overlays = mkOption {
-            type = pathTo (listOf overlayType);
+            type = pathToListOf overlayType;
             default = [ ];
             description = ''
               overlays to apply to this channel
@@ -70,7 +65,7 @@ let
             '';
           };
           externalOverlays = mkOption {
-            type = pathTo (listOf overlayType);
+            type = pathToListOf overlayType;
             default = [ ];
             description = ''
               overlays to apply to the channel that don't get exported to the flake output
@@ -104,14 +99,21 @@ let
             '';
           };
           modules = mkOption {
-            type = pathTo moduleType;
+            type = pathToListOf moduleType;
             default = [ ];
             description = ''
               The configuration for this config
             '';
           };
+        };
+      };
+
+      # This is only needed for configDefaults
+      # modules in each config don't get exported
+      externalModulesModule = {
+        options = {
           externalModules = mkOption {
-            type = pathTo moduleType;
+            type = pathToListOf moduleType;
             default = [ ];
             description = ''
               The configuration for this config
@@ -126,14 +128,17 @@ let
       includeConfigsModule = { name, ... }: {
         options = with types; {
           configDefaults = mkOption {
-            type = submodule configModule;
+            type = submodule [ configModule externalModulesModule ];
             default = { };
             description = ''
-              defaults for all configs
+              Defaults for all configs.
+              the modules passed under configDefault will be exported
+              to the '${name}Modules' flake output.
+              They will also be added to all configs.
             '';
           };
           configs = mkOption {
-            type = pathTo (attrsOf (submodule configModule));
+            type = attrsOf (submodule configModule);
             default = { };
             description = ''
               configurations to include in the ${name}Configurations output
@@ -142,30 +147,16 @@ let
         };
       };
 
-      # Options to import: modules, profiles, suites
-      importsModule = { name, ... }: {
+      # profiles and suites - which are profile collections
+      profilesModule = { name, ... }: {
         options = with types; {
-          modules = mkOption {
-            type = pathTo (listOf moduleType);
-            default = [ ];
-            apply = lib.pathsToImportedAttrs;
-            description = ''
-              list of modules to include in confgurations and export in '${name}Modules' output
-            '';
-          };
-          externalModules = mkOption {
-            type = pathTo (listOf moduleType);
-            default = [ ];
-            apply = lib.pathsToImportedAttrs;
-            description = ''
-              list of modules to include in confguration but these are not exported to the '${name}Modules' output
-            '';
-          };
           profiles = mkOption {
-            type = path;
-            default = "${userFlakeSelf}/profiles";
-            defaultText = "\${userFlakeSelf}/profiles";
-            apply = x: os.mkProfileAttrs (toString x);
+            type = coercedListOf path;
+            default = [ ];
+            apply = list:
+              # Merge a list of profiles to one set
+              let profileList = map (x: os.mkProfileAttrs (toString x)) list; in
+              foldl (a: b: a // b) { } profileList;
             description = "path to profiles folder that can be collected into suites";
           };
           suites = mkOption {
