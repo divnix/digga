@@ -1,4 +1,4 @@
-{ lib, nixos, dev, ... }:
+{ lib, utils }:
 {
   # pkgImport :: Nixpkgs -> Overlays -> System -> Pkgs
   pkgImport = nixpkgs: overlays: system:
@@ -9,22 +9,22 @@
 
   profileMap = list: map (profile: profile.default) (lib.flatten list);
 
-  mkNodes = dev.callLibs ./mkNodes.nix;
+  mkNodes =  import ./mkNodes.nix { inherit lib; };
 
-  mkHosts = dev.callLibs ./mkHosts.nix;
+  mkHosts = import ./mkHosts.nix { inherit lib; };
 
-  mkSuites = dev.callLibs ./mkSuites.nix;
+  mkSuites = import ./mkSuites.nix { inherit lib; };
 
-  mkProfileAttrs = dev.callLibs ./mkProfileAttrs.nix;
+  mkProfileAttrs = import ./mkProfileAttrs.nix { inherit lib; };
 
-  mkPkgs = dev.callLibs ./mkPkgs.nix;
+  mkPkgs = import ./mkPkgs.nix { inherit lib utils; };
 
-  recImport = dev.callLibs ./recImport.nix;
+  recImport = import ./recImport.nix { inherit lib; };
 
-  devosSystem = dev.callLibs ./devosSystem.nix;
+  devosSystem = import ./devosSystem.nix { inherit lib; };
 
-  mkHomeConfigurations = dev.callLibs ./mkHomeConfigurations.nix;
+  mkHomeConfigurations = import ./mkHomeConfigurations.nix { inherit lib; };
 
-  mkPackages = dev.callLibs ./mkPackages.nix;
+  mkPackages = import ./mkPackages.nix { inherit lib; };
 }
 

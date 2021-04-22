@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib }:
 with lib;
 lib.runTests {
   testConcatAttrs = {

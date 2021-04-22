@@ -1,27 +1,27 @@
-{ lib, dev, nixos, self, inputs, ... }:
+{ lib, utils }:
+
+{ userFlakeNixOS, userFlakeSelf, userFlakeInputs }:
 
 { extern, overrides }:
-(inputs.utils.lib.eachDefaultSystem
+(utils.lib.eachDefaultSystem
   (system:
     let
-      overridePkgs = dev.os.pkgImport inputs.override [ ] system;
+      overridePkgs = lib.os.pkgImport userFlakeInputs.override [ ] system;
       overridesOverlay = overrides.packages;
 
       overlays = [
         (final: prev: {
           lib = prev.lib.extend (lfinal: lprev: {
-            inherit dev;
+            inherit lib;
             inherit (lib) nixosSystem;
-
-            utils = inputs.utils.lib;
           });
         })
         (overridesOverlay overridePkgs)
-        self.overlay
+        userFlakeSelf.overlay
       ]
       ++ extern.overlays
-      ++ (lib.attrValues self.overlays);
+      ++ (lib.attrValues userFlakeSelf.overlays);
     in
-    { pkgs = dev.os.pkgImport nixos overlays system; }
+    { pkgs = lib.os.pkgImport userFlakeNixOS overlays system; }
   )
 ).pkgs

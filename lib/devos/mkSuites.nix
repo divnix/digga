@@ -1,8 +1,8 @@
-{ lib, dev, ... }:
+{ lib }:
 
 { users, profiles, userProfiles, suites } @ args:
 let
-  inherit (dev) os;
+  inherit (lib) os;
 
   definedSuites = suites {
     inherit (args) users profiles userProfiles;

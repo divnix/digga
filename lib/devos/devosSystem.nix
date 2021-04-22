@@ -1,4 +1,6 @@
-{ lib, nixos, self, inputs, ... }:
+{ lib }:
+
+{ userFlakeNixOS, userFlakeSelf, userFlakeInputs }:
 
 { modules, ... } @ args:
 lib.nixosSystem (args // {
@@ -13,7 +15,7 @@ lib.nixosSystem (args // {
         (args // {
           modules = moduleList ++ [
 
-            "${nixos}/${modpath}/installer/cd-dvd/installation-cd-minimal-new-kernel.nix"
+            "${userFlakeNixOS}/${modpath}/installer/cd-dvd/installation-cd-minimal-new-kernel.nix"
 
             ({ config, suites, ... }: {
 
@@ -23,15 +25,15 @@ lib.nixosSystem (args // {
               disabledModules = map (x: [ x ])
                 (lib.remove modules.core suites.allProfiles);
 
-              nix.registry = lib.mapAttrs (n: v: { flake = v; }) inputs;
+              nix.registry = lib.mapAttrs (n: v: { flake = v; }) userFlakeInputs;
 
               isoImage.isoBaseName = "nixos-" + config.networking.hostName;
               isoImage.contents = [{
-                source = self;
+                source = userFlakeSelf;
                 target = "/devos/";
               }];
               isoImage.storeContents = [
-                self.devShell.${config.nixpkgs.system}
+                userFlakeSelf.devShell.${config.nixpkgs.system}
                 # include also closures that are "switched off" by the
                 # above profile filter on the local config attribute
                 fullHostConfig.system.build.toplevel
