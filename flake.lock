@@ -12,7 +12,7 @@
           "nixos"
         ],
         "nixos-unstable": [
-          "override"
+          "latest"
         ],
         "pre-commit-hooks-nix": "pre-commit-hooks-nix"
       },
@@ -33,7 +33,7 @@
     "darwin": {
       "inputs": {
         "nixpkgs": [
-          "override"
+          "latest"
         ]
       },
       "locked": {
@@ -81,7 +81,7 @@
         "utils": "utils_2"
       },
       "locked": {
-        "narHash": "sha256-y0IZEAqpQpdGhxfc6REAT2PY2nEbikusUlXCRv264vI=",
+        "narHash": "sha256-MvrBYZG6sZqpa8mTg4RYeD9aezYbVppBnslRyH7qZys=",
         "path": "./lib",
         "type": "path"
       },
@@ -173,10 +173,24 @@
         "type": "github"
       }
     },
+    "latest": {
+      "locked": {
+        "lastModified": 1619400530,
+        "narHash": "sha256-7ZO7B+b9i1wFbHw62EFT+iwuBBpXeA/fcHlR63Z4J0w=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e8dc8adab655eb27957859c62bef11484b53f639",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
     "naersk": {
       "inputs": {
         "nixpkgs": [
-          "override"
+          "latest"
         ]
       },
       "locked": {
@@ -197,7 +211,7 @@
     "naersk_2": {
       "inputs": {
         "nixpkgs": [
-          "override"
+          "latest"
         ]
       },
       "locked": {
@@ -274,20 +288,6 @@
         "type": "indirect"
       }
     },
-    "override": {
-      "locked": {
-        "lastModified": 1615926763,
-        "narHash": "sha256-yeq8A3EPNuQVlsxlEQrIRsklfJwJK0Us6jtcG/u8wNs=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "b702a56d417647de4090ac56c0f18bdc7e646610",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
     "pkgs": {
       "inputs": {
         "nixpkgs": [
@@ -327,11 +327,11 @@
         "devos": "devos",
         "flake-compat": "flake-compat_2",
         "home": "home",
+        "latest": "latest",
         "naersk": "naersk_2",
         "nixos": "nixos",
         "nixos-hardware": "nixos-hardware",
         "nur": "nur",
-        "override": "override",
         "pkgs": "pkgs"
       }
     },
