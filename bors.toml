@@ -1,7 +1,4 @@
-status = [
-  "ci/hercules/evaluation",
-  "ci/hercules/derivations"
-]
+status = [ "check" ]
 
 required_approvals = 1
 
