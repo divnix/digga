@@ -1,6 +1,6 @@
 # Cachix
 The system will automatically pull a cachix.nix at the root if one exists.
-This is usually created automatically by a `sudo cachix use`. If your more
+This is usually created automatically by a `sudo cachix use`. If you're more
 inclined to keep the root clean, you can drop any generated files in the
 `cachix` directory into the `profiles/cachix` directory without further
 modification.

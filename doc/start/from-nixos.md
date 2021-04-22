@@ -1,7 +1,7 @@
 # From NixOS
 
 ## Generate Configuration
-Assuming your happy with your existing partition layout, you can generate a
+Assuming you're happy with your existing partition layout, you can generate a
 basic NixOS configuration for your system using:
 ```sh
 flk up
@@ -28,7 +28,7 @@ Now might be a good time to read the docs on [suites](../concepts/suites.md) and
 > them directly into a host module of your own making, and commit that instead.
 # Installation
 
-Once your ready to deploy `hosts/my-host.nix`:
+Once you're ready to deploy `hosts/my-host.nix`:
 ```sh
 flk my-host switch
 ```
