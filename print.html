@@ -345,7 +345,7 @@ Under this reservation, though, you may use this EUI-64 to wire up a specific
 (cryptographic) host identity.</p>
 <h1 id="from-nixos"><a class="header" href="#from-nixos">From NixOS</a></h1>
 <h2 id="generate-configuration"><a class="header" href="#generate-configuration">Generate Configuration</a></h2>
-<p>Assuming your happy with your existing partition layout, you can generate a
+<p>Assuming you're happy with your existing partition layout, you can generate a
 basic NixOS configuration for your system using:</p>
 <pre><code class="language-sh">flk up
 </code></pre>
@@ -367,7 +367,7 @@ invisible to the flake otherwise, but it is best to move what you need from
 them directly into a host module of your own making, and commit that instead.</p>
 </blockquote>
 <h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
-<p>Once your ready to deploy <code>hosts/my-host.nix</code>:</p>
+<p>Once you're ready to deploy <code>hosts/my-host.nix</code>:</p>
 <pre><code class="language-sh">flk my-host switch
 </code></pre>
 <p>This calls <code>nixos-rebuild</code> with sudo to build and install your configuration.</p>
@@ -954,7 +954,7 @@ made to choose tools that treat nix, and where possible flakes, as first class
 citizens.</p>
 <h1 id="cachix"><a class="header" href="#cachix">Cachix</a></h1>
 <p>The system will automatically pull a cachix.nix at the root if one exists.
-This is usually created automatically by a <code>sudo cachix use</code>. If your more
+This is usually created automatically by a <code>sudo cachix use</code>. If you're more
 inclined to keep the root clean, you can drop any generated files in the
 <code>cachix</code> directory into the <code>profiles/cachix</code> directory without further
 modification.</p>
@@ -1056,7 +1056,7 @@ includes a pre-commit hook that does this for you.</p>
 <p>The commit message follows the same semantics as <a href="https://github.com/NixOS/nixpkgs">nixpkgs</a>.</p>
 <ul>
 <li>You can use a <code>#</code> symbol to specify ambiguities. For example,
-<code>develop#zsh: &lt;rest of commit message&gt;</code> would tell me that your updating the
+<code>develop#zsh: &lt;rest of commit message&gt;</code> would tell me that you're updating the
 <code>zsh</code> subprofile living under the <code>develop</code> profile.</li>
 </ul>
 </li>
