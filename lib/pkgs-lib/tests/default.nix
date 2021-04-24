@@ -1,7 +1,5 @@
-{ lib, nixpkgs, deploy, system }:
+{ lib, nixpkgs, pkgs, deploy, system }:
 let
-  pkgs = import nixpkgs { inherit system; overlays = []; config = {}; };
-
   mkChecks = { hosts, nodes, homes ? { } }:
     let
       deployHosts = lib.filterAttrs
@@ -9,9 +7,10 @@ let
         nodes;
       deployChecks = deploy.lib.${system}.deployChecks { nodes = deployHosts; };
       tests =
-        lib.optionalAttrs (deployHosts != { }) {
-          profilesTest = profilesTest (hosts.${(builtins.head (builtins.attrNames deployHosts))});
-        } // lib.mapAttrs (n: v: v.activationPackage) homes;
+        lib.optionalAttrs (deployHosts != { })
+          {
+            profilesTest = profilesTest (hosts.${(builtins.head (builtins.attrNames deployHosts))});
+          } // lib.mapAttrs (n: v: v.activationPackage) homes;
 
     in
     lib.recursiveUpdate tests deployChecks;

@@ -1,8 +1,6 @@
 { lib }:
 
-{ userFlakeSelf, userFlakeNixOS }:
-
-{ args }:
+{ nixos, args }:
 let
   argOpts = with lib; { config, ... }:
     let
@@ -51,10 +49,10 @@ let
         options = with types; {
           input = mkOption {
             type = flakeType;
-            default = userFlakeNixOS;
+            default = nixos;
             description = ''
               nixpkgs flake input to use for this channel
-           '';
+            '';
           };
           overlays = mkOption {
             type = pathToListOf overlayType;
@@ -198,7 +196,7 @@ let
           let
             default = {
               nixpkgs = {
-                input = userFlakeNixOS;
+                input = nixos;
               };
             };
           in

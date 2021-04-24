@@ -1,10 +1,7 @@
 { lib }:
 
-{ userFlakeSelf }:
-
-{ pkgs }:
+{ overlay, overlays, pkgs }:
 let
-  inherit (userFlakeSelf) overlay overlays;
   packagesNames = lib.attrNames (overlay null null)
     ++ lib.attrNames (lib.concatAttrs
     (lib.attrValues
