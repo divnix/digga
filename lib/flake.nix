@@ -54,13 +54,9 @@
         }
       );
 
-      jobs = import ./jobs { inherit nixpkgs; lib = nixpkgs.lib // lib; };
-
     in
 
     {
-      inherit jobs;
-
       lib = utils.lib // {
         inherit (lib)
           mkFlake;
@@ -80,6 +76,14 @@
             inherit pkgs;
             lib = nixpkgs.lib // lib;
           };
+        };
+        packages = {
+          mkFlakeDoc = pkgs.writeText "mkFlakeOptions.md"
+            (
+              pkgs.nixosOptionsDoc {
+                inherit (lib.mkFlake.evalArgs { nixos = "nixos"; args = { }; }) options;
+              }
+            ).optionsMDDoc;
         };
       }
     );
