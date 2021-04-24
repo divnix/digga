@@ -33,7 +33,7 @@ let
 
       # Apply maybeImport during merge and before check
       # To simplify apply keys and improve type checking
-      pathTo = elemType: coercedTo path maybeImort elemType;
+      pathTo = elemType: with types; coercedTo path maybeImport elemType;
 
       # Accepts single item or a list
       # apply keys end up with a list
@@ -98,13 +98,7 @@ let
               Channel this host should follow
             '';
           };
-          modules = mkOption {
-            type = pathToListOf moduleType;
-            default = [ ];
-            description = ''
-              The configuration for this host
-            '';
-          };
+
         };
       };
 
@@ -122,13 +116,25 @@ let
         };
       };
 
+      modulesModule = {
+        options = {
+          modules = mkOption {
+            type = pathToListOf moduleType;
+            default = [ ];
+            description = ''
+              modules to include
+            '';
+          };
+        };
+      };
+
       # Home-manager's configs get exported automatically from nixos.hosts
       # So there is no need for a host options in the home namespace
       # This is only needed for nixos
       includeHostsModule = { name, ... }: {
         options = with types; {
           hostDefaults = mkOption {
-            type = submodule [ hostModule externalModulesModule ];
+            type = submodule [ hostModule externalModulesModule modulesModule ];
             default = { };
             description = ''
               Defaults for all hosts.
@@ -138,7 +144,7 @@ let
             '';
           };
           hosts = mkOption {
-            type = attrsOf (submodule hostModule);
+            type = attrsOf (submodule [ hostModule modulesModule ]);
             default = { };
             description = ''
               configurations to include in the ${name}Configurations output
@@ -205,14 +211,14 @@ let
             '';
           };
         os = mkOption {
-          type = submodule [ includeHostsModule importsModule ];
+          type = submodule [ includeHostsModule profilesModule ];
           default = { };
           description = ''
             hosts, modules, suites, and profiles for nixos
           '';
         };
         home = mkOption {
-          type = submodule importsModule;
+          type = submodule [ profilesModule modulesModule ];
           default = { };
           description = ''
             hosts, modules, suites, and profiles for home-manager
