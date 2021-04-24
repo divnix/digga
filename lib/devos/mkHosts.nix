@@ -90,7 +90,7 @@ let
       lib = {
         lib = { inherit specialArgs; };
         lib.testModule = {
-          imports = builtins.attrValues modules;
+          imports = [ local ] ++ builtins.attrValues modules;
         };
       };
     in
