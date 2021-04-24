@@ -9,7 +9,7 @@
 
   profileMap = list: map (profile: profile.default) (lib.flatten list);
 
-  mkNodes =  import ./mkNodes.nix { inherit lib; };
+  mkNodes = import ./mkNodes.nix { inherit lib; };
 
   mkHosts = import ./mkHosts.nix { inherit lib; };
 

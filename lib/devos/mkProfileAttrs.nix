@@ -2,16 +2,16 @@
 
 let mkProfileAttrs =
   /**
-  Synopsis: mkProfileAttrs _path_
+    Synopsis: mkProfileAttrs _path_
 
-  Recursively collect the subdirs of _path_ containing a default.nix into attrs.
-  This sets a contract, eliminating ambiguity for _default.nix_ living under the
-  profile directory.
+    Recursively collect the subdirs of _path_ containing a default.nix into attrs.
+    This sets a contract, eliminating ambiguity for _default.nix_ living under the
+    profile directory.
 
-  Example:
-  let profiles = mkProfileAttrs ./profiles; in
-  assert profiles ? core.default; 0
-  **/
+    Example:
+    let profiles = mkProfileAttrs ./profiles; in
+    assert profiles ? core.default; 0
+    **/
   dir:
   let
     imports =

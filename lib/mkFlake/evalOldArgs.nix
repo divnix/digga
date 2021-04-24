@@ -1,8 +1,6 @@
 { lib }:
 
-{ userFlakeSelf, userFlakeInputs }:
-
-{ args }:
+{ self, inputs, args }:
 let
   argOpts = with lib; { config, options, ... }:
     let
@@ -32,8 +30,8 @@ let
         };
         hosts = mkOption {
           type = path;
-          default = "${userFlakeSelf}/hosts";
-          defaultText = "\${userFlakeSelf}/hosts";
+          default = "${self}/hosts";
+          defaultText = "\${self}/hosts";
           apply = toString;
           description = ''
             Path to directory containing host configurations that will be exported
@@ -74,15 +72,15 @@ let
         };
         profiles = mkOption {
           type = path;
-          default = "${userFlakeSelf}/profiles";
-          defaultText = "\${userFlakeSelf}/profiles";
+          default = "${self}/profiles";
+          defaultText = "\${self}/profiles";
           apply = x: os.mkProfileAttrs (toString x);
           description = "path to profiles folder that can be collected into suites";
         };
         userProfiles = mkOption {
           type = path;
-          default = "${userFlakeSelf}/users/profiles";
-          defaultText = "\${userFlakeSelf}/users/profiles";
+          default = "${self}/users/profiles";
+          defaultText = "\${self}/users/profiles";
           apply = x: os.mkProfileAttrs (toString x);
           description = "path to user profiles folder that can be collected into userSuites";
         };
@@ -107,8 +105,8 @@ let
           };
         users = mkOption {
           type = path;
-          default = "${userFlakeSelf}/users";
-          defaultText = "\${userFlakeSelf}/users";
+          default = "${self}/users";
+          defaultText = "\${self}/users";
           apply = x: os.mkProfileAttrs (toString x);
           description = ''
             path to folder containing profiles that define system users
@@ -131,9 +129,9 @@ let
               { modules = []; overlays = []; specialArgs = []; userModules = []; userSpecialArgs = []; }
             '';
             # So unneeded extern attributes can safely be deleted
-            apply = x: defaults // (x { inputs = userFlakeInputs // userFlakeSelf.inputs; });
+            apply = x: defaults // (x { inputs = inputs // self.inputs; });
             description = ''
-              Function with argument 'inputs' that contains all devos and ''${userFlakeSelf}'s inputs.
+              Function with argument 'inputs' that contains all devos and ''${self}'s inputs.
               The function should return an attribute set with modules, overlays, and
               specialArgs to be included across nixos and home manager configurations.
               Only attributes that are used should be returned.
@@ -141,8 +139,8 @@ let
           };
         overlays = mkOption {
           type = path;
-          default = "${userFlakeSelf}/overlays";
-          defaultText = "\${userFlakeSelf}/overlays";
+          default = "${self}/overlays";
+          defaultText = "\${self}/overlays";
           apply = x: lib.pathsToImportedAttrs (lib.pathsIn (toString x));
           description = ''
             path to folder containing overlays which will be applied to pkgs and exported in

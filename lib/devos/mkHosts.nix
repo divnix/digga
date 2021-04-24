@@ -1,8 +1,6 @@
-{ lib  }:
+{ lib }:
 
-{ userFlakeNixOS, userFlakeInputs, userFlakeSelf }:
-
-{ dir, extern, suites, overrides, multiPkgs }:
+{ self, nixos, inputs, dir, extern, suites, overrides, multiPkgs }:
 let
   defaultSystem = "x86_64-linux";
 
@@ -31,24 +29,24 @@ let
         useUserPackages = true;
 
         extraSpecialArgs = extern.userSpecialArgs // { suites = suites.user; };
-        sharedModules = extern.userModules ++ (builtins.attrValues userFlakeSelf.homeModules);
+        sharedModules = extern.userModules ++ (builtins.attrValues self.homeModules);
       };
       users.mutableUsers = lib.mkDefault false;
 
       hardware.enableRedistributableFirmware = lib.mkDefault true;
 
       nix.nixPath = [
-        "nixpkgs=${userFlakeNixOS}"
-        "nixos-config=${userFlakeSelf}/lib/compat/nixos"
-        "home-manager=${userFlakeInputs.home}"
+        "nixpkgs=${nixos}"
+        "nixos-config=${self}/lib/compat/nixos"
+        "home-manager=${inputs.home}"
       ];
 
       nixpkgs.pkgs = lib.mkDefault multiPkgs.${config.nixpkgs.system};
 
       nix.registry = {
-        devos.flake = userFlakeSelf;
-        nixos.flake = userFlakeNixOS;
-        override.flake = userFlakeInputs.override;
+        devos.flake = self;
+        nixos.flake = nixos;
+        override.flake = inputs.override;
       };
 
       nix.package = pkgs.nixFlakes;
@@ -59,13 +57,13 @@ let
         }
       '';
 
-      system.configurationRevision = lib.mkIf (userFlakeSelf ? rev) userFlakeSelf.rev;
+      system.configurationRevision = lib.mkIf (self ? rev) self.rev;
     };
 
     # Everything in `./modules/list.nix`.
-    flakeModules = { imports = builtins.attrValues userFlakeSelf.nixosModules ++ extern.modules; };
+    flakeModules = { imports = builtins.attrValues self.nixosModules ++ extern.modules; };
 
-    cachix = let rootCachix = "${userFlakeSelf}/cachix.nix"; in
+    cachix = let rootCachix = "${self}/cachix.nix"; in
       if builtins.pathExists rootCachix
       then rootCachix
       else { }
@@ -84,7 +82,7 @@ let
         networking = { inherit hostName; };
 
         _module.args = {
-          self = userFlakeSelf;
+          self = self;
           hosts = builtins.mapAttrs (_: host: host.config)
             (removeAttrs hosts [ hostName ]);
         };
@@ -97,9 +95,7 @@ let
       };
     in
     lib.os.devosSystem {
-      inherit userFlakeNixOS userFlakeInputs userFlakeSelf;
-    } {
-      inherit specialArgs;
+      inherit self nixos inputs specialArgs;
       system = defaultSystem;
       modules = modules // { inherit local; };
     };

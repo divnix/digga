@@ -22,9 +22,7 @@ let
   '';
 
   options = (
-    lib.mkFlake.evalArgs
-      { userFlakeSelf = {}; userFlakeNixOS = {}; }
-      { args = { }; }
+    lib.mkFlake.evalArgs { nixos = "nixos"; args = { }; }
   ).options;
 
   processedOptions = (pkgs.nixosOptionsDoc { inherit options; }).optionsNix;
