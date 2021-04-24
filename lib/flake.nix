@@ -81,6 +81,14 @@
             lib = nixpkgs.lib // lib;
           };
         };
+        packages = {
+          mkFlakeDoc = pkgs.writeText "mkFlakeOptions.md"
+            (
+              pkgs.nixosOptionsDoc {
+                inherit (lib.mkFlake.evalArgs { nixos = "nixos"; args = { }; }) options;
+              }
+            ).optionsMDDoc;
+        };
       }
     );
 
