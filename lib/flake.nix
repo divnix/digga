@@ -16,6 +16,7 @@
           attrs = import ./attrs.nix { lib = nixpkgs.lib // self; };
           lists = import ./lists.nix { lib = nixpkgs.lib // self; };
           strings = import ./strings.nix { lib = nixpkgs.lib // self; };
+          modules = import ./modules.nix { lib = nixpkgs.lib // self; };
         in
 
         utils.lib
@@ -51,6 +52,7 @@
             filterPackages;
           inherit (lists) pathsIn;
           inherit (strings) rgxToString;
+          inherit modules;
         }
       );
 
