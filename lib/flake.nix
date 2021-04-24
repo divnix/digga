@@ -54,13 +54,9 @@
         }
       );
 
-      jobs = import ./jobs { inherit nixpkgs; lib = nixpkgs.lib // lib; };
-
     in
 
     {
-      inherit jobs;
-
       lib = utils.lib // {
         inherit (lib)
           mkFlake;
