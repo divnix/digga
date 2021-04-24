@@ -48,7 +48,7 @@ let
     };
 
     testScript = ''
-      machine.systemctl("is-system-running --wait")
+      ${host.config.networking.hostName}.systemctl("is-system-running --wait")
     '';
   };
 
