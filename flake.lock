@@ -81,7 +81,7 @@
         "utils": "utils_2"
       },
       "locked": {
-        "narHash": "sha256-JBTc4NiKuJ99+u8ey+1gQezW5pihAnfnyupBmdj4zUk=",
+        "narHash": "sha256-y0IZEAqpQpdGhxfc6REAT2PY2nEbikusUlXCRv264vI=",
         "path": "./lib",
         "type": "path"
       },
@@ -135,6 +135,21 @@
         "owner": "BBBSnowball",
         "ref": "pr-1",
         "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1619345332,
+        "narHash": "sha256-qHnQkEp1uklKTpx3MvKtY6xzgcqXDsz5nLilbbuL+3A=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "2ebf2558e5bf978c7fb8ea927dfaed8fefab2e28",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
         "type": "github"
       }
     },
@@ -336,17 +351,21 @@
       }
     },
     "utils_2": {
+      "inputs": {
+        "flake-utils": "flake-utils"
+      },
       "locked": {
-        "lastModified": 1618868421,
-        "narHash": "sha256-vyoJhLV6cJ8/tWz+l9HZLIkb9Rd9esE7p+0RL6zDR6Y=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "eed214942bcfb3a8cc09eb3b28ca7d7221e44a94",
+        "lastModified": 1619438935,
+        "narHash": "sha256-B8OGqX9QBMW5G8DYTRdY0cb62ETaV0YxBayCZMiaVqQ=",
+        "owner": "gytis-ivaskevicius",
+        "repo": "flake-utils-plus",
+        "rev": "80b53eeda3102bb5aed31ec818c6485e35caffc3",
         "type": "github"
       },
       "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
+        "owner": "gytis-ivaskevicius",
+        "ref": "staging",
+        "repo": "flake-utils-plus",
         "type": "github"
       }
     }
