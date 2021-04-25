@@ -35,7 +35,6 @@
               inherit deploy;
             };
             evalArgs = import ./mkFlake/evalArgs.nix { lib = nixpkgs.lib // self; };
-            evalOldArgs = import ./mkFlake/evalOldArgs.nix { lib = nixpkgs.lib // self; };
           };
 
           pkgs-lib = import ./pkgs-lib {
@@ -83,7 +82,7 @@
           mkFlakeDoc = pkgs.writeText "mkFlakeOptions.md"
             (
               pkgs.nixosOptionsDoc {
-                inherit (lib.mkFlake.evalArgs { nixos = "nixos"; args = { }; }) options;
+                inherit (lib.mkFlake.evalArgs { args = { }; }) options;
               }
             ).optionsMDDoc;
         };
