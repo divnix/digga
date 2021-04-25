@@ -1,11 +1,12 @@
 { lib }:
 
-{ nixos, args }:
+{ args }:
 let
   argOpts = with lib; { config, ... }:
     let
       inherit (lib) os;
 
+      cfg = config;
       inherit (config) self;
 
       maybeImport = obj:
@@ -45,11 +46,12 @@ let
 
       /* Submodules needed for API containers */
 
-      channelsModule = {
+      channelsModule = { name, ... }: {
         options = with types; {
           input = mkOption {
             type = flakeType;
-            default = nixos;
+            default = cfg.${name};
+            defaultText = escape [ "<" ">" ] "inputs.<name>";
             description = ''
               nixpkgs flake input to use for this channel
             '';
@@ -57,7 +59,7 @@ let
           overlays = mkOption {
             type = pathToListOf overlayType;
             default = [ ];
-            description = ''
+            description = escape [ "<" ">" ] ''
               overlays to apply to this channel
               these will get exported under the 'overlays' flake output as <channel>/<name>
             '';
@@ -96,7 +98,6 @@ let
               Channel this host should follow
             '';
           };
-
         };
       };
 
@@ -126,13 +127,34 @@ let
         };
       };
 
+      exportModulesModule = name: {
+        options = {
+          modules = mkOption {
+            type = with types; listOf
+              # check if the path evaluates to a proper module
+              # but this must be a path for the export to work
+              (addCheck path (x: moduleType.check (import x)));
+            default = [ ];
+            description = ''
+              modules to include in all hosts and export to ${name}Modules output
+            '';
+          };
+        };
+      };
+
+
+
       # Home-manager's configs get exported automatically from nixos.hosts
       # So there is no need for a host options in the home namespace
       # This is only needed for nixos
-      includeHostsModule = { name, ... }: {
+      includeHostsModule = name: {
         options = with types; {
           hostDefaults = mkOption {
-            type = submodule [ hostModule externalModulesModule modulesModule ];
+            type = submodule [
+              hostModule
+              externalModulesModule
+              (exportModulesModule name)
+            ];
             default = { };
             description = ''
               Defaults for all hosts.
@@ -152,7 +174,7 @@ let
       };
 
       # profiles and suites - which are profile collections
-      profilesModule = { name, ... }: {
+      profilesModule = {
         options = with types; {
           profiles = mkOption {
             type = coercedListOf path;
@@ -185,6 +207,13 @@ let
           type = flakeType;
           description = "The flake to create the devos outputs for";
         };
+        inputs = mkOption {
+          type = attrsOf flakeType;
+          description = ''
+            inputs for this flake
+            used to set channel defaults and create registry
+          '';
+        };
         supportedSystems = mkOption {
           type = listOf str;
           default = lib.defaultSystems;
@@ -192,31 +221,22 @@ let
             The systems supported by this flake
           '';
         };
-        channels =
-          let
-            default = {
-              nixpkgs = {
-                input = nixos;
-              };
-            };
-          in
-          mkOption {
-            type = attrsOf (submodule channelsModule);
-            inherit default;
-            apply = x: default // x;
-            description = ''
-              nixpkgs channels to create
-            '';
-          };
-        os = mkOption {
-          type = submodule [ includeHostsModule profilesModule ];
+        channels = mkOption {
+          type = attrsOf (submodule channelsModule);
+          default = { };
+          description = ''
+            nixpkgs channels to create
+          '';
+        };
+        nixos = mkOption {
+          type = submodule [ (includeHostsModule "nixos") profilesModule ];
           default = { };
           description = ''
             hosts, modules, suites, and profiles for nixos
           '';
         };
         home = mkOption {
-          type = submodule [ profilesModule modulesModule ];
+          type = submodule [ profilesModule (exportModulesModule "home") ];
           default = { };
           description = ''
             hosts, modules, suites, and profiles for home-manager
