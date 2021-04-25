@@ -1,11 +1,11 @@
-{ lib, nixpkgs, pkgs, deploy, system }:
+{ lib, deploy }:
 let
-  mkChecks = { hosts, nodes, homes ? { } }:
+  mkChecks = { pkgs, hosts, nodes, homes ? { } }:
     let
       deployHosts = lib.filterAttrs
-        (n: _: hosts.${n}.config.nixpkgs.system == system)
+        (n: _: hosts.${n}.config.nixpkgs.system == pkgs.system)
         nodes;
-      deployChecks = deploy.lib.${system}.deployChecks { nodes = deployHosts; };
+      deployChecks = deploy.lib.${pkgs.system}.deployChecks { nodes = deployHosts; };
       tests =
         lib.optionalAttrs (deployHosts != { })
           {
@@ -15,11 +15,11 @@ let
     in
     lib.recursiveUpdate tests deployChecks;
 
-  mkTest = host:
+  mkTest = { pkgs, host }:
     let
       nixosTesting =
-        (import "${nixpkgs}/nixos/lib/testing-python.nix" {
-          inherit system;
+        (import "${pkgs}/nixos/lib/testing-python.nix" {
+          inherit (pkgs) system;
           inherit (host.config.lib) specialArgs;
           inherit pkgs;
           extraConfigurations = [
