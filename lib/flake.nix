@@ -5,7 +5,7 @@
     {
       deploy.url = "github:serokell/deploy-rs";
       devshell.url = "github:numtide/devshell";
-      utils.url = "github:numtide/flake-utils";
+      utils.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
     };
 
   outputs = inputs@{ self, nixpkgs, deploy, devshell, utils, ... }:
