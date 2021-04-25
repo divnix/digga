@@ -1,25 +1,28 @@
-{ lib, nixpkgs, pkgs, deploy, system }:
+{ lib, deploy }:
 let
-  mkChecks = { hosts, nodes, homes ? { } }:
+  mkChecks = { pkgs, hosts, nodes, homes ? { } }:
     let
       deployHosts = lib.filterAttrs
-        (n: _: hosts.${n}.config.nixpkgs.system == system)
+        (n: _: hosts.${n}.config.nixpkgs.system == pkgs.system)
         nodes;
-      deployChecks = deploy.lib.${system}.deployChecks { nodes = deployHosts; };
+      deployChecks = deploy.lib.${pkgs.system}.deployChecks { nodes = deployHosts; };
       tests =
         lib.optionalAttrs (deployHosts != { })
           {
-            profilesTest = profilesTest (hosts.${(builtins.head (builtins.attrNames deployHosts))});
+            profilesTest = profilesTest {
+              inherit pkgs;
+              host = hosts.${(builtins.head (builtins.attrNames deployHosts))};
+            };
           } // lib.mapAttrs (n: v: v.activationPackage) homes;
 
     in
     lib.recursiveUpdate tests deployChecks;
 
-  mkTest = host:
+  mkTest = { pkgs, host }:
     let
       nixosTesting =
-        (import "${nixpkgs}/nixos/lib/testing-python.nix" {
-          inherit system;
+        (import "${toString pkgs.path}/nixos/lib/testing-python.nix" {
+          inherit (pkgs) system;
           inherit (host.config.lib) specialArgs;
           inherit pkgs;
           extraConfigurations = [
@@ -40,15 +43,15 @@ let
     in
     nixosTesting.makeTest calledTest;
 
-  profilesTest = host: mkTest host {
+  profilesTest = args@{ host, ... }: mkTest args {
     name = "profiles";
 
     machine = { suites, ... }: {
-      imports = suites.allProfiles ++ suites.allUsers;
+      imports = suites.allProfiles;
     };
 
     testScript = ''
-      machine.systemctl("is-system-running --wait")
+      ${host.config.networking.hostName}.systemctl("is-system-running --wait")
     '';
   };
 in

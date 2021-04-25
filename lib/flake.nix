@@ -40,7 +40,7 @@
 
           pkgs-lib = import ./pkgs-lib {
             lib = nixpkgs.lib // self;
-            inherit nixpkgs deploy devshell;
+            inherit deploy devshell;
           };
 
           inherit (attrs)

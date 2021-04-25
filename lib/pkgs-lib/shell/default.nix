@@ -1,27 +1,30 @@
-{ lib, nixpkgs, devshell, deploy, system }:
+{ lib, devshell, deploy }:
+
+{ pkgs }:
 let
   overlays = [
-
     devshell.overlay
 
     (final: prev: {
       deploy-rs =
         deploy.packages.${prev.system}.deploy-rs;
     })
-
   ];
 
-  pkgs = import nixpkgs { inherit system overlays; config = { }; };
+  pkgs' = import pkgs.path {
+    inherit (pkgs) system;
+    inherit overlays;
+  };
 
-  flk = pkgs.callPackage ./flk.nix { };
+  flk = pkgs'.callPackage ./flk.nix { };
 
   installPkgs = (lib.nixosSystem {
-    inherit system;
+    inherit (pkgs') system;
     modules = [ ];
   }).config.system.build;
 in
-pkgs.devshell.mkShell {
-  imports = [ (pkgs.devshell.importTOML ./devshell.toml) ];
+pkgs'.devshell.mkShell {
+  imports = [ (pkgs'.devshell.importTOML ./devshell.toml) ];
 
   packages = with installPkgs; [
     nixos-install
@@ -33,13 +36,13 @@ pkgs.devshell.mkShell {
     pre-commit.text = lib.fileContents ./pre-commit.sh;
   };
 
-  commands = with pkgs; [
+  commands = with pkgs'; [
     { package = flk; }
     {
       name = "nix";
-      help = pkgs.nixFlakes.meta.description;
+      help = pkgs'.nixFlakes.meta.description;
       command = ''
-        ${pkgs.nixFlakes}/bin/nix --experimental-features "nix-command flakes ca-references" "${"\${@}"}"
+        ${pkgs'.nixFlakes}/bin/nix --experimental-features "nix-command flakes ca-references" "${"\${@}"}"
       '';
     }
   ]
