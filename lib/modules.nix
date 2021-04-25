@@ -1,18 +1,6 @@
 { lib }:
 {
-  modOverrides = { overrides }:
-    { config, overrideModulesPath, ... }:
-    let
-      inherit (overrides) modules disabledModules;
-    in
-    {
-      disabledModules = modules ++ disabledModules;
-      imports = map
-        (path: "${overrideModulesPath}/${path}")
-        modules;
-    };
-
-  hmDefaults = { userSuites, extern, homeModules }: {
+  hmDefaults = { suites, modules }: {
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
@@ -22,7 +10,7 @@
     };
   };
 
-  globalDefaults = { self, nixos, inputs, multiPkgs }:
+  globalDefaults = { self, inputs }:
     let
       experimentalFeatures = [
         "flakes"
@@ -31,26 +19,21 @@
         "ca-derivations"
       ];
     in
-    { config, pkgs, ... }: {
+    { channel, config, pkgs, ... }: {
       users.mutableUsers = lib.mkDefault false;
 
       hardware.enableRedistributableFirmware = lib.mkDefault true;
 
       nix.nixPath = [
-        "nixpkgs=${nixos}"
+        "nixpkgs=${channel.input}"
         "nixos-config=${self}/lib/compat/nixos"
         "home-manager=${inputs.home}"
       ];
 
-      nixpkgs.pkgs = lib.mkDefault multiPkgs.${config.nixpkgs.system};
-
       nix.registry = {
         devos.flake = self;
-        nixos.flake = nixos;
-        override.flake = inputs.override;
+        nixos.flake = channel.input;
       };
-
-      nix.package = pkgs.nixFlakes;
 
       nix.extraOptions = ''
         experimental-features = ${lib.concatStringsSep " "
@@ -61,19 +44,10 @@
       system.configurationRevision = lib.mkIf (self ? rev) self.rev;
     };
 
-  cachix = { self }:
-    let rootCachix = "${self}/cachix.nix"; in
-    if builtins.pathExists rootCachix
-    then rootCachix
-    else { };
+  isoConfig = { self, inputs, fullHostConfig }:
+    { config, modulesPath, suites, ... }: {
 
-  flakeModules = { self, extern }: { imports = builtins.attrValues self.nixosModules ++ extern.modules; };
-
-  isoConfig = { self, nixos, inputs, fullHostConfig }:
-    { config, suites, ... }: {
-
-      imports = let modpath = "nixos/modules"; in
-        [ "${nixos}/${modpath}/installer/cd-dvd/installation-cd-minimal-new-kernel.nix" ];
+      imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal-new-kernel.nix" ];
       # avoid unwanted systemd service startups
       # all strings in disabledModules get appended to modulesPath
       # so convert each to list which can be coerced to string
