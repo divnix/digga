@@ -1,31 +1,33 @@
 { lib }:
 
-{ self, nixos, inputs, modules, ... } @ allArgs:
-let args = builtins.removeAttrs allArgs [ "self" "nixos" "inputs" ]; in
-lib.nixosSystem (args // {
-  modules =
-    let
-      moduleList = builtins.attrValues modules;
+# dependencies to return a builder
+{ self, inputs }:
 
-      fullHostConfig = (lib.nixosSystem (args // { modules = moduleList; })).config;
+{ modules, specialArgs, ... } @ args:
+specialArgs.channel.input.lib.nixosSystem
+  (args // {
+    modules =
+      let
+        fullHostConfig = (lib.nixosSystem (args // { inherit modules; })).config;
 
-      isoConfig = (lib.nixosSystem
-        (args // {
-          modules = moduleList ++ [
-            (lib.modules.iso { inherit self nixos inputs fullHostConfig; })
-          ];
-        })).config;
-      hmConfig = (lib.nixosSystem
-        (args // {
-          modules = moduleList ++ [
-            (lib.modules.hmConfig)
-          ];
-        })).config;
-    in
-    moduleList ++ [{
-      system.build = {
-        iso = isoConfig.system.build.isoImage;
-        homes = hmConfig.home-manager.users;
-      };
-    }];
-})
+        isoConfig = (lib.nixosSystem
+          (args // {
+            modules = modules ++ [
+              (lib.modules.iso { inherit self inputs fullHostConfig; })
+            ];
+          })).config;
+
+        hmConfig = (lib.nixosSystem
+          (args // {
+            modules = modules ++ [
+              (lib.modules.hmConfig)
+            ];
+          })).config;
+      in
+      modules ++ [{
+        system.build = {
+          iso = isoConfig.system.build.isoImage;
+          homes = hmConfig.home-manager.users;
+        };
+      }];
+  })
