@@ -66,6 +66,10 @@ lib.systemFlake (lib.recursiveUpdate
     deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
 
     overlays = lib.exporter.overlaysFromChannelsExporter {
+      /* since we can't detect overlays owned by self
+         we have to filter out ones exported by the inputs
+         optimally we would want a solution for NixOS/nix#4740
+      */
       inherit inputs;
       inherit (self) pkgs;
     };
