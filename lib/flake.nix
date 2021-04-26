@@ -50,7 +50,7 @@
             pathsToImportedAttrs
             concatAttrs
             filterPackages;
-          inherit (lists) pathsIn;
+          inherit (lists) pathsIn collectProfiles;
           inherit (strings) rgxToString;
           inherit modules;
         }
