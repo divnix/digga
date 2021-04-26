@@ -1,20 +1,20 @@
 { lib }:
 
-{ users, profiles, userProfiles, suites } @ args:
+{ suites, profiles } @ args:
 let
   inherit (lib) os;
 
-  definedSuites = suites {
-    inherit (args) users profiles userProfiles;
-  };
+  profileSet = lib.genAttrs' profiles (path: {
+     name = baseNameOf path;
+     value = os.mkProfileAttrs (toString path);
+  });
 
-  allProfiles = lib.collectProfiles profiles;
+  definedSuites = suites profileSet;
 
-  allUsers = lib.collectProfiles users;
-
-  createSuites = _: suites: lib.mapAttrs (_: v: os.profileMap v) suites // {
-    inherit allProfiles allUsers;
-  };
-
+  allProfiles = lib.collectProfiles profileSet;
 in
-lib.mapAttrs createSuites definedSuites
+lib.mapAttrs (_: v: os.profileMap v) definedSuites // {
+    inherit allProfiles;
+}
+
+
