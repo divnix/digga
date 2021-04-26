@@ -65,7 +65,10 @@ lib.systemFlake (lib.recursiveUpdate
 
     deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
 
-    overlays = lib.exporter.overlaysFromChannelsExporter { inherit (self) pkgs inputs; };
+    overlays = lib.exporter.overlaysFromChannelsExporter {
+      inherit inputs;
+      inherit (self) pkgs;
+    };
 
     packagesBuilder = lib.builder.packagesFromOverlaysBuilderConstructor self.overlays;
 
