@@ -61,7 +61,7 @@
     {
       lib = utils.lib // {
         inherit (lib)
-          mkFlake;
+          mkFlake pathsIn;
       };
 
     }
