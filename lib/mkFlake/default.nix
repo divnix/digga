@@ -15,7 +15,7 @@ let
 
   otherArguments = removeAttrs args (attrNames config.options);
 
-  defaultModules = [
+  defaultModules = with lib.modules; [
     (hmDefaults {
       inherit (cfg.home) suites;
       modules = cfg.home.modules ++ cfg.home.externalModules;
@@ -37,19 +37,19 @@ lib.systemFlake (lib.recursiveUpdate
       (name: channel:
         channel // {
           # pass channels if "overlay" has three arguments
-          overlaysBuilder = channels: lib.unifyOverlays channels c.overlays;
-        };
+          overlaysBuilder = channels: lib.unifyOverlays channels channel.overlays;
+        }
       ) cfg.channels;
 
-    inherit (cfg.os) hosts;
+    inherit (cfg.nixos) hosts;
 
     hostDefaults = {
-      specialArgs.suites = cfg.os.suites;
-      modules = cfg.os.hostDefaults.modules
-        ++ cfg.os.hostDefaults.externalModules
+      specialArgs.suites = cfg.nixos.suites;
+      modules = cfg.nixos.hostDefaults.modules
+        ++ cfg.nixos.hostDefaults.externalModules
         ++ defaultModules;
       builder = os.devosSystem { inherit self inputs; };
-      inherit (cfg.os.hostDefaults)
+      inherit (cfg.nixos.hostDefaults)
         channelName
         system;
     };
@@ -66,7 +66,7 @@ lib.systemFlake (lib.recursiveUpdate
     packagesBuilder = lib.builders.packagesFromOverlaysBuilderConstructor self.overlays;
 
     checksBuilder = channels:
-      pkgs-lib.tests.mkChecks {
+      lib.pkgs-lib.tests.mkChecks {
         pkgs = getDefaultChannel channels;
         inherit (self.deploy) nodes;
         hosts = self.nixosConfigurations;
@@ -74,7 +74,7 @@ lib.systemFlake (lib.recursiveUpdate
       };
 
     devShellBuilder = channels:
-      pkgs-lib.shell {
+      lib.pkgs-lib.shell {
         pkgs = getDefaultChannel channels;
       };
   }
