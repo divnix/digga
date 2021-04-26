@@ -43,7 +43,8 @@
         nixos = {
           overlays = nixos.lib.flatten [
             (devos.lib.pathsIn ./overlays)
-            pkgs.overlay
+            ./pkgs/default.nix
+            pkgs.overlay # for `srcs`
             ./overrides.nix # from "latest" channel
             nur.overlay
           ];
