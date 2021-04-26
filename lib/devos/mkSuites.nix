@@ -8,13 +8,9 @@ let
     inherit (args) users profiles userProfiles;
   };
 
-  allProfiles =
-    let defaults = lib.collect (x: x ? default) profiles;
-    in map (x: x.default) defaults;
+  allProfiles = lib.collectProfiles profiles;
 
-  allUsers =
-    let defaults = lib.collect (x: x ? default) users;
-    in map (x: x.default) defaults;
+  allUsers = lib.collectProfiles users;
 
   createSuites = _: suites: lib.mapAttrs (_: v: os.profileMap v) suites // {
     inherit allProfiles allUsers;
