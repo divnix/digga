@@ -56,7 +56,9 @@ let
             default = [ ];
             description = escape [ "<" ">" ] ''
               overlays to apply to this channel
-              these will get exported under the 'overlays' flake output as <channel>/<name>
+              these will get exported under the 'overlays' flake output
+              as <channel>/<name> and any overlay pulled from ''\${inputs}
+              will be filtered out
             '';
           };
           config = mkOption {
@@ -74,14 +76,18 @@ let
         options = with types; {
           # anything null in hosts gets filtered out by mkFlake
           system = mkOption {
-            type = nullOr systemType;
+            type = (nullOr systemType) // {
+              description = "system defined in `supportedSystems`";
+            };
             default = null;
             description = ''
               system for this host
             '';
           };
           channelName = mkOption {
-            type = nullOr (types.enum (builtins.attrNames config.channels));
+            type = (nullOr (types.enum (builtins.attrNames config.channels))) // {
+              description = "a channel defined in `channels`";
+            };
             default = null;
             description = ''
               Channel this host should follow
@@ -98,7 +104,8 @@ let
             type = with types; listOf moduleType;
             default = [ ];
             description = ''
-              The configuration for this host
+              modules to include that won't be exported
+              meant importing modules from external flakes
             '';
           };
         };
@@ -168,7 +175,12 @@ let
           profiles = mkOption {
             type = listOf path;
             default = [ ];
-            description = "path to profiles folder that can be collected into suites";
+            description = ''
+              profile folders that can be collected into suites
+              the name of the argument passed to suites is based
+              on the folder name.
+              [ ./profiles ] => { profiles }:
+            '';
           };
           suites = mkOption {
             type = pathTo (functionTo attrs);
@@ -178,8 +190,7 @@ let
               inherit (config) profiles;
             };
             description = ''
-              Function with the input of 'profiles' that returns an attribute set
-              with the suites for this config system.
+              Function that takes profiles and returns suites for this config system
               These can be accessed through the 'suites' special argument.
             '';
           };
