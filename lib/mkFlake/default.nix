@@ -1,64 +1,94 @@
 { lib, deploy }:
 let
   inherit (lib) os;
+  inherit (builtins) mapAttrs attrNames attrValues head isFunction;
 in
 
-_: { self, inputs, nixos, ... } @ args:
+_: { self, inputs, ... } @ args:
 let
 
-  cfg = (
-    lib.mkFlake.evalOldArgs
-      { inherit self inputs args; }
-  ).config;
-
-  multiPkgs = os.mkPkgs
-    {
-      inherit self inputs nixos;
-      inherit (cfg) extern overrides;
-    };
-
-  outputs = {
-    nixosConfigurations = os.mkHosts
-      {
-        inherit self inputs nixos multiPkgs;
-        inherit (cfg) extern suites overrides;
-        dir = cfg.hosts;
-      };
-
-    homeConfigurations = os.mkHomeConfigurations self.nixosConfigurations;
-
-    nixosModules = cfg.modules;
-
-    homeModules = cfg.userModules;
-
-    overlay = cfg.packages;
-    inherit (cfg) overlays;
-
-    deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
+  config = lib.mkFlake.evalArgs {
+    inherit args;
   };
 
-  systemOutputs = lib.eachDefaultSystem (system:
-    let
-      pkgs = multiPkgs.${system};
-      pkgs-lib = lib.pkgs-lib.${system};
-      # all packages that are defined in ./pkgs
-      legacyPackages = os.mkPackages {
-        inherit pkgs;
-        inherit (self) overlay overlays;
-      };
-    in
-    {
-      checks = pkgs-lib.tests.mkChecks {
+  cfg = config.config;
+
+  otherArguments = removeAttrs args (attrNames config.options);
+
+  defaultModules = with lib.modules; [
+    (hmDefaults {
+      inherit (cfg.home) suites;
+      modules = cfg.home.modules ++ cfg.home.externalModules;
+    })
+    (globalDefaults {
+      inherit self inputs;
+    })
+  ];
+
+  stripChannel = channel: removeAttrs channel [
+    # arguments in our channels api that shouldn't be passed to fup
+    "overlays"
+  ];
+  getDefaultChannel = channels: channels.${cfg.nixos.hostDefaults.channelName};
+
+  # evalArgs sets channelName and system to null by default
+  # but for proper default handling in fup, null args have to be removed
+  stripHost = args: removeAttrs (lib.filterAttrs (_: arg: arg != null) args) [
+    # arguments in our hosts/hostDefaults api that shouldn't be passed to fup
+    "externalModules"
+  ];
+  hosts = lib.mapAttrs (_: stripHost) cfg.nixos.hosts;
+  hostDefaults = stripHost cfg.nixos.hostDefaults;
+in
+lib.systemFlake (lib.recursiveUpdate
+  otherArguments
+  {
+    inherit self inputs hosts;
+    inherit (cfg) channelsConfig supportedSystems;
+
+    channels = mapAttrs
+      (name: channel:
+        stripChannel (channel // {
+          # pass channels if "overlay" has three arguments
+          overlaysBuilder = channels: lib.unifyOverlays channels channel.overlays;
+        })
+      )
+      cfg.channels;
+
+    hostDefaults = lib.mergeAny hostDefaults {
+      specialArgs.suites = cfg.nixos.suites;
+      modules = cfg.nixos.hostDefaults.externalModules ++ defaultModules;
+      builder = os.devosSystem { inherit self inputs; };
+    };
+
+    nixosModules = lib.exporter.modulesFromList cfg.nixos.hostDefaults.modules;
+
+    homeModules = lib.exporter.modulesFromList cfg.home.modules;
+    homeConfigurations = os.mkHomeConfigurations self.nixosConfigurations;
+
+    deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
+
+    overlays = lib.exporter.overlaysFromChannelsExporter {
+      # since we can't detect overlays owned by self
+      # we have to filter out ones exported by the inputs
+      # optimally we would want a solution for NixOS/nix#4740
+      inherit inputs;
+      inherit (self) pkgs;
+    };
+
+    packagesBuilder = lib.builder.packagesFromOverlaysBuilderConstructor self.overlays;
+
+    checksBuilder = channels:
+      lib.pkgs-lib.tests.mkChecks {
+        pkgs = getDefaultChannel channels;
         inherit (self.deploy) nodes;
         hosts = self.nixosConfigurations;
         homes = self.homeConfigurations;
       };
 
-      inherit legacyPackages;
-      packages = lib.filterPackages system legacyPackages;
-
-      devShell = pkgs-lib.shell;
-    });
-in
-outputs // systemOutputs
-
+    devShellBuilder = channels:
+      lib.pkgs-lib.shell {
+        pkgs = getDefaultChannel channels;
+      };
+  }
+)

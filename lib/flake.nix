@@ -5,7 +5,7 @@
     {
       deploy.url = "github:serokell/deploy-rs";
       devshell.url = "github:numtide/devshell";
-      utils.url = "github:numtide/flake-utils";
+      utils.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
     };
 
   outputs = inputs@{ self, nixpkgs, deploy, devshell, utils, ... }:
@@ -35,12 +35,11 @@
               inherit deploy;
             };
             evalArgs = import ./mkFlake/evalArgs.nix { lib = nixpkgs.lib // self; };
-            evalOldArgs = import ./mkFlake/evalOldArgs.nix { lib = nixpkgs.lib // self; };
           };
 
           pkgs-lib = import ./pkgs-lib {
             lib = nixpkgs.lib // self;
-            inherit nixpkgs deploy devshell;
+            inherit deploy devshell;
           };
 
           inherit (attrs)
@@ -49,8 +48,9 @@
             safeReadDir
             pathsToImportedAttrs
             concatAttrs
-            filterPackages;
-          inherit (lists) pathsIn collectProfiles;
+            filterPackages
+            importHosts;
+          inherit (lists) pathsIn collectProfiles unifyOverlays;
           inherit (strings) rgxToString;
           inherit modules;
         }
@@ -61,7 +61,7 @@
     {
       lib = utils.lib // {
         inherit (lib)
-          mkFlake;
+          mkFlake pathsIn importHosts;
       };
 
     }
@@ -83,7 +83,7 @@
           mkFlakeDoc = pkgs.writeText "mkFlakeOptions.md"
             (
               pkgs.nixosOptionsDoc {
-                inherit (lib.mkFlake.evalArgs { nixos = "nixos"; args = { }; }) options;
+                inherit (lib.mkFlake.evalArgs { args = { }; }) options;
               }
             ).optionsMDDoc;
         };

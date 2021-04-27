@@ -30,6 +30,14 @@ rec {
       value = import path;
     });
 
+  importHosts = dir:
+    lib.os.recImport {
+      inherit dir;
+      _import = base: {
+        modules = import "${toString dir}/${base}.nix";
+      };
+    };
+
   concatAttrs = lib.fold (attr: sum: lib.recursiveUpdate sum attr) { };
 
   # Filter out packages that support given system and follow flake check requirements
@@ -41,5 +49,6 @@ rec {
     in
     lib.filterAttrs filter packages;
 
-  safeReadDir = path: lib.optionalAttrs (builtins.pathExists path) (builtins.readDir path);
+  safeReadDir = path:
+    lib.optionalAttrs (builtins.pathExists (toString path)) (builtins.readDir (toString path));
 }

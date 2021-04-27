@@ -71,23 +71,19 @@ lib.runTests {
     };
   };
 
-  testSuites =
-    let
-      profiles = os.mkProfileAttrs (toString ./profiles);
-      users = "";
-      userProfiles = "";
-      suites = { profiles, ... }: {
-        system.bar = [ profiles.foo ];
+  testSuites = {
+    expr = os.mkSuites {
+      suites = { profiles, ... }: with profiles; {
+        bar = [ foo ];
       };
-    in
-    {
-      expr = os.mkSuites { inherit profiles users userProfiles suites; };
-      expected = {
-        system = {
-          bar = [ profiles.foo.default ];
-          allProfiles = [ profiles.foo.default profiles.t.default ];
-          allUsers = [ ];
-        };
-      };
+      profiles = [ (./profiles) ];
     };
+    expected = {
+      bar = [ (toString ./profiles/foo) ];
+      allProfiles = [
+        (toString ./profiles/foo)
+        (toString ./profiles/t)
+      ];
+    };
+  };
 }

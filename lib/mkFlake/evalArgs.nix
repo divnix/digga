@@ -1,11 +1,12 @@
 { lib }:
 
-{ nixos, args }:
+{ args }:
 let
   argOpts = with lib; { config, ... }:
     let
       inherit (lib) os;
 
+      cfg = config;
       inherit (config) self;
 
       maybeImport = obj:
@@ -20,6 +21,12 @@ let
         inherit (submodule { }) check;
         description = "valid module";
       });
+
+      # to export modules we need paths to get the name
+      exportModuleType = with types;
+        (addCheck path (x: moduleType.check (import x))) // {
+          description = "path to a module";
+        };
       overlayType = pathTo (types.anything // {
         check = builtins.isFunction;
         description = "valid Nixpkgs overlay";
@@ -33,46 +40,37 @@ let
       # To simplify apply keys and improve type checking
       pathTo = elemType: with types; coercedTo path maybeImport elemType;
 
-      # Accepts single item or a list
-      # apply keys end up with a list
-      # This should not be used if expecting a nested list
-      # all lists will get flattened by this
-      coercedListOf = elemType:
-        let coerceToList = x: flatten (singleton x); in
-        with types; coercedTo elemType coerceToList (listOf elemType);
+      pathToListOf = elemType: with types; pathTo (listOf elemType);
 
-      pathToListOf = x: pathTo (coercedListOf x);
+      coercedListOf = elemType: with types;
+        coercedTo anything (x: flatten (singleton x)) (listOf elemType);
 
       /* Submodules needed for API containers */
 
-      channelsModule = {
+      channelsModule = { name, ... }: {
         options = with types; {
           input = mkOption {
             type = flakeType;
-            default = nixos;
+            default = cfg.inputs.${name};
+            defaultText = "inputs.<name>";
             description = ''
               nixpkgs flake input to use for this channel
             '';
           };
           overlays = mkOption {
-            type = pathToListOf overlayType;
+            type = coercedListOf overlayType;
             default = [ ];
-            description = ''
+            description = escape [ "<" ">" ] ''
               overlays to apply to this channel
-              these will get exported under the 'overlays' flake output as <channel>/<name>
-            '';
-          };
-          externalOverlays = mkOption {
-            type = pathToListOf overlayType;
-            default = [ ];
-            description = ''
-              overlays to apply to the channel that don't get exported to the flake output
-              useful to include overlays from inputs
+              these will get exported under the 'overlays' flake output
+              as <channel>/<name> and any overlay pulled from ''\${inputs}
+              will be filtered out
             '';
           };
           config = mkOption {
             type = pathTo attrs;
             default = { };
+            apply = lib.recursiveUpdate cfg.channelsConfig;
             description = ''
               nixpkgs config for this channel
             '';
@@ -82,21 +80,25 @@ let
 
       hostModule = {
         options = with types; {
+          # anything null in hosts gets filtered out by mkFlake
           system = mkOption {
-            type = systemType;
-            default = "x86_64-linux";
+            type = (nullOr systemType) // {
+              description = "system defined in `supportedSystems`";
+            };
+            default = null;
             description = ''
               system for this host
             '';
           };
           channelName = mkOption {
-            type = types.enum (builtins.attrValues config.channels);
-            default = "nixpkgs";
+            type = (nullOr (types.enum (builtins.attrNames config.channels))) // {
+              description = "a channel defined in `channels`";
+            };
+            default = null;
             description = ''
               Channel this host should follow
             '';
           };
-
         };
       };
 
@@ -105,10 +107,11 @@ let
       externalModulesModule = {
         options = {
           externalModules = mkOption {
-            type = pathToListOf moduleType;
+            type = with types; listOf moduleType;
             default = [ ];
             description = ''
-              The configuration for this host
+              modules to include that won't be exported
+              meant importing modules from external flakes
             '';
           };
         };
@@ -117,7 +120,7 @@ let
       modulesModule = {
         options = {
           modules = mkOption {
-            type = pathToListOf moduleType;
+            type = with types; coercedListOf moduleType;
             default = [ ];
             description = ''
               modules to include
@@ -126,13 +129,31 @@ let
         };
       };
 
+      exportModulesModule = name: {
+        options = {
+          modules = mkOption {
+            type = with types; pathTo (coercedListOf exportModuleType);
+            default = [ ];
+            description = ''
+              modules to include in all hosts and export to ${name}Modules output
+            '';
+          };
+        };
+      };
+
+
+
       # Home-manager's configs get exported automatically from nixos.hosts
       # So there is no need for a host options in the home namespace
       # This is only needed for nixos
-      includeHostsModule = { name, ... }: {
+      includeHostsModule = name: {
         options = with types; {
           hostDefaults = mkOption {
-            type = submodule [ hostModule externalModulesModule modulesModule ];
+            type = submodule [
+              hostModule
+              externalModulesModule
+              (exportModulesModule name)
+            ];
             default = { };
             description = ''
               Defaults for all hosts.
@@ -152,16 +173,17 @@ let
       };
 
       # profiles and suites - which are profile collections
-      profilesModule = { name, ... }: {
+      profilesModule = { config, ... }: {
         options = with types; {
           profiles = mkOption {
-            type = coercedListOf path;
+            type = listOf path;
             default = [ ];
-            apply = list:
-              # Merge a list of profiles to one set
-              let profileList = map (x: os.mkProfileAttrs (toString x)) list; in
-              foldl (a: b: a // b) { } profileList;
-            description = "path to profiles folder that can be collected into suites";
+            description = ''
+              profile folders that can be collected into suites
+              the name of the argument passed to suites is based
+              on the folder name.
+              [ ./profiles ] => { profiles }:
+            '';
           };
           suites = mkOption {
             type = pathTo (functionTo attrs);
@@ -171,8 +193,7 @@ let
               inherit (config) profiles;
             };
             description = ''
-              Function with the input of 'profiles' that returns an attribute set
-              with the suites for this config system.
+              Function that takes profiles and returns suites for this config system
               These can be accessed through the 'suites' special argument.
             '';
           };
@@ -180,10 +201,21 @@ let
       };
     in
     {
+      # this does not get propagated to submodules
+      # to allow passing flake outputs directly to mkFlake
+      config._module.check = false;
+
       options = with types; {
         self = mkOption {
           type = flakeType;
           description = "The flake to create the devos outputs for";
+        };
+        inputs = mkOption {
+          type = attrsOf flakeType;
+          description = ''
+            inputs for this flake
+            used to set channel defaults and create registry
+          '';
         };
         supportedSystems = mkOption {
           type = listOf str;
@@ -192,31 +224,33 @@ let
             The systems supported by this flake
           '';
         };
-        channels =
-          let
-            default = {
-              nixpkgs = {
-                input = nixos;
-              };
-            };
-          in
-          mkOption {
-            type = attrsOf (submodule channelsModule);
-            inherit default;
-            apply = x: default // x;
-            description = ''
-              nixpkgs channels to create
-            '';
-          };
-        os = mkOption {
-          type = submodule [ includeHostsModule profilesModule ];
+        channelsConfig = mkOption {
+          type = pathTo attrs;
+          default = { };
+          description = ''
+            nixpkgs config for all channels
+          '';
+        };
+        channels = mkOption {
+          type = attrsOf (submodule channelsModule);
+          default = { };
+          description = ''
+            nixpkgs channels to create
+          '';
+        };
+        nixos = mkOption {
+          type = submodule [ (includeHostsModule "nixos") profilesModule ];
           default = { };
           description = ''
             hosts, modules, suites, and profiles for nixos
           '';
         };
         home = mkOption {
-          type = submodule [ profilesModule modulesModule ];
+          type = submodule [
+            profilesModule
+            (exportModulesModule "home")
+            externalModulesModule
+          ];
           default = { };
           description = ''
             hosts, modules, suites, and profiles for home-manager
