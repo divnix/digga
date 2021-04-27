@@ -33,8 +33,6 @@ lib.systemFlake (lib.recursiveUpdate
     inherit self inputs;
     inherit (cfg) channelsConfig supportedSystems;
 
-    mkFlakeConfig = config;
-
     channels = mapAttrs
       (name: channel:
         channel // {
