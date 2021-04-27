@@ -48,7 +48,8 @@
             safeReadDir
             pathsToImportedAttrs
             concatAttrs
-            filterPackages;
+            filterPackages
+            importHosts;
           inherit (lists) pathsIn collectProfiles unifyOverlays;
           inherit (strings) rgxToString;
           inherit modules;
@@ -60,7 +61,7 @@
     {
       lib = utils.lib // {
         inherit (lib)
-          mkFlake pathsIn;
+          mkFlake pathsIn importHosts;
       };
 
     }

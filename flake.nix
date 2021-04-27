@@ -61,11 +61,10 @@
             home.nixosModules.home-manager
           ];
         };
-        hosts = {
-          NixOS = {
-            modules = ./hosts/NixOS.nix;
-          };
-        };
+        hosts = nixos.lib.mkMerge [
+          (devos.lib.importHosts ./hosts)
+          { /* set host specific properties here */ }
+        ];
         profiles = [ ./profiles ./users ];
         suites = { profiles, users, ... }: with profiles; {
           base = [ cachix core users.nixos users.root ];
