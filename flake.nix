@@ -21,8 +21,6 @@
       };
       darwin.url = "github:LnL7/nix-darwin";
       darwin.inputs.nixpkgs.follows = "latest";
-      flake-compat.url = "github:BBBSnowball/flake-compat/pr-1";
-      flake-compat.flake = false;
       home.url = "github:nix-community/home-manager";
       home.inputs.nixpkgs.follows = "nixos";
       naersk.url = "github:nmattia/naersk";
