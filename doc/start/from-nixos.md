@@ -10,10 +10,18 @@ flk up
 This will make a new file `hosts/up-$(hostname).nix`, which you can edit to
 your liking.
 
+You must then add a host to `nixos.hosts` in flake.nix:
+```nix
+{
+  nixos.hosts = {
+    modules = hosts/NixOS.nix;
+  };
+}
+```
+
 Make sure your `i18n.defaultLocale` and `time.timeZone` are set properly for
 your region. Keep in mind that `networking.hostName` with be automatically
-set to the filename of your hosts file, so `hosts/my-host.nix` will have the
-hostname `my-host`.
+set to the name of your host;
 
 Now might be a good time to read the docs on [suites](../concepts/suites.md) and
 [profiles](../concepts/profiles.md) and add or create any that you need.

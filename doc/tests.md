@@ -7,7 +7,7 @@ configuration, and, optionally, run them in
 
 ## Lib Tests
 You can easily write tests for your own library functions in the
-___tests/lib.nix___ file and they will be run on every `nix flake check` or
+lib/___tests/lib.nix___ file and they will be run on every `nix flake check` or
 during a CI run.
 
 ## Unit Tests
