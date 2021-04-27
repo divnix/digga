@@ -41,6 +41,12 @@
         }
       '';
 
+      _module.args = {
+        inherit self;
+        hosts = builtins.mapAttrs (_: host: host.config)
+          (removeAttrs self.nixosConfigurations [ config.networking.hostName ]);
+      };
+
       system.configurationRevision = lib.mkIf (self ? rev) self.rev;
     };
 
