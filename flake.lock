@@ -81,7 +81,7 @@
         "utils": "utils_2"
       },
       "locked": {
-        "narHash": "sha256-MvrBYZG6sZqpa8mTg4RYeD9aezYbVppBnslRyH7qZys=",
+        "narHash": "sha256-clwJnNLVOASak2CfkWu3Yztb1uWwtndY4VLDWEa9R3s=",
         "path": "./lib",
         "type": "path"
       },
@@ -355,11 +355,11 @@
         "flake-utils": "flake-utils"
       },
       "locked": {
-        "lastModified": 1619438935,
-        "narHash": "sha256-B8OGqX9QBMW5G8DYTRdY0cb62ETaV0YxBayCZMiaVqQ=",
+        "lastModified": 1619480667,
+        "narHash": "sha256-KBiMpZcCv7D3wQ51ow7Sq8Xl01hDiRp5f7Py93CeD40=",
         "owner": "gytis-ivaskevicius",
         "repo": "flake-utils-plus",
-        "rev": "80b53eeda3102bb5aed31ec818c6485e35caffc3",
+        "rev": "be032a4396ad4cd7ea9bb733db8e456ec339ac9c",
         "type": "github"
       },
       "original": {
