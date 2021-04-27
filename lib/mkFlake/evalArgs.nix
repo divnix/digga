@@ -52,7 +52,7 @@ let
           input = mkOption {
             type = flakeType;
             default = cfg.inputs.${name};
-            defaultText = escape [ "<" ">" ] "inputs.<name>";
+            defaultText = "inputs.<name>";
             description = ''
               nixpkgs flake input to use for this channel
             '';

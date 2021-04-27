@@ -40,7 +40,7 @@ nix flake
 
 *_Default_*
 ```
-"inputs.\\<name\\>"
+"inputs.<name>"
 ```
 
 
