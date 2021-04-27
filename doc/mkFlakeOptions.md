@@ -54,7 +54,7 @@ will be filtered out
 
 
 *_Type_*:
-list of valid Nixpkgs overlay or path convertible to its or path convertible to it
+list of valid Nixpkgs overlay or path convertible to its or anything convertible to it
 
 
 *_Default_*
@@ -119,7 +119,7 @@ modules to include in all hosts and export to homeModules output
 
 
 *_Type_*:
-list of paths or path convertible to it
+list of path to a modules or anything convertible to it or path convertible to it
 
 
 *_Default_*
@@ -252,7 +252,7 @@ modules to include in all hosts and export to nixosModules output
 
 
 *_Type_*:
-list of paths or path convertible to it
+list of path to a modules or anything convertible to it or path convertible to it
 
 
 *_Default_*
@@ -316,7 +316,7 @@ modules to include
 
 
 *_Type_*:
-list of valid module or path convertible to its or valid module or path convertible to it convertible to it
+list of valid module or path convertible to its or anything convertible to it
 
 
 *_Default_*
