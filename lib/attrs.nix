@@ -41,5 +41,6 @@ rec {
     in
     lib.filterAttrs filter packages;
 
-  safeReadDir = path: lib.optionalAttrs (builtins.pathExists path) (builtins.readDir path);
+  safeReadDir = path:
+    lib.optionalAttrs (builtins.pathExists (toString path)) (builtins.readDir (toString path));
 }
