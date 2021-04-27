@@ -69,7 +69,7 @@
         };
         profiles = [ ./profiles ./users ];
         suites = { profiles, users, ... }: with profiles; {
-          base = [ core users.nixos users.root ];
+          base = [ cachix core users.nixos users.root ];
         };
       };
 
