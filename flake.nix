@@ -45,7 +45,6 @@
             (devos.lib.pathsIn ./overlays)
             ./pkgs/default.nix
             pkgs.overlay # for `srcs`
-            ./overrides.nix # from "latest" channel
             nur.overlay
           ];
         };
