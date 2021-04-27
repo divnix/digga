@@ -187,6 +187,10 @@ let
       };
     in
     {
+      # this does not get propagated to submodules
+      # to allow passing flake outputs directly to mkFlake
+      config._module.check = false;
+
       options = with types; {
         self = mkOption {
           type = flakeType;

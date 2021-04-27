@@ -8,7 +8,7 @@ _: { self, inputs, ... } @ args:
 let
 
   config = lib.mkFlake.evalArgs {
-    args = lib.mkMerge [ args { _module.check = false; } ];
+    inherit args;
   };
 
   cfg = config.config;
