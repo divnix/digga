@@ -25,35 +25,39 @@ let
     })
   ];
 
+  stripChannel = channel: removeAttrs channel [
+    # arguments in our channels api that shouldn't be passed to fup
+    "overlays"
+  ];
   getDefaultChannel = channels: channels.${cfg.nixos.hostDefaults.channelName};
+
+  # evalArgs sets channelName and system to null by default
+  # but for proper default handling in fup, null args have to be removed
+  stripHost = args: removeAttrs (lib.filterAttrs (_: arg: arg != null) args) [
+    # arguments in our hosts/hostDefaults api that shouldn't be passed to fup
+    "externalModules"
+  ];
+  hosts = lib.mapAttrs (_: stripHost) cfg.nixos.hosts;
+  hostDefaults = stripHost cfg.nixos.hostDefaults;
 in
 lib.systemFlake (lib.recursiveUpdate
   otherArguments
   {
-    inherit self inputs;
+    inherit self inputs hosts;
     inherit (cfg) channelsConfig supportedSystems;
 
     channels = mapAttrs
       (name: channel:
-        channel // {
+        stripChannel (channel // {
           # pass channels if "overlay" has three arguments
           overlaysBuilder = channels: lib.unifyOverlays channels channel.overlays;
-        }
+        })
       ) cfg.channels;
 
-    # the host arguments cannot exist for fup hostDefaults to work
-    # so evalArgs sets them to null by default and the null args are filtered out here
-    hosts = mapAttrs (_: host: lib.filterAttrs (_: arg: arg != null) host) cfg.nixos.hosts;
-
-    hostDefaults = {
+    hostDefaults = lib.mergeAny hostDefaults {
       specialArgs.suites = cfg.nixos.suites;
-      modules = cfg.nixos.hostDefaults.modules
-        ++ cfg.nixos.hostDefaults.externalModules
-        ++ defaultModules;
+      modules = cfg.nixos.hostDefaults.externalModules ++ defaultModules;
       builder = os.devosSystem { inherit self inputs; };
-      inherit (cfg.nixos.hostDefaults)
-        channelName
-        system;
     };
 
     nixosModules = lib.exporter.modulesFromList cfg.nixos.hostDefaults.modules;
