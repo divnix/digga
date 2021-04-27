@@ -21,6 +21,12 @@ let
         inherit (submodule { }) check;
         description = "valid module";
       });
+
+      # to export modules we need paths to get the name
+      exportModuleType = with types;
+        (addCheck path (x: moduleType.check (import x))) // {
+          description = "path to a module";
+        };
       overlayType = pathTo (types.anything // {
         check = builtins.isFunction;
         description = "valid Nixpkgs overlay";
@@ -37,7 +43,7 @@ let
       pathToListOf = elemType: with types; pathTo (listOf elemType);
 
       coercedListOf = elemType: with types;
-        coercedTo elemType (x: flatten (singleton x)) (listOf elemType);
+        coercedTo anything (x: flatten (singleton x)) (listOf elemType);
 
       /* Submodules needed for API containers */
 
@@ -52,7 +58,7 @@ let
             '';
           };
           overlays = mkOption {
-            type = pathToListOf overlayType;
+            type = coercedListOf overlayType;
             default = [ ];
             description = escape [ "<" ">" ] ''
               overlays to apply to this channel
@@ -126,10 +132,7 @@ let
       exportModulesModule = name: {
         options = {
           modules = mkOption {
-            type = with types; pathToListOf
-              # check if the path evaluates to a proper module
-              # but this must be a path for the export to work
-              (addCheck path (x: moduleType.check (import x)));
+            type = with types; pathTo (coercedListOf exportModuleType);
             default = [ ];
             description = ''
               modules to include in all hosts and export to ${name}Modules output
