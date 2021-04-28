@@ -2,9 +2,7 @@
   "nodes": {
     "ci-agent": {
       "inputs": {
-        "flake-compat": [
-          "flake-compat"
-        ],
+        "flake-compat": "flake-compat",
         "nix-darwin": [
           "darwin"
         ],
@@ -17,11 +15,11 @@
         "pre-commit-hooks-nix": "pre-commit-hooks-nix"
       },
       "locked": {
-        "lastModified": 1615131736,
-        "narHash": "sha256-z4Er9Cj3WpBDO/saLxqb7IypEvVP0/1AnO6rY5NB03Y=",
+        "lastModified": 1619088868,
+        "narHash": "sha256-l9db+HpNIkY41MonGE8z4pbkjBa5BdzJTG5AxV7V7Lw=",
         "owner": "hercules-ci",
         "repo": "hercules-ci-agent",
-        "rev": "a1513a51e8efb96e990a562e6e724e17f2789978",
+        "rev": "08f953a263518a3af0ca28cd887020ff3465bdf5",
         "type": "github"
       },
       "original": {
@@ -52,7 +50,7 @@
     },
     "deploy": {
       "inputs": {
-        "flake-compat": "flake-compat",
+        "flake-compat": "flake-compat_2",
         "naersk": "naersk",
         "nixpkgs": "nixpkgs",
         "utils": "utils"
@@ -124,16 +122,15 @@
     "flake-compat_2": {
       "flake": false,
       "locked": {
-        "lastModified": 1611461076,
-        "narHash": "sha256-ad++dTtMNeitUIKi1c66aTrVJOSf+mdZTrGrXzjDr6Q=",
-        "owner": "BBBSnowball",
+        "lastModified": 1606424373,
+        "narHash": "sha256-oq8d4//CJOrVj+EcOaSXvMebvuTkmBJuT5tzlfewUnQ=",
+        "owner": "edolstra",
         "repo": "flake-compat",
-        "rev": "a565cb46bee9fa856a6c15bc9c3bb947fbb784ec",
+        "rev": "99f1c2157fba4bfe6211a321fd0ee43199025dbf",
         "type": "github"
       },
       "original": {
-        "owner": "BBBSnowball",
-        "ref": "pr-1",
+        "owner": "edolstra",
         "repo": "flake-compat",
         "type": "github"
       }
@@ -307,11 +304,11 @@
     "pre-commit-hooks-nix": {
       "flake": false,
       "locked": {
-        "lastModified": 1603721622,
-        "narHash": "sha256-tUgyf5eYK5+0A/dvLzbbm4W7icxbpORuFMXiFe5yz+I=",
+        "lastModified": 1617783930,
+        "narHash": "sha256-SigoU2LWM1fMggqfM9H8XEIvjOjBVQ/wj/zrn02J28c=",
         "owner": "cachix",
         "repo": "pre-commit-hooks.nix",
-        "rev": "efdbd6d28f7f44db3d9f8cf0e0b4cb9db0d259e1",
+        "rev": "2d169bb1b23f3b71a894a66ea81f45c788943248",
         "type": "github"
       },
       "original": {
@@ -325,7 +322,6 @@
         "ci-agent": "ci-agent",
         "darwin": "darwin",
         "devos": "devos",
-        "flake-compat": "flake-compat_2",
         "home": "home",
         "latest": "latest",
         "naersk": "naersk_2",
