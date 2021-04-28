@@ -43,6 +43,7 @@
 
       _module.args = {
         inherit self;
+        devlib = lib;
         hosts = builtins.mapAttrs (_: host: host.config)
           (removeAttrs self.nixosConfigurations [ config.networking.hostName ]);
       };
@@ -111,18 +112,5 @@
       };
     };
 
-  hmConfig =
-    { config, ... }: {
-      home-manager.useUserPackages = lib.mkForce false;
-      home-manager.sharedModules = [
-        {
-          home.sessionVariables = {
-            inherit (config.environment.sessionVariables) NIX_PATH;
-          };
-          xdg.configFile."nix/registry.json".text =
-            config.environment.etc."nix/registry.json".text;
-        }
-      ];
-    };
 }
 

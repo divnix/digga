@@ -23,11 +23,9 @@ let
       nixosTesting =
         (import "${toString pkgs.path}/nixos/lib/testing-python.nix" {
           inherit (pkgs) system;
-          inherit (host.config.lib) specialArgs;
+          inherit (host.config.lib.builderArgs) specialArgs;
           inherit pkgs;
-          extraConfigurations = [
-            host.config.lib.testModule
-          ];
+          extraConfigurations = host._module.args.modules;
         });
     in
     test:

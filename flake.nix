@@ -57,6 +57,7 @@
           externalModules = [
             ci-agent.nixosModules.agent-profile
             home.nixosModules.home-manager
+            ./modules/customBuilds.nix
           ];
         };
         hosts = nixos.lib.mkMerge [
