@@ -40,7 +40,7 @@ let
   hosts = lib.mapAttrs (_: stripHost) cfg.nixos.hosts;
   hostDefaults = stripHost cfg.nixos.hostDefaults;
 in
-lib.systemFlake (lib.recursiveUpdate
+lib.systemFlake (lib.mergeAny
   otherArguments
   {
     inherit self inputs hosts;
@@ -55,6 +55,12 @@ lib.systemFlake (lib.recursiveUpdate
       )
       cfg.channels;
 
+    sharedOverlays = [
+      (final: prev: {
+        __dontExport = true;
+        devlib = lib;
+      })
+    ];
     hostDefaults = lib.mergeAny hostDefaults {
       specialArgs.suites = cfg.nixos.suites;
       modules = cfg.nixos.hostDefaults.externalModules ++ defaultModules;
