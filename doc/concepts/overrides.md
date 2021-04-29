@@ -12,9 +12,14 @@ You can add overlays to any channel to override packages from other channels.
 Pulling the manix package from the `latest` channel:
 ```nix
 channels: final: prev: {
+  __dontExport = true;
   inherit (pkgs.latest) manix;
 }
 ```
+
+It is recommended to set the `__dontExport` property for override specific
+overlays. `overlays/overrides.nix` is the best place to consolidate all package
+overrides and the property is already set for you.
 
 ## Modules
 
