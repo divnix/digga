@@ -1,4 +1,4 @@
-{ lib, deploy }:
+{ lib }:
 let
   inherit (builtins) mapAttrs attrNames attrValues head isFunction;
 in
@@ -71,9 +71,6 @@ lib.systemFlake (lib.mergeAny
     nixosModules = lib.exporter.modulesFromList cfg.nixos.hostDefaults.modules;
 
     homeModules = lib.exporter.modulesFromList cfg.home.modules;
-    homeConfigurations = lib.mkHomeConfigurations self.nixosConfigurations;
-
-    deploy.nodes = lib.mkDeployNodes deploy self.nixosConfigurations;
 
     overlays = lib.exporter.overlaysFromChannelsExporter {
       # since we can't detect overlays owned by self

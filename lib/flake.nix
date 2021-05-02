@@ -19,18 +19,19 @@
           strings = import ./strings.nix { lib = combinedLib; };
           modules = import ./modules.nix { lib = combinedLib; };
           importers = import ./importers.nix { lib = combinedLib; };
-          generators = import ./generators.nix { lib = combinedLib; };
+
+          generators = import ./generators.nix {
+            lib = combinedLib;
+            inherit deploy;
+          };
 
           mkFlake = {
-            __functor = import ./mkFlake {
-              lib = combinedLib;
-              inherit deploy;
-            };
+            __functor = import ./mkFlake { lib = combinedLib; };
             evalArgs = import ./mkFlake/evalArgs.nix { lib = combinedLib; };
           };
 
           pkgs-lib = import ./pkgs-lib {
-            lib = nixpkgs.lib // self;
+            lib = combinedLib;
             inherit deploy devshell;
           };
 
