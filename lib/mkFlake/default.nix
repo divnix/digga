@@ -40,7 +40,6 @@ let
   hostDefaults = stripHost cfg.nixos.hostDefaults;
 in
 lib.systemFlake (lib.mergeAny
-  otherArguments
   {
     inherit self inputs hosts;
     inherit (cfg) channelsConfig supportedSystems;
@@ -99,4 +98,5 @@ lib.systemFlake (lib.mergeAny
         pkgs = getDefaultChannel channels;
       };
   }
+  otherArguments # for overlays list order
 )
