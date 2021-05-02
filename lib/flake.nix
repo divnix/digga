@@ -10,31 +10,23 @@
 
   outputs = inputs@{ self, nixpkgs, deploy, devshell, utils, ... }:
     let
-
       lib = nixpkgs.lib.makeExtensible (self:
-        let
-          attrs = import ./attrs.nix { lib = nixpkgs.lib // self; };
-          lists = import ./lists.nix { lib = nixpkgs.lib // self; };
-          strings = import ./strings.nix { lib = nixpkgs.lib // self; };
-          modules = import ./modules.nix { lib = nixpkgs.lib // self; };
-        in
-
-        utils.lib
-
-        //
-
-        {
-          os = import ./devos {
-            lib = nixpkgs.lib // self;
-            inherit utils;
-          };
+        let combinedLib = nixpkgs.lib // self; in
+        with self;
+        utils.lib // {
+          attrs = import ./attrs.nix { lib = combinedLib; };
+          lists = import ./lists.nix { lib = combinedLib; };
+          strings = import ./strings.nix { lib = combinedLib; };
+          modules = import ./modules.nix { lib = combinedLib; };
+          importers = import ./importers.nix { lib = combinedLib; };
+          generators = import ./generators.nix { lib = combinedLib; };
 
           mkFlake = {
             __functor = import ./mkFlake {
-              lib = nixpkgs.lib // self;
+              lib = combinedLib;
               inherit deploy;
             };
-            evalArgs = import ./mkFlake/evalArgs.nix { lib = nixpkgs.lib // self; };
+            evalArgs = import ./mkFlake/evalArgs.nix { lib = combinedLib; };
           };
 
           pkgs-lib = import ./pkgs-lib {
@@ -42,28 +34,26 @@
             inherit deploy devshell;
           };
 
-          inherit (attrs)
-            mapFilterAttrs
-            genAttrs'
-            safeReadDir
-            pathsToImportedAttrs
-            concatAttrs
-            filterPackages
-            importHosts;
-          inherit (lists) pathsIn collectProfiles unifyOverlays;
+          inherit (attrs) mapFilterAttrs genAttrs' safeReadDir concatAttrs;
+          inherit (lists) profileMap collectProfiles unifyOverlays;
           inherit (strings) rgxToString;
-          inherit modules;
+          inherit (importers) mkProfileAttrs pathsIn importHosts;
+          inherit (generators) mkSuites mkDeployNodes mkHomeConfigurations;
         }
       );
 
     in
 
     {
-      lib = utils.lib // {
+      lib = with lib; utils.lib // {
+        inherit attrs lists modules importers generators;
         inherit (lib)
-          mkFlake pathsIn importHosts;
+          mkFlake
+          pathsIn
+          importHosts
+          mkDeployNodes
+          mkHomeConfigurations;
       };
-
     }
 
     //
