@@ -1,6 +1,5 @@
 { lib, deploy }:
 let
-  inherit (lib) os;
   inherit (builtins) mapAttrs attrNames attrValues head isFunction;
 in
 
@@ -66,16 +65,16 @@ lib.systemFlake (lib.mergeAny
       modules = cfg.nixos.hostDefaults.externalModules ++ defaultModules;
       builder = args: args.specialArgs.channel.input.lib.nixosSystem (lib.mergeAny args {
         # So modules and functions can create their own version of the build
-        modules = [ { lib.builderArgs = args; } ];
+        modules = [{ lib.builderArgs = args; }];
       });
     };
 
     nixosModules = lib.exporter.modulesFromList cfg.nixos.hostDefaults.modules;
 
     homeModules = lib.exporter.modulesFromList cfg.home.modules;
-    homeConfigurations = os.mkHomeConfigurations self.nixosConfigurations;
+    homeConfigurations = lib.mkHomeConfigurations self.nixosConfigurations;
 
-    deploy.nodes = os.mkNodes deploy self.nixosConfigurations;
+    deploy.nodes = lib.mkDeployNodes deploy self.nixosConfigurations;
 
     overlays = lib.exporter.overlaysFromChannelsExporter {
       # since we can't detect overlays owned by self

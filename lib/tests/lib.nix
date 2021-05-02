@@ -37,25 +37,6 @@ lib.runTests {
     ];
   };
 
-  testPathsToImportedAttrs = {
-    expr =
-      pathsToImportedAttrs [
-        (toString ./testPathsToImportedAttrs/dir)
-        ./testPathsToImportedAttrs/foo.nix
-        ./testPathsToImportedAttrs/bar.nix
-        ./testPathsToImportedAttrs/t.nix
-        ./testPathsToImportedAttrs/f.nix
-      ];
-
-    expected = {
-      dir = { a = 5; };
-      foo = { bar = 1; };
-      bar = { foo = 2; };
-      t = true;
-      f = false;
-    };
-  };
-
   testRgxToString = lib.testAllTrue [
     (rgxToString ".+x" "vxk" == "vx")
     (rgxToString "^fo" "foo" == "fo")
@@ -72,7 +53,7 @@ lib.runTests {
   };
 
   testSuites = {
-    expr = os.mkSuites {
+    expr = mkSuites {
       suites = { profiles, ... }: with profiles; {
         bar = [ foo ];
       };
