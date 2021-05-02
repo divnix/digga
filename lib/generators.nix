@@ -1,4 +1,4 @@
-{ lib }:
+{ lib, deploy }:
 {
   mkHomeConfigurations = nixosConfigurations:
     with lib;
@@ -12,7 +12,7 @@
     in
     foldl recursiveUpdate { } (attrValues hmConfigs);
 
-  mkDeployNodes =
+  mkDeployNodes = hosts: extraConfig:
     /**
       Synopsis: mkNodes _nixosConfigurations_
 
@@ -20,14 +20,18 @@
       where _nixosConfigurations_ are `nodes`.
       **/
 
-    deploy: lib.mapAttrs (_: config: {
-      hostname = config.config.networking.hostName;
+    lib.mapAttrs
+      (_: config: lib.recursiveUpdate
+        {
+          hostname = config.config.networking.hostName;
 
-      profiles.system = {
-        user = "root";
-        path = deploy.lib.x86_64-linux.activate.nixos config;
-      };
-    });
+          profiles.system = {
+            user = "root";
+            path = deploy.lib.x86_64-linux.activate.nixos config;
+          };
+        }
+        extraConfig)
+      hosts;
 
   mkSuites = { suites, profiles }:
     let

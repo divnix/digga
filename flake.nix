@@ -79,6 +79,10 @@
         };
       };
 
+      homeConfigurations = devos.lib.mkHomeConfigurations self.nixosConfigurations;
+
+      deploy.nodes = devos.lib.mkDeployNodes self.nixosConfigurations { };
+
       #defaultTemplate = self.templates.flk;
       templates.flk.path = ./.;
       templates.flk.description = "flk template";
