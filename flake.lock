@@ -79,7 +79,7 @@
         "utils": "utils_2"
       },
       "locked": {
-        "narHash": "sha256-TQvd6TvSuT0sJCLlGsV65YjB+nIfDdDKZ1F94pCfkTw=",
+        "narHash": "sha256-oTiKYoR210VwjomzfSn/pCJ3immdUDRUPbYTDGaPFn8=",
         "path": "./lib",
         "type": "path"
       },

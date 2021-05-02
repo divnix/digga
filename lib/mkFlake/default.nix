@@ -64,7 +64,10 @@ lib.systemFlake (lib.mergeAny
     hostDefaults = lib.mergeAny hostDefaults {
       specialArgs.suites = cfg.nixos.suites;
       modules = cfg.nixos.hostDefaults.externalModules ++ defaultModules;
-      builder = os.devosSystem { inherit self inputs; };
+      builder = args: args.specialArgs.channel.input.lib.nixosSystem (lib.mergeAny args {
+        # So modules and functions can create their own version of the build
+        modules = [ { lib.builderArgs = args; } ];
+      });
     };
 
     nixosModules = lib.exporter.modulesFromList cfg.nixos.hostDefaults.modules;

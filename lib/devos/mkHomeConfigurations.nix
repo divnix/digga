@@ -4,9 +4,10 @@ nixosConfigurations:
 
 with lib;
 let
-  mkHomes = host: config:
-    mapAttrs' (user: v: nameValuePair "${user}@${host}" v.home)
-      config.config.system.build.homes;
+  mkHomes = hostName: host:
+    mapAttrs' (user: v: nameValuePair "${user}@${hostName}" v.home)
+      # So this function is useful for non-devos hosts
+      (host.config.system.build.homes or host.config.home-manager.users);
 
   hmConfigs = mapAttrs mkHomes nixosConfigurations;
 
