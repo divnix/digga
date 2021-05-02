@@ -4,8 +4,6 @@
 let
   argOpts = with lib; { config, ... }:
     let
-      inherit (lib) os;
-
       cfg = config;
       inherit (config) self;
 
@@ -188,7 +186,7 @@ let
           suites = mkOption {
             type = pathTo (functionTo attrs);
             default = _: { };
-            apply = suites: os.mkSuites {
+            apply = suites: lib.mkSuites {
               inherit suites;
               inherit (config) profiles;
             };
