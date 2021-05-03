@@ -43,7 +43,7 @@
 
       _module.args = {
         inherit self;
-        devlib = lib;
+        devlib = pkgs.devlib;
         hosts = builtins.mapAttrs (_: host: host.config)
           (removeAttrs self.nixosConfigurations [ config.networking.hostName ]);
       };
