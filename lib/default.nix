@@ -1,2 +1,2 @@
-lfinal: lprev: {
-}
+{ lib }:
+lib.makeExtensible (self: { })

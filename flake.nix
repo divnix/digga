@@ -44,9 +44,11 @@
         latest = { };
       };
 
+      lib = import ./lib { lib = devlib.lib // nixos.lib; };
+
       sharedOverlays = [
         (final: prev: {
-          ourlib = prev.devlib.extend (import ./lib);
+          ourlib = self.lib;
         })
       ];
 
@@ -56,6 +58,7 @@
           channelName = "nixos";
           modules = ./modules/module-list.nix;
           externalModules = [
+            { _module.args.ourlib = self.lib; }
             ci-agent.nixosModules.agent-profile
             home.nixosModules.home-manager
             ./modules/customBuilds.nix
