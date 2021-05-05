@@ -69,7 +69,7 @@
         "type": "github"
       }
     },
-    "devos": {
+    "devlib": {
       "inputs": {
         "deploy": "deploy",
         "devshell": "devshell",
@@ -79,13 +79,17 @@
         "utils": "utils_2"
       },
       "locked": {
-        "narHash": "sha256-/htTDxf3/n8lcL7Gnoi3+uamuY/KnlSMWDQ76dzQpac=",
-        "path": "./lib",
-        "type": "path"
+        "lastModified": 1620188794,
+        "narHash": "sha256-BDwtrbUkrSnBQJBXuaJg9QBu3MYL0iuJPE8P30o0x7I=",
+        "owner": "divnix",
+        "repo": "devlib",
+        "rev": "ffda6add9eb984d986cf5b6a838a52334317302f",
+        "type": "github"
       },
       "original": {
-        "path": "./lib",
-        "type": "path"
+        "owner": "divnix",
+        "repo": "devlib",
+        "type": "github"
       }
     },
     "devshell": {
@@ -321,7 +325,7 @@
       "inputs": {
         "ci-agent": "ci-agent",
         "darwin": "darwin",
-        "devos": "devos",
+        "devlib": "devlib",
         "home": "home",
         "latest": "latest",
         "naersk": "naersk_2",

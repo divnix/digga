@@ -5,14 +5,9 @@
     {
       nixos.url = "nixpkgs/nixos-unstable";
       latest.url = "nixpkgs";
-      devos.url = "path:./lib"; # TODO: outfactor into separate repo
-      devos.inputs = {
+      devlib.url = "github:divnix/devlib";
+      devlib.inputs = {
         nixpkgs.follows = "nixos";
-        # deploy.inputs = {
-        #   flake-compat.follows = "flake-compat";
-        #   naersk.follows = "naersk";
-        #   nixpkgs.follows = "nixos";
-        # };
       };
 
       ci-agent = {
@@ -31,8 +26,8 @@
       pkgs.inputs.nixpkgs.follows = "nixos";
     };
 
-  outputs = inputs@{ self, pkgs, devos, nixos, ci-agent, home, nixos-hardware, nur, ... }:
-    devos.lib.mkFlake {
+  outputs = inputs@{ self, pkgs, devlib, nixos, ci-agent, home, nixos-hardware, nur, ... }:
+    devlib.lib.mkFlake {
       inherit self inputs;
 
       channelsConfig = { allowUnfree = true; };
@@ -40,7 +35,7 @@
       channels = {
         nixos = {
           overlays = [
-            (devos.lib.pathsIn ./overlays)
+            (devlib.lib.pathsIn ./overlays)
             ./pkgs/default.nix
             pkgs.overlay # for `srcs`
             nur.overlay
@@ -48,6 +43,12 @@
         };
         latest = { };
       };
+
+      sharedOverlays = [
+        (final: prev: {
+          ourlib = prev.devlib.extend (import ./lib);
+        })
+      ];
 
       nixos = {
         hostDefaults = {
@@ -61,7 +62,7 @@
           ];
         };
         hosts = nixos.lib.mkMerge [
-          (devos.lib.importHosts ./hosts)
+          (devlib.lib.importHosts ./hosts)
           { /* set host specific properties here */ }
         ];
         profiles = [ ./profiles ./users ];
@@ -79,9 +80,9 @@
         };
       };
 
-      homeConfigurations = devos.lib.mkHomeConfigurations self.nixosConfigurations;
+      homeConfigurations = devlib.lib.mkHomeConfigurations self.nixosConfigurations;
 
-      deploy.nodes = devos.lib.mkDeployNodes self.nixosConfigurations { };
+      deploy.nodes = devlib.lib.mkDeployNodes self.nixosConfigurations { };
 
       #defaultTemplate = self.templates.flk;
       templates.flk.path = ./.;
