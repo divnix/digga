@@ -18,8 +18,6 @@
       experimentalFeatures = [
         "flakes"
         "nix-command"
-        "ca-references"
-        "ca-derivations"
       ];
     in
     { channel, config, pkgs, ... }: {
