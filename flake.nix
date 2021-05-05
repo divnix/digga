@@ -70,6 +70,9 @@
             lib = nixpkgs.lib // lib;
           };
         };
+
+        devShell = lib.pkgs-lib.shell { inherit pkgs; };
+
         packages = {
           mkFlakeDoc = pkgs.writeText "mkFlakeOptions.md"
             (
