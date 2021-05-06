@@ -21,7 +21,7 @@ If you wish to contribute please follow these guidelines:
 
 * The commit message follows the same semantics as [nixpkgs][nixpkgs].
   * You can use a `#` symbol to specify ambiguities. For example,
-  `develop#zsh: <rest of commit message>` would tell me that your updating the
+  `develop#zsh: <rest of commit message>` would tell me that you're updating the
   `zsh` subprofile living under the `develop` profile.
 
 [nixpkgs-fmt]: https://github.com/nix-community/nixpkgs-fmt
