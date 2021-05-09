@@ -9,6 +9,12 @@ let
       deploy-rs =
         deploy.packages.${prev.system}.deploy-rs;
     })
+
+    (final: prev: {
+      nixos-rebuild = prev.nixos-rebuild.override {
+        nix = prev.nixFlakes;
+      };
+    })
   ];
 
   pkgs' = import pkgs.path {
@@ -30,6 +36,7 @@ pkgs'.devshell.mkShell {
     nixos-install
     nixos-generate-config
     nixos-enter
+    pkgs'.nixos-rebuild
   ];
 
   git.hooks = {
