@@ -38,5 +38,5 @@ flake.nix:
 ```
 
 > ##### Note:
-> The optimal solution would be to automatically export modules that were created in
+> To avoid declaring "external" modules separately, which is obvious since they come from `inputs`, the optimal solution would be to automatically export modules that were created in
 > your flake. But this is not possible due to NixOS/nix#4740.
