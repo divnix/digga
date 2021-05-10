@@ -13,7 +13,7 @@ flake.nix:
   channels.nixos.overlays = [ inputs.agenix.overlay ];
 }
 ```
-These overlays will be automatically filtered by inspecting the `inputs` argument.
+Upon exporting overlays, these overlays will be automatically filtered out by inspecting the `inputs` argument.
 
 ## Modules
 There is a dedicated `nixos.hostDefaults.externalModules` argument for external
