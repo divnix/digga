@@ -15,6 +15,11 @@ productive personal and professional flakes in a clean and organized manner.
 By using this library your creations will be part of a community-first sharing
 model.
 
+# Usage
+The best way to make use of library is with the [Official template](https://github.com/divnix/devos).
+The primary function to make use of is `mkFlake` to create your devos flake.
+To learn about `mkFlake`'s options, take a look at the [mkFlake options doc](./doc/mkFlakeOptions.md)
+
 This library is based on [flake-utils-plus](https://github.com/gytis-ivaskevicius/flake-utils-plus).
 
 
