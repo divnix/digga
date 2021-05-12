@@ -42,7 +42,6 @@ pkgs'.devshell.mkShell {
     nixos-install
     nixos-generate-config
     nixos-enter
-    pkgs'.nixos-rebuild
   ] ++ (builtins.attrValues customPackages);
 
   git.hooks = {
