@@ -1,6 +1,7 @@
 { lib, self, devlib, config, modules, channel, ... }:
 let
   mkBuild = buildModule:
+    # TODO: get specialArgs as a module argument and drop builderArgs usage
     channel.input.lib.nixosSystem (devlib.mergeAny config.lib.builderArgs {
       modules = [ buildModule ];
     });
