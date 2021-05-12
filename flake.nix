@@ -14,23 +14,23 @@
         let combinedLib = nixpkgs.lib // self; in
         with self;
         utils.lib // {
-          attrs = import ./attrs.nix { lib = combinedLib; };
-          lists = import ./lists.nix { lib = combinedLib; };
-          strings = import ./strings.nix { lib = combinedLib; };
-          modules = import ./modules.nix { lib = combinedLib; };
-          importers = import ./importers.nix { lib = combinedLib; };
+          attrs = import ./src/attrs.nix { lib = combinedLib; };
+          lists = import ./src/lists.nix { lib = combinedLib; };
+          strings = import ./src/strings.nix { lib = combinedLib; };
+          modules = import ./src/modules.nix { lib = combinedLib; };
+          importers = import ./src/importers.nix { lib = combinedLib; };
 
-          generators = import ./generators.nix {
+          generators = import ./src/generators.nix {
             lib = combinedLib;
             inherit deploy;
           };
 
           mkFlake = {
-            __functor = import ./mkFlake { lib = combinedLib; };
-            evalArgs = import ./mkFlake/evalArgs.nix { lib = combinedLib; };
+            __functor = import ./src/mkFlake { lib = combinedLib; };
+            evalArgs = import ./src/mkFlake/evalArgs.nix { lib = combinedLib; };
           };
 
-          pkgs-lib = import ./pkgs-lib {
+          pkgs-lib = import ./src/pkgs-lib {
             lib = combinedLib;
             inherit deploy devshell;
           };
