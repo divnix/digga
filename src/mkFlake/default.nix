@@ -87,7 +87,7 @@ lib.systemFlake (lib.mergeAny
         pkgs = getDefaultChannel channels;
         inherit (self.deploy) nodes;
         hosts = self.nixosConfigurations;
-        homes = self.homeConfigurations;
+        homes = self.homeConfigurations or { };
       };
 
     devShellBuilder = channels:

@@ -28,6 +28,7 @@
       nix.nixPath = [
         "nixpkgs=${channel.input}"
         "nixos-config=${self}/lib/compat/nixos"
+      ] ++ lib.optionals (inputs ? home) [
         "home-manager=${inputs.home}"
       ];
 
