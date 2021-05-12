@@ -34,8 +34,9 @@
 
       channels = {
         nixos = {
-          overlays = [
-            (devlib.lib.pathsIn ./overlays)
+          overlays =
+            (devlib.lib.importers.pathsIn ./overlays) ++
+            [
             ./pkgs/default.nix
             pkgs.overlay # for `srcs`
             nur.overlay
