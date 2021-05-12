@@ -50,8 +50,6 @@
         inherit attrs lists modules importers generators;
         inherit (lib)
           mkFlake
-          pathsIn
-          importHosts
           mkDeployNodes
           mkHomeConfigurations;
       };
