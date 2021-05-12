@@ -37,10 +37,10 @@
           overlays =
             (devlib.lib.importers.pathsIn ./overlays) ++
             [
-            ./pkgs/default.nix
-            pkgs.overlay # for `srcs`
-            nur.overlay
-          ];
+              ./pkgs/default.nix
+              pkgs.overlay # for `srcs`
+              nur.overlay
+            ];
         };
         latest = { };
       };
@@ -66,7 +66,7 @@
           ];
         };
         hosts = nixos.lib.mkMerge [
-          (devlib.lib.importHosts ./hosts)
+          (devlib.lib.importers.importHosts ./hosts)
           { /* set host specific properties here */ }
         ];
         profiles = [ ./profiles ./users ];

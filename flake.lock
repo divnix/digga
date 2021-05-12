@@ -79,11 +79,11 @@
         "utils": "utils_2"
       },
       "locked": {
-        "lastModified": 1620832565,
-        "narHash": "sha256-6K+ZPoIQwaVP1hYER3PUxDxs4TTEilfQ+VoJWnEfd3Q=",
+        "lastModified": 1620845932,
+        "narHash": "sha256-ShC2IuJD1MHC0DtQWeUuWpD1HDL7cuK3oBWQmVqjmdk=",
         "owner": "divnix",
         "repo": "devlib",
-        "rev": "454b01d875bb8a31bb3d669366462e7fd978b963",
+        "rev": "5a04146dc08f0a15a4489babe584162fdde1ca1f",
         "type": "github"
       },
       "original": {
