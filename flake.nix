@@ -66,11 +66,11 @@
         pkgs = import nixpkgs { inherit system; };
       in
       {
-        checks = {
-          tests = import ./tests {
-            inherit pkgs;
-            lib = nixlib.lib // lib;
+        checks = import ./tests {
+          pkgs = pkgs // {
+            input = nixpkgs;
           };
+          lib = nixlib.lib // lib;
         };
 
         devShell = lib.pkgs-lib.shell { inherit pkgs; };
