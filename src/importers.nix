@@ -54,10 +54,13 @@ in
     map fullPath (lib.attrNames (lib.safeReadDir dir));
 
   importHosts = dir:
-    recImport {
-      inherit dir;
-      _import = base: {
-        modules = import "${toString dir}/${base}.nix";
+    {
+      # Meant to output a module that sets the hosts option
+      hosts = recImport {
+        inherit dir;
+        _import = base: {
+          modules = import "${toString dir}/${base}.nix";
+        };
       };
     };
 }
