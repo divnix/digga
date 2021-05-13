@@ -237,18 +237,24 @@ let
           '';
         };
         nixos = mkOption {
-          type = submodule [ (includeHostsModule "nixos") profilesModule ];
+          type = submoduleWith {
+            # allows easy use of the `imports` key
+            modules = [ (includeHostsModule "nixos") profilesModule ];
+          };
           default = { };
           description = ''
             hosts, modules, suites, and profiles for nixos
           '';
         };
         home = mkOption {
-          type = submodule [
-            profilesModule
-            (exportModulesModule "home")
-            externalModulesModule
-          ];
+          type = submoduleWith {
+            # allows easy use of the `imports` key
+            modules = [
+              profilesModule
+              (exportModulesModule "home")
+              externalModulesModule
+            ];
+          };
           default = { };
           description = ''
             hosts, modules, suites, and profiles for home-manager
