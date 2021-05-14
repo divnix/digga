@@ -230,7 +230,9 @@ let
           '';
         };
         channels = mkOption {
-          type = attrsOf (submodule channelsModule);
+          type = attrsOf (submoduleWith {
+            modules = [ channelsModule ];
+          });
           default = { };
           description = ''
             nixpkgs channels to create
