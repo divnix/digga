@@ -88,6 +88,21 @@
         "type": "github"
       }
     },
+    "nixlib": {
+      "locked": {
+        "lastModified": 1620519687,
+        "narHash": "sha256-+6Dd72b2CASuXm2W7KRxZIE7AOy/dj4mU28vaF+zxcs=",
+        "owner": "divnix",
+        "repo": "nixpkgs.lib",
+        "rev": "c7b6169809c5f74dd0c34f3d69e9d12ba4d448de",
+        "type": "github"
+      },
+      "original": {
+        "owner": "divnix",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1610942247,
@@ -106,22 +121,24 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1619244632,
-        "narHash": "sha256-IDcbMRnyKO9WlQ5xzIlM3HfWAUKTy+3xSd+CvDGiLgE=",
-        "owner": "NixOS",
+        "lastModified": 1620962350,
+        "narHash": "sha256-9ASW4d4/Z8HmRvuJI8rxbEOTbXTBpQ8y+CmFYBwtXzE=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "5cecebfb2f76da7b93f19967e99b3ff4fb4d2850",
+        "rev": "5d4a430472cafada97888cc80672fab255231f57",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {
       "inputs": {
         "deploy": "deploy",
         "devshell": "devshell",
+        "nixlib": "nixlib",
         "nixpkgs": "nixpkgs_2",
         "utils": "utils_2"
       }

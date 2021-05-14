@@ -6,12 +6,16 @@
       deploy.url = "github:serokell/deploy-rs";
       devshell.url = "github:numtide/devshell";
       utils.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
+      nixlib.url = "github:divnix/nixpkgs.lib";
+
+      # Only used for development
+      nixpkgs.url = "github:nixos/nixpkgs";
     };
 
-  outputs = inputs@{ self, nixpkgs, deploy, devshell, utils, ... }:
+  outputs = inputs@{ self, nixlib, nixpkgs, deploy, devshell, utils, ... }:
     let
-      lib = nixpkgs.lib.makeExtensible (self:
-        let combinedLib = nixpkgs.lib // self; in
+      lib = nixlib.lib.makeExtensible (self:
+        let combinedLib = nixlib.lib // self; in
         with self;
         utils.lib // {
           attrs = import ./src/attrs.nix { lib = combinedLib; };
@@ -65,7 +69,7 @@
         checks = {
           tests = import ./tests {
             inherit pkgs;
-            lib = nixpkgs.lib // lib;
+            lib = nixlib.lib // lib;
           };
         };
 
