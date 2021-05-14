@@ -5,10 +5,7 @@
     {
       nixos.url = "nixpkgs/nixos-unstable";
       latest.url = "nixpkgs";
-      devlib.url = "github:divnix/devlib";
-      devlib.inputs = {
-        nixpkgs.follows = "nixos";
-      };
+      digga.url = "github:divnix/digga";
 
       ci-agent = {
         url = "github:hercules-ci/hercules-ci-agent";
@@ -26,8 +23,8 @@
       pkgs.inputs.nixpkgs.follows = "nixos";
     };
 
-  outputs = inputs@{ self, pkgs, devlib, nixos, ci-agent, home, nixos-hardware, nur, ... }:
-    devlib.lib.mkFlake {
+  outputs = inputs@{ self, pkgs, digga, nixos, ci-agent, home, nixos-hardware, nur, ... }:
+    digga.lib.mkFlake {
       inherit self inputs;
 
       channelsConfig = { allowUnfree = true; };
@@ -35,7 +32,7 @@
       channels = {
         nixos = {
           overlays =
-            (devlib.lib.importers.pathsIn ./overlays) ++
+            (digga.lib.importers.pathsIn ./overlays) ++
             [
               ./pkgs/default.nix
               pkgs.overlay # for `srcs`
@@ -45,7 +42,7 @@
         latest = { };
       };
 
-      lib = import ./lib { lib = devlib.lib // nixos.lib; };
+      lib = import ./lib { lib = digga.lib // nixos.lib; };
 
       sharedOverlays = [
         (final: prev: {
@@ -66,7 +63,7 @@
           ];
         };
 
-        imports = [ (devlib.lib.importers.importHosts ./hosts) ];
+        imports = [ (digga.lib.importers.importHosts ./hosts) ];
         hosts = {
           /* set host specific properties here */
           NixOS = { };
@@ -86,9 +83,9 @@
         };
       };
 
-      homeConfigurations = devlib.lib.mkHomeConfigurations self.nixosConfigurations;
+      homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
 
-      deploy.nodes = devlib.lib.mkDeployNodes self.nixosConfigurations { };
+      deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
 
       #defaultTemplate = self.templates.flk;
       templates.flk.path = ./.;
