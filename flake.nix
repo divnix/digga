@@ -31,13 +31,12 @@
 
       channels = {
         nixos = {
-          overlays =
-            (digga.lib.importers.pathsIn ./overlays) ++
-            [
-              ./pkgs/default.nix
-              pkgs.overlay # for `srcs`
-              nur.overlay
-            ];
+          imports = [ (digga.lib.importers.overlays ./overlays) ];
+          overlays = [
+            ./pkgs/default.nix
+            pkgs.overlay # for `srcs`
+            nur.overlay
+          ];
         };
         latest = { };
       };
@@ -65,7 +64,7 @@
           ];
         };
 
-        imports = [ (digga.lib.importers.importHosts ./hosts) ];
+        imports = [ (digga.lib.importers.hosts ./hosts) ];
         hosts = {
           /* set host specific properties here */
           NixOS = { };
