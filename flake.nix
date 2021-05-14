@@ -46,7 +46,9 @@
 
       sharedOverlays = [
         (final: prev: {
-          ourlib = self.lib;
+          lib = prev.lib.extend (lfinal: lprev: {
+            our = self.lib;
+          });
         })
       ];
 
@@ -56,7 +58,7 @@
           channelName = "nixos";
           modules = ./modules/module-list.nix;
           externalModules = [
-            { _module.args.ourlib = self.lib; }
+            { _module.args.ourLib = self.lib; }
             ci-agent.nixosModules.agent-profile
             home.nixosModules.home-manager
             ./modules/customBuilds.nix
