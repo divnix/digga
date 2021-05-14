@@ -65,10 +65,12 @@
             ./modules/customBuilds.nix
           ];
         };
-        hosts = nixos.lib.mkMerge [
-          (devlib.lib.importers.importHosts ./hosts)
-          { /* set host specific properties here */ }
-        ];
+
+        imports = [ (devlib.lib.importers.importHosts ./hosts) ];
+        hosts = {
+          /* set host specific properties here */
+          NixOS = { };
+        };
         profiles = [ ./profiles ./users ];
         suites = { profiles, users, ... }: with profiles; {
           base = [ core users.nixos users.root ];
