@@ -21,7 +21,7 @@ let
 
   flk = pkgs'.callPackage ./flk.nix { };
 
-  installPkgs = (lib.nixosSystem {
+  installPkgs = (pkgs.input.lib.nixosSystem {
     inherit (pkgs') system;
     modules = [ ];
   }).config.system.build;
