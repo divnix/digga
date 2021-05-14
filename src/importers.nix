@@ -43,17 +43,23 @@ let
     in
     lib.mapAttrs f imports;
 
-in
-{
-  inherit recImport mkProfileAttrs;
-
   pathsIn = dir:
     let
       fullPath = name: "${toString dir}/${name}";
     in
     map fullPath (lib.attrNames (lib.safeReadDir dir));
 
-  importHosts = dir:
+in
+{
+  inherit pathsIn recImport mkProfileAttrs;
+
+  overlays = dir:
+    {
+      # Meant to output a module that sets the overlays option
+      overlays = pathsIn dir;
+    };
+
+  hosts = dir:
     {
       # Meant to output a module that sets the hosts option
       hosts = recImport {
