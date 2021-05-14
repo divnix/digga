@@ -45,7 +45,8 @@
 
       _module.args = {
         inherit self;
-        devlib = pkgs.devlib;
+        # digga lib can be accessed in modules directly as diggaLib
+        diggaLib = pkgs.lib.digga;
         hosts = builtins.mapAttrs (_: host: host.config)
           (removeAttrs self.nixosConfigurations [ config.networking.hostName ]);
       };

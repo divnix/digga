@@ -56,7 +56,10 @@ lib.systemFlake (lib.mergeAny
     sharedOverlays = [
       (final: prev: {
         __dontExport = true;
-        devlib = lib;
+        lib = prev.lib.extend (lfinal: lprev: {
+          # digga lib can be accessed in packages as lib.digga
+          digga = lib;
+        });
       })
     ];
     hostDefaults = lib.mergeAny hostDefaults {

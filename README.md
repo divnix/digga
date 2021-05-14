@@ -9,7 +9,7 @@
 > maturing _well_ [for a while](https://github.com/divnix/devos/tree/17713c22d07c54525c728c62060a0428b76dee3b).
 
 
-The DevOS library is the underlying library implementation for the
+Digga is the underlying library implementation for the
 [DevOS template](https://github.com/divnix/devos). There is an API to create
 productive personal and professional flakes in a clean and organized manner.
 By using this library your creations will be part of a community-first sharing
