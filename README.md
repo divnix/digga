@@ -22,4 +22,11 @@ To learn about `mkFlake`'s options, take a look at the [mkFlake options doc](./d
 
 This library is based on [flake-utils-plus](https://github.com/gytis-ivaskevicius/flake-utils-plus).
 
+# License
+Digga is licensed under the [MIT License][mit].
+
+[nix]: https://nixos.org/manual/nix/stable
+[mit]: https://mit-license.org
+[flakes]: https://nixos.wiki/wiki/Flakes
+
 
