@@ -21,7 +21,7 @@ let
 
   flk = pkgs'.callPackage ./flk.nix { };
 
-  installPkgs = (pkgs.input.lib.nixosSystem {
+  installPkgs = (import "${toString pkgs.path}/nixos/lib/eval-config.nix" {
     inherit (pkgs') system;
     modules = [ ];
   }).config.system.build;
