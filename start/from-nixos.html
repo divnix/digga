@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -171,10 +173,16 @@ basic NixOS configuration for your system using:</p>
 </code></pre>
 <p>This will make a new file <code>hosts/up-$(hostname).nix</code>, which you can edit to
 your liking.</p>
+<p>You must then add a host to <code>nixos.hosts</code> in flake.nix:</p>
+<pre><code class="language-nix">{
+  nixos.hosts = {
+    modules = hosts/NixOS.nix;
+  };
+}
+</code></pre>
 <p>Make sure your <code>i18n.defaultLocale</code> and <code>time.timeZone</code> are set properly for
-your region. Keep in mind that <code>networking.hostName</code> with be automatically
-set to the filename of your hosts file, so <code>hosts/my-host.nix</code> will have the
-hostname <code>my-host</code>.</p>
+your region. Keep in mind that <code>networking.hostName</code> will be automatically
+set to the name of your host;</p>
 <p>Now might be a good time to read the docs on <a href="../concepts/suites.html">suites</a> and
 <a href="../concepts/profiles.html">profiles</a> and add or create any that you need.</p>
 <blockquote>

@@ -138,13 +138,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -226,7 +228,7 @@ rebuilds are quite frequent.</p>
 </ul>
 <h1 id="license"><a class="header" href="#license">License</a></h1>
 <p>DevOS is licensed under the <a href="https://mit-license.org">MIT License</a>.</p>
-<h1 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h1>
 <p>The only dependency is nix, so make sure you have it <a href="https://nixos.org/manual/nix/stable/#sect-multi-user-installation">installed</a>.</p>
 <h2 id="get-the-template"><a class="header" href="#get-the-template">Get the Template</a></h2>
 <p>Here is a snippet that will get you the template without the git history:</p>
@@ -264,7 +266,7 @@ upstream changes.</li>
 <li><a href="start/./bootstrapping.html">Bootstrap Host</a></li>
 <li><a href="start/./from-nixos.html">Already on NixOS</a></li>
 </ul>
-<h1 id="iso"><a class="header" href="#iso">ISO</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="iso"><a class="header" href="#iso">ISO</a></h1>
 <p>Making and writing an installable iso for <code>hosts/NixOS.nix</code> is as simple as:</p>
 <pre><code class="language-sh">flk iso NixOS
 
@@ -280,7 +282,7 @@ to the installer. To considerably speed up things, the image already includes al
 those local cache hits.</p>
 <p>For hosts that don't differ too much, a common usb stick might be ok, whereas when
 there are bigger differences, a bespoke usb stick will be considerably faster.</p>
-<h1 id="bootstrapping"><a class="header" href="#bootstrapping">Bootstrapping</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="bootstrapping"><a class="header" href="#bootstrapping">Bootstrapping</a></h1>
 <p>This will help you boostrap a bare host with the help of the
 <a href="start/./iso.html">bespoke iso</a> live installer.</p>
 <p><em>Note: nothing prevents you from remotely executing the boostrapping
@@ -343,7 +345,7 @@ specific address over <a href="https://en.wikipedia.org/wiki/Neighbor_Discovery_
 <p><em><strong>This LLA is stable for the host, unless you need to swap that particular network card.</strong></em>
 Under this reservation, though, you may use this EUI-64 to wire up a specific
 (cryptographic) host identity.</p>
-<h1 id="from-nixos"><a class="header" href="#from-nixos">From NixOS</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="from-nixos"><a class="header" href="#from-nixos">From NixOS</a></h1>
 <h2 id="generate-configuration"><a class="header" href="#generate-configuration">Generate Configuration</a></h2>
 <p>Assuming you're happy with your existing partition layout, you can generate a
 basic NixOS configuration for your system using:</p>
@@ -351,10 +353,16 @@ basic NixOS configuration for your system using:</p>
 </code></pre>
 <p>This will make a new file <code>hosts/up-$(hostname).nix</code>, which you can edit to
 your liking.</p>
+<p>You must then add a host to <code>nixos.hosts</code> in flake.nix:</p>
+<pre><code class="language-nix">{
+  nixos.hosts = {
+    modules = hosts/NixOS.nix;
+  };
+}
+</code></pre>
 <p>Make sure your <code>i18n.defaultLocale</code> and <code>time.timeZone</code> are set properly for
-your region. Keep in mind that <code>networking.hostName</code> with be automatically
-set to the filename of your hosts file, so <code>hosts/my-host.nix</code> will have the
-hostname <code>my-host</code>.</p>
+your region. Keep in mind that <code>networking.hostName</code> will be automatically
+set to the name of your host;</p>
 <p>Now might be a good time to read the docs on <a href="start/../concepts/suites.html">suites</a> and
 <a href="start/../concepts/profiles.html">profiles</a> and add or create any that you need.</p>
 <blockquote>
@@ -385,45 +393,44 @@ not required.</p>
 </li>
 </ul>
 </blockquote>
-<h1 id="key-concepts"><a class="header" href="#key-concepts">Key Concepts</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="key-concepts"><a class="header" href="#key-concepts">Key Concepts</a></h1>
 <p>There are few idioms unique to DevOS. This section is dedicated to helping you
 understand them.</p>
-<h1 id="external-art"><a class="header" href="#external-art">External Art</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="external-art"><a class="header" href="#external-art">External Art</a></h1>
 <p>When you need to use a module, overlay, or pass a value from one of your inputs
-to the rest of your NixOS configuration, <a href="https://github.com/divnix/devos/tree/core/extern/default.nix">extern</a> is where you do it.</p>
-<p>Modules and overlays are self explanatory, and the <code>specialArgs</code> attribute is
-used to extend the arguments passed to all NixOS modules, allowing for
-arbitrary values to be passed from flake inputs to the rest of your
-configuration.</p>
-<h2 id="home-manager"><a class="header" href="#home-manager">Home Manager</a></h2>
-<p>There is also an <code>hmModules</code> attribute set for pulling home-manager modules in
-from the outside world:</p>
-<h3 id="declare"><a class="header" href="#declare">Declare:</a></h3>
+to the rest of your NixOS configuration, you can make use of a couple arguments.
+It is encouraged to add external art directly in your <code>flake.nix</code> so the file
+represents a complete dependency overview of your flake.</p>
+<h2 id="overlays"><a class="header" href="#overlays">Overlays</a></h2>
+<p>External overlays can directly be added to a channel's <code>overlays</code> list.</p>
 <p>flake.nix:</p>
 <pre><code class="language-nix">{
-  inputs.doom-emacs.url = &quot;github:vlaci/nix-doom-emacs&quot;;
+  channels.nixos.overlays = [ inputs.agenix.overlay ];
 }
 </code></pre>
-<p>extern/default.nix:</p>
-<pre><code class="language-nix">with inputs;
-{
-  hmModules = {
-    doom-emacs = doom-emacs.hmModule;
-  };
+<p>Upon exporting overlays, these overlays will be automatically filtered out by inspecting the <code>inputs</code> argument.</p>
+<h2 id="modules"><a class="header" href="#modules">Modules</a></h2>
+<p>There is a dedicated <code>nixos.hostDefaults.externalModules</code> argument for external
+modules.</p>
+<p>flake.nix:</p>
+<pre><code class="language-nix">{
+  nixos.hostDefaults.externalModules = [ inputs.agenix.nixosModules.age ];
 }
 </code></pre>
-<h3 id="use"><a class="header" href="#use">Use:</a></h3>
-<p>users/nixos/default.nix:</p>
-<pre><code class="language-nix">{ hmModules, ... }:
-{
-  home-manager.users.nixos = {
-    imports = [ hmModules.doom-emacs ] ;
-
-    programs.doom-emacs.enable = true;
-  };
+<h2 id="home-manager"><a class="header" href="#home-manager">Home Manager</a></h2>
+<p>Since there isn't a <code>hosts</code> concept for home-manager, externalModules is just a
+top-level argument in the <code>home</code> namespace.</p>
+<p>flake.nix:</p>
+<pre><code class="language-nix">{
+  home.externalModules = [ doom-emacs = doom-emacs.hmModule ];
 }
 </code></pre>
-<h1 id="hosts"><a class="header" href="#hosts">Hosts</a></h1>
+<blockquote>
+<h5 id="note-1"><a class="header" href="#note-1">Note:</a></h5>
+<p>To avoid declaring &quot;external&quot; modules separately, which is obvious since they come from <code>inputs</code>, the optimal solution would be to automatically export modules that were created in
+your flake. But this is not possible due to NixOS/nix#4740.</p>
+</blockquote>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="hosts"><a class="header" href="#hosts">Hosts</a></h1>
 <p>Nix flakes contain an output called <code>nixosConfigurations</code> declaring an
 attribute set of valid NixOS systems. To simplify the management and creation
 of these hosts, devos automatically imports every <em>.nix</em> file inside this
@@ -436,23 +443,33 @@ and all of them will be automatically imported based on their name.</p>
 attribute to the name of the file minus the <em>.nix</em> extension. This is for
 convenience, since <code>nixos-rebuild</code> automatically searches for a configuration
 matching the current systems hostname if one is not specified explicitly.</p>
+<p>You can set channels, systems, and add extra modules to each host by editing the
+<code>nixos.hosts</code> argument in flake.nix. This is the perfect place to import
+host specific modules from external sources, such as the
+<a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> repository.</p>
 <p>It is recommended that the host modules only contain configuration information
 specific to a particular piece of hardware. Anything reusable across machines
 is best saved for <a href="concepts/./profiles.html">profile modules</a>.</p>
 <p>This is a good place to import sets of profiles, called <a href="concepts/./suites.html">suites</a>,
 that you intend to use on your machine.</p>
-<p>Additionally, this is the perfect place to import anything you might need from
-the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> repository.</p>
-<blockquote>
-<h5 id="note-1"><a class="header" href="#note-1"><em>Note:</em></a></h5>
-<p>Set <code>nixpkgs.system</code> to the architecture of this host, default is &quot;x86_64-linux&quot;.
-Keep in mind that not all packages are available for all architectures.</p>
-</blockquote>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
+<p>flake.nix:</p>
+<pre><code class="language-nix">{
+  nixos.hosts = mkMerge [
+    (devos.lib.importHosts ./hosts)
+    {
+      librem = {
+        channelName = &quot;latest&quot;;
+        modules = [ hardware.purism-librem-13v3 ];
+      };
+    }
+  ];
+}
+</code></pre>
 <p>hosts/librem.nix:</p>
-<pre><code class="language-nix">{ suites, hardware, ... }:
+<pre><code class="language-nix">{ suites, ... }:
 {
-  imports = suites.laptop ++ [ hardware.purism-librem-13v3 ];
+  imports = suites.laptop;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -460,43 +477,38 @@ Keep in mind that not all packages are available for all architectures.</p>
   fileSystems.&quot;/&quot; = { device = &quot;/dev/disk/by-label/nixos&quot;; };
 }
 </code></pre>
-<h1 id="overrides"><a class="header" href="#overrides">Overrides</a></h1>
-<p>By default, the NixOS systems are based on unstable. While it is trivial to
-change this to a stable release, or any other branch of nixpkgs by
-changing the flake url, sometimes all we want is a single package from another
-branch.</p>
-<p>This is what the overrides are for. By default, they are pulled directly from
-nixpkgs/master, but you can change the <code>override</code> flake input url to
-nixos-unstable, or even a specific sha revision.</p>
-<p>They are defined in the <code>extern/overrides.nix</code> file.</p>
-<h2 id="example-1"><a class="header" href="#example-1">Example</a></h2>
-<h3 id="packages"><a class="header" href="#packages">Packages</a></h3>
-<p>The override packages are defined as a regular overlay with an extra arguement
-<code>pkgs</code>. This refers to the packages built from the <code>override</code> flake.</p>
-<p>Pulling the manix package from the override flake:</p>
-<pre><code class="language-nix">{
-  packages = pkgs: final: prev: {
-    inherit (pkgs) manix;
-  };
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="overrides"><a class="header" href="#overrides">Overrides</a></h1>
+<p>Each NixOS host follows one channel. But many times it is useful to get packages
+or modules from different channels.</p>
+<h2 id="packages"><a class="header" href="#packages">Packages</a></h2>
+<p>You can make use of <code>overlays/overrides.nix</code> to override specific packages in the
+default channel to be pulled from other channels. That file is simply an example
+of how any overlay can get <code>channels</code> as their first argument.</p>
+<p>You can add overlays to any channel to override packages from other channels.</p>
+<p>Pulling the manix package from the <code>latest</code> channel:</p>
+<pre><code class="language-nix">channels: final: prev: {
+  __dontExport = true;
+  inherit (pkgs.latest) manix;
 }
 </code></pre>
-<h3 id="modules"><a class="header" href="#modules">Modules</a></h3>
-<p>You can also pull modules from override. Simply specify their path relative to
-the nixpkgs <a href="https://github.com/NixOS/nixpkgs/tree/master/nixos/modules">modules</a> directory. The old version will be added
-to <code>disabledModules</code> and the new version imported into the configuration.</p>
-<p>Pulling the zsh module from the override flake:</p>
-<pre><code class="language-nix">{
-  modules = [ &quot;programs/zsh/zsh.nix&quot; ];
+<p>It is recommended to set the <code>__dontExport</code> property for override specific
+overlays. <code>overlays/overrides.nix</code> is the best place to consolidate all package
+overrides and the property is already set for you.</p>
+<h2 id="modules-1"><a class="header" href="#modules-1">Modules</a></h2>
+<p>You can also pull modules from other channels. All modules have access to the 
+<code>modulesPath</code> for each channel as <code>&lt;channelName&gt;ModulesPath</code>. And you can use
+<code>disabledModules</code> to remove modules from the current channel.</p>
+<p>Pulling the zsh module from the <code>latest</code> channel:</p>
+<pre><code class="language-nix">{ latestModulesPath }: {
+  modules = [ &quot;${latestModulesPath}/programs/zsh/zsh.nix&quot; ];
+  disabledModules = [ &quot;programs/zsh/zsh.nix&quot; ];
 }
 </code></pre>
 <blockquote>
 <h5 id="note-2"><a class="header" href="#note-2"><em>Note:</em></a></h5>
-<p>Sometimes a modules name will change from one branch to another. This is what
-the <code>disabledModules</code> list is for. If the module name changes, the old
-version will not automatically be disabled, so simply put it's old name in
-this list to disable it.</p>
+<p>Sometimes a modules name will change from one branch to another.</p>
 </blockquote>
-<h1 id="profiles"><a class="header" href="#profiles">Profiles</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="profiles"><a class="header" href="#profiles">Profiles</a></h1>
 <p>Profiles are a convenient shorthand for the <a href="https://nixos.org/manual/nixos/stable/index.html#sec-option-definitions"><em>definition</em></a> of
 <a href="https://nixos.org/manual/nixos/stable/index.html#sec-writing-modules">options</a> in contrast to their <a href="https://nixos.org/manual/nixos/stable/index.html#sec-option-declarations"><em>declaration</em></a>. They're
 built into the NixOS module system for a reason: to elegantly provide a clear
@@ -529,7 +541,7 @@ personal development environment while the subprofiles should be more focused
 program configurations such as your text editor, and shell configs. This way,
 you can either pull in the whole development profile, or pick and choose
 individual programs.</p>
-<h3 id="example-2"><a class="header" href="#example-2">Example</a></h3>
+<h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
 <p>profiles/develop/default.nix:</p>
 <pre><code class="language-nix">{
   imports = [ ./zsh ];
@@ -548,13 +560,18 @@ individual programs.</p>
 Nix expressions self contained and modular. This way we can maximize reuse
 across hosts while minimizing boilerplate. Remember, anything machine
 specific belongs in your <a href="concepts/hosts.html">host</a> files instead.</p>
-<h1 id="suites"><a class="header" href="#suites">Suites</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="suites"><a class="header" href="#suites">Suites</a></h1>
 <p>Suites provide a mechanism for users to easily combine and name collecitons of
 profiles. For good examples, check out the suites defined in the community
 <a href="https://github.com/divnix/devos/blob/community/suites/default.nix">branch</a>.</p>
 <p>In the future, we will use suites as a mechanism for deploying various machine
 types which don't depend on hardware, such as vm's and containers.</p>
-<p>They are defined in <code>profiles/suites.nix</code>.</p>
+<p>They are defined with the <code>suites</code> argument in either <code>home</code> or <code>nixos</code> namespace.
+Suites should be passed as a function that take profiles as an argument.</p>
+<p>The profiles are passed based on the folder names and list passed to the relevant
+<code>profiles</code> argument. In the template's flake.nix <code>profiles</code> is set as
+<code>[ ./profiles ./users ]</code> and that corresponds to the <code>{ profiles, users }</code> argument
+pattern.</p>
 <h2 id="definition"><a class="header" href="#definition">Definition</a></h2>
 <pre><code class="language-nix">rec {
   workstation = [ profiles.develop profiles.graphical users.nixos ];
@@ -568,7 +585,7 @@ types which don't depend on hardware, such as vm's and containers.</p>
   imports = suites.mobileWS;
 }
 </code></pre>
-<h1 id="users"><a class="header" href="#users">Users</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="users"><a class="header" href="#users">Users</a></h1>
 <p>Users are a special case of <a href="concepts/profiles.html">profiles</a> that define system
 users and <a href="https://nix-community.github.io/home-manager">home-manager</a> configurations. For your convenience,
 home manager is wired in by default so all you have to worry about is declaring
@@ -614,10 +631,10 @@ nix build &quot;github:divnix/devos#homeConfigurations.nixos@NixOS.home.activati
 # activate
 ./result/activate &amp;&amp; unlink result
 </code></pre>
-<h1 id="layout"><a class="header" href="#layout">Layout</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="layout"><a class="header" href="#layout">Layout</a></h1>
 <p>Each of the following sections is a directory whose contents are output to the
 outside world via the flake's outputs. Check each chapter for details.</p>
-<h1 id="modules-1"><a class="header" href="#modules-1">Modules</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="modules-2"><a class="header" href="#modules-2">Modules</a></h1>
 <p>The modules directory is a replica of nixpkg's NixOS <a href="https://github.com/NixOS/nixpkgs/tree/master/nixos/modules">modules</a>
 , and follows the same semantics. This allows for trivial upstreaming into
 nixpkgs proper once your module is sufficiently stable.</p>
@@ -683,15 +700,15 @@ in
   };
 }
 </code></pre>
-<h1 id="overlays"><a class="header" href="#overlays">Overlays</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="overlays-1"><a class="header" href="#overlays-1">Overlays</a></h1>
 <p>Writing overlays is a common occurence when using a NixOS system. Therefore,
 we want to keep the process as simple and straightforward as possible.</p>
 <p>Any <em>.nix</em> files declared in this directory will be assumed to be a valid
 overlay, and will be automatically imported into all <a href="outputs/../concepts/hosts.html">hosts</a>, and
-exported via <code>overlays.&lt;file-basename&gt;</code> <em>as well as</em>
+exported via <code>overlays.&lt;channel&gt;/&lt;pkgName&gt;</code> <em>as well as</em>
 <code>packages.&lt;system&gt;.&lt;pkgName&gt;</code> (for valid systems), so all you have to do is
 write it.</p>
-<h2 id="example-3"><a class="header" href="#example-3">Example</a></h2>
+<h2 id="example-2"><a class="header" href="#example-2">Example</a></h2>
 <p>overlays/kakoune.nix:</p>
 <pre><code class="language-nix">final: prev: {
   kakoune = prev.kakoune.override {
@@ -705,7 +722,7 @@ write it.</p>
   };
 }
 </code></pre>
-<h1 id="packages-1"><a class="header" href="#packages-1">Packages</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="packages-1"><a class="header" href="#packages-1">Packages</a></h1>
 <p>Similar to <a href="outputs/./modules.html">modules</a>, the pkgs directory mirrors the upstream
 <a href="https://github.com/NixOS/nixpkgs/tree/master/pkgs">nixpkgs/pkgs</a>, and for the same reason; if you ever want to upstream
 your package, it's as simple as dropping it into the nixpkgs/pkgs directory.</p>
@@ -725,7 +742,7 @@ This allows updates to be managed automatically by simply
 more manually entering sha256 hashes!</p>
 <p>As an added bonus, version strings are also generated automatically from either
 the flake ref, or the date and git revision of the source.</p>
-<h2 id="example-4"><a class="header" href="#example-4">Example</a></h2>
+<h2 id="example-3"><a class="header" href="#example-3">Example</a></h2>
 <p>pkgs/development/libraries/libinih/default.nix:</p>
 <pre><code class="language-nix">{ stdenv, meson, ninja, lib, srcs, ... }:
 let inherit (srcs) libinih; in
@@ -757,12 +774,11 @@ stdenv.mkDerivation {
   };
 }
 </code></pre>
-<h1 id="lib"><a class="header" href="#lib">Lib</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="lib"><a class="header" href="#lib">Lib</a></h1>
 <p>The lib directory mirrors the upstream concepts of <a href="https://github.com/NixOS/nixpkgs/tree/master/lib"><code>nixpkgs:./lib</code></a>, 
 <a href="https://github.com/NixOS/nixpkgs/tree/master/nixos/lib"><code>nixpkgs:./nixos/lib</code></a> and <a href="https://github.com/NixOS/nixpkgs/tree/master/pkgs/pkgs-lib"><code>nixpkgs:./pkgs/pkgs-lib</code></a>,
 but also occasionally <a href="https://github.com/NixOS/nixpkgs/tree/master/pkgs/build-support"><code>nixpkgs:./pkgs/build-support</code></a>.</p>
-<p>It comes with functions necesary to declutter <code>devos</code> itself, but you are
-welcome to extend it to your needs.</p>
+<p>All functions defined in lib can be accessed in modules and packages as <code>ourlib</code>.</p>
 <p>For example:</p>
 <ul>
 <li>
@@ -791,7 +807,7 @@ analogous <code>nixpkgs</code>:</p>
 <tr><td><code>./nixos/lib</code></td><td><code>./lib/nixos-lib</code></td></tr>
 <tr><td><code>./pkgs/build-support</code></td><td><code>./lib/pkgs-build</code></td></tr>
 </tbody></table>
-<h2 id="example-5"><a class="header" href="#example-5">Example</a></h2>
+<h2 id="example-4"><a class="header" href="#example-4">Example</a></h2>
 <p>lib/nixos-lib/mkCustomI3BindSym/default.nix:</p>
 <pre><code class="language-nix">{ pkgs, writers, ... }:
 { name, cmd, workspace, baseKey }:
@@ -835,7 +851,7 @@ exit(0)
   mkCustomI3BindSym = pkgs.callPackage ./nixos-lib/mkCustomI3BindSym { };
 }
 </code></pre>
-<h1 id="secrets"><a class="header" href="#secrets">Secrets</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="secrets"><a class="header" href="#secrets">Secrets</a></h1>
 <p>Secrets are managed using <a href="https://github.com/AGWA/git-crypt">git-crypt</a> so you can keep your flake in
 a public repository like GitHub without exposing your password or other
 sensitive data.</p>
@@ -849,14 +865,14 @@ will be world readable on that machine.</p>
 <p>The author of devos intends to implement a workaround for this situation in
 the near future, but for the time being, simple be aware of this.</p>
 </blockquote>
-<h1 id="testing"><a class="header" href="#testing">Testing</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="testing"><a class="header" href="#testing">Testing</a></h1>
 <p>Testing is always an important aspect of any software development project, and
 NixOS offers some incredibly powerful tools to write tests for your
 configuration, and, optionally, run them in
 <a href="./integrations/hercules.html">CI</a>.</p>
 <h2 id="lib-tests"><a class="header" href="#lib-tests">Lib Tests</a></h2>
 <p>You can easily write tests for your own library functions in the
-<em><strong>tests/lib.nix</strong></em> file and they will be run on every <code>nix flake check</code> or
+lib/<em><strong>tests/lib.nix</strong></em> file and they will be run on every <code>nix flake check</code> or
 during a CI run.</p>
 <h2 id="unit-tests"><a class="header" href="#unit-tests">Unit Tests</a></h2>
 <p>Unit tests are can be created from regular derivations, and they can do
@@ -872,7 +888,7 @@ that the system is setup exactly as it is for a bare DevOS system. There are
 already great resources for learning how to use these tests effectively,
 including the official <a href="https://nixos.org/manual/nixos/stable/index.html#sec-nixos-tests">docs</a>, a fantastic <a href="https://www.haskellforall.com/2020/11/how-to-use-nixos-for-lightweight.html">blog post</a>,
 and the examples in <a href="https://github.com/NixOS/nixpkgs/tree/master/nixos/tests">nixpkgs</a>.</p>
-<h1 id="flk-command"><a class="header" href="#flk-command">flk command</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="flk-command"><a class="header" href="#flk-command">flk command</a></h1>
 <p>The devshell for the project incudes a convenient script for managing your
 system called <code>flk</code>. Each of the following chapters is a reference for one of
 its subcommands.</p>
@@ -887,11 +903,11 @@ etc. Any additional arguments are passed through to the call to
 <h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
 <pre><code class="language-sh">flk help
 </code></pre>
-<h1 id="up"><a class="header" href="#up">up</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="up"><a class="header" href="#up">up</a></h1>
 <p>The <code>up</code> subcommand is a simple shortcut for <code>nixos-generate-config</code> that is
 compatible with devos. There is a short explanation in the the getting started
 <a href="flk/../start/from-nixos.html#generate-configuration">guide</a>.</p>
-<h1 id="update"><a class="header" href="#update">update</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="update"><a class="header" href="#update">update</a></h1>
 <p>The <code>update</code> subcommand is a simple alias for:</p>
 <pre><code class="language-sh">nix flake update
 </code></pre>
@@ -908,14 +924,14 @@ declared in <em>pkgs/flake.nix</em>:</p>
 <p>or just its <em>nixpkgs</em>:</p>
 <pre><code class="language-sh">flk update pkgs nixpkgs
 </code></pre>
-<h1 id="get"><a class="header" href="#get">get</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="get"><a class="header" href="#get">get</a></h1>
 <p>The <code>get</code> subcommand is useful for getting a bare copy of devos without the
 git history. You can pull either the core or community branches.</p>
 <h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
 <pre><code class="language-sh">flk get BRANCH DEST-DIR
 </code></pre>
 <p>If DEST-DIR is ommitted, it defaults to <em>./flk</em>.</p>
-<h1 id="iso-1"><a class="header" href="#iso-1">ISO</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="iso-1"><a class="header" href="#iso-1">ISO</a></h1>
 <p>Making and writing an installable iso for <code>hosts/NixOS.nix</code> is as simple as:</p>
 <pre><code class="language-sh">flk iso NixOS
 
@@ -931,28 +947,28 @@ to the installer. To considerably speed up things, the image already includes al
 those local cache hits.</p>
 <p>For hosts that don't differ too much, a common usb stick might be ok, whereas when
 there are bigger differences, a bespoke usb stick will be considerably faster.</p>
-<h1 id="install-1"><a class="header" href="#install-1">install</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="install-1"><a class="header" href="#install-1">install</a></h1>
 <p>The <code>install</code> subcommand is a simple convenience for <code>nixos-install</code>, similar
 to the shortcut for <code>nixos-rebuild</code>, all additional arguments are passed
 through.</p>
-<h2 id="example-6"><a class="header" href="#example-6">Example</a></h2>
+<h2 id="example-5"><a class="header" href="#example-5">Example</a></h2>
 <pre><code class="language-sh">flk install NixOS
 </code></pre>
 <p>This will install <em>hosts/NixOS.nix</em> to /mnt. You can override this directory
 using standard <code>nixos-install</code> args.</p>
-<h1 id="home"><a class="header" href="#home">home</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="home"><a class="header" href="#home">home</a></h1>
 <p>The <code>home</code> subcommand is for using your home-manager configurations outside of
 NixOS, providing an awesome mechanism for keeping your environments
 synchronized, even when using other systems.</p>
 <h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
 <p>The <a href="flk/../concepts/users.html#external-usage">users</a> page contains a good usage
 example.</p>
-<h1 id="integrations"><a class="header" href="#integrations">Integrations</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="integrations"><a class="header" href="#integrations">Integrations</a></h1>
 <p>This section explores some of the optional tools included with devos to provide
 a solution to common concerns such as ci and remote deployment. An effort is
 made to choose tools that treat nix, and where possible flakes, as first class
 citizens.</p>
-<h1 id="cachix"><a class="header" href="#cachix">Cachix</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="cachix"><a class="header" href="#cachix">Cachix</a></h1>
 <p>The system will automatically pull a cachix.nix at the root if one exists.
 This is usually created automatically by a <code>sudo cachix use</code>. If you're more
 inclined to keep the root clean, you can drop any generated files in the
@@ -966,7 +982,7 @@ is recommended to call <code>cachix use nrdxp</code> before the initial deployme
 will save a lot of build time.</p>
 <p>In the future, users will be able to skip this step once the ability to define
 the nix.conf within the flake is fully fleshed out upstream.</p>
-<h1 id="deploy-rs"><a class="header" href="#deploy-rs">deploy-rs</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="deploy-rs"><a class="header" href="#deploy-rs">deploy-rs</a></h1>
 <p><a href="https://github.com/serokell/deploy-rs">Deploy-rs</a> is a tool for managing NixOS remote machines. It was
 chosen for devos after the author experienced some frustrations with the
 stateful nature of nixops' db. It was also designed from scratch to support
@@ -1006,7 +1022,7 @@ the command line.</p>
 <h5 id="note-5"><a class="header" href="#note-5"><em>Note:</em></a></h5>
 <p>Your user will need <strong>passwordless</strong> sudo access</p>
 </blockquote>
-<h1 id="hercules-ci"><a class="header" href="#hercules-ci">Hercules CI</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="hercules-ci"><a class="header" href="#hercules-ci">Hercules CI</a></h1>
 <p>If you start adding your own packages and configurations, you'll probably have
 at least a few binary artifacts. With hercules we can build every package in
 our configuration automatically, on every commit. Additionally, we can have it
@@ -1033,7 +1049,7 @@ pushed to a cache by mistake.</p>
 <a href="https://github.com/nrdxp/devos/blob/nrd/suites/default.nix#L17">allUsers</a>
 to keep checks passing.</p>
 </blockquote>
-<h1 id="pull-requests"><a class="header" href="#pull-requests">Pull Requests</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="pull-requests"><a class="header" href="#pull-requests">Pull Requests</a></h1>
 <p>If making a change to core, or adding a feature, please be sure to update the
 relevant docs. Each directory contains its own README.md, which will
 automatically be pulled into the <a href="https://devos.divnix.com">mdbook</a>. The book is

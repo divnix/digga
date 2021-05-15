@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -176,23 +178,33 @@ and all of them will be automatically imported based on their name.</p>
 attribute to the name of the file minus the <em>.nix</em> extension. This is for
 convenience, since <code>nixos-rebuild</code> automatically searches for a configuration
 matching the current systems hostname if one is not specified explicitly.</p>
+<p>You can set channels, systems, and add extra modules to each host by editing the
+<code>nixos.hosts</code> argument in flake.nix. This is the perfect place to import
+host specific modules from external sources, such as the
+<a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> repository.</p>
 <p>It is recommended that the host modules only contain configuration information
 specific to a particular piece of hardware. Anything reusable across machines
 is best saved for <a href="./profiles.html">profile modules</a>.</p>
 <p>This is a good place to import sets of profiles, called <a href="./suites.html">suites</a>,
 that you intend to use on your machine.</p>
-<p>Additionally, this is the perfect place to import anything you might need from
-the <a href="https://github.com/NixOS/nixos-hardware">nixos-hardware</a> repository.</p>
-<blockquote>
-<h5 id="note"><a class="header" href="#note"><em>Note:</em></a></h5>
-<p>Set <code>nixpkgs.system</code> to the architecture of this host, default is &quot;x86_64-linux&quot;.
-Keep in mind that not all packages are available for all architectures.</p>
-</blockquote>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
+<p>flake.nix:</p>
+<pre><code class="language-nix">{
+  nixos.hosts = mkMerge [
+    (devos.lib.importHosts ./hosts)
+    {
+      librem = {
+        channelName = &quot;latest&quot;;
+        modules = [ hardware.purism-librem-13v3 ];
+      };
+    }
+  ];
+}
+</code></pre>
 <p>hosts/librem.nix:</p>
-<pre><code class="language-nix">{ suites, hardware, ... }:
+<pre><code class="language-nix">{ suites, ... }:
 {
-  imports = suites.laptop ++ [ hardware.purism-librem-13v3 ];
+  imports = suites.laptop;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

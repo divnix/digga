@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -165,39 +167,38 @@
                     <main>
                         <h1 id="external-art"><a class="header" href="#external-art">External Art</a></h1>
 <p>When you need to use a module, overlay, or pass a value from one of your inputs
-to the rest of your NixOS configuration, <a href="https://github.com/divnix/devos/tree/core/extern/default.nix">extern</a> is where you do it.</p>
-<p>Modules and overlays are self explanatory, and the <code>specialArgs</code> attribute is
-used to extend the arguments passed to all NixOS modules, allowing for
-arbitrary values to be passed from flake inputs to the rest of your
-configuration.</p>
-<h2 id="home-manager"><a class="header" href="#home-manager">Home Manager</a></h2>
-<p>There is also an <code>hmModules</code> attribute set for pulling home-manager modules in
-from the outside world:</p>
-<h3 id="declare"><a class="header" href="#declare">Declare:</a></h3>
+to the rest of your NixOS configuration, you can make use of a couple arguments.
+It is encouraged to add external art directly in your <code>flake.nix</code> so the file
+represents a complete dependency overview of your flake.</p>
+<h2 id="overlays"><a class="header" href="#overlays">Overlays</a></h2>
+<p>External overlays can directly be added to a channel's <code>overlays</code> list.</p>
 <p>flake.nix:</p>
 <pre><code class="language-nix">{
-  inputs.doom-emacs.url = &quot;github:vlaci/nix-doom-emacs&quot;;
+  channels.nixos.overlays = [ inputs.agenix.overlay ];
 }
 </code></pre>
-<p>extern/default.nix:</p>
-<pre><code class="language-nix">with inputs;
-{
-  hmModules = {
-    doom-emacs = doom-emacs.hmModule;
-  };
+<p>Upon exporting overlays, these overlays will be automatically filtered out by inspecting the <code>inputs</code> argument.</p>
+<h2 id="modules"><a class="header" href="#modules">Modules</a></h2>
+<p>There is a dedicated <code>nixos.hostDefaults.externalModules</code> argument for external
+modules.</p>
+<p>flake.nix:</p>
+<pre><code class="language-nix">{
+  nixos.hostDefaults.externalModules = [ inputs.agenix.nixosModules.age ];
 }
 </code></pre>
-<h3 id="use"><a class="header" href="#use">Use:</a></h3>
-<p>users/nixos/default.nix:</p>
-<pre><code class="language-nix">{ hmModules, ... }:
-{
-  home-manager.users.nixos = {
-    imports = [ hmModules.doom-emacs ] ;
-
-    programs.doom-emacs.enable = true;
-  };
+<h2 id="home-manager"><a class="header" href="#home-manager">Home Manager</a></h2>
+<p>Since there isn't a <code>hosts</code> concept for home-manager, externalModules is just a
+top-level argument in the <code>home</code> namespace.</p>
+<p>flake.nix:</p>
+<pre><code class="language-nix">{
+  home.externalModules = [ doom-emacs = doom-emacs.hmModule ];
 }
 </code></pre>
+<blockquote>
+<h5 id="note"><a class="header" href="#note">Note:</a></h5>
+<p>To avoid declaring &quot;external&quot; modules separately, which is obvious since they come from <code>inputs</code>, the optimal solution would be to automatically export modules that were created in
+your flake. But this is not possible due to NixOS/nix#4740.</p>
+</blockquote>
 
                     </main>
 

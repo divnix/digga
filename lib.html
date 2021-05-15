@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -167,8 +169,7 @@
 <p>The lib directory mirrors the upstream concepts of <a href="https://github.com/NixOS/nixpkgs/tree/master/lib"><code>nixpkgs:./lib</code></a>, 
 <a href="https://github.com/NixOS/nixpkgs/tree/master/nixos/lib"><code>nixpkgs:./nixos/lib</code></a> and <a href="https://github.com/NixOS/nixpkgs/tree/master/pkgs/pkgs-lib"><code>nixpkgs:./pkgs/pkgs-lib</code></a>,
 but also occasionally <a href="https://github.com/NixOS/nixpkgs/tree/master/pkgs/build-support"><code>nixpkgs:./pkgs/build-support</code></a>.</p>
-<p>It comes with functions necesary to declutter <code>devos</code> itself, but you are
-welcome to extend it to your needs.</p>
+<p>All functions defined in lib can be accessed in modules and packages as <code>ourlib</code>.</p>
 <p>For example:</p>
 <ul>
 <li>

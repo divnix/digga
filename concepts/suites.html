@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -169,7 +171,12 @@ profiles. For good examples, check out the suites defined in the community
 <a href="https://github.com/divnix/devos/blob/community/suites/default.nix">branch</a>.</p>
 <p>In the future, we will use suites as a mechanism for deploying various machine
 types which don't depend on hardware, such as vm's and containers.</p>
-<p>They are defined in <code>profiles/suites.nix</code>.</p>
+<p>They are defined with the <code>suites</code> argument in either <code>home</code> or <code>nixos</code> namespace.
+Suites should be passed as a function that take profiles as an argument.</p>
+<p>The profiles are passed based on the folder names and list passed to the relevant
+<code>profiles</code> argument. In the template's flake.nix <code>profiles</code> is set as
+<code>[ ./profiles ./users ]</code> and that corresponds to the <code>{ profiles, users }</code> argument
+pattern.</p>
 <h2 id="definition"><a class="header" href="#definition">Definition</a></h2>
 <pre><code class="language-nix">rec {
   workstation = [ profiles.develop profiles.graphical users.nixos ];

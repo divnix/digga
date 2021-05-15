@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -168,7 +170,7 @@
 we want to keep the process as simple and straightforward as possible.</p>
 <p>Any <em>.nix</em> files declared in this directory will be assumed to be a valid
 overlay, and will be automatically imported into all <a href="../concepts/hosts.html">hosts</a>, and
-exported via <code>overlays.&lt;file-basename&gt;</code> <em>as well as</em>
+exported via <code>overlays.&lt;channel&gt;/&lt;pkgName&gt;</code> <em>as well as</em>
 <code>packages.&lt;system&gt;.&lt;pkgName&gt;</code> (for valid systems), so all you have to do is
 write it.</p>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>

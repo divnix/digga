@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -170,7 +172,7 @@ configuration, and, optionally, run them in
 <a href="./integrations/hercules.html">CI</a>.</p>
 <h2 id="lib-tests"><a class="header" href="#lib-tests">Lib Tests</a></h2>
 <p>You can easily write tests for your own library functions in the
-<em><strong>tests/lib.nix</strong></em> file and they will be run on every <code>nix flake check</code> or
+lib/<em><strong>tests/lib.nix</strong></em> file and they will be run on every <code>nix flake check</code> or
 during a CI run.</p>
 <h2 id="unit-tests"><a class="header" href="#unit-tests">Unit Tests</a></h2>
 <p>Unit tests are can be created from regular derivations, and they can do
