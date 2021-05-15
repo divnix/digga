@@ -33,7 +33,8 @@ case "$1" in
   "up")
     mkdir -p "$DEVSHELL_ROOT/up"
 
-    nixos-generate-config --dir "$DEVSHELL_ROOT/up/$HOSTNAME"
+    # `sudo` is necessary for `btrfs subvolume show`
+    sudo nixos-generate-config --dir "$DEVSHELL_ROOT/up/$HOSTNAME"
 
     printf "%s\n" \
       "{ suites, ... }:" \
