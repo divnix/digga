@@ -70,7 +70,7 @@
           NixOS = { };
         };
         profiles = [ ./profiles ./users ];
-        suites = { profiles, users, ... }: with profiles; {
+        suites = { profiles, users, ... }: with profiles; rec {
           base = [ core users.nixos users.root ];
         };
       };
@@ -79,7 +79,7 @@
         modules = ./users/modules/module-list.nix;
         externalModules = [ ];
         profiles = [ ./users/profiles ];
-        suites = { profiles, ... }: with profiles; {
+        suites = { profiles, ... }: with profiles; rec {
           base = [ direnv git ];
         };
       };
