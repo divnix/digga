@@ -1,47 +1,41 @@
 # Overrides
-By default, the NixOS systems are based on unstable. While it is trivial to
-change this to a stable release, or any other branch of nixpkgs by
-changing the flake url, sometimes all we want is a single package from another
-branch.
+Each NixOS host follows one channel. But many times it is useful to get packages
+or modules from different channels.
 
-This is what the overrides are for. By default, they are pulled directly from
-nixpkgs/master, but you can change the `override` flake input url to
-nixos-unstable, or even a specific sha revision.
+## Packages
+You can make use of `overlays/overrides.nix` to override specific packages in the
+default channel to be pulled from other channels. That file is simply an example
+of how any overlay can get `channels` as their first argument.
 
-They are defined in the `extern/overrides.nix` file.
+You can add overlays to any channel to override packages from other channels.
 
-## Example
-
-### Packages
-The override packages are defined as a regular overlay with an extra arguement
-`pkgs`. This refers to the packages built from the `override` flake.
-
-Pulling the manix package from the override flake:
+Pulling the manix package from the `latest` channel:
 ```nix
-{
-  packages = pkgs: final: prev: {
-    inherit (pkgs) manix;
-  };
+channels: final: prev: {
+  __dontExport = true;
+  inherit (pkgs.latest) manix;
 }
 ```
 
-### Modules
+It is recommended to set the `__dontExport` property for override specific
+overlays. `overlays/overrides.nix` is the best place to consolidate all package
+overrides and the property is already set for you.
 
-You can also pull modules from override. Simply specify their path relative to
-the nixpkgs [modules][nixpkgs-modules] directory. The old version will be added
-to `disabledModules` and the new version imported into the configuration.
+## Modules
 
-Pulling the zsh module from the override flake:
+You can also pull modules from other channels. All modules have access to the 
+`modulesPath` for each channel as `<channelName>ModulesPath`. And you can use
+`disabledModules` to remove modules from the current channel.
+
+Pulling the zsh module from the `latest` channel:
 ```nix
-{
-  modules = [ "programs/zsh/zsh.nix" ];
+{ latestModulesPath }: {
+  modules = [ "${latestModulesPath}/programs/zsh/zsh.nix" ];
+  disabledModules = [ "programs/zsh/zsh.nix" ];
 }
 ```
 
 > ##### _Note:_
-> Sometimes a modules name will change from one branch to another. This is what
-> the `disabledModules` list is for. If the module name changes, the old
-> version will not automatically be disabled, so simply put it's old name in
-> this list to disable it.
+> Sometimes a modules name will change from one branch to another.
 
 [nixpkgs-modules]: https://github.com/NixOS/nixpkgs/tree/master/nixos/modules

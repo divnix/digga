@@ -15,6 +15,11 @@ attribute to the name of the file minus the _.nix_ extension. This is for
 convenience, since `nixos-rebuild` automatically searches for a configuration
 matching the current systems hostname if one is not specified explicitly.
 
+You can set channels, systems, and add extra modules to each host by editing the
+`nixos.hosts` argument in flake.nix. This is the perfect place to import
+host specific modules from external sources, such as the
+[nixos-hardware][nixos-hardware] repository.
+
 It is recommended that the host modules only contain configuration information
 specific to a particular piece of hardware. Anything reusable across machines
 is best saved for [profile modules](./profiles.md).
@@ -22,20 +27,29 @@ is best saved for [profile modules](./profiles.md).
 This is a good place to import sets of profiles, called [suites](./suites.md),
 that you intend to use on your machine.
 
-Additionally, this is the perfect place to import anything you might need from
-the [nixos-hardware][nixos-hardware] repository.
-
-> ##### _Note:_
-> Set `nixpkgs.system` to the architecture of this host, default is "x86_64-linux".
-> Keep in mind that not all packages are available for all architectures.
 
 ## Example
 
+flake.nix:
+```nix
+{
+  nixos.hosts = mkMerge [
+    (devos.lib.importHosts ./hosts)
+    {
+      librem = {
+        channelName = "latest";
+        modules = [ hardware.purism-librem-13v3 ];
+      };
+    }
+  ];
+}
+```
+
 hosts/librem.nix:
 ```nix
-{ suites, hardware, ... }:
+{ suites, ... }:
 {
-  imports = suites.laptop ++ [ hardware.purism-librem-13v3 ];
+  imports = suites.laptop;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

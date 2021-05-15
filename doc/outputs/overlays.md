@@ -4,7 +4,7 @@ we want to keep the process as simple and straightforward as possible.
 
 Any _.nix_ files declared in this directory will be assumed to be a valid
 overlay, and will be automatically imported into all [hosts](../concepts/hosts.md), and
-exported via `overlays.<file-basename>` _as well as_
+exported via `overlays.<channel>/<pkgName>` _as well as_
 `packages.<system>.<pkgName>` (for valid systems), so all you have to do is
 write it.
 

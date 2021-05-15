@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ self, config, lib, pkgs, ... }:
 let inherit (lib) fileContents;
 in
 {
@@ -12,7 +12,6 @@ in
       binutils
       coreutils
       curl
-      deploy-rs
       direnv
       dnsutils
       dosfstools
@@ -77,7 +76,7 @@ in
         '';
 
         # fix nixos-option
-        nixos-option = "nixos-option -I nixpkgs=${toString ../../lib/compat}";
+        nixos-option = "nixos-option -I nixpkgs=${self}/lib/compat";
 
         # sudo
         s = ifSudo "sudo -E ";

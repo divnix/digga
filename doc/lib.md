@@ -3,8 +3,7 @@ The lib directory mirrors the upstream concepts of [`nixpkgs:./lib`][nixpkgs-lib
 [`nixpkgs:./nixos/lib`][nixpkgs-nixos-lib] and [`nixpkgs:./pkgs/pkgs-lib`][nixpkgs-pkgs-lib],
 but also occasionally [`nixpkgs:./pkgs/build-support`][nixpkgs-pkgs-build-support].
 
-It comes with functions necesary to declutter `devos` itself, but you are
-welcome to extend it to your needs.
+All functions defined in lib can be accessed in modules and packages as `ourlib`.
 
 For example:
 
