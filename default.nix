@@ -1,7 +1,7 @@
 let
   inherit (default.inputs.nixos) lib;
 
-  default = (import "${./lib}/compat").defaultNix;
+  default = (import ./lib/compat).defaultNix;
 
   ciSystems = [
     "aarch64-linux"
