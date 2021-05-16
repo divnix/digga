@@ -96,6 +96,7 @@ lib.systemFlake (lib.mergeAny
     devShellBuilder = channels:
       lib.pkgs-lib.shell {
         pkgs = getDefaultChannel channels;
+        extraModules = cfg.devshellModules;
       };
   }
   otherArguments # for overlays list order

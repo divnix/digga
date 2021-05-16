@@ -43,6 +43,16 @@ let
       coercedListOf = elemType: with types;
         coercedTo anything (x: flatten (singleton x)) (listOf elemType);
 
+      pathToDevshellModule = with types; (coercedTo path (path:
+        let pathstr = toString path; in
+        if lib.hasSuffix ".toml" pathstr then
+          { pkgs, ... }: { imports = [ (pkgs.devshell.importTOML path) ]; }
+        else
+          import path
+      ) moduleType) // {
+        description = "path to a devshell module(including .toml files)";
+      };
+
       /* Submodules needed for API containers */
 
       channelsModule = { name, ... }: {
@@ -260,6 +270,13 @@ let
           default = { };
           description = ''
             hosts, modules, suites, and profiles for home-manager
+          '';
+        };
+        devshellModules = mkOption {
+          type = coercedListOf pathToDevshellModule;
+          default = [ ];
+          description = ''
+            devshell modules(including .toml files) to add to the devshell
           '';
         };
       };
