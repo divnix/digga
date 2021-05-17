@@ -275,13 +275,13 @@ dd bs=4M if=result/iso/*.iso of=/dev/$your_installation_device \
 </code></pre>
 <p>This works for any file matching <code>hosts/*.nix</code> excluding <code>default.nix</code>.</p>
 <h2 id="iso-image-nix-store--cache"><a class="header" href="#iso-image-nix-store--cache">ISO image nix store &amp; cache</a></h2>
-<p>The iso image holds the store to the live environment and <em>also</em> acts as a binay cache
+<p>The iso image holds the store to the live environment and <em>also</em> acts as a binary cache
 to the installer. To considerably speed up things, the image already includes all flake
 <code>inputs</code> as well as the <code>devshell</code> closures.</p>
-<p>While you <em>could</em> provision any machine with a single stick, a bespoke iso maximises
-those local cache hits.</p>
-<p>For hosts that don't differ too much, a common usb stick might be ok, whereas when
-there are bigger differences, a bespoke usb stick will be considerably faster.</p>
+<p>While you <em>could</em> provision any machine with a single stick, a custom-made iso for
+the host you want to install DevOS to, maximises those local cache hits.</p>
+<p>For hosts that don't differ too much, a single usb stick might be ok, whereas when
+there are bigger differences, a custom-made usb stick will be considerably faster.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="bootstrapping"><a class="header" href="#bootstrapping">Bootstrapping</a></h1>
 <p>This will help you boostrap a bare host with the help of the
 <a href="start/./iso.html">bespoke iso</a> live installer.</p>
@@ -940,13 +940,13 @@ dd bs=4M if=result/iso/*.iso of=/dev/$your_installation_device \
 </code></pre>
 <p>This works for any file matching <code>hosts/*.nix</code> excluding <code>default.nix</code>.</p>
 <h2 id="iso-image-nix-store--cache-1"><a class="header" href="#iso-image-nix-store--cache-1">ISO image nix store &amp; cache</a></h2>
-<p>The iso image holds the store to the live environment and <em>also</em> acts as a binay cache
+<p>The iso image holds the store to the live environment and <em>also</em> acts as a binary cache
 to the installer. To considerably speed up things, the image already includes all flake
 <code>inputs</code> as well as the <code>devshell</code> closures.</p>
-<p>While you <em>could</em> provision any machine with a single stick, a bespoke iso maximises
-those local cache hits.</p>
-<p>For hosts that don't differ too much, a common usb stick might be ok, whereas when
-there are bigger differences, a bespoke usb stick will be considerably faster.</p>
+<p>While you <em>could</em> provision any machine with a single stick, a custom-made iso for
+the host you want to install DevOS to, maximises those local cache hits.</p>
+<p>For hosts that don't differ too much, a single usb stick might be ok, whereas when
+there are bigger differences, a custom-made usb stick will be considerably faster.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="install-1"><a class="header" href="#install-1">install</a></h1>
 <p>The <code>install</code> subcommand is a simple convenience for <code>nixos-install</code>, similar
 to the shortcut for <code>nixos-rebuild</code>, all additional arguments are passed
