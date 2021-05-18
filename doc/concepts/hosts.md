@@ -38,7 +38,7 @@ flake.nix:
     {
       librem = {
         channelName = "latest";
-        modules = [ hardware.purism-librem-13v3 ];
+        modules = [ nixos-hardware.nixosModules.purism-librem-13v3 ];
       };
     }
   ];
