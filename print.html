@@ -455,15 +455,15 @@ that you intend to use on your machine.</p>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
 <p>flake.nix:</p>
 <pre><code class="language-nix">{
-  nixos.hosts = mkMerge [
-    (devos.lib.importHosts ./hosts)
-    {
+  nixos = {
+    imports = [ (devos.lib.importHosts ./hosts) ];
+    hosts = {
       librem = {
         channelName = &quot;latest&quot;;
         modules = [ nixos-hardware.nixosModules.purism-librem-13v3 ];
       };
-    }
-  ];
+    };
+  };
 }
 </code></pre>
 <p>hosts/librem.nix:</p>
