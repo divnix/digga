@@ -28,11 +28,11 @@ let
 
   # Add all packages from overlays to shell
   # Follow same logic as exporting packages except don't filter out inputs
-  allOverlays = lib.exporter.overlaysFromChannelsExporter {
+  allOverlays = lib.exporters.internalOverlays {
     # function requires system-spaced and channel-spaced package set
     pkgs.${pkgs'.system}.channel = pkgs';
   };
-  customPackages = lib.builder.packagesFromOverlaysBuilderConstructor allOverlays { pkgs = pkgs'; };
+  customPackages = lib.exporters.fromOverlays allOverlays { pkgs = pkgs'; };
 
   configuration = {
     imports = [ (pkgs'.devshell.importTOML ./devshell.toml) ] ++ extraModules;

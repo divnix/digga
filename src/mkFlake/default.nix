@@ -71,11 +71,11 @@ lib.systemFlake (lib.mergeAny
       });
     };
 
-    nixosModules = lib.exporter.modulesFromList cfg.nixos.hostDefaults.modules;
+    nixosModules = lib.exporters.modulesFromList cfg.nixos.hostDefaults.modules;
 
-    homeModules = lib.exporter.modulesFromList cfg.home.modules;
+    homeModules = lib.exporters.modulesFromList cfg.home.modules;
 
-    overlays = lib.exporter.overlaysFromChannelsExporter {
+    overlays = lib.exporters.internalOverlays {
       # since we can't detect overlays owned by self
       # we have to filter out ones exported by the inputs
       # optimally we would want a solution for NixOS/nix#4740
@@ -83,7 +83,7 @@ lib.systemFlake (lib.mergeAny
       inherit (self) pkgs;
     };
 
-    packagesBuilder = lib.builder.packagesFromOverlaysBuilderConstructor self.overlays;
+    packagesBuilder = lib.exporters.fromOverlays self.overlays;
 
     checksBuilder = channels:
       lib.pkgs-lib.tests.mkChecks {
