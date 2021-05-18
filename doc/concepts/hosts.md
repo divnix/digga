@@ -33,15 +33,15 @@ that you intend to use on your machine.
 flake.nix:
 ```nix
 {
-  nixos.hosts = mkMerge [
-    (devos.lib.importHosts ./hosts)
-    {
+  nixos = {
+    imports = [ (devos.lib.importHosts ./hosts) ];
+    hosts = {
       librem = {
         channelName = "latest";
         modules = [ nixos-hardware.nixosModules.purism-librem-13v3 ];
       };
-    }
-  ];
+    };
+  };
 }
 ```
 
