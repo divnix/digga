@@ -83,21 +83,29 @@ lib.systemFlake (lib.mergeAny
       inherit (self) pkgs;
     };
 
-    packagesBuilder = lib.exporters.fromOverlays self.overlays;
+    outputsBuilder = channels:
+      let
+        defaultChannel = channels.${cfg.nixos.hostDefaults.channelName};
+      in
+      lib.mergeAny
+        {
+          packages = lib.exporters.fromOverlays self.overlays channels;
 
-    checksBuilder = channels:
-      lib.pkgs-lib.tests.mkChecks {
-        pkgs = getDefaultChannel channels;
-        inherit (self.deploy) nodes;
-        hosts = self.nixosConfigurations;
-        homes = self.homeConfigurations or { };
-      };
+          checks = lib.pkgs-lib.tests.mkChecks {
+            pkgs = defaultChannel;
+            inherit (self.deploy) nodes;
+            hosts = self.nixosConfigurations;
+            homes = self.homeConfigurations or { };
+          };
 
-    devShellBuilder = channels:
-      lib.pkgs-lib.shell {
-        pkgs = getDefaultChannel channels;
-        extraModules = cfg.devshellModules;
-      };
+          devShell = lib.pkgs-lib.shell {
+            pkgs = defaultChannel;
+            extraModules = cfg.devshellModules;
+          };
+        }
+        (otherArguments.outputsBuilder channels);
+
   }
+
   otherArguments # for overlays list order
 )
