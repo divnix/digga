@@ -28,6 +28,38 @@ let
     inherit (pkgs') system;
     modules = [ ];
   }).config.system.build;
+
+  configuration = {
+    imports = [ (pkgs'.devshell.importTOML ./devshell.toml) ] ++ extraModules;
+
+    packages = with installPkgs; [
+      nixos-install
+      nixos-generate-config
+      nixos-enter
+      pkgs'.nixos-rebuild
+    ];
+
+    git.hooks = {
+      pre-commit.text = lib.fileContents ./pre-commit.sh;
+    };
+
+    commands = with pkgs'; [
+      { package = flk; }
+      {
+        name = "nix";
+        help = pkgs'.nixFlakes.meta.description;
+        command = ''
+          ${pkgs'.nixFlakes}/bin/nix --experimental-features "nix-command flakes ca-references" "${"\${@}"}"
+        '';
+      }
+      {
+        name = "deploy";
+        package = deploy-rs;
+        help = "A simple multi-profile Nix-flake deploy tool.";
+      }
+    ]
+    ++ lib.optional (system != "i686-linux") { package = cachix; };
+  };
 in
 pkgs'.devshell.mkShell {
   imports = [ (pkgs'.devshell.importTOML ./devshell.toml) ];

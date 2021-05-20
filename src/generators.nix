@@ -27,7 +27,7 @@
 
           profiles.system = {
             user = "root";
-            path = deploy.lib.x86_64-linux.activate.nixos config;
+            path = deploy.lib.${config.config.nixpkgs.system}.activate.nixos config;
           };
         }
         extraConfig)
