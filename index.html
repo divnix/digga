@@ -176,8 +176,8 @@ should be considered unstable, though quite usable as flakes have been
 maturing <em>well</em> <a href="https://github.com/divnix/devos/tree/17713c22d07c54525c728c62060a0428b76dee3b">for a while</a>.</p>
 </blockquote>
 <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p>DevOS grants a simple way to use, deploy and manage <a href="https://nixos.org/manual/nixos/stable">NixOS</a> systems for
-personal and productive use. A sane repository structure is provided,
+<p>DevOS grants a simple template to use, deploy and manage <a href="https://nixos.org/manual/nixos/stable">NixOS</a> systems 
+for personal and productive use. A sane repository structure is provided,
 integrating several popular projects like <a href="https://nix-community.github.io/home-manager">home-manager</a>,
 <a href="https://github.com/numtide/devshell">devshell</a>, and <a href="./doc/integrations">more</a>.</p>
 <p>Striving for <em><strong>nix first™</strong></em> solutions with unobstrusive implementations,
@@ -185,13 +185,16 @@ a <a href="https://github.com/NixOS/nix/blob/master/src/nix/flake.md">flake cent
 <a href="./pkgs#automatic-source-updates">automatic source updates</a>.</p>
 <p>Skip the indeterminate nature of other systems, <em>and</em> the perceived
 tedium of bootstrapping Nix. It's easier than you think!</p>
-<h3 id="status-alpha"><a class="header" href="#status-alpha">Status: Alpha</a></h3>
-<p>A lot of the implementation is less than perfect, and huge
-<a href="https://github.com/divnix/devos/issues/152">redesigns</a> <em>will</em> happen. There
-are unstable versions (0.<em>x</em>.<em>x</em>) to help users keep track of changes and
-progress.</p>
+<h3 id="status-beta"><a class="header" href="#status-beta">Status: Beta</a></h3>
+<p>Although this project has already matured quite a bit, especially through
+recent outfactoring of <a href="https://github.com/divnix/digga"><code>digga</code></a>, a fair amount of api polishing is still
+expected. There are unstable versions (0.<em>x</em>.<em>x</em>) to help users keep track
+of changes and progress.</p>
 <h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
-<p>Check out the <a href="https://devos.divnix.com/start">guide</a> to get up and running.</p>
+<p>Check out the <a href="https://devos.divnix.com/start">guide</a> to get up and running.
+Also, have a look at <a href="https://github.com/divnix/devos/blob/core/flake.nix"><em>flake.nix</em></a>. If anything is not immediately 
+discoverable from there through <a href="https://github.com/divnix/digga"><code>digga</code></a> library's <a href="https://github.com/divnix/digga/tree/master/src/mkFlake"><code>mkFlake</code></a>,
+please file a bug report.</p>
 <h2 id="in-the-wild"><a class="header" href="#in-the-wild">In the Wild</a></h2>
 <p>The author maintains his own branch, so you can take inspiration, direction, or
 make critical comments about the <a href="https://github.com/nrdxp/devos/tree/nrd">code</a>. 😜</p>
@@ -202,11 +205,6 @@ complete system can easily lead to unlimited complexity if we do it wrong.
 Instead, we should have a community consensus on how to manage a NixOS system
 and its satellite projects, from which best practices can evolve.</p>
 <p><em><strong>The future is declarative! 🎉</strong></em></p>
-<h2 id="upstream"><a class="header" href="#upstream">Upstream</a></h2>
-<p>I'd love to see this in the nix-community should anyone believe its reached a
-point of maturity to be generally useful, but I'm all for waiting until
-1.0<a href="https://github.com/divnix/devos/issues/121">#121</a> to save the cache work,
-too.</p>
 <h2 id="community-profiles"><a class="header" href="#community-profiles">Community Profiles</a></h2>
 <p>There are two branches from which to choose: <a href="https://github.com/divnix/devos">core</a> and
 <a href="https://github.com/divnix/devos/tree/community">community</a>. The community branch builds on core and includes
@@ -216,6 +214,22 @@ several ready-made profiles for discretionary use.</p>
 without building anything. This is especially useful for the packages that are
 <a href="./concepts/overrides.html">overridden</a> from master, as without the cache,
 rebuilds are quite frequent.</p>
+<h2 id="shoulders"><a class="header" href="#shoulders">Shoulders</a></h2>
+<p>This work does not reinvent the wheel. It stands on the <a href="https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants">shoulders of the
+following giants</a>:</p>
+<h3 id="onion--like-the-layers-of-an-onion"><a class="header" href="#onion--like-the-layers-of-an-onion">:onion: — like the layers of an onion</a></h3>
+<ul>
+<li><a href="https://github.com/divnix/digga"><code>divnix/digga</code></a></li>
+<li><a href="https://github.com/gytis-ivaskevicius/flake-utils-plus"><code>gytis-ivaskevicius/flake-utils-plus</code></a></li>
+<li><a href="https://github.com/numtide/flake-utils"><code>numtide/flake-utils</code></a></li>
+</ul>
+<h3 id="family--like-family"><a class="header" href="#family--like-family">:family: — like family</a></h3>
+<ul>
+<li><a href="https://github.com/numtide/devshell"><code>numtide/devshell</code></a></li>
+<li><a href="https://github.com/serokell/deploy-rs"><code>serokell/deploy-rs</code></a></li>
+<li><a href="https://github.com/NixOS/nixpkgs"><code>NixOS/nixpkgs</code></a></li>
+</ul>
+<p>:heart:</p>
 <h2 id="inspiration--art"><a class="header" href="#inspiration--art">Inspiration &amp; Art</a></h2>
 <ul>
 <li><a href="https://github.com/hlissner/dotfiles">hlissner/dotfiles</a></li>
@@ -224,6 +238,14 @@ rebuilds are quite frequent.</p>
 <li><a href="https://github.com/nix-community/awesome-nix">Awesome Nix</a></li>
 <li><a href="https://github.com/numtide/devshell">devshell</a></li>
 </ul>
+<h2 id="divnix"><a class="header" href="#divnix">Divnix</a></h2>
+<p>The divnix org is an open space that spontaniously formed out of &quot;the Nix&quot;.
+It is really just a place where otherwise unrelated people a) get
+together and b) stuff done.</p>
+<p>It's a place to stop &quot;geeking out in isolation&quot; (or within company boundaries),
+experiment and learn together and iterate quickly on best practices. That's what it is.</p>
+<p>It might eventually become a non-profit if that's not too complicated or if those
+goals are sufficiently upstreamed into &quot;the Nix&quot;, dissolved.</p>
 <h1 id="license"><a class="header" href="#license">License</a></h1>
 <p>DevOS is licensed under the <a href="https://mit-license.org">MIT License</a>.</p>
 
