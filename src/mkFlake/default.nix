@@ -103,7 +103,7 @@ lib.systemFlake (lib.mergeAny
             extraModules = cfg.devshellModules;
           };
         }
-        (otherArguments.outputsBuilder channels);
+        (cfg.outputsBuilder channels);
 
   }
 

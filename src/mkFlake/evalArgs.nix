@@ -248,6 +248,15 @@ let
             nixpkgs channels to create
           '';
         };
+        outputsBuilder = mkOption {
+          type = functionTo attrs;
+          default = channels: { };
+          defaultText = "channels: { }";
+          description = ''
+            builder for flake system-spaced outputs
+            The builder gets passed an attrset of all channels
+          '';
+        };
         nixos = mkOption {
           type = submoduleWith {
             # allows easy use of the `imports` key
