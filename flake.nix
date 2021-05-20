@@ -17,13 +17,26 @@
       home.inputs.nixpkgs.follows = "nixos";
       naersk.url = "github:nmattia/naersk";
       naersk.inputs.nixpkgs.follows = "latest";
+      agenix.url = "github:ryantm/agenix";
+      agenix.inputs.nixpkgs.follows = "latest";
       nixos-hardware.url = "github:nixos/nixos-hardware";
 
       pkgs.url = "path:./pkgs";
       pkgs.inputs.nixpkgs.follows = "nixos";
     };
 
-  outputs = inputs@{ self, pkgs, digga, nixos, ci-agent, home, nixos-hardware, nur, ... }:
+  outputs =
+    { self
+    , pkgs
+    , digga
+    , nixos
+    , ci-agent
+    , home
+    , nixos-hardware
+    , nur
+    , agenix
+    , ...
+    } @ inputs:
     digga.lib.mkFlake {
       inherit self inputs;
 
@@ -36,6 +49,7 @@
             ./pkgs/default.nix
             pkgs.overlay # for `srcs`
             nur.overlay
+            agenix.overlay
           ];
         };
         latest = { };
@@ -60,6 +74,7 @@
             { _module.args.ourLib = self.lib; }
             ci-agent.nixosModules.agent-profile
             home.nixosModules.home-manager
+            agenix.nixosModules.age
             ./modules/customBuilds.nix
           ];
         };
