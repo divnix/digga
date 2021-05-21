@@ -1,4 +1,4 @@
-{ lib }:
+{ lib, devshell }:
 let
   rakeLeaves =
     /**
@@ -80,5 +80,14 @@ in
         })
         (rakeLeaves dir);
     };
+
+  maybeImportDevshellModule = item:
+    let isPath = builtins.isPath item || builtins.isString item; in
+    if isPath && lib.hasSuffix ".toml" item then
+      devshell.lib.importTOML item
+    else if isPath && lib.hasSuffix ".nix" then
+      import item
+    else item;
+
 }
 

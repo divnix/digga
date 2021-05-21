@@ -75,6 +75,11 @@ lib.systemFlake (lib.mergeAny
 
     homeModules = lib.exporters.modulesFromList cfg.home.modules;
 
+    devshellModules = lib.exporters.modulesFromList {
+      paths = cfg.devshell.modules;
+      _import = lib.maybeImportDevshellModule;
+    };
+
     overlays = lib.exporters.internalOverlays {
       # since we can't detect overlays owned by self
       # we have to filter out ones exported by the inputs
@@ -100,7 +105,7 @@ lib.systemFlake (lib.mergeAny
 
           devShell = lib.pkgs-lib.shell {
             pkgs = defaultChannel;
-            extraModules = cfg.devshellModules;
+            extraModules = cfg.devshell.modules ++ cfg.devshell.externalModules;
           };
         }
         (cfg.outputsBuilder channels);
