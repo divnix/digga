@@ -17,10 +17,7 @@ let
     })
   ];
 
-  pkgs' = import pkgs.path {
-    inherit (pkgs) system;
-    inherit overlays;
-  };
+  pkgs' = pkgs.appendOverlays overlays;
 
   flk = pkgs'.callPackage ./flk.nix { };
 
