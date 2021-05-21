@@ -8,7 +8,7 @@ let
       inherit (config) self;
 
       maybeImport = obj:
-        if (builtins.typeOf obj == "path") || (builtins.typeOf obj == "string") then
+        if (builtins.isPath obj || builtins.isString obj) && lib.hasSuffix ".nix" obj then
           import obj
         else
           obj;
@@ -22,7 +22,7 @@ let
 
       # to export modules we need paths to get the name
       exportModuleType = with types;
-        (addCheck path (x: moduleType.check (import x))) // {
+        (addCheck path (x: moduleType.check (maybeImport x))) // {
           description = "path to a module";
         };
       overlayType = pathTo (types.anything // {
@@ -38,20 +38,8 @@ let
       # To simplify apply keys and improve type checking
       pathTo = elemType: with types; coercedTo path maybeImport elemType;
 
-      pathToListOf = elemType: with types; pathTo (listOf elemType);
-
       coercedListOf = elemType: with types;
         coercedTo anything (x: flatten (singleton x)) (listOf elemType);
-
-      pathToDevshellModule = with types; (coercedTo path (path:
-        let pathstr = toString path; in
-        if lib.hasSuffix ".toml" pathstr then
-          { pkgs, ... }: { imports = [ (pkgs.devshell.importTOML path) ]; }
-        else
-          import path
-      ) moduleType) // {
-        description = "path to a devshell module(including .toml files)";
-      };
 
       /* Submodules needed for API containers */
 
@@ -281,11 +269,17 @@ let
             hosts, modules, suites, and profiles for home-manager
           '';
         };
-        devshellModules = mkOption {
-          type = coercedListOf pathToDevshellModule;
-          default = [ ];
+        devshell = mkOption {
+          type = submoduleWith {
+            modules = [
+              (exportModulesModule "devshell")
+              externalModulesModule
+            ];
+          };
+          default = { };
           description = ''
-            devshell modules(including .toml files) to add to the devshell
+            Modules to include in your devos shell. the `modules` argument
+            will be exported under the `devshellModules` output
           '';
         };
       };
