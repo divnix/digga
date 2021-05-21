@@ -41,4 +41,5 @@ in
 
   checksTest = mkOutputTest "checks";
 
+  devShellTest = fullFlake.devShell.${pkgs.system};
 }

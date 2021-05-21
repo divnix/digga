@@ -34,6 +34,8 @@ let
       })
     ];
 
+    devshell.modules = [ ./devshell.toml ];
+
     nixos = {
       hostDefaults = {
         system = "x86_64-linux";
