@@ -39,8 +39,6 @@ in
       touch $out
     '';
 
-  hostsTest = fullFlake.nixosConfigurations.NixOS.config.system.build.toplevel;
-
   checksTest = mkOutputTest "checks";
 
 }

@@ -22,6 +22,12 @@ let
 
     lib = lib.makeExtensible (self: { });
 
+    outputsBuilder = channels: {
+      checks = {
+        hostBuild = self.nixosConfigurations.NixOS.config.system.build.toplevel;
+      };
+    };
+
     sharedOverlays = [
       (final: prev: {
         ourlib = self.lib;
