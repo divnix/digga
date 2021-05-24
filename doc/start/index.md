@@ -31,6 +31,8 @@ In addition, the [binary cache](../integrations/cachix.md) is added for faster d
 >   files before building the system.
 > - You can choose to simply clone the repo with git if you want to follow
 >   upstream changes.
+> - If the `nix-shell -p cachix --run "cachix use nrdxp"` line doesn't work
+>   you can try with sudo: `sudo nix-shell -p cachix --run "cachix use nrdxp"`
 
 ## Next Steps:
 - [Make installable ISO](./iso.md)
