@@ -27,16 +27,6 @@ lib.runTests {
     expected = { foobar = 1; };
   };
 
-  testPathsIn = {
-    expr = pathsIn (toString ./testPathsIn);
-
-    expected = map toString [
-      ./testPathsIn/bar
-      ./testPathsIn/baz
-      ./testPathsIn/foo
-    ];
-  };
-
   testRgxToString = lib.testAllTrue [
     (rgxToString ".+x" "vxk" == "vx")
     (rgxToString "^fo" "foo" == "fo")
@@ -49,21 +39,22 @@ lib.runTests {
     expected = {
       foo = "directory";
       t = "directory";
+      "f.nix" = "regular";
     };
   };
 
   testSuites = {
     expr = mkSuites {
       suites = { profiles, ... }: with profiles; {
-        bar = [ foo ];
+        bar = [ foo f ];
       };
       profiles = [ (./profiles) ];
     };
     expected = {
-      bar = [ (toString ./profiles/foo) ];
+      bar = [ (toString ./profiles/foo) (toString ./profiles/f.nix) ];
       allProfiles = [
         (toString ./profiles/foo)
-        (toString ./profiles/t)
+        (toString ./profiles/f.nix)
       ];
     };
   };

@@ -37,14 +37,14 @@
     let
       profileSet = lib.genAttrs' profiles (path: {
         name = baseNameOf path;
-        value = lib.mkProfileAttrs (toString path);
+        value = lib.rakeLeaves (toString path);
       });
 
-      definedSuites = suites profileSet;
+      definedSuites = lib.mapAttrs (_: v: lib.profileMap v) (suites profileSet);
 
-      allProfiles = lib.collectProfiles profileSet;
+      allProfiles = lib.foldl (lhs: rhs: lhs ++ rhs) [ ] (builtins.attrValues definedSuites);
     in
-    lib.mapAttrs (_: v: lib.profileMap v) definedSuites // {
+    definedSuites // {
       inherit allProfiles;
     };
 }

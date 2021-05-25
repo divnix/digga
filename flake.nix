@@ -40,9 +40,9 @@
           };
 
           inherit (attrs) mapFilterAttrs genAttrs' safeReadDir concatAttrs;
-          inherit (lists) profileMap collectProfiles unifyOverlays;
+          inherit (lists) unifyOverlays;
           inherit (strings) rgxToString;
-          inherit (importers) mkProfileAttrs pathsIn importHosts;
+          inherit (importers) profileMap rakeLeaves;
           inherit (generators) mkSuites mkDeployNodes mkHomeConfigurations;
         }
       );
