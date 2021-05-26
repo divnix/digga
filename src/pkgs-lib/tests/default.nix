@@ -6,14 +6,16 @@ let
         (n: _: hosts.${n}.config.nixpkgs.system == pkgs.system)
         nodes;
       deployChecks = deploy.lib.${pkgs.system}.deployChecks { nodes = deployHosts; };
+      host = hosts.${(builtins.head (builtins.attrNames deployHosts))};
       tests =
-        lib.optionalAttrs (deployHosts != { })
+        (lib.optionalAttrs
+          (deployHosts != { } && host.config.lib.builderArgs.specialArgs ? suites)
           {
             profilesTest = profilesTest {
-              inherit pkgs;
-              host = hosts.${(builtins.head (builtins.attrNames deployHosts))};
+              inherit pkgs host;
             };
-          } // lib.mapAttrs (n: v: v.activationPackage) homes;
+          }
+        ) // lib.mapAttrs (n: v: v.activationPackage) homes;
 
     in
     lib.recursiveUpdate tests deployChecks;

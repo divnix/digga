@@ -55,13 +55,13 @@
     };
 
   isoConfig = { self, inputs, fullHostConfig }:
-    { config, modulesPath, suites, ... }: {
+    { config, modulesPath, ... }@args: {
 
       imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal-new-kernel.nix" ];
       # avoid unwanted systemd service startups
       # all strings in disabledModules get appended to modulesPath
       # so convert each to list which can be coerced to string
-      disabledModules = map lib.singleton suites.allProfiles;
+      disabledModules = map lib.singleton (args.suites.allProfiles or [ ]);
 
       nix.registry = lib.mapAttrs (n: v: { flake = v; }) inputs;
 
