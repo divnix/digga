@@ -46,7 +46,7 @@
           inherit (attrs) mapFilterAttrs genAttrs' safeReadDir concatAttrs;
           inherit (lists) unifyOverlays;
           inherit (strings) rgxToString;
-          inherit (importers) profileMap rakeLeaves maybeImportDevshellModule;
+          inherit (importers) profileMap rakeLeaves mkProfileAttrs maybeImportDevshellModule;
           inherit (generators) mkSuites mkDeployNodes mkHomeConfigurations;
         }
       );

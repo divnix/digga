@@ -33,11 +33,13 @@
         extraConfig)
       hosts;
 
+  # DEPRECATED, suites no longer needs an explicit function after the importables generalization
+  # deprecation message for suites is already in evalArgs
   mkSuites = { suites, profiles }:
     let
       profileSet = lib.genAttrs' profiles (path: {
         name = baseNameOf path;
-        value = lib.rakeLeaves (toString path);
+        value = lib.mkProfileAttrs (toString path);
       });
 
       definedSuites = lib.mapAttrs (_: v: lib.profileMap v) (suites profileSet);
