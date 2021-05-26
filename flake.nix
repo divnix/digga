@@ -22,7 +22,11 @@
           lists = import ./src/lists.nix { lib = combinedLib; };
           strings = import ./src/strings.nix { lib = combinedLib; };
           modules = import ./src/modules.nix { lib = combinedLib; };
-          importers = import ./src/importers.nix { lib = combinedLib; };
+
+          importers = import ./src/importers.nix {
+            lib = combinedLib;
+            inherit devshell;
+          };
 
           generators = import ./src/generators.nix {
             lib = combinedLib;
@@ -42,7 +46,7 @@
           inherit (attrs) mapFilterAttrs genAttrs' safeReadDir concatAttrs;
           inherit (lists) unifyOverlays;
           inherit (strings) rgxToString;
-          inherit (importers) profileMap rakeLeaves;
+          inherit (importers) profileMap rakeLeaves maybeImportDevshellModule;
           inherit (generators) mkSuites mkDeployNodes mkHomeConfigurations;
         }
       );
