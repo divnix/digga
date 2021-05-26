@@ -43,19 +43,14 @@ lib.runTests {
     };
   };
 
-  testSuites = {
-    expr = mkSuites {
-      suites = { profiles, ... }: with profiles; {
-        bar = [ foo f ];
+  testRakeLeaves = {
+    expr = importers.rakeLeaves ./profiles;
+    expected  = {
+      f = toString ./profiles/f.nix;
+      foo = toString ./profiles/foo;
+      t = {
+        bar = toString ./profiles/t/bar.nix;
       };
-      profiles = [ (./profiles) ];
-    };
-    expected = {
-      bar = [ (toString ./profiles/foo) (toString ./profiles/f.nix) ];
-      allProfiles = [
-        (toString ./profiles/foo)
-        (toString ./profiles/f.nix)
-      ];
     };
   };
 }
