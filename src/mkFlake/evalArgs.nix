@@ -168,29 +168,62 @@ let
         };
       };
 
-      # profiles and suites - which are profile collections
-      profilesModule = { config, ... }: {
+      suitesDeprecationMessage = ''
+        WARNING: The 'suites' and `profiles` options have been deprecated, you can now create
+        both with the importables option. `rakeLeaves` can be used to create profiles and
+        by passing a module or `rec` set to `importables`, suites can access profiles.
+        Example:
+        ```
+        importables = rec {
+          profiles = digga.lib.importers.rakeLeaves ./profiles;
+          suites = with profiles; { };
+        }
+        ```
+        See https://github.com/divnix/digga/pull/30 for more details
+      '';
+      importablesModule = { config, options, ... }: {
+        config = {
+          importables = mkIf options.suites.isDefined {
+            suites = builtins.trace suitesDeprecationMessage config.suites;
+          };
+        };
         options = with types; {
           profiles = mkOption {
             type = listOf path;
             default = [ ];
-            description = ''
-              profile folders that can be collected into suites
-              the name of the argument passed to suites is based
-              on the folder name.
-              [ ./profiles ] => { profiles }:
-            '';
+            description = suitesDeprecationMessage;
           };
           suites = mkOption {
             type = pathTo (functionTo attrs);
-            default = _: { };
             apply = suites: lib.mkSuites {
               inherit suites;
               inherit (config) profiles;
             };
+            description = suitesDeprecationMessage;
+          };
+          importables = mkOption {
+            type = submoduleWith {
+              modules = [{
+                freeformType = attrs;
+                options = {
+                  suites = mkOption {
+                    type = attrsOf (listOf path);
+                    # add `allProfiles` to it here
+                    apply = suites: suites // {
+                      allProfiles = lib.foldl
+                        (lhs: rhs: lhs ++ rhs) [ ]
+                        (builtins.attrValues suites);
+                    };
+                    description = ''
+                      collections of profiles
+                    '';
+                  };
+                };
+              }];
+            };
+            default = { };
             description = ''
-              Function that takes profiles and returns suites for this config system
-              These can be accessed through the 'suites' special argument.
+              Packages of paths to be passed to modules as `specialArgs`.
             '';
           };
         };
@@ -248,7 +281,7 @@ let
         nixos = mkOption {
           type = submoduleWith {
             # allows easy use of the `imports` key
-            modules = [ (includeHostsModule "nixos") profilesModule ];
+            modules = [ (includeHostsModule "nixos") importablesModule ];
           };
           default = { };
           description = ''
@@ -259,7 +292,7 @@ let
           type = submoduleWith {
             # allows easy use of the `imports` key
             modules = [
-              profilesModule
+              importablesModule
               (exportModulesModule "home")
               externalModulesModule
             ];

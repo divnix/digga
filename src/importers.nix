@@ -100,8 +100,7 @@ in
   ''
     mkProfileAttrs;
 
-  # DEPRECATED, profiles in suites are type-checked in evalArgs
-  # both versions of `profileMap` are no longer necessary
+  # DEPRECATED, both versions of `profileMap` are no longer necessary
   # paths are type-checked for suites in evalArgs
   # and `.default` isn't special with `rakeLeaves`
   /** profileMap = list: map

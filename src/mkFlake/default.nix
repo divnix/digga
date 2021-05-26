@@ -16,7 +16,7 @@ let
 
   defaultModules = with lib.modules; [
     (hmDefaults {
-      inherit (cfg.home) suites;
+      specialArgs = cfg.home.importables;
       modules = cfg.home.modules ++ cfg.home.externalModules;
     })
     (globalDefaults {
@@ -63,7 +63,7 @@ lib.systemFlake (lib.mergeAny
       })
     ];
     hostDefaults = lib.mergeAny hostDefaults {
-      specialArgs.suites = cfg.nixos.suites;
+      specialArgs = cfg.nixos.importables;
       modules = cfg.nixos.hostDefaults.externalModules ++ defaultModules;
       builder = args: args.specialArgs.channel.input.lib.nixosSystem (lib.mergeAny args {
         # So modules and functions can create their own version of the build

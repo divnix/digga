@@ -52,18 +52,24 @@ let
         /* set host specific properties here */
         NixOS = { };
       };
-      profiles = [ ./profiles ./users ];
-      suites = { profiles, users, ... }: with profiles; {
-        base = [ cachix core users.nixos users.root ];
+      importables = rec {
+        profiles = lib.importers.rakeLeaves ./profiles // {
+          users = lib.importers.rakeLeaves ./users;
+        };
+        suites = with profiles; {
+          base = [ cachix core users.nixos users.root ];
+        };
       };
     };
 
     home = {
       modules = ./users/modules/module-list.nix;
       externalModules = [ ];
-      profiles = [ ./users/profiles ];
-      suites = { profiles, ... }: with profiles; {
-        base = [ direnv git ];
+      importables = rec {
+        profiles = lib.importers.rakeLeaves ./profiles;
+        suites = with profiles; {
+          base = [ direnv git ];
+        };
       };
     };
 

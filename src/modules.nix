@@ -1,13 +1,13 @@
 { lib }:
 {
-  hmDefaults = { suites, modules }:
+  hmDefaults = { specialArgs, modules }:
     { options, ... }: {
       config = lib.optionalAttrs (options ? home-manager) {
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
 
-          extraSpecialArgs = { inherit suites; };
+          extraSpecialArgs = specialArgs;
           sharedModules = modules;
         };
       };
