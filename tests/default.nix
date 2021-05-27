@@ -18,7 +18,7 @@ in
       buildInputs = [
         pkgs.nix
         (
-          let tests = import ./lib.nix { inherit pkgs lib; }; in
+          let tests = import ./lib { inherit pkgs lib; }; in
           if tests == [ ] then null
           else throw (builtins.toJSON tests)
         )
