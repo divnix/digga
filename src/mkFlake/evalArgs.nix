@@ -207,7 +207,7 @@ let
                 freeformType = attrs;
                 options = {
                   suites = mkOption {
-                    type = attrsOf (listOf path);
+                    type = attrsOf (coercedListOf path);
                     # add `allProfiles` to it here
                     apply = suites: suites // {
                       allProfiles = lib.foldl
