@@ -1,5 +1,33 @@
 # Changelog
 
+## [v0.10.0](https://github.com/divnix/devos/tree/v0.10.0) (2021-05-24)
+
+**Implemented enhancements:**
+
+- Providing an interface to nixpkgs.config [\#237](https://github.com/divnix/devos/issues/237)
+- Making the user available in profiles [\#230](https://github.com/divnix/devos/issues/230)
+- copy evaluation store paths to iso [\#195](https://github.com/divnix/devos/issues/195)
+- Extract custom system builds from devosSystem out of lib [\#170](https://github.com/divnix/devos/issues/170)
+- Allow setting of channel host-wide [\#117](https://github.com/divnix/devos/issues/117)
+- alacritty: CSIu support [\#51](https://github.com/divnix/devos/issues/51)
+
+**Fixed bugs:**
+
+- Cachix timeouts + how to disable nrdxp cachix \(if needed\) [\#294](https://github.com/divnix/devos/issues/294)
+- default.nix flake-compat is broken [\#285](https://github.com/divnix/devos/issues/285)
+- All suites return "attribute missing" [\#282](https://github.com/divnix/devos/issues/282)
+- nix is built two times [\#203](https://github.com/divnix/devos/issues/203)
+- fix lib docs [\#166](https://github.com/divnix/devos/issues/166)
+
+**Closed issues:**
+
+- eliminate userFlakeNixOS [\#257](https://github.com/divnix/devos/issues/257)
+- devos-as-library [\#214](https://github.com/divnix/devos/issues/214)
+
+**Merged pull requests:**
+
+- Update evalArgs to match the new planned API [\#239](https://github.com/divnix/devos/pull/239)
+
 ## [v0.9.0](https://github.com/divnix/devos/tree/v0.9.0) (2021-04-19)
 
 **Implemented enhancements:**
@@ -76,6 +104,10 @@
 **Closed issues:**
 
 - add github action for cachix build ci [\#59](https://github.com/divnix/devos/issues/59)
+
+## [12052020](https://github.com/divnix/devos/tree/12052020) (2020-12-06)
+
+## [07092020](https://github.com/divnix/devos/tree/07092020) (2020-07-09)
 
 
 
