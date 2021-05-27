@@ -34,22 +34,13 @@ lib.runTests {
     (rgxToString "hat" "foohatbar" == "hat")
   ];
 
-  testSafeReadDir = {
-    expr = safeReadDir ./profiles // safeReadDir ./nonexistentdir;
-    expected = {
-      foo = "directory";
-      t = "directory";
-      "f.nix" = "regular";
-    };
-  };
-
   testRakeLeaves = {
     expr = importers.rakeLeaves ./profiles;
     expected  = {
-      f = toString ./profiles/f.nix;
-      foo = toString ./profiles/foo;
+      f = ./profiles/f.nix;
+      foo = ./profiles/foo;
       t = {
-        bar = toString ./profiles/t/bar.nix;
+        bar = ./profiles/t/bar.nix;
       };
     };
   };

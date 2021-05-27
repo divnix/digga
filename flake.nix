@@ -43,7 +43,7 @@
             inherit deploy devshell;
           };
 
-          inherit (attrs) mapFilterAttrs genAttrs' safeReadDir concatAttrs;
+          inherit (attrs) mapFilterAttrs genAttrs' concatAttrs;
           inherit (lists) unifyOverlays;
           inherit (strings) rgxToString;
           inherit (importers) profileMap rakeLeaves mkProfileAttrs maybeImportDevshellModule;

@@ -8,8 +8,8 @@ let
 
       Output Format:
       An attribute set where all `.nix` files and directories with `default.nix` in them
-      are mapped to keys(file with .nix stripped or folder name. All other directories
-      are recursed further into nested attribute sets with the same format.
+      are mapped to keys that are either the file with .nix stripped or the folder name.
+      All other directories are recursed further into nested attribute sets with the same format.
 
       Example file structure:
       ```
@@ -18,38 +18,36 @@ let
       ./main/dev.nix
       ./main/os/default.nix
       ```
+
       Example output:
       ```
       {
-      core = ./core;
-      base = base.nix;
-      main = {
-      dev = ./main/dev.nix;
-      os = ./main/os;
-      };
+        core = ./core;
+        base = base.nix;
+        main = {
+          dev = ./main/dev.nix;
+          os = ./main/os;
+        };
       }
       ```
       **/
     dirPath:
     let
-      # Relative paths cause issues, so convert to string immediately
-      dir = toString dirPath;
-
       collect = file: type: {
         name = lib.removeSuffix ".nix" file;
-        value = let path = "${dir}/${file}"; in
+        value = let path = dirPath + "/${file}"; in
           if (type == "regular")
-            || (type == "directory" && builtins.pathExists "${path}/default.nix")
+            || (type == "directory" && builtins.pathExists (path + "/default.nix"))
           then path
           else rakeLeaves path;
       };
 
       files = lib.filterAttrs
         (file: type:
-          # Only include `.nix` files or directories
+          # Only rake `.nix` files or directories
           (type == "regular" && lib.hasSuffix ".nix" file) || (type == "directory")
         )
-        (lib.safeReadDir dir);
+        (builtins.readDir dirPath);
     in
     lib.mapAttrs' collect files;
 
@@ -68,7 +66,7 @@ let
     let
       imports =
         let
-          files = lib.safeReadDir dir;
+          files = builtins.readDir dir;
 
           p = n: v:
             v == "directory"
@@ -78,14 +76,14 @@ let
 
       f = n: _:
         lib.optionalAttrs
-          (lib.pathExists "${dir}/${n}/default.nix")
-          { default = "${dir}/${n}"; }
-        // mkProfileAttrs "${dir}/${n}";
+          (lib.pathExists (dir + "/${n}/default.nix"))
+          { default = dir + "/${n}"; }
+        // mkProfileAttrs (dir + "/${n}");
     in
     lib.mapAttrs f imports;
 
   getProfilePath = fallback: item:
-    if lib.isString item then item else fallback;
+    if builtins.isPath item then item else fallback;
 in
 {
   inherit rakeLeaves;

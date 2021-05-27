@@ -13,7 +13,4 @@ rec {
   genAttrs' = values: f: lib.listToAttrs (map f values);
 
   concatAttrs = lib.fold (attr: sum: lib.recursiveUpdate sum attr) { };
-
-  safeReadDir = path:
-    lib.optionalAttrs (builtins.pathExists (toString path)) (builtins.readDir (toString path));
 }
