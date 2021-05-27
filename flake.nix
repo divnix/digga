@@ -103,7 +103,7 @@
 
       deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
 
-      #defaultTemplate = self.templates.flk;
+      defaultTemplate = self.templates.flk;
       templates.flk.path = ./.;
       templates.flk.description = "flk template";
 
