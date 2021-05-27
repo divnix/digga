@@ -39,7 +39,10 @@ in
       touch $out
     '';
 
-  checksTest = mkOutputTest "checks";
+  checksTest = mkOutputTest "checks" // {
+    # debug the fullFLake through repl at checks.<system>.checksTest.fullFlake
+    inherit fullFlake;
+  };
 
   devShellTest = fullFlake.devShell.${pkgs.system};
 }
