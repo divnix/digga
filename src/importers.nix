@@ -1,5 +1,63 @@
 { lib, devshell }:
 let
+  flattenTree =
+    /**
+      Synopsis: flattenTree _tree_
+
+      Flattens a _tree_ of the shape that is produced by rakeLeaves.
+
+      Output Format:
+      An attrset with names in the spirit of the Reverse DNS Notation form
+      that fully preserve information about grouping from nesting.
+
+      Example input:
+      ```
+      {
+        a = {
+          b = {
+            c = <path>;
+          };
+        };
+      }
+      ```
+
+      Example output:
+      ```
+      {
+        "a.b.c" = <path>;
+      }
+      ```
+    **/
+    tree:
+    let
+      op = sum: path: val:
+        let
+          pathStr = builtins.concatStringsSep "." path; # dot-based reverse DNS notation
+        in
+        if builtins.isPath val then
+        # builtins.trace "${toString val} is a path"
+          (sum // {
+            "${pathStr}" = val;
+          })
+        else if builtins.isAttrs val then
+        # builtins.trace "${builtins.toJSON val} is an attrset"
+        # recurse into that attribute set
+          (recurse sum path val)
+        else
+        # ignore that value
+        # builtins.trace "${toString path} is something else"
+          sum
+      ;
+    
+      recurse = sum: path: val:
+        builtins.foldl'
+          (sum: key: op sum (path ++ [ key ]) val.${key})
+          sum
+          (builtins.attrNames val)
+      ;
+    in
+    recurse { } [ ] tree;
+
   rakeLeaves =
     /**
       Synopsis: rakeLeaves _path_
@@ -84,11 +142,9 @@ let
     in
     lib.mapAttrs f imports;
 
-  getProfilePath = fallback: item:
-    if builtins.isPath item then item else fallback;
 in
 {
-  inherit rakeLeaves;
+  inherit rakeLeaves flattenTree;
 
   mkProfileAttrs = builtins.trace ''
     The function, mkProfileAttrs, has been deprecated, you can now create profile sets
@@ -111,19 +167,15 @@ in
   overlays = dir:
     {
       # Meant to output a module that sets the overlays option
-      # Only get top-level .nix files or default.nix from directories
-      overlays = map (getProfilePath (_: _: { })) (builtins.attrValues (rakeLeaves dir));
+      overlays = builtins.attrValues (flattenTree (rakeLeaves dir));
     };
 
   hosts = dir:
     {
-      # Meant to output a module that sets the hosts option
+      # Meant to output a module that sets the hosts option (including constructed host names)
       hosts = lib.mapAttrs
-        (n: p: {
-          # Only get top-level .nix files or default.nix from directories
-          modules = getProfilePath { } p;
-        })
-        (rakeLeaves dir);
+        (n: v: { modules = [ v ]; } )
+        (flattenTree (rakeLeaves dir));
     };
 
   maybeImportDevshellModule = item:
