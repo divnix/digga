@@ -5,7 +5,7 @@
     {
       nixos.url = "nixpkgs/nixos-unstable";
       latest.url = "nixpkgs";
-      digga.url = "github:divnix/digga";
+      digga.url = "github:divnix/digga/develop";
 
       ci-agent = {
         url = "github:hercules-ci/hercules-ci-agent";
@@ -84,18 +84,24 @@
           /* set host specific properties here */
           NixOS = { };
         };
-        profiles = [ ./profiles ./users ];
-        suites = { profiles, users, ... }: with profiles; rec {
-          base = [ core users.nixos users.root ];
+        importables = rec {
+          profiles = digga.lib.importers.rakeLeaves ./profiles // {
+            users = digga.lib.importers.rakeLeaves ./users;
+          };
+          suites = with profiles; rec {
+            base = [ core users.nixos users.root ];
+          };
         };
       };
 
       home = {
         modules = ./users/modules/module-list.nix;
         externalModules = [ ];
-        profiles = [ ./users/profiles ];
-        suites = { profiles, ... }: with profiles; rec {
-          base = [ direnv git ];
+        importables = rec {
+          profiles = digga.lib.importers.rakeLeaves ./users/profiles;
+          suites = with profiles; rec {
+            base = [ direnv git ];
+          };
         };
       };
 
