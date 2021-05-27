@@ -33,23 +33,25 @@ let
       **/
     dirPath:
     let
+      seive = file: type:
+        # Only rake `.nix` files or directories
+        (type == "regular" && lib.hasSuffix ".nix" file) || (type == "directory")
+      ;
+
       collect = file: type: {
         name = lib.removeSuffix ".nix" file;
-        value = let path = dirPath + "/${file}"; in
-          if (type == "regular")
-            || (type == "directory" && builtins.pathExists (path + "/default.nix"))
-          then path
-          else rakeLeaves path;
+        value =
+          let
+            path = dirPath + "/${file}";
+          in
+            if (type == "regular")
+              || (type == "directory" && builtins.pathExists (path + "/default.nix"))
+            then path
+            # recurse on directories that don't contain a `default.nix`
+            else rakeLeaves path;
       };
-
-      files = lib.filterAttrs
-        (file: type:
-          # Only rake `.nix` files or directories
-          (type == "regular" && lib.hasSuffix ".nix" file) || (type == "directory")
-        )
-        (builtins.readDir dirPath);
     in
-    lib.mapAttrs' collect files;
+    lib.mapAttrs' collect (lib.filterAttrs seive (builtins.readDir dirPath));
 
   # DEPRECATED, prefer rakeLeaves
   mkProfileAttrs =
