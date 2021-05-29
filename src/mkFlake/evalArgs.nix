@@ -103,7 +103,7 @@ let
       externalModulesModule = {
         options = {
           externalModules = mkOption {
-            type = with types; listOf moduleType;
+            type = with types; coercedListOf moduleType;
             default = [ ];
             description = ''
               modules to include that won't be exported
