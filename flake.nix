@@ -105,6 +105,10 @@
         };
       };
 
+      devshell.externalModules = { pkgs, ... }: {
+        packages = [ pkgs.agenix ];
+      };
+
       homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
 
       deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
