@@ -32,10 +32,9 @@
         "home-manager=${self.inputs.home}"
       ];
 
-      nix.registry = {
-        devos.flake = self;
-        nixos.flake = channel.input;
-      };
+      # package and option is from fup
+      environment.systemPackages = [ pkgs.fup-repl ];
+      nix.generateRegistryFromInputs = lib.mkDefault true;
 
       nix.extraOptions = ''
         experimental-features = ${lib.concatStringsSep " "
