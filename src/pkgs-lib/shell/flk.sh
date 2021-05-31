@@ -22,7 +22,8 @@ usage () {
   "iso HOST" "Generate an ISO image of HOST" \
   "install HOST [ARGS]" "Shortcut for nixos-install" \
   "home HOST USER [switch]" "Home-manager config of USER from HOST" \
-  "HOST (switch|boot|test)" "Shortcut for nixos-rebuild"
+  "HOST (switch|boot|test)" "Shortcut for nixos-rebuild" \
+  "repl FLAKE" "Enter a repl with the flake's outputs"
 }
 
 case "$1" in
@@ -91,6 +92,10 @@ case "$1" in
     else
       nix build "$ref" "${@:4}"
     fi
+    ;;
+
+  "repl")
+    repl ${@:2}
     ;;
 
   *)

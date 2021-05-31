@@ -36,6 +36,7 @@ let
       nixos-generate-config
       nixos-enter
       pkgs'.nixos-rebuild
+      pkgs'.fup-repl
     ];
 
     git.hooks = {
