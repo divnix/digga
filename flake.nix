@@ -65,29 +65,28 @@
 
     //
 
-    utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-      in
-      {
-        checks = import ./tests {
-          pkgs = pkgs // {
-            input = nixpkgs;
+    utils.lib.systemFlake {
+      inherit self inputs;
+      channels.pkgs.input = nixpkgs;
+      outputsBuilder = channels:
+        let inherit (channels) pkgs; in
+        {
+          checks = import ./tests {
+            inherit pkgs;
+            lib = nixlib.lib // lib;
           };
-          lib = nixlib.lib // lib;
-        };
 
-        devShell = lib.pkgs-lib.shell { inherit pkgs; };
+          devShell = lib.pkgs-lib.shell { inherit pkgs; };
 
-        packages = {
-          mkFlakeDoc = pkgs.writeText "mkFlakeOptions.md"
-            (
-              pkgs.nixosOptionsDoc {
-                inherit (lib.mkFlake.evalArgs { args = { }; }) options;
-              }
-            ).optionsMDDoc;
+          packages = {
+            mkFlakeDoc = pkgs.writeText "mkFlakeOptions.md"
+              (
+                pkgs.nixosOptionsDoc {
+                  inherit (lib.mkFlake.evalArgs { args = { }; }) options;
+                }
+              ).optionsMDDoc;
+          };
         };
-      }
-    );
+    };
 
 }
