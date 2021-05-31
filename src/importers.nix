@@ -48,7 +48,7 @@ let
         # builtins.trace "${toString path} is something else"
           sum
       ;
-    
+
       recurse = sum: path: val:
         builtins.foldl'
           (sum: key: op sum (path ++ [ key ]) val.${key})
@@ -108,8 +108,10 @@ let
             # recurse on directories that don't contain a `default.nix`
             else rakeLeaves path;
       };
+
+      files = lib.filterAttrs seive (builtins.readDir dirPath);
     in
-    lib.mapAttrs' collect (lib.filterAttrs seive (builtins.readDir dirPath));
+    lib.filterAttrs (n: v: v != { }) (lib.mapAttrs' collect files);
 
   # DEPRECATED, prefer rakeLeaves
   mkProfileAttrs =
