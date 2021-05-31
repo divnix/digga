@@ -5,7 +5,7 @@ let
   argOpts = with lib; { config, ... }:
     let
       cfg = config;
-      inherit (config) self;
+      inherit (args) self;
 
       maybeImport = obj:
         if (builtins.isPath obj || builtins.isString obj) && lib.hasSuffix ".nix" obj then
@@ -47,8 +47,8 @@ let
         options = with types; {
           input = mkOption {
             type = flakeType;
-            default = cfg.inputs.${name};
-            defaultText = "inputs.<name>";
+            default = self.inputs.${name};
+            defaultText = "self.inputs.<name>";
             description = ''
               nixpkgs flake input to use for this channel
             '';
@@ -238,13 +238,6 @@ let
         self = mkOption {
           type = flakeType;
           description = "The flake to create the devos outputs for";
-        };
-        inputs = mkOption {
-          type = attrsOf flakeType;
-          description = ''
-            inputs for this flake
-            used to set channel defaults and create registry
-          '';
         };
         supportedSystems = mkOption {
           type = listOf str;

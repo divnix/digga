@@ -4,11 +4,10 @@ let
 
     self = self // {
       outPath = toString ./.;
-    };
-
-    inputs = {
-      nixos = pkgs.input;
-      latest = pkgs.input;
+      inputs = {
+        nixos = pkgs.input;
+        latest = pkgs.input;
+      };
     };
 
     channelsConfig = { allowUnfree = true; };

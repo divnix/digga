@@ -13,7 +13,7 @@
       };
     };
 
-  globalDefaults = { self, inputs }:
+  globalDefaults = { self }:
     let
       experimentalFeatures = [
         "flakes"
@@ -28,8 +28,8 @@
       nix.nixPath = [
         "nixpkgs=${channel.input}"
         "nixos-config=${self}/lib/compat/nixos"
-      ] ++ lib.optionals (inputs ? home) [
-        "home-manager=${inputs.home}"
+      ] ++ lib.optionals (self.inputs ? home) [
+        "home-manager=${self.inputs.home}"
       ];
 
       nix.registry = {
@@ -54,7 +54,7 @@
       system.configurationRevision = lib.mkIf (self ? rev) self.rev;
     };
 
-  isoConfig = { self, inputs, fullHostConfig }:
+  isoConfig = { self, fullHostConfig }:
     { config, modulesPath, ... }@args: {
 
       imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal-new-kernel.nix" ];
@@ -63,7 +63,7 @@
       # so convert each to list which can be coerced to string
       disabledModules = map lib.singleton (args.suites.allProfiles or [ ]);
 
-      nix.registry = lib.mapAttrs (n: v: { flake = v; }) inputs;
+      nix.registry = lib.mapAttrs (n: v: { flake = v; }) self.inputs;
 
       isoImage.isoBaseName = "nixos-" + config.networking.hostName;
       isoImage.contents = [{

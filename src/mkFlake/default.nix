@@ -3,7 +3,7 @@ let
   inherit (builtins) mapAttrs attrNames attrValues head isFunction;
 in
 
-_: { self, inputs, ... } @ args:
+_: { self, ... } @ args:
 let
 
   config = lib.mkFlake.evalArgs {
@@ -20,7 +20,7 @@ let
       modules = cfg.home.modules ++ cfg.home.externalModules;
     })
     (globalDefaults {
-      inherit self inputs;
+      inherit self;
     })
   ];
 
@@ -41,7 +41,8 @@ let
 in
 lib.systemFlake (lib.mergeAny
   {
-    inherit self inputs hosts;
+    inherit self hosts;
+    inherit (self) inputs;
     inherit (cfg) channelsConfig supportedSystems;
 
     channels = mapAttrs
@@ -84,8 +85,7 @@ lib.systemFlake (lib.mergeAny
       # since we can't detect overlays owned by self
       # we have to filter out ones exported by the inputs
       # optimally we would want a solution for NixOS/nix#4740
-      inherit inputs;
-      inherit (self) pkgs;
+      inherit (self) pkgs inputs;
     };
 
     outputsBuilder = channels:
