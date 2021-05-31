@@ -24,7 +24,8 @@ let
 
     outputsBuilder = channels: {
       checks = {
-        hostBuild = self.nixosConfigurations.NixOS.config.system.build.toplevel;
+        hostBuild = assert self.nixosConfigurations ? "com.example.myhost";
+          self.nixosConfigurations.NixOS.config.system.build.toplevel;
       };
     };
 
