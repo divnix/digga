@@ -10,7 +10,6 @@ in
   system.build = {
     iso = (mkBuild (diggaLib.modules.isoConfig {
       inherit self;
-      inherit (self) inputs;
       fullHostConfig = config;
     })).config.system.build.isoImage;
 
