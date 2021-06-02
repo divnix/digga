@@ -19,6 +19,7 @@ usage () {
   "up" "Generate $DEVSHELL_ROOT/hosts/up-$HOSTNAME.nix" \
   "update [INPUT]" "Update and commit the lock file, or specific input" \
   "get (core|community) [DEST]" "Copy the desired template to DEST" \
+  "doi HOST" "Generate DigitalOcean image of HOST" \
   "iso HOST" "Generate an ISO image of HOST" \
   "install HOST [ARGS]" "Shortcut for nixos-install" \
   "home HOST USER [switch]" "Home-manager config of USER from HOST" \
@@ -70,6 +71,12 @@ case "$1" in
       echo "flk get (core|community) [DEST]"
       exit 1
     fi
+    ;;
+
+  "doi")
+    nix build \
+      "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.digitalOcean" \
+      "${@:3}"
     ;;
 
   "iso")
