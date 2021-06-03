@@ -102,6 +102,8 @@ case "$1" in
       "$DEVSHELL_ROOT/vm/$2" \
       "${@:3}" \
       && \
+      rm -f "$DEVSHELL_ROOT/vm/$2.qcow2" \
+      && \
       (export NIX_DISK_IMAGE="$DEVSHELL_ROOT/vm/$2.qcow2" \
       && \
       "$DEVSHELL_ROOT/vm/$2/bin/run-$2-vm" \
