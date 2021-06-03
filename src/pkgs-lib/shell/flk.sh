@@ -100,6 +100,7 @@ case "$1" in
         && "$DEVSHELL_ROOT/vm/tmp/$3/bin/run-$3-vm" \
       ) \
       && rm -rf "$DEVSHELL_ROOT/vm/tmp/$3"* \
+      && rmdir --ignore-fail-on-non-empty "$DEVSHELL_ROOT/vm/tmp"
     else
       nix build \
         "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.vm" \
