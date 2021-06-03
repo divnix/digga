@@ -25,5 +25,9 @@ in
         }
       ];
     })).config.home-manager.users;
+
+    digitalOcean = (mkBuild ({ modulesPath, ... }: {
+      imports = [ "${modulesPath}/virtualisation/digital-ocean-image.nix" ];
+    })).config.system.build.digitalOceanImage;
   };
 }
