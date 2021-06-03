@@ -22,6 +22,14 @@ To learn about `mkFlake`'s options, take a look at the [mkFlake options doc](./d
 
 This library is based on [flake-utils-plus](https://github.com/gytis-ivaskevicius/flake-utils-plus).
 
+# Contributing
+We encourage contributions of any kind. The simplest way to get involved is to
+start posting your opinions on the issue or discussion threads. To craft well
+thought out APIs we need all the thoughts regarding new ideas.
+
+Pull Requests are just as amazing. To keep the library stable, all changes should
+target the `develop` branch. Only minor bug-fixes or release PRs can target master.
+
 # License
 Digga is licensed under the [MIT License][mit].
 
