@@ -79,7 +79,7 @@ case "$1" in
     nix build \
       "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.digitalOcean" \
       -o \
-      "$DEVSHELL_ROOT/doi/$2" \
+      "$DEVSHELL_ROOT/doi/$2.qcow2" \
       "${@:3}"
     ;;
 
