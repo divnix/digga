@@ -21,6 +21,8 @@ usage () {
   "get (core|community) [DEST]" "Copy the desired template to DEST" \
   "doi HOST" "Generate DigitalOcean image of HOST" \
   "iso HOST" "Generate an ISO image of HOST" \
+  "vm HOST" "Generate a vm for HOST" \
+  "vm-run HOST" "Generate and run a vm for HOST" \
   "install HOST [ARGS]" "Shortcut for nixos-install" \
   "home HOST USER [switch]" "Home-manager config of USER from HOST" \
   "HOST (switch|boot|test)" "Shortcut for nixos-rebuild" \
@@ -83,6 +85,27 @@ case "$1" in
     nix build \
       "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.iso" \
       "${@:3}"
+    ;;
+
+  "vm")
+    nix build \
+      "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.vm" \
+      -o \
+      "$DEVSHELL_ROOT/vm/$2" \
+      "${@:3}"
+    ;;
+
+  "vm-run")
+    nix build \
+      "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.vm" \
+      -o \
+      "$DEVSHELL_ROOT/vm/$2" \
+      "${@:3}" \
+      && \
+      (export NIX_DISK_IMAGE="$DEVSHELL_ROOT/vm/$2.qcow2" \
+      && \
+      "$DEVSHELL_ROOT/vm/$2/bin/run-$2-vm" \
+      )
     ;;
 
   "install")
