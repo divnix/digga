@@ -106,6 +106,9 @@ case "$1" in
         "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.vm" \
         -o "$DEVSHELL_ROOT/vm/$2" \
         "${@:3}" \
+      && echo "export NIX_DISK_IMAGE=\"$DEVSHELL_ROOT/vm/$2.qcow2\"" > "$DEVSHELL_ROOT/vm/run-$2" \
+      && echo "$DEVSHELL_ROOT/vm/$2/bin/run-$2-vm" >> "$DEVSHELL_ROOT/vm/run-$2" \
+      && chmod +x "$DEVSHELL_ROOT/vm/run-$2"
     fi
     ;;
 
