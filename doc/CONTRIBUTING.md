@@ -1,5 +1,8 @@
 # Pull Requests
-If making a change to core, or adding a feature, please be sure to update the
+All development is done in the `develop` branch. Only minor bug-fixes and release
+PRs should target `master`.
+
+If making a change to the template, or adding a feature, please be sure to update the
 relevant docs. Each directory contains its own README.md, which will
 automatically be pulled into the [mdbook](https://devos.divnix.com). The book is
 rendered on every change, so the docs should always be up to date.
