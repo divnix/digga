@@ -87,7 +87,7 @@ case "$1" in
     nix build \
       "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.iso" \
       -o \
-      "$DEVSHELL_ROOT/iso/$2" \
+      "$DEVSHELL_ROOT/iso/$2.iso" \
       "${@:3}"
     ;;
 
