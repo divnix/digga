@@ -24,6 +24,7 @@
   - [up](./flk/up.md)
   - [update](./flk/update.md)
   - [get](./flk/get.md)
+  - [doi](./flk/doi.md)
   - [iso](./flk/iso.md)
   - [install](./flk/install.md)
   - [home](./flk/home.md)
