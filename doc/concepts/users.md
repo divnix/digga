@@ -23,11 +23,23 @@ your users. For a fully fleshed out example, check out the developers personal
 ```
 
 ## Home Manager
-Home Manager support follows the same principles as regular nixos configurations.
+Home Manager support follows the same principles as regular nixos configurations,
+it even gets its own namespace in your `flake.nix` as `home`.
+
 All modules defined in [user modules][modules-list] will be imported to
-Home Manager. All profiles are availabe in [suites][suites] as userProfiles.
-The `userSuites` output will be available in your Home Manager Configuration as
-the special argument, `suites`.
+Home Manager.
+User profiles can be collected in a similar fashion as system ones into a `suites`
+argument that gets passed to your home-manager users.
+
+### Example
+```nix
+{
+  home-manager.users.nixos = { suites, ... }: {
+    imports = suites.base;
+  };
+}
+```
+
 
 ## External Usage
 You can easily use the defined home-manager configurations outside of NixOS
@@ -56,5 +68,4 @@ nix build "github:divnix/devos#homeConfigurations.nixos@NixOS.home.activationPac
 ```
 
 [home-manager]: https://nix-community.github.io/home-manager
-[suites]: https://github.com/divnix/devos/tree/core/suites/default.nix
-[modules-list]: https://github.com/divnix/devos/tree/core/modules/module-list.nix
+[modules-list]: https://github.com/divnix/devos/tree/core/users/modules/module-list.nix

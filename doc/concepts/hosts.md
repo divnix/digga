@@ -6,13 +6,14 @@ of these hosts, devos automatically imports every _.nix_ file inside this
 directory to the mentioned attribute set, applying the projects defaults to
 each. The only hard requirement is that the file contain a valid NixOS module.
 
-As an example, a file `hosts/system.nix` will be available via the flake
-output `nixosConfigurations.system`. You can have as many hosts as you want
-and all of them will be automatically imported based on their name.
+As an example, a file `hosts/system.nix` or `hosts/system/default.nix` will
+be available via the flake output `nixosConfigurations.system`. You can have
+as many hosts as you want and all of them will be automatically imported based
+on their name.
 
 For each host, the configuration automatically sets the `networking.hostName`
-attribute to the name of the file minus the _.nix_ extension. This is for
-convenience, since `nixos-rebuild` automatically searches for a configuration
+attribute to the folder name or name of the file minus the _.nix_ extension. This
+is for convenience, since `nixos-rebuild` automatically searches for a configuration
 matching the current systems hostname if one is not specified explicitly.
 
 You can set channels, systems, and add extra modules to each host by editing the

@@ -5,22 +5,19 @@ NixOS offers some incredibly powerful tools to write tests for your
 configuration, and, optionally, run them in
 [CI](./integrations/hercules.md).
 
-## Lib Tests
-You can easily write tests for your own library functions in the
-lib/___tests/lib.nix___ file and they will be run on every `nix flake check` or
-during a CI run.
-
 ## Unit Tests
-Unit tests are can be created from regular derivations, and they can do
+Unit tests can be created from regular derivations, and they can do
 almost anything you can imagine. By convention, it is best to test your
 packages during their [check phase][check]. All packages and their tests will
 be built during CI.
 
 ## Integration Tests
+All your profiles defined in suites will be tested in a NixOS VM.
+
 You can write integration tests for one or more NixOS VMs that can,
 optionally, be networked together, and yes, it's as awesome as it sounds!
 
-Be sure to use the `mkTest` function, in the [___tests/default.nix___][default]
+Be sure to use the `mkTest` function from digga, `digga.lib.pkgs-lib.mkTest`
 which wraps the official [testing-python][testing-python] function to ensure
 that the system is setup exactly as it is for a bare DevOS system. There are
 already great resources for learning how to use these tests effectively,
