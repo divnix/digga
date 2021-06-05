@@ -84,6 +84,14 @@
           /* set host specific properties here */
           NixOS = { };
         };
+        profiles = [ ./profiles ./users ];
+        suites = { profiles, users }: with profiles; rec {
+          base = [ core users.nixos users.root ];
+        };
+        /**
+        # profiles and suites options are deprecated, rakeLeaves is the new standard importer
+        # Unlke, the old mkProfileAttrs, it stops recursing at folders with a default.nix
+        # So uncomment and switch to the `importables` method once your profiles have been updated
         importables = rec {
           profiles = digga.lib.importers.rakeLeaves ./profiles // {
             users = digga.lib.importers.rakeLeaves ./users;
@@ -92,6 +100,7 @@
             base = [ core users.nixos users.root ];
           };
         };
+        **/
       };
 
       home = {
