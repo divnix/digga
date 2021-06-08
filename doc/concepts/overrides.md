@@ -27,10 +27,11 @@ You can also pull modules from other channels. All modules have access to the
 `modulesPath` for each channel as `<channelName>ModulesPath`. And you can use
 `disabledModules` to remove modules from the current channel.
 
-Pulling the zsh module from the `latest` channel:
+To pull zsh module from the `latest` channel this code can be placed in any module, whether its your host file, a profile, or a module in ./modules etc:
 ```nix
-{ latestModulesPath }: {
-  modules = [ "${latestModulesPath}/programs/zsh/zsh.nix" ];
+{ latestModulesPath }:
+{
+  imports = [ "${latestModulesPath}/programs/zsh/zsh.nix" ];
   disabledModules = [ "programs/zsh/zsh.nix" ];
 }
 ```
