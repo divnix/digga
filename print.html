@@ -522,9 +522,10 @@ overrides and the property is already set for you.</p>
 <p>You can also pull modules from other channels. All modules have access to the 
 <code>modulesPath</code> for each channel as <code>&lt;channelName&gt;ModulesPath</code>. And you can use
 <code>disabledModules</code> to remove modules from the current channel.</p>
-<p>Pulling the zsh module from the <code>latest</code> channel:</p>
-<pre><code class="language-nix">{ latestModulesPath }: {
-  modules = [ &quot;${latestModulesPath}/programs/zsh/zsh.nix&quot; ];
+<p>To pull zsh module from the <code>latest</code> channel this code can be placed in any module, whether its your host file, a profile, or a module in ./modules etc:</p>
+<pre><code class="language-nix">{ latestModulesPath }:
+{
+  imports = [ &quot;${latestModulesPath}/programs/zsh/zsh.nix&quot; ];
   disabledModules = [ &quot;programs/zsh/zsh.nix&quot; ];
 }
 </code></pre>
