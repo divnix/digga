@@ -31,7 +31,7 @@ To pull zsh module from the `latest` channel this code can be placed in any modu
 ```nix
 { latestModulesPath }:
 {
-  import = [ "${latestModulesPath}/programs/zsh/zsh.nix" ];
+  imports = [ "${latestModulesPath}/programs/zsh/zsh.nix" ];
   disabledModules = [ "programs/zsh/zsh.nix" ];
 }
 ```
