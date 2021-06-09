@@ -2,11 +2,10 @@
 Suites provide a mechanism for users to easily combine and name collecitons of
 profiles. For good examples, check out the suites defined in the community branch.
 
-`suites` are a special case of an `importable` which get passed as a special
-argument (one that can be use in an `imports` line) to your hosts.
-
-They are defined with the `suites` argument in either the `home` or `nixos` namespace.
-Suites should be passed as a function that take profiles as an argument.
+`suites` are defined in the `importables` argument in either the `home` or `nixos`
+namespace. They are a special case of an `importable` which get passed as a special
+argument (one that can be use in an `imports` line) to your hosts. All lists defined
+in `suites` are flattened and type-checked as paths.
 
 ## Definition
 ```nix
