@@ -7,8 +7,7 @@ The only minor difference is that, instead of adding the `callPackage` call to
 `all-packages.nix`, you just add it the the _default.nix_ in this directory,
 which is defined as a simple overlay.
 
-This overlay is set as the default `overlay` output attribute for the flake.
-And all the packages are exported via `packages.<system>.<pkg-name>`, for all
+All the packages are exported via `packages.<system>.<pkg-name>`, for all
 the supported systems listed in the package's `meta.platforms` attribute.
 
 And, as usual, every package in the overlay is also available to any NixOS

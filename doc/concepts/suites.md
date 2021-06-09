@@ -1,18 +1,11 @@
 # Suites
 Suites provide a mechanism for users to easily combine and name collecitons of
-profiles. For good examples, check out the suites defined in the community
-[branch](https://github.com/divnix/devos/blob/community/suites/default.nix).
+profiles. For good examples, check out the suites defined in the community branch.
 
-In the future, we will use suites as a mechanism for deploying various machine
-types which don't depend on hardware, such as vm's and containers.
-
-They are defined with the `suites` argument in either `home` or `nixos` namespace.
-Suites should be passed as a function that take profiles as an argument.
-
-The profiles are passed based on the folder names and list passed to the relevant
-`profiles` argument. In the template's flake.nix `profiles` is set as
-`[ ./profiles ./users ]` and that corresponds to the `{ profiles, users }` argument
-pattern.
+`suites` are defined in the `importables` argument in either the `home` or `nixos`
+namespace. They are a special case of an `importable` which get passed as a special
+argument (one that can be use in an `imports` line) to your hosts. All lists defined
+in `suites` are flattened and type-checked as paths.
 
 ## Definition
 ```nix

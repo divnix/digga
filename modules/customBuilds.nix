@@ -10,7 +10,6 @@ in
   system.build = {
     iso = (mkBuild (diggaLib.modules.isoConfig {
       inherit self;
-      inherit (self) inputs;
       fullHostConfig = config;
     })).config.system.build.isoImage;
 
@@ -26,5 +25,9 @@ in
         }
       ];
     })).config.home-manager.users;
+
+    digitalOcean = (mkBuild ({ modulesPath, ... }: {
+      imports = [ "${modulesPath}/virtualisation/digital-ocean-image.nix" ];
+    })).config.system.build.digitalOceanImage;
   };
 }

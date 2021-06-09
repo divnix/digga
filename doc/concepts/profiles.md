@@ -8,34 +8,29 @@ separation of concerns.
 If you need guidance, a community [branch](https://github.com/divnix/devos/tree/community/profiles)
 is maintained to help get up to speed on their usage.
 
-## Constraints
-For the sake of consistency, a profile should always be defined in a
-___default.nix___ containing a [nixos module config][config].
-A profile's directory is used for quick modularization of
-[interelated bits](./profiles.md#subprofiles).
+## Creation
+Profiles are created with the `rakeLeaves` function which recursively collects
+`.nix` files from within a folder. The recursion stops at folders with a `default.nix` 
+in them. You end up with an attribute set with leaves(paths to profiles) or
+nodes(attrsets leading to more nodes or leaves).
+
+A profile is used for quick modularization of [interelated bits](./profiles.md#subprofiles).
 
 > ##### _Notes:_
 > * For _declaring_ module options, there's the [modules](../outputs/modules.md) directory.
 > * This directory takes inspiration from
 >   [upstream](https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles)
 >   .
-> * Sticking to a simple [spec][spec] has refreshing advantages.
->   [hercules-ci](../integrations/hercules.md) expects all profiles to be
->   defined in a ___default.nix___, allowing them to be built automatically when
->   added. Congruently, [suites](suites.md) expect ___default.nix___ to avoid
->   having to manage their paths manually.
 
-## Subprofiles
-Profiles can also define subprofiles. They follow the same constraints outlined
-above. A good top level profile should be a high level concern, such as your
-personal development environment while the subprofiles should be more focused
-program configurations such as your text editor, and shell configs. This way,
-you can either pull in the whole development profile, or pick and choose
-individual programs.
+### Nested profiles
+Profiles can be nested in attribute sets due to the recursive nature of `rakeLeaves`.
+This can be useful to have a set of profiles created for a specific purpose. It is
+sometimes useful to have a `common` profile that has high level concerns related
+to all its sister profiles.
 
 ### Example
 
-profiles/develop/default.nix:
+profiles/develop/common.nix:
 ```nix
 {
   imports = [ ./zsh ];
@@ -43,12 +38,22 @@ profiles/develop/default.nix:
 }
 ```
 
-profiles/develop/zsh/default.nix:
+profiles/develop/zsh.nix:
 ```nix
 {  ... }:
 {
   programs.zsh.enable = true;
   # zsh specific options ...
+}
+```
+
+The examples above will end up with a profiles set like this:
+```nix
+{
+  develop = {
+    common = ./profiles/develop/common.nix;
+    zsh = ./profiles/develop/zsh.nix;
+  };
 }
 ```
 

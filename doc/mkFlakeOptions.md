@@ -40,7 +40,7 @@ nix flake
 
 *_Default_*
 ```
-"inputs.<name>"
+"self.inputs.<name>"
 ```
 
 
@@ -81,6 +81,56 @@ attribute set or path convertible to it
 
 
 
+## devshell
+Modules to include in your devos shell. the `modules` argument
+will be exported under the `devshellModules` output
+
+
+*_Type_*:
+submodule
+
+
+*_Default_*
+```
+{}
+```
+
+
+
+
+## devshell.externalModules
+modules to include that won't be exported
+meant importing modules from external flakes
+
+
+*_Type_*:
+list of valid module or path convertible to its or anything convertible to it
+
+
+*_Default_*
+```
+[]
+```
+
+
+
+
+## devshell.modules
+modules to include in all hosts and export to devshellModules output
+
+
+*_Type_*:
+list of path to a modules or anything convertible to it or path convertible to it
+
+
+*_Default_*
+```
+[]
+```
+
+
+
+
 ## home
 hosts, modules, suites, and profiles for home-manager
 
@@ -103,13 +153,41 @@ meant importing modules from external flakes
 
 
 *_Type_*:
-list of valid module or path convertible to its
+list of valid module or path convertible to its or anything convertible to it
 
 
 *_Default_*
 ```
 []
 ```
+
+
+
+
+## home.importables
+Packages of paths to be passed to modules as `specialArgs`.
+
+
+*_Type_*:
+attribute set
+
+
+*_Default_*
+```
+{}
+```
+
+
+
+
+## home.importables.suites
+collections of profiles
+
+
+*_Type_*:
+attribute set of list of paths or anything convertible to its
+
+
 
 
 
@@ -131,10 +209,17 @@ list of path to a modules or anything convertible to it or path convertible to i
 
 
 ## home.profiles
-profile folders that can be collected into suites
-the name of the argument passed to suites is based
-on the folder name.
-[ ./profiles ] => { profiles }:
+WARNING: The 'suites' and `profiles` options have been deprecated, you can now create
+both with the importables option. `rakeLeaves` can be used to create profiles and
+by passing a module or `rec` set to `importables`, suites can access profiles.
+Example:
+```
+importables = rec {
+  profiles = digga.lib.importers.rakeLeaves ./profiles;
+  suites = with profiles; { };
+}
+```
+See https://github.com/divnix/digga/pull/30 for more details
 
 
 *_Type_*:
@@ -150,29 +235,21 @@ list of paths
 
 
 ## home.suites
-Function that takes profiles and returns suites for this config system
-These can be accessed through the 'suites' special argument.
+WARNING: The 'suites' and `profiles` options have been deprecated, you can now create
+both with the importables option. `rakeLeaves` can be used to create profiles and
+by passing a module or `rec` set to `importables`, suites can access profiles.
+Example:
+```
+importables = rec {
+  profiles = digga.lib.importers.rakeLeaves ./profiles;
+  suites = with profiles; { };
+}
+```
+See https://github.com/divnix/digga/pull/30 for more details
 
 
 *_Type_*:
 function that evaluates to a(n) attrs or path convertible to it
-
-
-*_Default_*
-```
-"<function>"
-```
-
-
-
-
-## inputs
-inputs for this flake
-used to set channel defaults and create registry
-
-
-*_Type_*:
-attribute set of nix flakes
 
 
 
@@ -236,7 +313,7 @@ meant importing modules from external flakes
 
 
 *_Type_*:
-list of valid module or path convertible to its
+list of valid module or path convertible to its or anything convertible to it
 
 
 *_Default_*
@@ -343,11 +420,46 @@ null
 
 
 
+## nixos.importables
+Packages of paths to be passed to modules as `specialArgs`.
+
+
+*_Type_*:
+attribute set
+
+
+*_Default_*
+```
+{}
+```
+
+
+
+
+## nixos.importables.suites
+collections of profiles
+
+
+*_Type_*:
+attribute set of list of paths or anything convertible to its
+
+
+
+
+
+
 ## nixos.profiles
-profile folders that can be collected into suites
-the name of the argument passed to suites is based
-on the folder name.
-[ ./profiles ] => { profiles }:
+WARNING: The 'suites' and `profiles` options have been deprecated, you can now create
+both with the importables option. `rakeLeaves` can be used to create profiles and
+by passing a module or `rec` set to `importables`, suites can access profiles.
+Example:
+```
+importables = rec {
+  profiles = digga.lib.importers.rakeLeaves ./profiles;
+  suites = with profiles; { };
+}
+```
+See https://github.com/divnix/digga/pull/30 for more details
 
 
 *_Type_*:
@@ -363,17 +475,39 @@ list of paths
 
 
 ## nixos.suites
-Function that takes profiles and returns suites for this config system
-These can be accessed through the 'suites' special argument.
+WARNING: The 'suites' and `profiles` options have been deprecated, you can now create
+both with the importables option. `rakeLeaves` can be used to create profiles and
+by passing a module or `rec` set to `importables`, suites can access profiles.
+Example:
+```
+importables = rec {
+  profiles = digga.lib.importers.rakeLeaves ./profiles;
+  suites = with profiles; { };
+}
+```
+See https://github.com/divnix/digga/pull/30 for more details
 
 
 *_Type_*:
 function that evaluates to a(n) attrs or path convertible to it
 
 
+
+
+
+
+## outputsBuilder
+builder for flake system-spaced outputs
+The builder gets passed an attrset of all channels
+
+
+*_Type_*:
+function that evaluates to a(n) attrs
+
+
 *_Default_*
 ```
-"<function>"
+"channels: { }"
 ```
 
 
