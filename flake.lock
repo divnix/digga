@@ -113,16 +113,16 @@
         "utils": "utils_2"
       },
       "locked": {
-        "lastModified": 1622572028,
-        "narHash": "sha256-NqF1Nuc5JwH4U/O1Srz8HeqwKcEEDcj4gPJX5FrFWAQ=",
+        "lastModified": 1623197477,
+        "narHash": "sha256-2Qk/uIHb1nXre2rRlGonAJmpuamBs7RRfgXhMmS5JkU=",
         "owner": "divnix",
         "repo": "digga",
-        "rev": "cd94f8c1d13a24d66c7c77b60c7a4d7a42217708",
+        "rev": "f69703abc33f221b676966a8435c4f09ef70ff49",
         "type": "github"
       },
       "original": {
         "owner": "divnix",
-        "ref": "develop",
+        "ref": "master",
         "repo": "digga",
         "type": "github"
       }
@@ -406,11 +406,11 @@
         "flake-utils": "flake-utils"
       },
       "locked": {
-        "lastModified": 1622553785,
-        "narHash": "sha256-zccUcgFmAI2YGq5AmNOKjYGHLVKnOvzD5vfHymu5nYU=",
+        "lastModified": 1622583383,
+        "narHash": "sha256-2DFx619SNfjzYwqx1ryae8zHnTh+N7VsZkbtAbrYIIA=",
         "owner": "gytis-ivaskevicius",
         "repo": "flake-utils-plus",
-        "rev": "10096872a0691c3a213073aa8bfe739d37d84a49",
+        "rev": "6b2ea4b02cad77fac581c6a9ec4f822ba87dce5c",
         "type": "github"
       },
       "original": {
