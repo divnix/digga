@@ -1,14 +1,14 @@
-{ lib, self, diggaLib, config, modules, channel, ... }:
+{ lib, self, config, modules, channel, ... }:
 let
   mkBuild = buildModule:
     # TODO: get specialArgs as a module argument and drop builderArgs usage
-    channel.input.lib.nixosSystem (diggaLib.mergeAny config.lib.builderArgs {
+    channel.input.lib.nixosSystem (config.lib.digga.mergeAny config.lib.builderArgs {
       modules = [ buildModule ];
     });
 in
 {
   system.build = {
-    iso = (mkBuild (diggaLib.modules.isoConfig {
+    iso = (mkBuild (config.lib.digga.modules.isoConfig {
       inherit self;
       fullHostConfig = config;
     })).config.system.build.isoImage;

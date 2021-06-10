@@ -42,10 +42,13 @@
         }
       '';
 
+      # digga lib can be accessed in modules directly as config.lib.digga
+      lib = {
+        inherit (pkgs.lib) digga;
+      };
+
       _module.args = {
         inherit self;
-        # digga lib can be accessed in modules directly as diggaLib
-        diggaLib = pkgs.lib.digga;
         hosts = builtins.mapAttrs (_: host: host.config)
           (removeAttrs self.nixosConfigurations [ config.networking.hostName ]);
       };
