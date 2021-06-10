@@ -22,6 +22,14 @@ let
     (globalDefaults {
       inherit self;
     })
+    ({ ... }@args: {
+      lib.specialArgs = args.specialArgs or (builtins.trace ''
+        WARNING: specialArgs is not accessibly by the module system which means you
+        are likely using NixOS 20.09. Profiles testing and custom builds (ex: iso)
+        are not supported in 20.09 and using them could result in infinite
+        recursion errors. It is recommended to update to 21.05 to use either feature.
+      '' { });
+    })
   ];
 
   stripChannel = channel: removeAttrs channel [
@@ -66,10 +74,6 @@ lib.systemFlake (lib.mergeAny
     hostDefaults = lib.mergeAny hostDefaults {
       specialArgs = cfg.nixos.importables;
       modules = cfg.nixos.hostDefaults.externalModules ++ defaultModules;
-      builder = args: args.specialArgs.channel.input.lib.nixosSystem (lib.mergeAny args {
-        # So modules and functions can create their own version of the build
-        modules = [{ lib.builderArgs = args; }];
-      });
     };
 
     nixosModules = lib.exporters.modulesFromList cfg.nixos.hostDefaults.modules;

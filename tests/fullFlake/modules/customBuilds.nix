@@ -1,10 +1,11 @@
-{ lib, self, config, modules, channel, ... }:
+{ lib, pkgs, self, config, modules, channel, ... }:
 let
   mkBuild = buildModule:
-    # TODO: get specialArgs as a module argument and drop builderArgs usage
-    channel.input.lib.nixosSystem (config.lib.digga.mergeAny config.lib.builderArgs {
-      modules = [ buildModule ];
-    });
+    channel.input.lib.nixosSystem {
+      inherit (pkgs) system;
+      inherit (config.lib) specialArgs;
+      modules = modules ++ [ buildModule ];
+    };
 in
 {
   system.build = {

@@ -9,7 +9,7 @@ let
       host = hosts.${(builtins.head (builtins.attrNames deployHosts))};
       tests =
         (lib.optionalAttrs
-          (deployHosts != { } && host.config.lib.builderArgs.specialArgs ? suites)
+          (deployHosts != { } && host.config.lib.specialArgs ? suites)
           {
             profilesTest = profilesTest {
               inherit pkgs host;
@@ -25,7 +25,7 @@ let
       nixosTesting =
         (import "${toString pkgs.path}/nixos/lib/testing-python.nix" {
           inherit (pkgs) system;
-          inherit (host.config.lib.builderArgs) specialArgs;
+          inherit (host.config.lib) specialArgs;
           inherit pkgs;
           extraConfigurations = host._module.args.modules;
         });
