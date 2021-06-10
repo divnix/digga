@@ -30,6 +30,7 @@ let
         recursion errors. It is recommended to update to 21.05 to use either feature.
       '' { });
     })
+    customBuilds
   ];
 
   stripChannel = channel: removeAttrs channel [

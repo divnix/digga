@@ -7,12 +7,24 @@
       devshell.url = "github:numtide/devshell";
       utils.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
       nixlib.url = "github:divnix/nixpkgs.lib";
+      nixos-generators.url = "github:nix-community/nixos-generators";
+      # We only use the nixosModules output which only needs nixpkgs lib
+      nixos-generators.inputs.nixpkgs.follows = "nixlib";
 
       # Only used for development
       nixpkgs.url = "github:nixos/nixpkgs";
     };
 
-  outputs = inputs@{ self, nixlib, nixpkgs, deploy, devshell, utils, ... }:
+  outputs =
+    { self
+    , nixlib
+    , nixpkgs
+    , deploy
+    , devshell
+    , utils
+    , nixos-generators
+    , ...
+    }@inputs:
     let
       lib = nixlib.lib.makeExtensible (self:
         let combinedLib = nixlib.lib // self; in
@@ -21,7 +33,11 @@
           attrs = import ./src/attrs.nix { lib = combinedLib; };
           lists = import ./src/lists.nix { lib = combinedLib; };
           strings = import ./src/strings.nix { lib = combinedLib; };
-          modules = import ./src/modules.nix { lib = combinedLib; };
+
+          modules = import ./src/modules.nix {
+            lib = combinedLib;
+            inherit nixos-generators;
+          };
 
           importers = import ./src/importers.nix {
             lib = combinedLib;
