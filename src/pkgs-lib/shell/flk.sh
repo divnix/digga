@@ -19,8 +19,7 @@ usage () {
   "up" "Generate $DEVSHELL_ROOT/hosts/up-$HOSTNAME.nix" \
   "update [INPUT]" "Update and commit the lock file, or specific input" \
   "get (core|community) [DEST]" "Copy the desired template to DEST" \
-  "doi HOST" "Generate DigitalOcean image of HOST" \
-  "iso HOST" "Generate an ISO image of HOST" \
+  "build HOST BUILD" "Build a variant of your configuration from system.build"
   "vm HOST" "Generate a vm for HOST" \
   "vm run HOST" "run a one-shot vm for HOST" \
   "install HOST [ARGS]" "Shortcut for nixos-install" \
@@ -75,20 +74,12 @@ case "$1" in
     fi
     ;;
 
-  "doi")
+  "build")
     nix build \
-      "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.digitalOcean" \
+      "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.$3" \
       -o \
-      "$DEVSHELL_ROOT/doi/$2.qcow2" \
-      "${@:3}"
-    ;;
-
-  "iso")
-    nix build \
-      "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.iso" \
-      -o \
-      "$DEVSHELL_ROOT/iso/$2.iso" \
-      "${@:3}"
+      "$DEVSHELL_ROOT/$3/$2.$3" \
+      "${@:4}"
     ;;
 
   "vm")
