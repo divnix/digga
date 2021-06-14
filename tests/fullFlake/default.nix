@@ -15,6 +15,10 @@ let
     channels = {
       nixos = {
         imports = [ (lib.importers.overlays ./overlays) ];
+        overlays = [
+          # mimicing an external overlay
+          (final: prev: { i-do-exists-before-local-overlays-accessor-me = prev.hello; })
+        ];
       };
       latest = { };
     };
@@ -25,6 +29,7 @@ let
       checks = {
         hostBuild = assert self.nixosConfigurations ? "com.example.myhost";
           self.nixosConfigurations.NixOS.config.system.build.toplevel;
+        overlays-order = channels.nixos.pkgs.i-was-accessed-without-error;
       };
     };
 
