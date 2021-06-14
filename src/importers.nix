@@ -169,7 +169,10 @@ in
   overlays = dir:
     {
       # Meant to output a module that sets the overlays option
-      overlays = builtins.attrValues (flattenTree (rakeLeaves dir));
+      # overlays order matters. mkAfter ensures those in-house
+      # overlays are loaded later (after external ones), so the latter
+      # can be modified via internal overlays
+      overlays = lib.mkAfter (builtins.attrValues (flattenTree (rakeLeaves dir)));
     };
 
   hosts = dir:
