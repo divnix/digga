@@ -21,13 +21,12 @@
       agenix.inputs.nixpkgs.follows = "latest";
       nixos-hardware.url = "github:nixos/nixos-hardware";
 
-      pkgs.url = "path:./pkgs";
-      pkgs.inputs.nixpkgs.follows = "nixos";
+      nvfetcher-flake.url = "github:berberman/nvfetcher";
+      nvfetcher-flake.inputs.nixpkgs.follows = "latest";
     };
 
   outputs =
     { self
-    , pkgs
     , digga
     , nixos
     , ci-agent
@@ -35,6 +34,7 @@
     , nixos-hardware
     , nur
     , agenix
+    , nvfetcher-flake
     , ...
     } @ inputs:
     digga.lib.mkFlake {
@@ -46,10 +46,10 @@
         nixos = {
           imports = [ (digga.lib.importers.overlays ./overlays) ];
           overlays = [
-            ./pkgs/default.nix
-            pkgs.overlay # for `srcs`
             nur.overlay
             agenix.overlay
+            nvfetcher-flake.overlay
+            ./pkgs/default.nix
           ];
         };
         latest = { };
@@ -106,7 +106,13 @@
       };
 
       devshell.externalModules = { pkgs, ... }: {
-        packages = [ pkgs.agenix ];
+        commands = [
+          { package = pkgs.agenix; category = "secrets"; }
+          {
+            name = pkgs.nvfetcher-bin.pname;
+            help = pkgs.nvfetcher-bin.meta.description;
+            command = "cd $DEVSHELL_ROOT/pkgs; ${pkgs.nvfetcher-bin}/bin/nvfetcher -c ./sources.toml $@"; }
+        ];
       };
 
       homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
