@@ -176,7 +176,7 @@ in
     {
       # Meant to output a module that sets the hosts option (including constructed host names)
       hosts = lib.mapAttrs
-        (n: v: { modules = [ v ]; } )
+        (n: v: { modules = [ { _file = v; imports = [ v ]; } ]; } )
         (flattenTree (rakeLeaves dir));
     };
 
