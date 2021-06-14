@@ -71,7 +71,7 @@
           channelName = "nixos";
           modules = ./modules/module-list.nix;
           externalModules = [
-            { _module.args.ourLib = self.lib; }
+            { lib.our = self.lib; }
             ci-agent.nixosModules.agent-profile
             home.nixosModules.home-manager
             agenix.nixosModules.age
