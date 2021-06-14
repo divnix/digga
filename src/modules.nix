@@ -2,14 +2,6 @@
 {
   customBuilds =
     { lib, pkgs, config, baseModules, modules, ... }@args:
-    let
-      builds = lib.mapAttrs
-        (format: module:
-          let build = config.lib.digga.mkBuild module; in
-          build // build.config.system.build.${build.config.formatAttr}
-        )
-        nixos-generators.nixosModules;
-    in
     {
       # created in modules system for access to specialArgs and modules
       lib.digga.mkBuild = buildModule:
@@ -21,8 +13,17 @@
           # so try to pass that to eval if possible.
           specialArgs = args.specialArgs or { };
         };
-      # ensure these builds can be overriden by other modules
-      system.build = lib.mkBefore builds;
+      system.build =
+        let
+          builds = lib.mapAttrs
+            (format: module:
+              let build = config.lib.digga.mkBuild module; in
+              build // build.config.system.build.${build.config.formatAttr}
+            )
+            nixos-generators.nixosModules;
+        in
+        # ensure these builds can be overriden by other modules
+        lib.mkBefore builds;
     };
 
   hmDefaults = { specialArgs, modules }:
