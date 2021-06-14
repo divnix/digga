@@ -78,7 +78,7 @@ case "$1" in
     nix build \
       "$DEVSHELL_ROOT#nixosConfigurations.$2.config.system.build.$3" \
       -o \
-      "$DEVSHELL_ROOT/builds/$2/$3/" \
+      "$DEVSHELL_ROOT/builds/$2/$3" \
       "${@:4}"
     ;;
 
