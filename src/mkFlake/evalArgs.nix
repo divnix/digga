@@ -145,11 +145,14 @@ let
       includeHostsModule = name: {
         options = with types; {
           hostDefaults = mkOption {
-            type = submodule [
-              hostModule
-              externalModulesModule
-              (exportModulesModule name)
-            ];
+            type = submoduleWith {
+              # allows easy use of the `imports` key
+              modules = [
+                hostModule
+                externalModulesModule
+                (exportModulesModule name)
+              ];
+            };
             default = { };
             description = ''
               Defaults for all hosts.

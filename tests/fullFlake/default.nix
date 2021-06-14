@@ -45,10 +45,10 @@ let
       hostDefaults = {
         system = "x86_64-linux";
         channelName = "nixos";
-        modules = ./modules/module-list.nix;
+        imports = [ (lib.importers.modules ./modules) ];
         externalModules = [
           { _module.args.ourlib = self.lib; }
-          ./modules/customBuilds.nix
+          ./modules/customBuilds.nix # avoid exporting
         ];
       };
 
@@ -68,7 +68,7 @@ let
     };
 
     home = {
-      modules = ./users/modules/module-list.nix;
+      imports = [ (lib.importers.modules ./user/modules) ];
       externalModules = [ ];
       importables = rec {
         profiles = lib.importers.rakeLeaves ./profiles;

@@ -175,6 +175,12 @@ in
       overlays = lib.mkAfter (builtins.attrValues (flattenTree (rakeLeaves dir)));
     };
 
+  modules = dir:
+    {
+      # Meant to output a module that sets the modules option
+      modules = builtins.attrValues (flattenTree (rakeLeaves dir));
+    };
+
   hosts = dir:
     {
       # Meant to output a module that sets the hosts option (including constructed host names)
