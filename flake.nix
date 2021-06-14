@@ -24,13 +24,12 @@
       agenix.inputs.nixpkgs.follows = "latest";
       nixos-hardware.url = "github:nixos/nixos-hardware";
 
-      pkgs.url = "path:./pkgs";
-      pkgs.inputs.nixpkgs.follows = "nixos";
+      nvfetcher.url = "github:berberman/nvfetcher";
+      nvfetcher.inputs.nixpkgs.follows = "latest";
     };
 
   outputs =
     { self
-    , pkgs
     , digga
     , nixos
     , ci-agent
@@ -38,6 +37,7 @@
     , nixos-hardware
     , nur
     , agenix
+    , nvfetcher
     , ...
     } @ inputs:
     digga.lib.mkFlake {
@@ -49,10 +49,11 @@
         nixos = {
           imports = [ (digga.lib.importers.overlays ./overlays) ];
           overlays = [
-            ./pkgs/default.nix
-            pkgs.overlay # for `srcs`
             nur.overlay
             agenix.overlay
+            nvfetcher.overlay
+            (final: prev: { nvfetcher-bin = nvfetcher.defaultPackage.${final.system}; })
+            ./pkgs/default.nix
           ];
         };
         latest = { };
@@ -109,7 +110,14 @@
       };
 
       devshell.externalModules = { pkgs, ... }: {
-        packages = [ pkgs.agenix ];
+        commands = [
+          { package = pkgs.agenix; category = "secrets"; }
+          {
+            name = pkgs.nvfetcher-bin.pname;
+            help = pkgs.nvfetcher-bin.meta.description;
+            command = "cd $DEVSHELL_ROOT/pkgs; ${pkgs.nvfetcher-bin}/bin/nvfetcher -c ./sources.toml --no-output $@; nixpkgs-fmt _sources/";
+          }
+        ];
       };
 
       homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
