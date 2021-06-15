@@ -28,7 +28,8 @@ let
         are likely using NixOS 20.09. Profiles testing and custom builds (ex: iso)
         are not supported in 20.09 and using them could result in infinite
         recursion errors. It is recommended to update to 21.05 to use either feature.
-      '' { });
+      ''
+        { });
     })
     customBuilds
   ];

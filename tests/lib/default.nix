@@ -36,7 +36,7 @@ lib.runTests {
 
   testRakeLeaves = {
     expr = importers.rakeLeaves ./profiles;
-    expected  = {
+    expected = {
       f = ./profiles/f.nix;
       foo = ./profiles/foo;
       t = {
@@ -47,7 +47,7 @@ lib.runTests {
 
   testFlattenTree = {
     expr = importers.flattenTree (importers.rakeLeaves ./profiles);
-    expected  = {
+    expected = {
       f = ./profiles/f.nix;
       foo = ./profiles/foo;
       "t.bar" = ./profiles/t/bar.nix;

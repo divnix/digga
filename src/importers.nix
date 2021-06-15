@@ -102,11 +102,11 @@ let
           let
             path = dirPath + "/${file}";
           in
-            if (type == "regular")
-              || (type == "directory" && builtins.pathExists (path + "/default.nix"))
-            then path
-            # recurse on directories that don't contain a `default.nix`
-            else rakeLeaves path;
+          if (type == "regular")
+            || (type == "directory" && builtins.pathExists (path + "/default.nix"))
+          then path
+          # recurse on directories that don't contain a `default.nix`
+          else rakeLeaves path;
       };
 
       files = lib.filterAttrs seive (builtins.readDir dirPath);
@@ -185,7 +185,7 @@ in
     {
       # Meant to output a module that sets the hosts option (including constructed host names)
       hosts = lib.mapAttrs
-        (n: v: { modules = [ { imports = [ v ]; } ]; } )
+        (n: v: { modules = [{ imports = [ v ]; }]; })
         (flattenTree (rakeLeaves dir));
     };
 
