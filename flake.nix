@@ -41,7 +41,6 @@
 
           importers = import ./src/importers.nix {
             lib = combinedLib;
-            inherit devshell;
           };
 
           generators = import ./src/generators.nix {
@@ -51,7 +50,10 @@
 
           mkFlake = {
             __functor = import ./src/mkFlake { lib = combinedLib; };
-            evalArgs = import ./src/mkFlake/evalArgs.nix { lib = combinedLib; };
+            evalArgs = import ./src/mkFlake/evalArgs.nix {
+              lib = combinedLib;
+              inherit devshell;
+            };
           };
 
           pkgs-lib = import ./src/pkgs-lib {

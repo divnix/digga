@@ -81,10 +81,7 @@ lib.systemFlake (lib.mergeAny
 
     homeModules = lib.exporters.modulesFromList cfg.home.modules;
 
-    devshellModules = lib.exporters.modulesFromList {
-      paths = cfg.devshell.modules;
-      _import = lib.maybeImportDevshellModule;
-    };
+    devshellModules = lib.exporters.modulesFromList cfg.devshell.modules;
 
     overlays = lib.exporters.internalOverlays {
       # since we can't detect overlays owned by self

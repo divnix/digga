@@ -29,7 +29,7 @@ let
 
   configuration = {
     imports = [ (pkgs'.devshell.importTOML ./devshell.toml) ]
-      ++ (map lib.maybeImportDevshellModule extraModules);
+      ++ extraModules;
 
     packages = with installPkgs; [
       nixos-install

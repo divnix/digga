@@ -1,4 +1,4 @@
-{ lib }:
+{ lib, devshell }:
 
 { args }:
 let
@@ -7,9 +7,16 @@ let
       cfg = config;
       inherit (args) self;
 
+
+      maybeImportDevshellModule = path:
+        if lib.hasSuffix ".toml" path then
+          devshell.lib.importTOML path
+        else import path;
+
+
       maybeImport = obj:
-        if (builtins.isPath obj || builtins.isString obj) && lib.hasSuffix ".nix" obj then
-          import obj
+        if (builtins.isPath obj || builtins.isString obj) then
+          maybeImportDevshellModule obj
         else
           obj;
 
@@ -20,11 +27,6 @@ let
         description = "valid module";
       });
 
-      # to export modules we need paths to get the name
-      exportModuleType = with types;
-        (addCheck path (x: moduleType.check (maybeImport x))) // {
-          description = "path to a module";
-        };
       overlayType = pathTo (types.anything // {
         check = builtins.isFunction;
         description = "valid Nixpkgs overlay";
@@ -128,7 +130,7 @@ let
       exportModulesModule = name: {
         options = {
           modules = mkOption {
-            type = with types; pathTo (coercedListOf exportModuleType);
+            type = with types; pathTo (coercedListOf moduleType);
             default = [ ];
             description = ''
               modules to include in all hosts and export to ${name}Modules output
