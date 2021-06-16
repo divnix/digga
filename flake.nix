@@ -7,9 +7,10 @@
       devshell.url = "github:numtide/devshell";
       utils.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
       nixlib.url = "github:divnix/nixpkgs.lib";
-      nixos-generators.url = "github:nix-community/nixos-generators";
+
       # We only use the nixosModules output which only needs nixpkgs lib
-      nixos-generators.inputs.nixpkgs.follows = "nixlib";
+      # TODO: don't pull another 'nixpkgs' when only nixpkgs lib is needed
+      nixos-generators.url = "github:nix-community/nixos-generators";
 
       # Only used for development
       nixpkgs.url = "github:nixos/nixpkgs";
