@@ -3,9 +3,12 @@
 
   inputs =
     {
-      nixos.url = "nixpkgs/nixos-unstable";
+      nixos.url = "nixpkgs/release-21.05";
       latest.url = "nixpkgs";
-      digga.url = "github:divnix/digga/master";
+      digga = {
+        url = "github:divnix/digga/develop";
+        inputs.nipxkgs.follows = "latest";
+      };
 
       ci-agent = {
         url = "github:hercules-ci/hercules-ci-agent";
@@ -15,8 +18,8 @@
       darwin.inputs.nixpkgs.follows = "latest";
       home.url = "github:nix-community/home-manager";
       home.inputs.nixpkgs.follows = "nixos";
-      naersk.url = "github:nmattia/naersk";
-      naersk.inputs.nixpkgs.follows = "latest";
+      # naersk.url = "github:nmattia/naersk";
+      # naersk.inputs.nixpkgs.follows = "latest";
       agenix.url = "github:ryantm/agenix";
       agenix.inputs.nixpkgs.follows = "latest";
       nixos-hardware.url = "github:nixos/nixos-hardware";
@@ -59,6 +62,7 @@
 
       sharedOverlays = [
         (final: prev: {
+          __dontExport = true;
           lib = prev.lib.extend (lfinal: lprev: {
             our = self.lib;
           });
@@ -69,13 +73,12 @@
         hostDefaults = {
           system = "x86_64-linux";
           channelName = "nixos";
-          modules = ./modules/module-list.nix;
+          imports = [ (digga.lib.importers.modules ./modules) ];
           externalModules = [
             { lib.our = self.lib; }
             ci-agent.nixosModules.agent-profile
             home.nixosModules.home-manager
             agenix.nixosModules.age
-            ./modules/customBuilds.nix
           ];
         };
 
@@ -95,7 +98,7 @@
       };
 
       home = {
-        modules = ./users/modules/module-list.nix;
+        imports = [ (digga.lib.importers.modules ./users/modules) ];
         externalModules = [ ];
         importables = rec {
           profiles = digga.lib.importers.rakeLeaves ./users/profiles;
