@@ -47,7 +47,7 @@ let
         channelName = "nixos";
         imports = [ (lib.importers.modules ./modules) ];
         externalModules = [
-          { _module.args.ourlib = self.lib; }
+          { lib.our = self.lib; }
           ./modules/customBuilds.nix # avoid exporting
         ];
       };
