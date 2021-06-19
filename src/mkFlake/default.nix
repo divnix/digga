@@ -6,13 +6,13 @@ in
 _: { self, ... } @ args:
 let
 
-  config = lib.mkFlake.evalArgs {
+  evaled = lib.mkFlake.evalArgs {
     inherit args;
   };
 
-  cfg = config.config;
+  cfg = evaled.config;
 
-  otherArguments = removeAttrs args (attrNames config.options);
+  otherArguments = removeAttrs args (attrNames evaled.options);
 
   defaultModules = with lib.modules; [
     (hmDefaults {

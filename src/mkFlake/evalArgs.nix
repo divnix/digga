@@ -7,171 +7,196 @@ let
       cfg = config;
       inherit (args) self;
 
+      # #############
+      # Resolver
+      # #############
 
-      maybeImportDevshellModule = path:
-        if lib.hasSuffix ".toml" path then
-          devshell.lib.importTOML path
-        else import path;
+      /**
+      Synopsis: maybeImport <path|string or obj>
 
+      Returns an imported path or string or the object otherwise.
 
+      Use when you want to allow specifying an object directly or a path to it.
+      It saves the end user the additional import statement.
+      **/
       maybeImport = obj:
         if (builtins.isPath obj || builtins.isString obj) then
-          maybeImportDevshellModule obj
-        else
-          obj;
+          import obj
+        else obj
+      ;
 
-      /* Custom types needed for arguments */
+      /**
+      Synopsis: maybeImportDevshellToml <path|string or obj>
 
-      moduleType = with types; pathTo (anything // {
+      Returns an imported path or string if the filename ends in `toml` or the object or path otherwise.
+
+      Use only for devshell modules, as an apply function.
+      **/
+      maybeImportDevshellToml = obj:
+        if ((builtins.isPath obj || builtins.isString obj) && lib.hasSuffix ".toml" obj) then
+          devshell.lib.importTOML obj
+        else obj
+      ;
+
+      /**
+      Synopsis: pathToOr <type>
+
+      Type resolver: types maybeImport's <obj>.
+
+      Use in type declarations.
+      **/
+      pathToOr = elemType: with types; coercedTo path maybeImport elemType;
+
+      /**
+      Synopsis: coercedListOf <type>
+
+      Type resolver & list flattner: flattens a (evtl. arbitrarily nested) list of type <type>.
+
+      Use in type declarations.
+      **/
+      coercedListOf = elemType: with types;
+        coercedTo anything (x: flatten (singleton x)) (listOf elemType);
+
+
+      # #############
+      # Custom Types
+      # #############
+
+      moduleType = with types; (anything // {
         inherit (submodule { }) check;
         description = "valid module";
       });
 
-      overlayType = pathTo (types.anything // {
+      devshellModuleType = with types; coercedTo path maybeImportDevshellToml (anything // {
+        inherit (submodule { }) check;
+        description = "valid module";
+      });
+
+      overlayType = pathToOr (types.anything // {
         check = builtins.isFunction;
         description = "valid Nixpkgs overlay";
       });
-      systemType = types.enum config.supportedSystems;
+
+      systemType = (types.enum config.supportedSystems) // {
+        description = "system defined in `supportedSystems`";
+      };
+
+      channelType = (types.enum (builtins.attrNames config.channels)) // {
+        description = "channel defined in `channels`";
+      };
+
       flakeType = with types; (addCheck attrs lib.isStorePath) // {
         description = "nix flake";
       };
 
-      # Apply maybeImport during merge and before check
-      # To simplify apply keys and improve type checking
-      pathTo = elemType: with types; coercedTo path maybeImport elemType;
+      overlaysType = with types; coercedListOf overlayType;
+      modulesType = with types; coercedListOf moduleType;
+      devshellModulesType = with types; coercedListOf devshellModuleType;
+      legacyProfilesType = with types; listOf path;
+      legacySuitesType = with types; functionTo attrs;
+      suitesType = with types; attrsOf (coercedListOf path);
 
-      coercedListOf = elemType: with types;
-        coercedTo anything (x: flatten (singleton x)) (listOf elemType);
+      # #############
+      # Options
+      # #############
 
-      /* Submodules needed for API containers */
+      systemOpt = { system = mkOption {
+        type = with types; nullOr systemType;
+        default = null;
+        description = ''
+          system for this host
+        '';
+      };};
 
-      channelsModule = { name, ... }: {
-        options = with types; {
-          input = mkOption {
-            type = flakeType;
-            default = self.inputs.${name};
-            defaultText = "self.inputs.<name>";
-            description = ''
-              nixpkgs flake input to use for this channel
-            '';
-          };
-          overlays = mkOption {
-            type = coercedListOf overlayType;
-            default = [ ];
-            description = escape [ "<" ">" ] ''
-              overlays to apply to this channel
-              these will get exported under the 'overlays' flake output
-              as <channel>/<name> and any overlay pulled from ''\${inputs}
-              will be filtered out
-            '';
-          };
-          config = mkOption {
-            type = pathTo attrs;
-            default = { };
-            apply = lib.recursiveUpdate cfg.channelsConfig;
-            description = ''
-              nixpkgs config for this channel
-            '';
-          };
-        };
+      channelNameOpt = { channelName = mkOption {
+        type = with types; nullOr channelType;
+        default = null;
+        description = ''
+          Channel this host should follow
+        '';
+      };};
+
+      modulesOpt = { modules = mkOption {
+        type = with types; modulesType;
+        default = [ ];
+        description = ''
+          modules to include
+        '';
+      };};
+
+      exportedModulesOpt' = name: {
+        type = with types; modulesType;
+        default = [ ];
+        description = ''
+          modules to include in all hosts and export to ${name}Modules output
+        '';
       };
 
-      hostModule = {
-        options = with types; {
-          # anything null in hosts gets filtered out by mkFlake
-          system = mkOption {
-            type = (nullOr systemType) // {
-              description = "system defined in `supportedSystems`";
-            };
-            default = null;
-            description = ''
-              system for this host
-            '';
-          };
-          channelName = mkOption {
-            type = (nullOr (types.enum (builtins.attrNames config.channels))) // {
-              description = "a channel defined in `channels`";
-            };
-            default = null;
-            description = ''
-              Channel this host should follow
-            '';
-          };
-        };
-      };
+      exportedModulesOpt = name: { modules =  mkOption (exportedModulesOpt' name); };
+      exportedDevshellModulesOpt = { modules =  mkOption (
+        (exportedModulesOpt' "devshell") // {
+          type = with types; devshellModulesType;
+        }
+      );};
 
       # This is only needed for hostDefaults
       # modules in each host don't get exported
-      externalModulesModule = {
-        options = {
-          externalModules = mkOption {
-            type = with types; coercedListOf moduleType;
-            default = [ ];
-            description = ''
-              modules to include that won't be exported
-              meant importing modules from external flakes
-            '';
-          };
-        };
-      };
+      externalModulesOpt = { externalModules = mkOption {
+        type = with types; modulesType;
+        default = [ ];
+        description = ''
+          modules to include that won't be exported
+          meant importing modules from external flakes
+        '';
+      };};
 
-      modulesModule = {
-        options = {
-          modules = mkOption {
-            type = with types; coercedListOf moduleType;
-            default = [ ];
-            description = ''
-              modules to include
-            '';
-          };
-        };
-      };
+      hostDefaultsOpt = name: { hostDefaults = mkOption {
+        type = with types; hostDefaultsType name;
+        default = { };
+        description = ''
+          Defaults for all hosts.
+          the modules passed under hostDefaults will be exported
+          to the '${name}Modules' flake output.
+          They will also be added to all hosts.
+        '';
+      };};
 
-      exportModulesModule = name: {
-        options = {
-          modules = mkOption {
-            type = with types; pathTo (coercedListOf moduleType);
-            default = [ ];
-            description = ''
-              modules to include in all hosts and export to ${name}Modules output
-            '';
-          };
-        };
-      };
+      hostsOpt = name: { hosts = mkOption {
+        type = with types; hostType;
+        default = { };
+        description = ''
+          configurations to include in the ${name}Configurations output
+        '';
+      };};
 
+      inputOpt = name: { input = mkOption {
+        type = flakeType;
+        default = self.inputs.${name};
+        defaultText = "self.inputs.<name>";
+        description = ''
+          nixpkgs flake input to use for this channel
+        '';
+      };};
 
+      overlaysOpt = { overlays = mkOption {
+        type = with types; pathToOr overlaysType;
+        default = [ ];
+        description = escape [ "<" ">" ] ''
+          overlays to apply to this channel
+          these will get exported under the 'overlays' flake output
+          as <channel>/<name> and any overlay pulled from ''\${inputs}
+          will be filtered out
+        '';
+      };};
 
-      # Home-manager's configs get exported automatically from nixos.hosts
-      # So there is no need for a host options in the home namespace
-      # This is only needed for nixos
-      includeHostsModule = name: {
-        options = with types; {
-          hostDefaults = mkOption {
-            type = submoduleWith {
-              # allows easy use of the `imports` key
-              modules = [
-                hostModule
-                externalModulesModule
-                (exportModulesModule name)
-              ];
-            };
-            default = { };
-            description = ''
-              Defaults for all hosts.
-              the modules passed under hostDefaults will be exported
-              to the '${name}Modules' flake output.
-              They will also be added to all hosts.
-            '';
-          };
-          hosts = mkOption {
-            type = attrsOf (submodule [ hostModule modulesModule ]);
-            default = { };
-            description = ''
-              configurations to include in the ${name}Configurations output
-            '';
-          };
-        };
-      };
+      configOpt = { config = mkOption {
+        type = with types; pathToOr attrs;
+        default = { };
+        apply = lib.recursiveUpdate cfg.channelsConfig;
+        description = ''
+          nixpkgs config for this channel
+        '';
+      };};
 
       suitesDeprecationMessage = ''
         WARNING: The 'suites' and `profiles` options have been deprecated, you can now create
@@ -186,53 +211,102 @@ let
         ```
         See https://github.com/divnix/digga/pull/30 for more details
       '';
-      importablesModule = { config, options, ... }: {
+      legacyImportablesMod = { config, options, ...}: {
         config = {
           importables = mkIf options.suites.isDefined {
             suites = builtins.trace suitesDeprecationMessage config.suites;
           };
         };
         options = with types; {
+          # TODO: remove in favor of importables
           profiles = mkOption {
-            type = listOf path;
+            type = pathToOr legacyProfilesType;
             default = [ ];
             description = suitesDeprecationMessage;
           };
+          # TODO: remove in favor of importables
           suites = mkOption {
-            type = pathTo (functionTo attrs);
+            type = pathToOr legacySuitesType;
             apply = suites: lib.mkSuites {
               inherit suites;
               inherit (config) profiles;
             };
             description = suitesDeprecationMessage;
           };
-          importables = mkOption {
-            type = submoduleWith {
-              modules = [{
-                freeformType = attrs;
-                options = {
-                  suites = mkOption {
-                    type = attrsOf (coercedListOf path);
-                    # add `allProfiles` to it here
-                    apply = suites: suites // {
-                      allProfiles = lib.foldl
-                        (lhs: rhs: lhs ++ rhs) [ ]
-                        (builtins.attrValues suites);
-                    };
-                    description = ''
-                      collections of profiles
-                    '';
-                  };
-                };
-              }];
-            };
-            default = { };
-            description = ''
-              Packages of paths to be passed to modules as `specialArgs`.
-            '';
-          };
         };
       };
+
+      importablesOpt = { importables = mkOption {
+        type = with types; submoduleWith {
+          modules = [{
+            freeformType = attrs;
+            options = {
+              suites = mkOption {
+                type = pathToOr suitesType;
+                # add `allProfiles` to it here
+                apply = suites: suites // {
+                  allProfiles = lib.foldl
+                    (lhs: rhs: lhs ++ rhs) [ ]
+                    (builtins.attrValues suites);
+                };
+                description = ''
+                  collections of profiles
+                '';
+              };
+            };
+          }];
+        };
+        default = { };
+        description = ''
+          Packages of paths to be passed to modules as `specialArgs`.
+        '';
+      };};
+
+      # #############
+      # Aggreagate types
+      # #############
+
+      hostType = with types; attrsOf ( submoduleWith {
+        modules = [
+          # per-host modules not exported, no external modules
+          { options = systemOpt // channelNameOpt // modulesOpt; }
+        ];
+      });
+
+      hostDefaultsType = name: with types; submoduleWith {
+        modules = [
+          { options = systemOpt // channelNameOpt // externalModulesOpt // (exportedModulesOpt name); }
+        ];
+      };
+
+      nixosType = with types; submoduleWith {
+        modules = [
+          { options = (hostsOpt "nixos") // (hostDefaultsOpt "nixos") // importablesOpt; }
+          legacyImportablesMod
+        ];
+      };
+
+      homeType = with types; submoduleWith {
+        modules = [
+          { options = externalModulesOpt // (exportedModulesOpt "home") // importablesOpt; }
+          legacyImportablesMod
+        ];
+      };
+
+      devshellType = with types; submoduleWith {
+        modules = [
+          { options = externalModulesOpt // exportedDevshellModulesOpt; }
+        ];
+      };
+
+      channelsType = with types; attrsOf (submoduleWith {
+        modules = [
+          ({ name, ...}: { options = overlaysOpt // configOpt // (inputOpt name); })
+        ];
+      });
+
+      outputsBuilderType = with types; functionTo attrs;
+
     in
     {
       # this does not get propagated to submodules
@@ -252,23 +326,21 @@ let
           '';
         };
         channelsConfig = mkOption {
-          type = pathTo attrs;
+          type = pathToOr attrs;
           default = { };
           description = ''
             nixpkgs config for all channels
           '';
         };
         channels = mkOption {
-          type = attrsOf (submoduleWith {
-            modules = [ channelsModule ];
-          });
+          type = pathToOr channelsType;
           default = { };
           description = ''
             nixpkgs channels to create
           '';
         };
         outputsBuilder = mkOption {
-          type = functionTo attrs;
+          type = pathToOr outputsBuilderType;
           default = channels: { };
           defaultText = "channels: { }";
           description = ''
@@ -277,36 +349,21 @@ let
           '';
         };
         nixos = mkOption {
-          type = submoduleWith {
-            # allows easy use of the `imports` key
-            modules = [ (includeHostsModule "nixos") importablesModule ];
-          };
+          type = pathToOr nixosType;
           default = { };
           description = ''
             hosts, modules, suites, and profiles for nixos
           '';
         };
         home = mkOption {
-          type = submoduleWith {
-            # allows easy use of the `imports` key
-            modules = [
-              importablesModule
-              (exportModulesModule "home")
-              externalModulesModule
-            ];
-          };
+          type = pathToOr homeType;
           default = { };
           description = ''
             hosts, modules, suites, and profiles for home-manager
           '';
         };
         devshell = mkOption {
-          type = submoduleWith {
-            modules = [
-              (exportModulesModule "devshell")
-              externalModulesModule
-            ];
-          };
+          type = pathToOr devshellType;
           default = { };
           description = ''
             Modules to include in your devos shell. the `modules` argument
