@@ -1,0 +1,3 @@
+{
+  modules = [ ./my-home.nix ];
+}

@@ -50,7 +50,7 @@
           };
 
           mkFlake = {
-            __functor = import ./src/mkFlake { lib = combinedLib; };
+            __functor = import ./src/mkFlake { inherit deploy; lib = combinedLib; };
             evalArgs = import ./src/mkFlake/evalArgs.nix {
               lib = combinedLib;
               inherit devshell;

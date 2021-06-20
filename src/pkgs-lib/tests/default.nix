@@ -1,24 +1,5 @@
-{ lib, deploy }:
+{ lib }:
 let
-  mkChecks = { pkgs, hosts, nodes, homes ? { } }:
-    let
-      deployHosts = lib.filterAttrs
-        (n: _: hosts.${n}.config.nixpkgs.system == pkgs.system)
-        nodes;
-      deployChecks = deploy.lib.${pkgs.system}.deployChecks { nodes = deployHosts; };
-      host = hosts.${(builtins.head (builtins.attrNames deployHosts))};
-      tests =
-        (lib.optionalAttrs
-          (deployHosts != { } && host.config.lib.specialArgs ? suites)
-          {
-            profilesTest = profilesTest {
-              inherit pkgs host;
-            };
-          }
-        ) // lib.mapAttrs (n: v: v.activationPackage) homes;
-
-    in
-    lib.recursiveUpdate tests deployChecks;
 
   mkTest = { pkgs, host }:
     let
@@ -55,4 +36,4 @@ let
     '';
   };
 in
-{ inherit mkTest profilesTest mkChecks; }
+{ inherit mkTest profilesTest; }
