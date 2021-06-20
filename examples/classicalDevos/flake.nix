@@ -30,6 +30,10 @@ let
         hostBuild = assert self.nixosConfigurations ? "com.example.myhost";
           self.nixosConfigurations.NixOS.config.system.build.toplevel;
         overlays-order = channels.nixos.pkgs.i-was-accessed-without-error;
+        # At least check that those build.
+        # They are usually tested against additional checks with
+        nixosModules = self.nixosModules;
+
       };
     };
 

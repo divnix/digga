@@ -1,18 +1,4 @@
 { pkgs, lib }:
-let
-  fullFlake = import ./fullFlake { inherit pkgs lib; };
-
-  mkOutputTest = output:
-    let
-      outputs = builtins.attrValues (fullFlake.${output}.${pkgs.system});
-    in
-    pkgs.runCommandNoCC "${output}-test"
-      {
-        buildInputs = outputs;
-      } ''
-      echo "${toString outputs}" > $out
-    '';
-in
 {
   libTests = pkgs.runCommandNoCC "devos-lib-tests"
     {
@@ -39,11 +25,6 @@ in
 
     touch $out
   '';
-
-  checksTest = mkOutputTest "checks" // {
-    # debug the fullFLake through repl at checks.<system>.checksTest.fullFlake
-    inherit fullFlake;
-  };
 
   devShellTest = fullFlake.devShell.${pkgs.system};
 }
