@@ -1,5 +1,13 @@
-{ pkgs, lib }:
-{
+{ inputs, system ? builtins.currentSystem }: let
+
+  nixpkgs = inputs.nixpkgs;
+  diggalib = inputs.lib;
+  nixlib = inputs.nixlib;
+  lib = nixlib // diggalib;
+  pkgs = import nixpkgs { inherit system; config = {}; overlays = []; };
+
+in {
+
   libTests = pkgs.runCommandNoCC "devos-lib-tests"
     {
       buildInputs = [
@@ -26,5 +34,4 @@
     touch $out
   '';
 
-  devShellTest = fullFlake.devShell.${pkgs.system};
 }

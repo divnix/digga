@@ -3,17 +3,28 @@
 
   inputs =
     {
-      deploy.url = "github:serokell/deploy-rs";
+      nixpkgs.url = "github:nixos/nixpkgs";
+      deploy = {
+        url = "github:serokell/deploy-rs";
+        inputs = {
+          nixpkgs.follows = "nixpkgs";
+          utils.follows = "utils";
+        };
+      };
       devshell.url = "github:numtide/devshell";
       utils.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
       nixlib.url = "github:divnix/nixpkgs.lib";
 
       # We only use the nixosModules output which only needs nixpkgs lib
       # TODO: don't pull another 'nixpkgs' when only nixpkgs lib is needed
-      nixos-generators.url = "github:nix-community/nixos-generators";
+      nixos-generators = {
+        url = "github:nix-community/nixos-generators";
+        inputs = {
+          nixpkgs.follows = "nixpkgs";
+          utils.follows = "utils";
+        };
+      };
 
-      # Only used for development
-      nixpkgs.url = "github:nixos/nixpkgs";
     };
 
   outputs =
@@ -80,32 +91,27 @@
           mkDeployNodes
           mkHomeConfigurations;
       };
+
+      # digga-local use
+
+      checks.x86_64-linux = import ./checks {
+        inputs = { inherit nixpkgs lib; nixlib = nixlib.lib; };
+        system = "x86_64-linux";
+      };
+
+      jobs.x86_64-linux = import ./jobs {
+        inputs = { inherit nixpkgs; digga = self; };
+        system = "x86_64-linux";
+      };
     }
 
     //
 
-    utils.lib.systemFlake {
-      inherit self inputs;
-      channels.pkgs.input = nixpkgs;
-      outputsBuilder = channels:
-        let inherit (channels) pkgs; in
-        {
-          checks = import ./tests {
-            inherit pkgs;
-            lib = nixlib.lib // lib;
-          };
-
-          devShell = lib.pkgs-lib.shell { inherit pkgs; };
-
-          packages = {
-            mkFlakeDoc = pkgs.writeText "mkFlakeOptions.md"
-              (
-                pkgs.nixosOptionsDoc {
-                  inherit (lib.mkFlake.evalArgs { args = { }; }) options;
-                }
-              ).optionsMDDoc;
-          };
-        };
-    };
+    utils.lib.eachDefaultSystem (system: {
+      devShell = import ./shell.nix {
+        inputs = { inherit nixpkgs devshell; };
+        inherit system;
+      };
+    });
 
 }
