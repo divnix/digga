@@ -1,92 +1,117 @@
-{ pkgs, lib }:
-let
-  self = lib.mkFlake {
+{
+  description = "A DevOS example. And also a digga test bed.";
 
-    self = self // {
-      outPath = toString ./.;
-      inputs = {
-        nixos = pkgs.input;
-        latest = pkgs.input;
+  inputs =
+    {
+      nixos.url = "nixpkgs/release-21.05";
+      latest.url = "nixpkgs";
+      digga = {
+        url = "path:../../";
+        inputs.nixpkgs.follows = "nixos";
       };
+
+      darwin.url = "github:LnL7/nix-darwin";
+      darwin.inputs.nixpkgs.follows = "latest";
+      home.url = "github:nix-community/home-manager";
+      home.inputs.nixpkgs.follows = "nixos";
+      agenix.url = "github:ryantm/agenix";
+      agenix.inputs.nixpkgs.follows = "latest";
+      nixos-hardware.url = "github:nixos/nixos-hardware";
+
+      pkgs.url = "path:./pkgs";
+      pkgs.inputs.nixpkgs.follows = "nixos";
     };
 
-    channelsConfig = { allowUnfree = true; };
+  outputs =
+    { self
+    , pkgs
+    , digga
+    , nixos
+    , home
+    , nixos-hardware
+    , agenix
+    , ...
+    } @ inputs:
+    digga.lib.mkFlake {
+      inherit self inputs;
 
-    channels = {
+      channelsConfig = { allowUnfree = true; };
+
+      channels = {
+        nixos = {
+          imports = [ (digga.lib.importers.overlays ./overlays) ];
+          overlays = [
+            # mimicking an external overlay
+            (final: prev: { i-do-exists-before-local-overlays-accessor-me = prev.hello; })
+            ./pkgs/default.nix
+            pkgs.overlay # for `srcs`
+            agenix.overlay
+          ];
+        };
+        latest = { };
+      };
+
+      lib = import ./lib { lib = digga.lib // nixos.lib; };
+
+      sharedOverlays = [
+        (final: prev: {
+          __dontExport = true;
+          lib = prev.lib.extend (lfinal: lprev: {
+            our = self.lib;
+          });
+        })
+      ];
+
       nixos = {
-        imports = [ (lib.importers.overlays ./overlays) ];
-        overlays = [
-          # mimicing an external overlay
-          (final: prev: { i-do-exists-before-local-overlays-accessor-me = prev.hello; })
-        ];
-      };
-      latest = { };
-    };
-
-    lib = lib.makeExtensible (self: { });
-
-    outputsBuilder = channels: {
-      checks = {
-        hostBuild = assert self.nixosConfigurations ? "com.example.myhost";
-          self.nixosConfigurations.NixOS.config.system.build.toplevel;
-        overlays-order = channels.nixos.pkgs.i-was-accessed-without-error;
-        # At least check that those build.
-        # They are usually tested against additional checks with
-        nixosModules = self.nixosModules;
-
-      };
-    };
-
-    sharedOverlays = [
-      (final: prev: {
-        ourlib = self.lib;
-      })
-    ];
-
-    devshell.modules = [ ./devshell.toml ];
-
-    nixos = {
-      hostDefaults = {
-        system = "x86_64-linux";
-        channelName = "nixos";
-        imports = [ (lib.importers.modules ./modules) ];
-        externalModules = [
-          { lib.our = self.lib; }
-          ./modules/customBuilds.nix # avoid exporting
-        ];
-      };
-
-      imports = [ (lib.importers.hosts ./hosts) ];
-      hosts = {
-        /* set host specific properties here */
-        NixOS = { };
-      };
-      importables = rec {
-        profiles = lib.importers.rakeLeaves ./profiles // {
-          users = lib.importers.rakeLeaves ./users;
+        hostDefaults = {
+          system = "x86_64-linux";
+          channelName = "nixos";
+          imports = [ (digga.lib.importers.modules ./modules) ];
+          externalModules = [
+            { lib.our = self.lib; }
+            home.nixosModules.home-manager
+            agenix.nixosModules.age
+          ];
         };
-        suites = with profiles; {
-          base = [ cachix core users.nixos users.root ];
+
+        imports = [ (digga.lib.importers.hosts ./hosts) ];
+        hosts = {
+          /* set host specific properties here */
+          NixOS = { };
+        };
+        importables = rec {
+          profiles = digga.lib.importers.rakeLeaves ./profiles // {
+            users = digga.lib.importers.rakeLeaves ./users;
+          };
+          suites = with profiles; rec {
+            base = [ core users.nixos users.root ];
+          };
         };
       };
-    };
 
-    home = {
-      imports = [ (lib.importers.modules ./user/modules) ];
-      externalModules = [ ];
-      importables = rec {
-        profiles = lib.importers.rakeLeaves ./profiles;
-        suites = with profiles; {
-          base = [ direnv git ];
+      home = {
+        imports = [ (digga.lib.importers.modules ./users/modules) ];
+        externalModules = [ ];
+        importables = rec {
+          profiles = digga.lib.importers.rakeLeaves ./users/profiles;
+          suites = with profiles; rec {
+            base = [ direnv git ];
+          };
         };
       };
-    };
 
-    deploy.nodes = lib.mkDeployNodes self.nixosConfigurations { };
+      devshell.externalModules = { pkgs, ... }: {
+        packages = [ pkgs.agenix ];
+      };
 
-    #defaultTemplate = self.templates.flk;
-    templates.flk.path = ./.;
-    templates.flk.description = "flk template";
-  };
-in
-self
+      homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
+
+      deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
+
+      defaultTemplate = self.templates.flk;
+      templates.flk.path = ./.;
+      templates.flk.description = "flk template";
+
+    }
+  ;
+}
