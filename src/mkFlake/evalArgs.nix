@@ -12,13 +12,13 @@ let
       # #############
 
       /**
-      Synopsis: maybeImport <path|string or obj>
+        Synopsis: maybeImport <path|string or obj>
 
-      Returns an imported path or string or the object otherwise.
+        Returns an imported path or string or the object otherwise.
 
-      Use when you want to allow specifying an object directly or a path to it.
-      It saves the end user the additional import statement.
-      **/
+        Use when you want to allow specifying an object directly or a path to it.
+        It saves the end user the additional import statement.
+        **/
       maybeImport = obj:
         if (builtins.isPath obj || builtins.isString obj) then
           import obj
@@ -26,12 +26,12 @@ let
       ;
 
       /**
-      Synopsis: maybeImportDevshellToml <path|string or obj>
+        Synopsis: maybeImportDevshellToml <path|string or obj>
 
-      Returns an imported path or string if the filename ends in `toml` or the object or path otherwise.
+        Returns an imported path or string if the filename ends in `toml` or the object or path otherwise.
 
-      Use only for devshell modules, as an apply function.
-      **/
+        Use only for devshell modules, as an apply function.
+        **/
       maybeImportDevshellToml = obj:
         if ((builtins.isPath obj || builtins.isString obj) && lib.hasSuffix ".toml" obj) then
           devshell.lib.importTOML obj
@@ -39,21 +39,21 @@ let
       ;
 
       /**
-      Synopsis: pathToOr <type>
+        Synopsis: pathToOr <type>
 
-      Type resolver: types maybeImport's <obj>.
+        Type resolver: types maybeImport's <obj>.
 
-      Use in type declarations.
-      **/
+        Use in type declarations.
+        **/
       pathToOr = elemType: with types; coercedTo path maybeImport elemType;
 
       /**
-      Synopsis: coercedListOf <type>
+        Synopsis: coercedListOf <type>
 
-      Type resolver & list flattner: flattens a (evtl. arbitrarily nested) list of type <type>.
+        Type resolver & list flattner: flattens a (evtl. arbitrarily nested) list of type <type>.
 
-      Use in type declarations.
-      **/
+        Use in type declarations.
+        **/
       coercedListOf = elemType: with types;
         coercedTo anything (x: flatten (singleton x)) (listOf elemType);
 
@@ -100,29 +100,35 @@ let
       # Options
       # #############
 
-      systemOpt = { system = mkOption {
-        type = with types; nullOr systemType;
-        default = null;
-        description = ''
-          system for this host
-        '';
-      };};
+      systemOpt = {
+        system = mkOption {
+          type = with types; nullOr systemType;
+          default = null;
+          description = ''
+            system for this host
+          '';
+        };
+      };
 
-      channelNameOpt = { channelName = mkOption {
-        type = with types; nullOr channelType;
-        default = null;
-        description = ''
-          Channel this host should follow
-        '';
-      };};
+      channelNameOpt = {
+        channelName = mkOption {
+          type = with types; nullOr channelType;
+          default = null;
+          description = ''
+            Channel this host should follow
+          '';
+        };
+      };
 
-      modulesOpt = { modules = mkOption {
-        type = with types; modulesType;
-        default = [ ];
-        description = ''
-          modules to include
-        '';
-      };};
+      modulesOpt = {
+        modules = mkOption {
+          type = with types; modulesType;
+          default = [ ];
+          description = ''
+            modules to include
+          '';
+        };
+      };
 
       exportedModulesOpt' = name: {
         type = with types; modulesType;
@@ -132,71 +138,85 @@ let
         '';
       };
 
-      exportedModulesOpt = name: { modules =  mkOption (exportedModulesOpt' name); };
-      exportedDevshellModulesOpt = { modules =  mkOption (
-        (exportedModulesOpt' "devshell") // {
-          type = with types; devshellModulesType;
-        }
-      );};
+      exportedModulesOpt = name: { modules = mkOption (exportedModulesOpt' name); };
+      exportedDevshellModulesOpt = {
+        modules = mkOption (
+          (exportedModulesOpt' "devshell") // {
+            type = with types; devshellModulesType;
+          }
+        );
+      };
 
       # This is only needed for hostDefaults
       # modules in each host don't get exported
-      externalModulesOpt = { externalModules = mkOption {
-        type = with types; modulesType;
-        default = [ ];
-        description = ''
-          modules to include that won't be exported
-          meant importing modules from external flakes
-        '';
-      };};
+      externalModulesOpt = {
+        externalModules = mkOption {
+          type = with types; modulesType;
+          default = [ ];
+          description = ''
+            modules to include that won't be exported
+            meant importing modules from external flakes
+          '';
+        };
+      };
 
-      hostDefaultsOpt = name: { hostDefaults = mkOption {
-        type = with types; hostDefaultsType name;
-        default = { };
-        description = ''
-          Defaults for all hosts.
-          the modules passed under hostDefaults will be exported
-          to the '${name}Modules' flake output.
-          They will also be added to all hosts.
-        '';
-      };};
+      hostDefaultsOpt = name: {
+        hostDefaults = mkOption {
+          type = with types; hostDefaultsType name;
+          default = { };
+          description = ''
+            Defaults for all hosts.
+            the modules passed under hostDefaults will be exported
+            to the '${name}Modules' flake output.
+            They will also be added to all hosts.
+          '';
+        };
+      };
 
-      hostsOpt = name: { hosts = mkOption {
-        type = with types; hostType;
-        default = { };
-        description = ''
-          configurations to include in the ${name}Configurations output
-        '';
-      };};
+      hostsOpt = name: {
+        hosts = mkOption {
+          type = with types; hostType;
+          default = { };
+          description = ''
+            configurations to include in the ${name}Configurations output
+          '';
+        };
+      };
 
-      inputOpt = name: { input = mkOption {
-        type = flakeType;
-        default = self.inputs.${name};
-        defaultText = "self.inputs.<name>";
-        description = ''
-          nixpkgs flake input to use for this channel
-        '';
-      };};
+      inputOpt = name: {
+        input = mkOption {
+          type = flakeType;
+          default = self.inputs.${name};
+          defaultText = "self.inputs.<name>";
+          description = ''
+            nixpkgs flake input to use for this channel
+          '';
+        };
+      };
 
-      overlaysOpt = { overlays = mkOption {
-        type = with types; pathToOr overlaysType;
-        default = [ ];
-        description = escape [ "<" ">" ] ''
-          overlays to apply to this channel
-          these will get exported under the 'overlays' flake output
-          as <channel>/<name> and any overlay pulled from ''\${inputs}
-          will be filtered out
-        '';
-      };};
+      overlaysOpt = {
+        overlays = mkOption {
+          type = with types; pathToOr overlaysType;
+          default = [ ];
+          description = escape [ "<" ">" ] ''
+            overlays to apply to this channel
+            these will get exported under the 'overlays' flake output
+            as <channel>/<name> and any overlay pulled from ''\${inputs}
+            will be filtered out
+          '';
+        };
+      };
 
-      configOpt = { config = mkOption {
-        type = with types; pathToOr attrs;
-        default = { };
-        apply = lib.recursiveUpdate cfg.channelsConfig;
-        description = ''
-          nixpkgs config for this channel
-        '';
-      };};
+      configOpt = {
+        config = mkOption {
+          type = with types; pathToOr attrs;
+          default = { };
+          apply = lib.recursiveUpdate cfg.channelsConfig;
+          description = ''
+            nixpkgs config for this channel
+          '';
+        };
+      };
 
       suitesDeprecationMessage = ''
         WARNING: The 'suites' and `profiles` options have been deprecated, you can now create
@@ -211,7 +231,7 @@ let
         ```
         See https://github.com/divnix/digga/pull/30 for more details
       '';
-      legacyImportablesMod = { config, options, ...}: {
+      legacyImportablesMod = { config, options, ... }: {
         config = {
           importables = mkIf options.suites.isDefined {
             suites = builtins.trace suitesDeprecationMessage config.suites;
@@ -236,37 +256,39 @@ let
         };
       };
 
-      importablesOpt = { importables = mkOption {
-        type = with types; submoduleWith {
-          modules = [{
-            freeformType = attrs;
-            options = {
-              suites = mkOption {
-                type = pathToOr suitesType;
-                # add `allProfiles` to it here
-                apply = suites: suites // {
-                  allProfiles = lib.foldl
-                    (lhs: rhs: lhs ++ rhs) [ ]
-                    (builtins.attrValues suites);
+      importablesOpt = {
+        importables = mkOption {
+          type = with types; submoduleWith {
+            modules = [{
+              freeformType = attrs;
+              options = {
+                suites = mkOption {
+                  type = pathToOr suitesType;
+                  # add `allProfiles` to it here
+                  apply = suites: suites // {
+                    allProfiles = lib.foldl
+                      (lhs: rhs: lhs ++ rhs) [ ]
+                      (builtins.attrValues suites);
+                  };
+                  description = ''
+                    collections of profiles
+                  '';
                 };
-                description = ''
-                  collections of profiles
-                '';
               };
-            };
-          }];
+            }];
+          };
+          default = { };
+          description = ''
+            Packages of paths to be passed to modules as `specialArgs`.
+          '';
         };
-        default = { };
-        description = ''
-          Packages of paths to be passed to modules as `specialArgs`.
-        '';
-      };};
+      };
 
       # #############
       # Aggreagate types
       # #############
 
-      hostType = with types; attrsOf ( submoduleWith {
+      hostType = with types; attrsOf (submoduleWith {
         modules = [
           # per-host modules not exported, no external modules
           { options = systemOpt // channelNameOpt // modulesOpt; }
@@ -301,7 +323,7 @@ let
 
       channelsType = with types; attrsOf (submoduleWith {
         modules = [
-          ({ name, ...}: { options = overlaysOpt // configOpt // (inputOpt name); })
+          ({ name, ... }: { options = overlaysOpt // configOpt // (inputOpt name); })
         ];
       });
 

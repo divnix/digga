@@ -1,6 +1,7 @@
-{ inputs, system ? builtins.currentSystem }: let
+{ inputs, system ? builtins.currentSystem }:
+let
 
-  pkgs = import inputs.nixpkgs { inherit system; config = {}; overlays = []; };
+  pkgs = import inputs.nixpkgs { inherit system; config = { }; overlays = [ ]; };
   devshell = import inputs.devshell { inherit pkgs system; };
 
   withCategory = category: attrset: attrset // { inherit category; };
@@ -20,7 +21,7 @@
   };
 
   patchedNixUnstable = pkgs.nixUnstable.overrideAttrs (o: {
-    patches = (o.patches or []) ++ [
+    patches = (o.patches or [ ]) ++ [
       (pkgs.fetchpatch {
         name = "fix-follows.diff";
         url = "https://github.com/CitadelCore/nix/commit/cfef23c040c950222b3128b9da464d9fe6810d79.diff";

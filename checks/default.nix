@@ -1,12 +1,14 @@
-{ inputs, system ? builtins.currentSystem }: let
+{ inputs, system ? builtins.currentSystem }:
+let
 
   nixpkgs = inputs.nixpkgs;
   diggalib = inputs.lib;
   nixlib = inputs.nixlib;
   lib = nixlib // diggalib;
-  pkgs = import nixpkgs { inherit system; config = {}; overlays = []; };
+  pkgs = import nixpkgs { inherit system; config = { }; overlays = [ ]; };
 
-in {
+in
+{
 
   libTests = pkgs.runCommandNoCC "devos-lib-tests"
     {

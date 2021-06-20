@@ -17,7 +17,7 @@
 
       inherit self inputs;
 
-      channels.nixos = {};
+      channels.nixos = { };
 
       nixos = ./nixos;
       home = ./home;
