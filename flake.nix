@@ -24,7 +24,6 @@
           utils.follows = "utils";
         };
       };
-
     };
 
   outputs =
@@ -38,6 +37,7 @@
     , ...
     }@inputs:
     let
+
       lib = nixlib.lib.makeExtensible (self:
         let combinedLib = nixlib.lib // self; in
         with self;
@@ -81,6 +81,23 @@
         }
       );
 
+      # Unofficial Flakes Roadmap - Polyfills
+      # .. see: https://demo.hedgedoc.org/s/_W6Ve03GK#
+      # .. also: <repo-root>/ufr-polyfills
+
+      # Super Stupid Flakes (ssf) / System As an Input - Style:
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin"];
+      ufrContract = import ./ufr-polyfills/ufrContract.nix;
+
+      # Dependency Groups - Style
+      checksInputs = { inherit nixpkgs lib; nixlib = nixlib.lib; };
+      jobsInputs = { inherit nixpkgs; digga = self; };
+      devShellInputs = { inherit nixpkgs devshell; };
+
+      # .. we hope you like this style.
+      # .. it's adopted by a growing number of projects.
+      # Please consider adopting it if you want to help to improve flakes.
+
     in
 
     {
@@ -93,25 +110,9 @@
       };
 
       # digga-local use
-
-      checks.x86_64-linux = import ./checks {
-        inputs = { inherit nixpkgs lib; nixlib = nixlib.lib; };
-        system = "x86_64-linux";
-      };
-
-      jobs.x86_64-linux = import ./jobs {
-        inputs = { inherit nixpkgs; digga = self; };
-        system = "x86_64-linux";
-      };
-    }
-
-    //
-
-    utils.lib.eachDefaultSystem (system: {
-      devShell = import ./shell.nix {
-        inputs = { inherit nixpkgs devshell; };
-        inherit system;
-      };
-    });
+      jobs =     ufrContract supportedSystems ./jobs      jobsInputs;
+      checks =   ufrContract supportedSystems ./checks    checksInputs;
+      devShell = ufrContract supportedSystems ./shell.nix devShellInputs;
+    };
 
 }

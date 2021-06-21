@@ -1,8 +1,10 @@
-{ inputs, system ? builtins.currentSystem }:
+{ system ? builtins.currentSystem
+, inputs # flake style polyfill not possible, since this depends on digga's internals
+}:
 let
 
   nixpkgs = inputs.nixpkgs;
-  diggalib = inputs.lib;
+  diggalib = inputs.lib; # digga internals
   nixlib = inputs.nixlib;
   lib = nixlib // diggalib;
   pkgs = import nixpkgs { inherit system; config = { }; overlays = [ ]; };

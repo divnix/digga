@@ -1,4 +1,6 @@
-{ inputs, system ? builtins.currentSystem }:
+{ system ? builtins.currentSystem
+, inputs ? import ../ufr-polyfills/flake.lock.nix ./.
+}:
 let
 
   nixpkgs = inputs.nixpkgs;
