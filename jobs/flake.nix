@@ -14,7 +14,7 @@
 
     # Super Stupid Flakes / System As an Input - Style:
     supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin"];
-    ufrContract = import ./ufr-polyfills/ufrContract.nix;
+    ufrContract = import ../ufr-polyfills/ufrContract.nix;
 
     # Dependency Groups - Style
     jobsInputs = { inherit nixpkgs digga; };
@@ -26,7 +26,7 @@
   in
   {
 
-    jobs = ufrContract supportedSystems ./jobs jobsInputs;
+    jobs = ufrContract supportedSystems ./. jobsInputs;
 
   };
 }
