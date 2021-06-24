@@ -1,5 +1,0 @@
-[devshell]
-
-packages = [
-  "mdbook",
-]

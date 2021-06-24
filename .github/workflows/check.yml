@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2.3.4
+      with:
+        submodules: true
     - uses: cachix/install-nix-action@v13
       with:
         install_url: https://github.com/numtide/nix-flakes-installer/releases/download/nix-2.4pre20210415_76980a1/install
@@ -25,5 +27,5 @@ jobs:
     - run: nix develop --command evalnix
 
     # Check /examples/*
-    - run: nix develop --command check-classicalDevos
+    - run: nix develop --command check-downstream
     - run: nix develop --command check-groupByConfig

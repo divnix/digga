@@ -1,0 +1,3 @@
+[submodule "examples/downstream"]
+	path = examples/downstream
+	url = git@github.com:divnix/devos.git

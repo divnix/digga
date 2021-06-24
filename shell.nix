@@ -12,11 +12,50 @@ let
     help = "Checks ${name} example";
     command = ''
       set -e
+
+      diggaurl=
+      lockfile_updated=1
+      lockfile_present=1
+
+      cleanup() {
+        if is $lockfile_present; then
+          git checkout -- flake.lock
+        elif is $lockfile_updated; then
+          git rm -f flake.lock
+        fi
+        # ensure: restore input
+        [ -z $diggaurl ] || sed -i "s|\"path:../../\"|$diggaurl|g" flake.nix
+      }
+
+      digga_fixture() {
+        # ensure: replace input
+        diggaurl=$({ grep -o '"github:divnix/digga.*"' flake.nix || true; })
+        sed -i 's|"github:divnix/digga/.*"|"path:../../"|g' flake.nix
+      }
+
+      trap_err() {
+        local ret=$?
+        cleanup
+        echo -e \
+         "\033[1m\033[31m""exit $ret: \033[0m\033[1m""command [$BASH_COMMAND] failed""\033[0m"
+      }
+
+      is () { [ "$1" -eq "0" ]; }
+
+      trap 'trap_err' ERR
+
+      # --------------------------------------------------------------------------------
+
       cd $DEVSHELL_ROOT/examples/${name}
-      ${patchedNixUnstable}/bin/nix flake lock --update-input digga || git rm -f flake.lock
-      ${patchedNixUnstable}/bin/nix flake show || git rm -f flake.lock
-      ${patchedNixUnstable}/bin/nix flake check || git rm -f flake.lock
-      git rm -f flake.lock
+
+      digga_fixture
+
+      test -f flake.lock && lockfile_present=$? || true
+      ${patchedNixUnstable}/bin/nix flake lock --update-input digga; lockfile_updated=$?;
+      ${patchedNixUnstable}/bin/nix flake show
+      ${patchedNixUnstable}/bin/nix flake check
+
+      cleanup
     '';
   };
 
@@ -56,9 +95,9 @@ devshell.mkShell {
       command = "fd --extension nix --exec nix-instantiate --parse --quiet {} >/dev/null";
     }
 
-    (test "classicalDevos")
+    (test "downstream")
     (test "groupByConfig")
-    (test "all" // { command = "check-classicalDevos && groupByConfig"; })
+    (test "all" // { command = "check-downstream && groupByConfig"; })
 
   ];
 }
