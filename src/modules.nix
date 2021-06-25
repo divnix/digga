@@ -59,7 +59,6 @@
       ];
 
       # package and option is from fup
-      environment.systemPackages = [ pkgs.fup-repl ];
       nix.generateRegistryFromInputs = lib.mkDefault true;
 
       nix.extraOptions = ''

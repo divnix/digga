@@ -1,4 +1,4 @@
-{ lib, deploy }:
+{ lib, deploy, devshell }:
 let
   inherit (builtins) mapAttrs attrNames attrValues head isFunction;
 in
@@ -96,8 +96,8 @@ lib.systemFlake (lib.mergeAny
 
     outputsBuilder = channels:
       let
-        defaultChannel = channels.${cfg.nixos.hostDefaults.channelName};
-        system = defaultChannel.system;
+        pkgs = channels.${cfg.nixos.hostDefaults.channelName};
+        system = pkgs.system;
         defaultOutputsBuilder = {
 
           packages = lib.exporters.fromOverlays self.overlays channels;
@@ -144,8 +144,7 @@ lib.systemFlake (lib.mergeAny
                   createProfilesTestOp = n: host: {
                     name = "allProfilesTestFor-${n}";
                     value = lib.tests.profilesTest {
-                      inherit host;
-                      pkgs = defaultChannel;
+                      inherit host pkgs;
                     };
                   };
 
@@ -160,9 +159,9 @@ lib.systemFlake (lib.mergeAny
             )
           ;
 
-          devShell = lib.pkgs-lib.shell {
-            pkgs = defaultChannel;
-            extraModules = cfg.devshell.modules ++ cfg.devshell.externalModules;
+          devShell = (import devshell { inherit system pkgs; }).mkShell {
+            name = lib.mkDefault cfg.nixos.hostDefaults.channelName;
+            imports = cfg.devshell.modules ++ cfg.devshell.externalModules;
           };
 
         };
