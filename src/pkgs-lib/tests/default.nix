@@ -24,16 +24,22 @@ let
     in
     nixosTesting.makeTest calledTest;
 
-  profilesTest = args@{ host, ... }: mkTest args {
-    name = "profiles";
+  profilesTest = { host, pkgs }:
+    mkTest { inherit host pkgs; } {
+      name = "profiles";
 
-    machine = { suites, ... }: {
-      imports = suites.allProfiles;
+      machine = { suites ? null, ... }: {
+        imports =
+          let
+            allProfiles = lib.foldl
+              (lhs: rhs: lhs ++ rhs) [ ]
+              (builtins.attrValues suites);
+          in allProfiles;
+      };
+
+      testScript = ''
+        ${host.config.networking.hostName}.systemctl("is-system-running --wait")
+      '';
     };
-
-    testScript = ''
-      ${host.config.networking.hostName}.systemctl("is-system-running --wait")
-    '';
-  };
 in
 { inherit mkTest profilesTest; }

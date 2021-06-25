@@ -83,13 +83,29 @@
     };
 
   isoConfig = { self, fullHostConfig }:
-    { config, modulesPath, ... }@args: {
+    { config, modulesPath, suites, ... }@args: {
 
       imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal-new-kernel.nix" ];
       # avoid unwanted systemd service startups
-      # all strings in disabledModules get appended to modulesPath
-      # so convert each to list which can be coerced to string
-      disabledModules = map lib.singleton (args.suites.allProfiles or [ ]);
+      disabledModules =
+        if (suites != null)
+        then
+          let
+            allProfiles = lib.foldl
+              (lhs: rhs: lhs ++ rhs) [ ]
+              (builtins.attrValues suites);
+          in
+          # we choose to satisfy the path contract of disabledModules
+          assert
+            lib.assertMsg
+            (builtins.all (p: lib.types.path.check p) allProfiles)
+            "all profiles used in suites must be paths";
+          allProfiles
+        else lib.warn ''
+          Any profiles that you have defined outside 'importables.suites'
+          will not be disabled on this ISO. That means services defined
+          there will unnessecarily launch on this installation medium.
+        '' [ ];
 
       nix.registry = lib.mapAttrs (n: v: { flake = v; }) self.inputs;
 

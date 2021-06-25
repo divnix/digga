@@ -41,12 +41,6 @@
         name = baseNameOf path;
         value = lib.mkProfileAttrs (toString path);
       });
-
-      definedSuites = lib.mapAttrs (_: v: lib.profileMap v) (suites profileSet);
-
-      allProfiles = lib.foldl (lhs: rhs: lhs ++ rhs) [ ] (builtins.attrValues definedSuites);
     in
-    definedSuites // {
-      inherit allProfiles;
-    };
+      lib.mapAttrs (_: v: lib.profileMap v) (suites profileSet);
 }

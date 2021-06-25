@@ -263,13 +263,8 @@ let
               freeformType = attrs;
               options = {
                 suites = mkOption {
-                  type = pathToOr suitesType;
-                  # add `allProfiles` to it here
-                  apply = suites: suites // {
-                    allProfiles = lib.foldl
-                      (lhs: rhs: lhs ++ rhs) [ ]
-                      (builtins.attrValues suites);
-                  };
+                  type = nullOr (pathToOr suitesType);
+                  default = null;
                   description = ''
                     collections of profiles
                   '';

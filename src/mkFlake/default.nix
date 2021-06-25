@@ -128,18 +128,32 @@ lib.systemFlake (lib.mergeAny
                 (self.nixosConfigurations != { })
               ) then
                 let
-                  sieve = n: _: self.nixosConfigurations.${n}.config.nixpkgs.system == system;
-                  hostConfigsOnThisSystem = lib.filterAttrs sieve self.nixosConfigurations;
-                  createOp = n: _: {
+                  systemSieve = _: host: host.config.nixpkgs.system == system;
+                  hostConfigsOnThisSystem = lib.filterAttrs systemSieve self.nixosConfigurations;
+
+                  suitesSieve = n: host:
+                    lib.warnIf (host.config.lib.specialArgs.suites == null) ''
+                      '${n}' will only be tested against all profiles if 'importables.suites'
+                      are used to declare your profiles.
+                    ''
+                    host.config.lib.specialArgs.suites != null;
+                  hostConfigsOnThisSystemWithSuites = lib.filterAttrs suitesSieve hostConfigsOnThisSystem;
+
+                  createProfilesTestOp = n: host: {
                     name = "allProfilesTestFor-${n}";
                     value = lib.pkgs-lib.tests.profilesTest {
-                      host = self.nixosConfigurations."${n}";
+                      inherit host;
                       pkgs = defaultChannel;
                     };
                   };
-                in
-                # only for hosts that also are the same system as the current check attribute
-                if (hostConfigsOnThisSystem != [ ]) then lib.mapAttrs' createOp hostConfigsOnThisSystem else { }
+
+                  profilesTests = 
+                    # only for hosts that also are the same system as the current check attribute
+                    if (hostConfigsOnThisSystem != [ ])
+                    then lib.mapAttrs' createProfilesTestOp hostConfigsOnThisSystemWithSuites
+                    else { };
+
+                in profilesTests
               else { }
             )
           ;
