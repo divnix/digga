@@ -52,7 +52,6 @@
             nur.overlay
             agenix.overlay
             nvfetcher.overlay
-            (final: prev: { nvfetcher-bin = nvfetcher.defaultPackage.${final.system}; })
             ./pkgs/default.nix
           ];
         };
