@@ -141,7 +141,7 @@ lib.systemFlake (lib.mergeAny
 
                   createProfilesTestOp = n: host: {
                     name = "allProfilesTestFor-${n}";
-                    value = lib.pkgs-lib.tests.profilesTest {
+                    value = lib.tests.profilesTest {
                       inherit host;
                       pkgs = defaultChannel;
                     };
