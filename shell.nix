@@ -51,9 +51,9 @@ let
       digga_fixture
 
       test -f flake.lock && lockfile_present=$? || true
-      ${patchedNixUnstable}/bin/nix flake lock --update-input digga; lockfile_updated=$?;
-      ${patchedNixUnstable}/bin/nix flake show
-      ${patchedNixUnstable}/bin/nix flake check
+      ${patchedNixUnstable}/bin/nix flake lock --update-input digga "$@"; lockfile_updated=$?;
+      ${patchedNixUnstable}/bin/nix flake show "$@"
+      ${patchedNixUnstable}/bin/nix flake check "$@"
 
       cleanup
     '';

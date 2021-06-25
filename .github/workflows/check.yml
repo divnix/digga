@@ -27,5 +27,5 @@ jobs:
     - run: nix develop --command evalnix
 
     # Check /examples/*
-    - run: nix develop --command check-downstream
-    - run: nix develop --command check-groupByConfig
+    - run: nix develop --command -- check-downstream --show-trace
+    - run: nix develop --command -- check-groupByConfig --show-trace
