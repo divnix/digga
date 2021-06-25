@@ -7,7 +7,6 @@ channels: final: prev: {
     dhall
     discord
     element-desktop
-    manix
     rage
     nixpkgs-fmt
     qutebrowser

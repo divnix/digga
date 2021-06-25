@@ -31,5 +31,6 @@
 - [Integrations](./integrations/index.md)
   - [Cachix](./integrations/cachix.md)
   - [Deploy RS](./integrations/deploy.md)
+  - [NvFetcher](./integrations/nvfetcher.md)
   - [Hercules CI](./integrations/hercules.md)
 - [Contributing](./CONTRIBUTING.md)
