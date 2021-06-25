@@ -101,7 +101,7 @@ lib.systemFlake (lib.mergeAny
           packages = lib.exporters.fromOverlays self.overlays channels;
 
           checks =
-            (
+            ( # for self.homeConfigurations if present & non empty
               if (
                 (builtins.hasAttr "homeConfigurations" self) &&
                 (self.homeConfigurations != { })
@@ -110,28 +110,36 @@ lib.systemFlake (lib.mergeAny
               } else { }
             )
             //
-            (
+            ( # for self.deploy if present & non-empty
               if (
                 (builtins.hasAttr "deploy" self) &&
-                (self.deploy.nodes != { }) &&
+                (self.deploy != { })
+              ) then
+                let
+                  deployChecks = deploy.lib.${system}.deployChecks self.deploy;
+                  renameOp = n: v: {name = "deploy-" + n; value = deployChecks.${n}; };
+                in lib.mapAttrs' renameOp deployChecks
+              else {}
+            )
+            //
+            ( # for self.nixosConfigurations if present & non-empty
+              if (
                 (builtins.hasAttr "nixosConfigurations" self) &&
                 (self.nixosConfigurations != { })
               ) then
                 let
                   sieve = n: _: self.nixosConfigurations.${n}.config.nixpkgs.system == system;
-                  deployHostsOnSystem = lib.filterAttrs sieve self.deploy.nodes;
-
-                  # Arbitrarily test _first_ host only
-                  hostName = builtins.head (builtins.attrNames deployHostsOnSystem);
-                  host = self.nixosConfigurations.${hostName};
-                  deployChecks = deploy.lib.${system}.deployChecks { nodes = deployHostsOnSystem; };
-
-                in
-                if (deployHostsOnSystem != { }) then {
-                  "allProfilesTestFor-${hostName}" = lib.pkgs-lib.tests.profilesTest {
-                    inherit host; pkgs = defaultChannel;
+                  hostConfigsOnThisSystem = lib.filterAttrs sieve self.nixosConfigurations;
+                  createOp = n: _: {
+                    name = "allProfilesTestFor-${n}";
+                    value = lib.pkgs-lib.tests.profilesTest {
+                      host = self.nixosConfigurations."${n}";
+                      pkgs = defaultChannel;
+                    };
                   };
-                } else { }
+                in
+                # only for hosts that also are the same system as the current check attribute
+                if (hostConfigsOnThisSystem != [ ]) then lib.mapAttrs' createOp hostConfigsOnThisSystem else { }
               else { }
             )
           ;
