@@ -15,7 +15,10 @@ let
     info:
     if info.type == "github" then
       {
-        outPath = fetchTarball "https://api.${info.host or "github.com"}/repos/${info.owner}/${info.repo}/tarball/${info.rev}";
+        outPath = fetchTarball {
+          url = "https://api.${info.host or "github.com"}/repos/${info.owner}/${info.repo}/tarball/${info.rev}";
+          sha256 = info.narHash;
+        };
         rev = info.rev;
         shortRev = builtins.substring 0 7 info.rev;
         lastModified = info.lastModified;
@@ -25,7 +28,7 @@ let
       {
         outPath =
           builtins.fetchGit
-            ({ url = info.url; }
+            ({ url = info.url; sha256 = info.narHash; }
             // (if info ? rev then { inherit (info) rev; } else { })
             // (if info ? ref then { inherit (info) ref; } else { })
             );
@@ -42,13 +45,19 @@ let
       }
     else if info.type == "tarball" then
       {
-        outPath = fetchTarball info.url;
+        outPath = fetchTarball {
+          url = info.url;
+          sha256 = info.narHash;
+        };
         narHash = info.narHash;
       }
     else if info.type == "gitlab" then
       {
         inherit (info) rev narHash lastModified;
-        outPath = fetchTarball "https://${info.host or "gitlab.com"}/api/v4/projects/${info.owner}%2F${info.repo}/repository/archive.tar.gz?sha=${info.rev}";
+        outPath = fetchTarball {
+          url = "https://${info.host or "gitlab.com"}/api/v4/projects/${info.owner}%2F${info.repo}/repository/archive.tar.gz?sha=${info.rev}";
+          sha256 = info.narHash;
+        };
         shortRev = builtins.substring 0 7 info.rev;
       }
     else
