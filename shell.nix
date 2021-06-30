@@ -1,7 +1,9 @@
 { inputs, system ? builtins.currentSystem }:
 let
 
-  pkgs = import inputs.nixpkgs { inherit system; config = { }; overlays = [ ]; };
+  pkgs = import inputs.nixpkgs { inherit system; config = { }; overlays = [
+    (import ./patched)
+  ]; };
   devshell = import inputs.devshell { inherit pkgs system; };
 
   withCategory = category: attrset: attrset // { inherit category; };
@@ -52,23 +54,13 @@ let
       digga_fixture
 
       test -f flake.lock && lockfile_present=$? || true
-      ${patchedNixUnstable}/bin/nix flake lock --update-input digga "$@"; lockfile_updated=$?;
-      ${patchedNixUnstable}/bin/nix flake show "$@"
-      ${patchedNixUnstable}/bin/nix flake check "$@"
+      ${pkgs.nixUnstable}/bin/nix flake lock --update-input digga "$@"; lockfile_updated=$?;
+      ${pkgs.nixUnstable}/bin/nix flake show "$@"
+      ${pkgs.nixUnstable}/bin/nix flake check "$@"
 
       cleanup
     '';
   };
-
-  patchedNixUnstable = pkgs.nixUnstable.overrideAttrs (o: {
-    patches = (o.patches or [ ]) ++ [
-      (pkgs.fetchpatch {
-        name = "fix-follows.diff";
-        url = "https://patch-diff.githubusercontent.com/raw/NixOS/nix/pull/4641.patch";
-        sha256 = "sha256-nyLMSltS9XjNaF446M5yV/o08XtZkYbU7yMVnqYERts=";
-      })
-    ];
-  });
 
 in
 devshell.mkShell {
@@ -76,7 +68,7 @@ devshell.mkShell {
   packages = with pkgs; [
     fd
     nixpkgs-fmt
-    patchedNixUnstable
+    nixUnstable
   ];
 
   # tempfix: remove when merged https://github.com/numtide/devshell/pull/123

@@ -136,6 +136,11 @@
 
       in fupLib // diggaLib;
 
+      # a little extra service ...
+      overlays = {
+        patched = import ./patched;
+      };
+
       # digga-local use
       jobs =     ufrContract supportedSystems ./jobs      jobsInputs;
       checks =   ufrContract supportedSystems ./checks    checksInputs;
