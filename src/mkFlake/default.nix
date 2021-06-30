@@ -34,6 +34,8 @@ let
     lib.modules.customBuilds
   ];
 
+  unifyOverlays = channels: map (o: if builtins.isFunction (o null null) then o channels else o);
+
   stripChannel = channel: removeAttrs channel [
     # arguments in our channels api that shouldn't be passed to fup
     "overlays"
@@ -59,7 +61,7 @@ lib.systemFlake (lib.mergeAny
       (name: channel:
         stripChannel (channel // {
           # pass channels if "overlay" has three arguments
-          overlaysBuilder = channels: lib.unifyOverlays channels channel.overlays;
+          overlaysBuilder = channels: unifyOverlays channels channel.overlays;
         })
       )
       cfg.channels;

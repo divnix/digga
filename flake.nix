@@ -42,9 +42,6 @@
         let combinedLib = nixlib.lib // self; in
         with self;
         utils.lib // {
-          attrs = import ./src/attrs.nix { lib = combinedLib; };
-          lists = import ./src/lists.nix { lib = combinedLib; };
-          strings = import ./src/strings.nix { lib = combinedLib; };
           tests = import ./src/tests.nix { lib = combinedLib; };
 
           modules = import ./src/modules.nix {
