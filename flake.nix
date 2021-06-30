@@ -102,13 +102,38 @@
     in
 
     {
-      lib = with lib; utils.lib // {
-        inherit attrs lists modules importers generators;
-        inherit (lib)
-          mkFlake
-          mkDeployNodes
-          mkHomeConfigurations;
-      };
+      # what you came for ...
+      lib = let
+
+        fupLib = with utils.lib; {
+
+          inherit
+           systemFlake
+           exporters
+           ;
+
+        };
+
+        diggaLib = with lib; {
+
+          inherit
+            modules
+            importers
+            ;
+
+          inherit (lib)
+            mkFlake
+            mkDeployNodes
+            mkHomeConfigurations
+            ;
+
+          inherit (lib.tests)
+            mkTest
+            ;
+
+        };
+
+      in fupLib // diggaLib;
 
       # digga-local use
       jobs =     ufrContract supportedSystems ./jobs      jobsInputs;

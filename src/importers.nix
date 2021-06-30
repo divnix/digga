@@ -146,7 +146,7 @@ let
 
 in
 {
-  inherit rakeLeaves flattenTree;
+  inherit rakeLeaves;
 
   mkProfileAttrs = builtins.trace ''
     The function, mkProfileAttrs, has been deprecated, you can now create profile sets
