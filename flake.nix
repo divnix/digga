@@ -4,16 +4,12 @@
   inputs =
     {
       nixpkgs.url = "github:nixos/nixpkgs";
-      deploy = {
-        url = "github:serokell/deploy-rs";
-        inputs = {
-          nixpkgs.follows = "nixpkgs";
-          utils.follows = "utils";
-        };
-      };
       devshell.url = "github:numtide/devshell";
       utils.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
       nixlib.url = "github:divnix/nixpkgs.lib";
+
+      # Only overlay is used, so nixpkgs isn't a cost here
+      deploy.url = "github:serokell/deploy-rs";
 
       # We only use the nixosModules output which only needs nixpkgs lib
       # TODO: don't pull another 'nixpkgs' when only nixpkgs lib is needed
