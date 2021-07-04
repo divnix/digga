@@ -26,6 +26,9 @@ jobs:
     # Quick eval
     - run: nix develop --command evalnix
 
+    # Check the digga library
+    - run: nix flake check --show-trace
+
     # Check /examples/*
     - run: nix develop --command -- check-downstream --show-trace
     - run: nix develop --command -- check-groupByConfig --show-trace
