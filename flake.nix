@@ -3,27 +3,29 @@
 
   inputs =
     {
-      nixpkgs.url = "github:nixos/nixpkgs";
-      deploy = {
-        url = "github:serokell/deploy-rs";
-        inputs = {
-          nixpkgs.follows = "nixpkgs";
-          utils.follows = "utils";
-        };
-      };
+      nixpkgs.url = "github:nixos/nixpkgs/release-21.05";
+      nixlib.follows = "nixpkgs"; # "github:nix-community/nixpkgs.lib";
+      blank.url = "github:divnix/blank";
+      deploy.url = "github:serokell/deploy-rs";
+      deploy.inputs.nixpkgs.follows = "nixpkgs";
+      # deploy.inputs.utils.follows = "utils/flake-utils";
+
       devshell.url = "github:numtide/devshell";
       utils.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
-      nixlib.url = "github:divnix/nixpkgs.lib";
 
-      # We only use the nixosModules output which only needs nixpkgs lib
-      # TODO: don't pull another 'nixpkgs' when only nixpkgs lib is needed
-      nixos-generators = {
-        url = "github:nix-community/nixos-generators";
-        inputs = {
-          nixpkgs.follows = "nixpkgs";
-          utils.follows = "utils";
-        };
-      };
+      nixos-generators.url = "github:nix-community/nixos-generators";
+      nixos-generators.inputs.nixpkgs.follows = "blank";
+      nixos-generators.inputs.nixlib.follows = "nixlib";
+      # nixos-generators.inputs.utils.follows = "utils/flake-utils";
+
+      # start ANTI CORRUPTION LAYER
+      # remove after https://github.com/NixOS/nix/pull/4641
+      # and uncomment the poper lines using "utils/flake-utils" above
+      flake-utils.url = "github:numtide/flake-utils";
+      utils.inputs.flake-utils.follows = "flake-utils";
+      deploy.inputs.utils.follows = "flake-utils";
+      nixos-generators.inputs.utils.follows = "flake-utils";
+      # end ANTI CORRUPTION LAYER
     };
 
   outputs =
