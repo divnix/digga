@@ -1,3 +1,4 @@
+{ self, ... }:
 {
   modules = [ ./python.toml ];
 }

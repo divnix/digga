@@ -298,6 +298,7 @@ let
 
       nixosType = with types; submoduleWith {
         modules = [
+          { _module.args.self = self; }
           { options = (hostsOpt "nixos") // (hostDefaultsOpt "nixos") // importablesOpt; }
           legacyImportablesMod
         ];
@@ -305,6 +306,7 @@ let
 
       homeType = with types; submoduleWith {
         modules = [
+          { _module.args.self = self; }
           { options = externalModulesOpt // (exportedModulesOpt "home") // importablesOpt; }
           legacyImportablesMod
         ];
@@ -312,6 +314,7 @@ let
 
       devshellType = with types; submoduleWith {
         modules = [
+          { _module.args.self = self; }
           { options = externalModulesOpt // exportedDevshellModulesOpt; }
         ];
       };

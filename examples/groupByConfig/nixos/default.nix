@@ -1,3 +1,4 @@
+{ self, ... }:
 {
   hostDefaults.channelName = "nixos";
   hosts = {
