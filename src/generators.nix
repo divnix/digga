@@ -21,20 +21,16 @@
       **/
 
     lib.mapAttrs
-      (_: config:
-        let
-          pkgs = config.pkgs.appendOverlays [ deploy.overlay ];
-        in
-        lib.recursiveUpdate
-          {
-            hostname = config.config.networking.hostName;
+      (_: config: lib.recursiveUpdate
+        {
+          hostname = config.config.networking.hostName;
 
-            profiles.system = {
-              user = "root";
-              path = pkgs.deploy-rs.lib.activate.nixos config;
-            };
-          }
-          extraConfig)
+          profiles.system = {
+            user = "root";
+            path = deploy.lib.${config.config.nixpkgs.system}.activate.nixos config;
+          };
+        }
+        extraConfig)
       hosts;
 
   # DEPRECATED, suites no longer needs an explicit function after the importables generalization
@@ -46,5 +42,5 @@
         value = lib.mkProfileAttrs (toString path);
       });
     in
-    lib.mapAttrs (_: v: lib.profileMap v) (suites profileSet);
+      lib.mapAttrs (_: v: lib.profileMap v) (suites profileSet);
 }
