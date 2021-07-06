@@ -110,14 +110,21 @@ let
         };
       };
 
-      channelNameOpt = {
+      channelNameOpt = required: {
         channelName = mkOption {
-          type = with types; nullOr channelType;
-          default = null;
           description = ''
             Channel this host should follow
           '';
-        };
+        }
+        //
+        (
+          if required then {
+            type = with types; channelType;
+          } else {
+            type = with types; nullOr channelType;
+            default = null;
+          }
+        );
       };
 
       modulesOpt = {
@@ -286,13 +293,13 @@ let
       hostType = with types; attrsOf (submoduleWith {
         modules = [
           # per-host modules not exported, no external modules
-          { options = systemOpt // channelNameOpt // modulesOpt; }
+          { options = systemOpt // (channelNameOpt false) // modulesOpt; }
         ];
       });
 
       hostDefaultsType = name: with types; submoduleWith {
         modules = [
-          { options = systemOpt // channelNameOpt // externalModulesOpt // (exportedModulesOpt name); }
+          { options = systemOpt // (channelNameOpt true) // externalModulesOpt // (exportedModulesOpt name); }
         ];
       };
 

@@ -149,7 +149,7 @@ lib.systemFlake (lib.mergeAny
                     };
                   };
 
-                  profilesTests = 
+                  profilesTests =
                     # only for hosts that also are the same system as the current check attribute
                     if (hostConfigsOnThisSystem != [ ])
                     then lib.mapAttrs' createProfilesTestOp hostConfigsOnThisSystemWithSuites
