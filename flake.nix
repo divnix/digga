@@ -14,6 +14,9 @@
       deploy.url = "github:serokell/deploy-rs";
       deploy.inputs.nixpkgs.follows = "nixos";
 
+      # remove after https://github.com/NixOS/nix/pull/4641
+      nixpkgs.follows = "nixos";
+
       ci-agent = {
         url = "github:hercules-ci/hercules-ci-agent";
         inputs = { nix-darwin.follows = "darwin"; nixos-20_09.follows = "nixos"; nixos-unstable.follows = "latest"; };
