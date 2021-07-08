@@ -8,7 +8,11 @@
       digga = {
         url = "github:divnix/digga/develop";
         inputs.nipxkgs.follows = "latest";
+        inputs.deploy.follows = "deploy";
       };
+      bud.url = "github:divnix/bud"; # no need to follow nixpkgs: it never materialises
+      deploy.url = "github:serokell/deploy-rs";
+      deploy.inputs.nixpkgs.follows = "nixos";
 
       ci-agent = {
         url = "github:hercules-ci/hercules-ci-agent";
@@ -31,6 +35,7 @@
   outputs =
     { self
     , digga
+    , bud
     , nixos
     , ci-agent
     , home
@@ -38,8 +43,12 @@
     , nur
     , agenix
     , nvfetcher
+    , deploy
     , ...
     } @ inputs:
+    let
+      bud' = bud self; # rebind to access self.budModules
+    in
     digga.lib.mkFlake {
       inherit self inputs;
 
@@ -52,6 +61,7 @@
             nur.overlay
             agenix.overlay
             nvfetcher.overlay
+            deploy.overlay
             ./pkgs/default.nix
           ];
         };
@@ -79,6 +89,7 @@
             ci-agent.nixosModules.agent-profile
             home.nixosModules.home-manager
             agenix.nixosModules.age
+            (bud.nixosModules.bud bud')
           ];
         };
 
@@ -108,25 +119,20 @@
         };
       };
 
-      devshell.externalModules = { pkgs, ... }: {
-        commands = [
-          { package = pkgs.agenix; category = "secrets"; }
-          {
-            name = pkgs.nvfetcher-bin.pname;
-            help = pkgs.nvfetcher-bin.meta.description;
-            command = "cd $DEVSHELL_ROOT/pkgs; ${pkgs.nvfetcher-bin}/bin/nvfetcher -c ./sources.toml --no-output $@; nixpkgs-fmt _sources/";
-          }
-        ];
-      };
+      devshell.modules = [ (import ./shell bud') ];
 
       homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
 
       deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
 
-      defaultTemplate = self.templates.flk;
-      templates.flk.path = ./.;
-      templates.flk.description = "flk template";
+      defaultTemplate = self.templates.bud;
+      templates.bud.path = ./.;
+      templates.bud.description = "bud template";
 
+    }
+    //
+    {
+      budModules = { devos = import ./pkgs/bud; };
     }
   ;
 }
