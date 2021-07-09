@@ -25,13 +25,7 @@
               name = "${user}@${fqdn}";
               value = v.home;
             })
-            # build a modified variant of the home activation
-            # scripts for self.homeConfigurations
-            (c.config.lib.digga.mkBuild {
-              # use $HOME/.nix-profile and hm's activation script
-              # on hosts without system hm support
-              home-manager.useUserPackages = lib.mkForce false;
-            }).config.home-manager.users
+            c.config.home-manager.users
         )
       ;
       mkHmConfigs = lib.foldl op { };
