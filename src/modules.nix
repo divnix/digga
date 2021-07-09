@@ -30,8 +30,10 @@
     { options, ... }: {
       config = lib.optionalAttrs (options ? home-manager) {
         home-manager = {
+          # always use the system nixpkgs from the host's channel
           useGlobalPkgs = true;
-          useUserPackages = true;
+          # and use the possible future default (see manual)
+          useUserPackages = lib.mkDefault true;
 
           extraSpecialArgs = specialArgs;
           sharedModules = modules;
