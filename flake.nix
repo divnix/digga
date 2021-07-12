@@ -9,6 +9,7 @@
       digga.url = "github:divnix/digga/develop";
       digga.inputs.nixpkgs.follows = "nixos";
       digga.inputs.nixlib.follows = "nixos";
+      digga.inputs.home-manager.follows = "home";
 
       bud.url = "github:divnix/bud";
       bud.inputs.nixpkgs.follows = "nixos";
@@ -136,6 +137,9 @@
             base = [ direnv git ];
           };
         };
+        users = {
+          nixos = { suites, ... }: { imports = suites.base; };
+        }; # digga.lib.importers.rakeLeaves ./users/hm;
       };
 
       devshell.modules = [ (import ./shell bud') ];

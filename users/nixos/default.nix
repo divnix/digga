@@ -1,8 +1,6 @@
-{ ... }:
+{ hmUsers, ... }:
 {
-  home-manager.users.nixos = { suites, ... }: {
-    imports = suites.base;
-  };
+  home-manager.users = { inherit (hmUsers) nixos; };
 
   users.users.nixos = {
     uid = 1000;
