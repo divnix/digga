@@ -26,7 +26,7 @@
         lib.mkBefore builds;
     };
 
-  hmDefaults = { specialArgs, modules }:
+  hmNixosDefaults = { specialArgs, modules }:
     { options, ... }: {
       config = lib.optionalAttrs (options ? home-manager) {
         home-manager = {

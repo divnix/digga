@@ -14,8 +14,8 @@ let
 
   otherArguments = removeAttrs args (attrNames evaled.options);
 
-  defaultModules = [
-    (lib.modules.hmDefaults {
+  defaultHostModules = [
+    (lib.modules.hmNixosDefaults {
       specialArgs = cfg.home.importables;
       modules = cfg.home.modules ++ cfg.home.externalModules;
     })
@@ -78,7 +78,7 @@ lib.systemFlake (lib.mergeAny
 
     hostDefaults = lib.mergeAny (stripHost cfg.nixos.hostDefaults) {
       specialArgs = cfg.nixos.importables;
-      modules = cfg.nixos.hostDefaults.externalModules ++ defaultModules;
+      modules = cfg.nixos.hostDefaults.externalModules ++ defaultHostModules;
     };
 
     nixosModules = lib.exporters.modulesFromList cfg.nixos.hostDefaults.modules;
