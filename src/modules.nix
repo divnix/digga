@@ -39,7 +39,7 @@
       };
     };
 
-  globalDefaults = { self }:
+  globalDefaults = { self, hmUsers }:
     let
       experimentalFeatures = [
         "flakes"
@@ -73,7 +73,7 @@
       };
 
       _module.args = {
-        inherit self;
+        inherit self hmUsers;
         hosts = builtins.mapAttrs (_: host: host.config)
           (removeAttrs self.nixosConfigurations [ config.networking.hostName ]);
       };

@@ -10,6 +10,9 @@
       deploy.inputs.nixpkgs.follows = "nixpkgs";
       # deploy.inputs.utils.follows = "utils/flake-utils";
 
+      home-manager.url = "github:nix-community/home-manager";
+      home-manager.inputs.nixpkgs.follows = "nixlib";
+
       devshell.url = "github:numtide/devshell";
       utils.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
 
@@ -36,6 +39,7 @@
     , devshell
     , utils
     , nixos-generators
+    , home-manager
     , ...
     }@inputs:
     let
@@ -61,7 +65,10 @@
           };
 
           mkFlake = {
-            __functor = import ./src/mkFlake { inherit deploy devshell; lib = combinedLib; };
+            __functor = import ./src/mkFlake {
+              inherit deploy devshell home-manager;
+              lib = combinedLib;
+            };
             evalArgs = import ./src/mkFlake/evalArgs.nix {
               lib = combinedLib;
               inherit devshell;

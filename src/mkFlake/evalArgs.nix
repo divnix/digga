@@ -89,12 +89,17 @@ let
         description = "nix flake";
       };
 
+      userType = with types; pathToOr (functionTo attrs) // {
+        description = "hm user config";
+      };
+
       overlaysType = with types; coercedListOf overlayType;
       modulesType = with types; coercedListOf moduleType;
       devshellModulesType = with types; coercedListOf devshellModuleType;
       legacyProfilesType = with types; listOf path;
       legacySuitesType = with types; functionTo attrs;
       suitesType = with types; attrsOf (coercedListOf path);
+      usersType = with types; attrsOf userType;
 
       # #############
       # Options
@@ -286,6 +291,16 @@ let
         };
       };
 
+      usersOpt = {
+        users = mkOption {
+          type = with types; usersType;
+          default = { };
+          description = ''
+            HM users that can be deployed portably without a host.
+          '';
+        };
+      };
+
       # #############
       # Aggreagate types
       # #############
@@ -314,7 +329,7 @@ let
       homeType = with types; submoduleWith {
         specialArgs = { inherit self; };
         modules = [
-          { options = externalModulesOpt // (exportedModulesOpt "home") // importablesOpt; }
+          { options = externalModulesOpt // (exportedModulesOpt "home") // importablesOpt // usersOpt; }
           legacyImportablesMod
         ];
       };

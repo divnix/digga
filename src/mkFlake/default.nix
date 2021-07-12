@@ -1,4 +1,4 @@
-{ lib, deploy, devshell }:
+{ lib, deploy, devshell, home-manager }:
 let
   inherit (builtins) mapAttrs attrNames attrValues head isFunction;
 in
@@ -21,6 +21,7 @@ let
     })
     (lib.modules.globalDefaults {
       inherit self;
+      hmUsers = cfg.home.users;
     })
     ({ ... }@args: {
       lib.specialArgs = args.specialArgs or (builtins.trace ''
@@ -47,6 +48,32 @@ let
     # arguments in our hosts/hostDefaults api that shouldn't be passed to fup
     "externalModules"
   ];
+
+  portableHomeManagerConfiguration =
+    { username
+    , configuration
+    , pkgs
+    , system ? pkgs.system
+    }:
+    let
+      homeDirectoryPrefix =
+        if pkgs.stdenv.hostPlatform.isDarwin then "/Users" else "/home";
+      homeDirectory = "${homeDirectoryPrefix}/${username}";
+    in
+    home-manager.lib.homeManagerConfiguration {
+      inherit username homeDirectory pkgs system;
+
+      extraModules = cfg.home.modules ++ cfg.home.externalModules;
+      extraSpecialArgs = cfg.home.importables;
+
+      configuration = {
+        imports = [ configuration ];
+      } // (
+        if pkgs.stdenv.hostPlatform.isLinux
+        then { targets.genericLinux.enable = true; }
+        else { }
+      );
+    };
 
 in
 lib.systemFlake (lib.mergeAny
@@ -98,7 +125,17 @@ lib.systemFlake (lib.mergeAny
       let
         pkgs = channels.${cfg.nixos.hostDefaults.channelName};
         system = pkgs.system;
+
         defaultOutputsBuilder = {
+
+          homeConfigurations =
+            builtins.mapAttrs
+              (n: v: portableHomeManagerConfiguration {
+                username = n;
+                configuration = v;
+                inherit pkgs system;
+              })
+              cfg.home.users;
 
           packages = lib.exporters.fromOverlays self.overlays channels;
 
