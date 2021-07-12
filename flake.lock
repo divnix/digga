@@ -159,6 +159,9 @@
         "deploy": "deploy",
         "devshell": "devshell",
         "flake-utils": "flake-utils",
+        "home-manager": [
+          "home"
+        ],
         "nixlib": [
           "nixos"
         ],
@@ -169,11 +172,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1626404753,
-        "narHash": "sha256-Ag/e7tecRg19FS+B5kKXu3KTwiNlM/C8saofKvYPC8A=",
+        "lastModified": 1626451343,
+        "narHash": "sha256-TXHFFYJhkMknpb1l0nuCfHtOMLNabAKYY5XE2p8HFM0=",
         "owner": "divnix",
         "repo": "digga",
-        "rev": "ed0dc961c121db31ac05d19937e1482ce55ff599",
+        "rev": "37e5542b03e5da27ff7d2ed801fa118c2b87bf02",
         "type": "github"
       },
       "original": {
@@ -454,11 +457,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1624737817,
-        "narHash": "sha256-styqXE6Xli61dnDst0vB0Kb1tPt/aCuxOhTK0uGDCng=",
+        "lastModified": 1626288344,
+        "narHash": "sha256-TioHDqWJkw37jjx4DVrH6LCzwrUfAqXbWl4rKR91fpA=",
         "owner": "gytis-ivaskevicius",
         "repo": "flake-utils-plus",
-        "rev": "6bf0d314fc5623d5d4b5240ee0bf0a3a270d717c",
+        "rev": "5c6ee69f6957afc2fe22c094717d6d78516418b5",
         "type": "github"
       },
       "original": {
