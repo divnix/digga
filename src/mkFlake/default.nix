@@ -49,7 +49,7 @@ let
     "externalModules"
   ];
 
-  portableHomeManagerConfiguration =
+  mkPortableHomeManagerConfiguration =
     { username
     , configuration
     , pkgs
@@ -126,16 +126,18 @@ lib.systemFlake (lib.mergeAny
         pkgs = channels.${cfg.nixos.hostDefaults.channelName};
         system = pkgs.system;
 
+        homeConfigurationsPortable =
+          builtins.mapAttrs
+            (n: v: mkPortableHomeManagerConfiguration {
+              username = n;
+              configuration = v;
+              inherit pkgs system;
+            })
+            cfg.home.users;
+
         defaultOutputsBuilder = {
 
-          homeConfigurations =
-            builtins.mapAttrs
-              (n: v: portableHomeManagerConfiguration {
-                username = n;
-                configuration = v;
-                inherit pkgs system;
-              })
-              cfg.home.users;
+          inherit homeConfigurationsPortable;
 
           packages = lib.exporters.fromOverlays self.overlays channels;
 
@@ -147,6 +149,14 @@ lib.systemFlake (lib.mergeAny
               ) then {
                 homeConfigurations = lib.mapAttrs (n: v: v.activationPackage) self.homeConfigurations;
               } else { }
+            )
+            //
+            ( # for portableHomeConfigurations if present & non empty
+              if (
+                (homeConfigurationsPortable != { })
+              ) then
+                lib.mapAttrs (n: v: v.activationPackage) homeConfigurationsPortable
+              else { }
             )
             //
             ( # for self.deploy if present & non-empty
