@@ -16,6 +16,7 @@ let
       diggaurl=
       lockfile_updated=1
       lockfile_present=1
+      tempdigga="\"github:divnix/digga/$(git rev-parse HEAD)\""
 
       cleanup() {
         if is $lockfile_present; then
@@ -24,13 +25,13 @@ let
           git rm -f flake.lock
         fi
         # ensure: restore input
-        [ -z $diggaurl ] || sed -i "s|\"path:../../\"|$diggaurl|g" flake.nix
+        [ -z $diggaurl ] || sed -i "s|$tempdigga|$diggaurl|g" flake.nix
       }
 
       digga_fixture() {
         # ensure: replace input
         diggaurl=$({ grep -o '"github:divnix/digga.*"' flake.nix || true; })
-        sed -i 's|"github:divnix/digga/.*"|"path:../../"|g' flake.nix
+        sed -i "s|\"github:divnix/digga/.*\"|$tempdigga|g" flake.nix
       }
 
       trap_err() {
