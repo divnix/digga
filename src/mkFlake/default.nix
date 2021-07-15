@@ -148,8 +148,9 @@ lib.systemFlake (lib.mergeAny
                 (self.homeConfigurations != { })
               ) then
                 let
+                  seive = _: v: v.system == system; # only test for the appropriate system
                   collectActivationPackages = n: v: {name = "user-" + n; value = v.activationPackage; };
-                in lib.mapAttrs' collectActivationPackages self.homeConfigurations
+                in lib.filterAttrs seive (lib.mapAttrs' collectActivationPackages self.homeConfigurations)
               else { }
             )
             //
