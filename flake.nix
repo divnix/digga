@@ -5,34 +5,50 @@
     {
       nixos.url = "nixpkgs/release-21.05";
       latest.url = "nixpkgs";
-      digga = {
-        url = "github:divnix/digga/develop";
-        inputs.nipxkgs.follows = "latest";
-        inputs.deploy.follows = "deploy";
-      };
-      bud.url = "github:divnix/bud"; # no need to follow nixpkgs: it never materialises
-      deploy.url = "github:serokell/deploy-rs";
-      deploy.inputs.nixpkgs.follows = "nixos";
 
-      # remove after https://github.com/NixOS/nix/pull/4641
-      nixpkgs.follows = "nixos";
+      digga.url = "github:divnix/digga/develop";
+      digga.inputs.nixpkgs.follows = "nixos";
+      digga.inputs.nixlib.follows = "nixos";
 
-      ci-agent = {
-        url = "github:hercules-ci/hercules-ci-agent";
-        inputs = { nix-darwin.follows = "darwin"; nixos-20_09.follows = "nixos"; nixos-unstable.follows = "latest"; };
-      };
-      darwin.url = "github:LnL7/nix-darwin";
-      darwin.inputs.nixpkgs.follows = "latest";
+      bud.url = "github:divnix/bud";
+      bud.inputs.nixpkgs.follows = "nixos";
+      bud.inputs.devshell.follows = "digga/devshell";
+
       home.url = "github:nix-community/home-manager/release-21.05";
       home.inputs.nixpkgs.follows = "nixos";
-      # naersk.url = "github:nmattia/naersk";
-      # naersk.inputs.nixpkgs.follows = "latest";
+
+      darwin.url = "github:LnL7/nix-darwin";
+      darwin.inputs.nixpkgs.follows = "latest";
+
+      deploy.follows = "digga/deploy";
+
       agenix.url = "github:ryantm/agenix";
       agenix.inputs.nixpkgs.follows = "latest";
-      nixos-hardware.url = "github:nixos/nixos-hardware";
 
       nvfetcher.url = "github:berberman/nvfetcher";
       nvfetcher.inputs.nixpkgs.follows = "latest";
+      nvfetcher.inputs.flake-compat.follows = "digga/deploy/flake-compat";
+      nvfetcher.inputs.flake-utils.follows = "digga/utils/flake-utils";
+
+      ci-agent.url = "github:hercules-ci/hercules-ci-agent";
+      ci-agent.inputs.nix-darwin.follows = "darwin";
+      ci-agent.inputs.nixos-20_09.follows = "nixos";
+      ci-agent.inputs.nixos-unstable.follows = "latest";
+      ci-agent.inputs.flake-compat.follows = "digga/deploy/flake-compat";
+
+      naersk.url = "github:nmattia/naersk";
+      naersk.inputs.nixpkgs.follows = "latest";
+
+      nixos-hardware.url = "github:nixos/nixos-hardware";
+
+      # start ANTI CORRUPTION LAYER
+      # remove after https://github.com/NixOS/nix/pull/4641
+      nixpkgs.follows = "nixos";
+      nixlib.follows = "digga/nixlib";
+      blank.follows = "digga/blank";
+      utils.follows = "digga/utils";
+      flake-utils.follows = "digga/flake-utils";
+      # end ANTI CORRUPTION LAYER
     };
 
   outputs =
