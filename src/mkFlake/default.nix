@@ -146,16 +146,20 @@ lib.systemFlake (lib.mergeAny
               if (
                 (builtins.hasAttr "homeConfigurations" self) &&
                 (self.homeConfigurations != { })
-              ) then {
-                homeConfigurations = lib.mapAttrs (n: v: v.activationPackage) self.homeConfigurations;
-              } else { }
+              ) then
+                let
+                  collectActivationPackages = n: v: {name = "user-" + n; value = v.activationPackage; };
+                in lib.mapAttrs' collectActivationPackages self.homeConfigurations
+              else { }
             )
             //
             ( # for portableHomeConfigurations if present & non empty
               if (
                 (homeConfigurationsPortable != { })
               ) then
-                lib.mapAttrs (n: v: v.activationPackage) homeConfigurationsPortable
+                let
+                  collectActivationPackages = n: v: {name = "user-" + n; value = v.activationPackage; };
+                in lib.mapAttrs' collectActivationPackages homeConfigurationsPortable
               else { }
             )
             //
