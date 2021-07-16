@@ -9,7 +9,8 @@ let
   docs = pkgWithCategory "docs";
   devos = pkgWithCategory "devos";
 
-in {
+in
+{
   _file = toString ./.;
 
   imports = [ "${extraModulesPath}/git/hooks.nix" ];
@@ -35,7 +36,7 @@ in {
   ];
 
   commands = with pkgs; [
-    (devos (bud {inherit pkgs;}) )
+    (devos (bud { inherit pkgs; }))
     (devos nixUnstable)
     (devos agenix)
     {
