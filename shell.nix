@@ -4,7 +4,7 @@ let
   pkgs = import inputs.nixpkgs {
     inherit system; config = { };
     overlays = [
-      (import ./patched)
+      (import ./overlays/nix-patched.nix)
     ];
   };
   devshell = import inputs.devshell { inherit pkgs system; };

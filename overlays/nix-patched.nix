@@ -2,7 +2,8 @@ final: prev: {
 
   __dontExport = true;
 
-  nixUnstable = prev.nixUnstable.overrideAttrs (o: { patches = (o.patches or [ ]) ++ [
+  nixUnstable = prev.nixUnstable.overrideAttrs (o: {
+    patches = (o.patches or [ ]) ++ [
 
       # fixes nested `inputs.<name>.follows` syntax
       (prev.fetchpatch {

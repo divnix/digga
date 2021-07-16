@@ -143,12 +143,8 @@
         fupLib // diggaLib;
 
       # a little extra service ...
-      overlays = {
-        patchedNix = import ./patched;
-      };
-      nixosModules = {
-        nixConfig = lib.modules.nixConfig;
-      };
+      overlays = import ./overlays;
+      nixosModules = import ./modules;
 
       # digga-local use
       jobs = ufrContract supportedSystems ./jobs jobsInputs;
