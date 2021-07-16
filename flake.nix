@@ -73,92 +73,93 @@
     let
       bud' = bud self; # rebind to access self.budModules
     in
-    digga.lib.mkFlake {
-      inherit self inputs;
+    digga.lib.mkFlake
+      {
+        inherit self inputs;
 
-      channelsConfig = { allowUnfree = true; };
+        channelsConfig = { allowUnfree = true; };
 
-      channels = {
+        channels = {
+          nixos = {
+            imports = [ (digga.lib.importers.overlays ./overlays) ];
+            overlays = [
+              digga.overlays.patchedNix
+              nur.overlay
+              agenix.overlay
+              nvfetcher.overlay
+              deploy.overlay
+              ./pkgs/default.nix
+            ];
+          };
+          latest = { };
+        };
+
+        lib = import ./lib { lib = digga.lib // nixos.lib; };
+
+        sharedOverlays = [
+          (final: prev: {
+            __dontExport = true;
+            lib = prev.lib.extend (lfinal: lprev: {
+              our = self.lib;
+            });
+          })
+        ];
+
         nixos = {
-          imports = [ (digga.lib.importers.overlays ./overlays) ];
-          overlays = [
-            digga.overlays.patchedNix
-            nur.overlay
-            agenix.overlay
-            nvfetcher.overlay
-            deploy.overlay
-            ./pkgs/default.nix
-          ];
-        };
-        latest = { };
-      };
-
-      lib = import ./lib { lib = digga.lib // nixos.lib; };
-
-      sharedOverlays = [
-        (final: prev: {
-          __dontExport = true;
-          lib = prev.lib.extend (lfinal: lprev: {
-            our = self.lib;
-          });
-        })
-      ];
-
-      nixos = {
-        hostDefaults = {
-          system = "x86_64-linux";
-          channelName = "nixos";
-          imports = [ (digga.lib.importers.modules ./modules) ];
-          externalModules = [
-            { lib.our = self.lib; }
-            digga.nixosModules.nixConfig
-            ci-agent.nixosModules.agent-profile
-            home.nixosModules.home-manager
-            agenix.nixosModules.age
-            (bud.nixosModules.bud bud')
-          ];
-        };
-
-        imports = [ (digga.lib.importers.hosts ./hosts) ];
-        hosts = {
-          /* set host specific properties here */
-          NixOS = { };
-        };
-        importables = rec {
-          profiles = digga.lib.importers.rakeLeaves ./profiles // {
-            users = digga.lib.importers.rakeLeaves ./users;
+          hostDefaults = {
+            system = "x86_64-linux";
+            channelName = "nixos";
+            imports = [ (digga.lib.importers.modules ./modules) ];
+            externalModules = [
+              { lib.our = self.lib; }
+              digga.nixosModules.nixConfig
+              ci-agent.nixosModules.agent-profile
+              home.nixosModules.home-manager
+              agenix.nixosModules.age
+              (bud.nixosModules.bud bud')
+            ];
           };
-          suites = with profiles; rec {
-            base = [ core users.nixos users.root ];
+
+          imports = [ (digga.lib.importers.hosts ./hosts) ];
+          hosts = {
+            /* set host specific properties here */
+            NixOS = { };
+          };
+          importables = rec {
+            profiles = digga.lib.importers.rakeLeaves ./profiles // {
+              users = digga.lib.importers.rakeLeaves ./users;
+            };
+            suites = with profiles; rec {
+              base = [ core users.nixos users.root ];
+            };
           };
         };
-      };
 
-      home = {
-        imports = [ (digga.lib.importers.modules ./users/modules) ];
-        externalModules = [ ];
-        importables = rec {
-          profiles = digga.lib.importers.rakeLeaves ./users/profiles;
-          suites = with profiles; rec {
-            base = [ direnv git ];
+        home = {
+          imports = [ (digga.lib.importers.modules ./users/modules) ];
+          externalModules = [ ];
+          importables = rec {
+            profiles = digga.lib.importers.rakeLeaves ./users/profiles;
+            suites = with profiles; rec {
+              base = [ direnv git ];
+            };
           };
+          users = {
+            nixos = { suites, ... }: { imports = suites.base; };
+          }; # digga.lib.importers.rakeLeaves ./users/hm;
         };
-        users = {
-          nixos = { suites, ... }: { imports = suites.base; };
-        }; # digga.lib.importers.rakeLeaves ./users/hm;
-      };
 
-      devshell.modules = [ (import ./shell bud') ];
+        devshell.modules = [ (import ./shell bud') ];
 
-      homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
+        homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
 
-      deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
+        deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
 
-      defaultTemplate = self.templates.bud;
-      templates.bud.path = ./.;
-      templates.bud.description = "bud template";
+        defaultTemplate = self.templates.bud;
+        templates.bud.path = ./.;
+        templates.bud.description = "bud template";
 
-    }
+      }
     //
     {
       budModules = { devos = import ./pkgs/bud; };
