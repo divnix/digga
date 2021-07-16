@@ -231,8 +231,6 @@ version required.</p>
 <blockquote>
 <h5 id="notes"><a class="header" href="#notes"><em>Notes:</em></a></h5>
 <ul>
-<li>You can change <code>core</code> to <a href="start/../../index.html#community-profiles"><code>community</code></a>
-in the call to <code>flk get</code></li>
 <li>Flakes ignore files that have not been added to git, so be sure to stage new
 files before building the system.</li>
 <li>You can choose to simply clone the repo with git if you want to follow
@@ -496,8 +494,6 @@ overrides and the property is already set for you.</p>
 <a href="https://nixos.org/manual/nixos/stable/index.html#sec-writing-modules">options</a> in contrast to their <a href="https://nixos.org/manual/nixos/stable/index.html#sec-option-declarations"><em>declaration</em></a>. They're
 built into the NixOS module system for a reason: to elegantly provide a clear
 separation of concerns.</p>
-<p>If you need guidance, a community <a href="https://github.com/divnix/devos/tree/community/profiles">branch</a>
-is maintained to help get up to speed on their usage.</p>
 <h2 id="creation"><a class="header" href="#creation">Creation</a></h2>
 <p>Profiles are created with the <code>rakeLeaves</code> function which recursively collects
 <code>.nix</code> files from within a folder. The recursion stops at folders with a <code>default.nix</code> 
@@ -547,7 +543,7 @@ across hosts while minimizing boilerplate. Remember, anything machine
 specific belongs in your <a href="concepts/hosts.html">host</a> files instead.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="suites"><a class="header" href="#suites">Suites</a></h1>
 <p>Suites provide a mechanism for users to easily combine and name collecitons of
-profiles. For good examples, check out the suites defined in the community branch.</p>
+profiles.</p>
 <p><code>suites</code> are defined in the <code>importables</code> argument in either the <code>home</code> or <code>nixos</code>
 namespace. They are a special case of an <code>importable</code> which get passed as a special
 argument (one that can be use in an <code>imports</code> line) to your hosts. All lists defined
@@ -900,11 +896,11 @@ declared in <em>pkgs/flake.nix</em>:</p>
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get"><a class="header" href="#get">get</a></h1>
 <p>The <code>get</code> subcommand is useful for getting a bare copy of devos without the
-git history. You can pull either the core or community branches.</p>
+git history.</p>
 <h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
-<pre><code class="language-sh">flk get BRANCH DEST-DIR
+<pre><code class="language-sh">flk get DEST-DIR
 </code></pre>
-<p>If DEST-DIR is ommitted, it defaults to <em>./flk</em>.</p>
+<p>If DEST-DIR is ommitted, it defaults to <em>./devos</em>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="digitalocean"><a class="header" href="#digitalocean">DigitalOcean</a></h1>
 <p>Now you can <a href="https://cloud.digitalocean.com/droplets/new">create a droplet</a> using your custom image.</p>
 <p>Making a DigitalOcean compatible image for <code>hosts/NixOS.nix</code> is as simple as:</p>
@@ -1038,11 +1034,6 @@ automatically be pulled into the <a href="https://devos.divnix.com">mdbook</a>. 
 rendered on every change, so the docs should always be up to date.</p>
 <p>We also use <a href="https://bors.tech">BORS</a> to ensure that all pull requests pass the
 test suite once at least one review is completed.</p>
-<h2 id="community-prs"><a class="header" href="#community-prs">Community PRs</a></h2>
-<p>While much of your work in this template may be idiosyncratic in nature. Anything
-that might be generally useful to the broader NixOS community can be synced to
-the <code>community</code> branch to provide a host of useful NixOS configurations available
-&quot;out of the box&quot;.</p>
 <h1 id="style"><a class="header" href="#style">Style</a></h1>
 <p>If you wish to contribute please follow these guidelines:</p>
 <ul>

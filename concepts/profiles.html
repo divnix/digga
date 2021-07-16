@@ -148,8 +148,6 @@
 <a href="https://nixos.org/manual/nixos/stable/index.html#sec-writing-modules">options</a> in contrast to their <a href="https://nixos.org/manual/nixos/stable/index.html#sec-option-declarations"><em>declaration</em></a>. They're
 built into the NixOS module system for a reason: to elegantly provide a clear
 separation of concerns.</p>
-<p>If you need guidance, a community <a href="https://github.com/divnix/devos/tree/community/profiles">branch</a>
-is maintained to help get up to speed on their usage.</p>
 <h2 id="creation"><a class="header" href="#creation">Creation</a></h2>
 <p>Profiles are created with the <code>rakeLeaves</code> function which recursively collects
 <code>.nix</code> files from within a folder. The recursion stops at folders with a <code>default.nix</code> 
