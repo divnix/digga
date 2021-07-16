@@ -10,12 +10,6 @@ rendered on every change, so the docs should always be up to date.
 We also use [BORS](https://bors.tech) to ensure that all pull requests pass the
 test suite once at least one review is completed.
 
-## Community PRs
-While much of your work in this template may be idiosyncratic in nature. Anything
-that might be generally useful to the broader NixOS community can be synced to
-the `community` branch to provide a host of useful NixOS configurations available
-"out of the box".
-
 # Style
 If you wish to contribute please follow these guidelines:
 

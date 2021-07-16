@@ -1,6 +1,6 @@
 # Suites
 Suites provide a mechanism for users to easily combine and name collecitons of
-profiles. For good examples, check out the suites defined in the community branch.
+profiles.
 
 `suites` are defined in the `importables` argument in either the `home` or `nixos`
 namespace. They are a special case of an `importable` which get passed as a special
