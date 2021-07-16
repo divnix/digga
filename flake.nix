@@ -143,6 +143,8 @@
       # a little extra service ...
       overlays = {
         patched = import ./patched;
+      nixosModules = {
+        nixConfig = lib.modules.nixConfig;
       };
 
       # digga-local use

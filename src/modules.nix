@@ -41,33 +41,42 @@
       };
     };
 
-  globalDefaults = { self, hmUsers }:
+  nixConfig =
     let
-      experimentalFeatures = [
+
+      experimental-features = [
         "flakes"
         "nix-command"
+        "ca-references"
       ];
+      substituters = [
+        "https://nrdxp.cachix.org" # quality of life cache from our CI
+        "https://nix-community.cachix.org"
+      ];
+      trusted-public-keys = [
+        "nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+
     in
-    { channel, config, pkgs, ... }: {
-      users.mutableUsers = lib.mkDefault false;
-
-      hardware.enableRedistributableFirmware = lib.mkDefault true;
-
-      nix.nixPath = [
-        "nixpkgs=${channel.input}"
-        "nixos-config=${self}/lib/compat/nixos"
-      ] ++ lib.optionals (self.inputs ? home) [
-        "home-manager=${self.inputs.home}"
-      ];
+    {
 
       # package and option is from fup
       nix.generateRegistryFromInputs = lib.mkDefault true;
 
       nix.extraOptions = ''
-        experimental-features = ${lib.concatStringsSep " "
-          experimentalFeatures
-        }
+        experimental-features = ${lib.concatStringsSep " " experimental-features }
+        substituters = ${lib.concatStringsSep " " substituters }
+        trusted-public-keys = ${lib.concatStringsSep " " trusted-public-keys }
       '';
+
+    };
+
+  globalDefaults = { self, hmUsers }:
+    { config, pkgs, ... }: {
+      users.mutableUsers = lib.mkDefault false;
+
+      hardware.enableRedistributableFirmware = lib.mkDefault true;
 
       # digga lib can be accessed in modules directly as config.lib.digga
       lib = {
@@ -98,15 +107,16 @@
           in
           # we choose to satisfy the path contract of disabledModules
           assert
-            lib.assertMsg
+          lib.assertMsg
             (builtins.all (p: lib.types.path.check p) allProfiles)
             "all profiles used in suites must be paths";
           allProfiles
-        else lib.warn ''
-          Any profiles that you have defined outside 'importables.suites'
-          will not be disabled on this ISO. That means services defined
-          there will unnessecarily launch on this installation medium.
-        '' [ ];
+        else
+          lib.warn ''
+            Any profiles that you have defined outside 'importables.suites'
+            will not be disabled on this ISO. That means services defined
+            there will unnessecarily launch on this installation medium.
+          '' [ ];
 
       nix.registry = lib.mapAttrs (n: v: { flake = v; }) self.inputs;
 
