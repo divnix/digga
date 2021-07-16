@@ -142,7 +142,8 @@
 
       # a little extra service ...
       overlays = {
-        patched = import ./patched;
+        patchedNix = import ./patched;
+      };
       nixosModules = {
         nixConfig = lib.modules.nixConfig;
       };
