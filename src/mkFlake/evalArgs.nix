@@ -304,24 +304,24 @@ let
       };
 
       nixosType = with types; submoduleWith {
+        specialArgs = { inherit self; };
         modules = [
-          { _module.args.self = self; }
           { options = (hostsOpt "nixos") // (hostDefaultsOpt "nixos") // importablesOpt; }
           legacyImportablesMod
         ];
       };
 
       homeType = with types; submoduleWith {
+        specialArgs = { inherit self; };
         modules = [
-          { _module.args.self = self; }
           { options = externalModulesOpt // (exportedModulesOpt "home") // importablesOpt; }
           legacyImportablesMod
         ];
       };
 
       devshellType = with types; submoduleWith {
+        specialArgs = { inherit self; };
         modules = [
-          { _module.args.self = self; }
           { options = externalModulesOpt // exportedDevshellModulesOpt; }
         ];
       };
