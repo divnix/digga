@@ -78,6 +78,7 @@
         nixos = {
           imports = [ (digga.lib.importers.overlays ./overlays) ];
           overlays = [
+            digga.overlays.patchedNix
             nur.overlay
             agenix.overlay
             nvfetcher.overlay
@@ -106,6 +107,7 @@
           imports = [ (digga.lib.importers.modules ./modules) ];
           externalModules = [
             { lib.our = self.lib; }
+            digga.nixosModules.nixConfig
             ci-agent.nixosModules.agent-profile
             home.nixosModules.home-manager
             agenix.nixosModules.age
