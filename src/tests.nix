@@ -34,7 +34,8 @@ let
             allProfiles = lib.foldl
               (lhs: rhs: lhs ++ rhs) [ ]
               (builtins.attrValues suites);
-          in allProfiles;
+          in
+          allProfiles;
       };
 
       testScript = ''

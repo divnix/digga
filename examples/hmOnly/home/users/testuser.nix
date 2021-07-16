@@ -1,7 +1,9 @@
-{ suites, ... }: let
+{ suites, ... }:
+let
   name = "Test User";
   email = "test@example.com";
-in {
+in
+{
   imports = suites.shell;
 
   programs.browserpass.enable = true;

@@ -13,21 +13,21 @@ let
       Example input:
       ```
       {
-        a = {
-          b = {
-            c = <path>;
-          };
-        };
+      a = {
+      b = {
+      c = <path>;
+      };
+      };
       }
       ```
 
       Example output:
       ```
       {
-        "a.b.c" = <path>;
+      "a.b.c" = <path>;
       }
       ```
-    **/
+      **/
     tree:
     let
       op = sum: path: val:
@@ -80,12 +80,12 @@ let
       Example output:
       ```
       {
-        core = ./core;
-        base = base.nix;
-        main = {
-          dev = ./main/dev.nix;
-          os = ./main/os;
-        };
+      core = ./core;
+      base = base.nix;
+      main = {
+      dev = ./main/dev.nix;
+      os = ./main/os;
+      };
       }
       ```
       **/

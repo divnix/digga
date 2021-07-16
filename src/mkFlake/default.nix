@@ -142,41 +142,48 @@ lib.systemFlake (lib.mergeAny
           packages = lib.exporters.fromOverlays self.overlays channels;
 
           checks =
-            ( # for self.homeConfigurations if present & non empty
+            (
+              # for self.homeConfigurations if present & non empty
               if (
                 (builtins.hasAttr "homeConfigurations" self) &&
                 (self.homeConfigurations != { })
               ) then
                 let
                   seive = _: v: v.system == system; # only test for the appropriate system
-                  collectActivationPackages = n: v: {name = "user-" + n; value = v.activationPackage; };
-                in lib.filterAttrs seive (lib.mapAttrs' collectActivationPackages self.homeConfigurations)
+                  collectActivationPackages = n: v: { name = "user-" + n; value = v.activationPackage; };
+                in
+                lib.filterAttrs seive (lib.mapAttrs' collectActivationPackages self.homeConfigurations)
               else { }
             )
             //
-            ( # for portableHomeConfigurations if present & non empty
+            (
+              # for portableHomeConfigurations if present & non empty
               if (
                 (homeConfigurationsPortable != { })
               ) then
                 let
-                  collectActivationPackages = n: v: {name = "user-" + n; value = v.activationPackage; };
-                in lib.mapAttrs' collectActivationPackages homeConfigurationsPortable
+                  collectActivationPackages = n: v: { name = "user-" + n; value = v.activationPackage; };
+                in
+                lib.mapAttrs' collectActivationPackages homeConfigurationsPortable
               else { }
             )
             //
-            ( # for self.deploy if present & non-empty
+            (
+              # for self.deploy if present & non-empty
               if (
                 (builtins.hasAttr "deploy" self) &&
                 (self.deploy != { })
               ) then
                 let
                   deployChecks = deploy.lib.${system}.deployChecks self.deploy;
-                  renameOp = n: v: {name = "deploy-" + n; value = deployChecks.${n}; };
-                in lib.mapAttrs' renameOp deployChecks
-              else {}
+                  renameOp = n: v: { name = "deploy-" + n; value = deployChecks.${n}; };
+                in
+                lib.mapAttrs' renameOp deployChecks
+              else { }
             )
             //
-            ( # for self.nixosConfigurations if present & non-empty
+            (
+              # for self.nixosConfigurations if present & non-empty
               if (
                 (builtins.hasAttr "nixosConfigurations" self) &&
                 (self.nixosConfigurations != { })
@@ -190,7 +197,7 @@ lib.systemFlake (lib.mergeAny
                       '${n}' will only be tested against all profiles if 'importables.suites'
                       are used to declare your profiles.
                     ''
-                    host.config.lib.specialArgs.suites != null;
+                      host.config.lib.specialArgs.suites != null;
                   hostConfigsOnThisSystemWithSuites = lib.filterAttrs suitesSieve hostConfigsOnThisSystem;
 
                   createProfilesTestOp = n: host: {
@@ -206,7 +213,8 @@ lib.systemFlake (lib.mergeAny
                     then lib.mapAttrs' createProfilesTestOp hostConfigsOnThisSystemWithSuites
                     else { };
 
-                in profilesTests
+                in
+                profilesTests
               else { }
             )
           ;

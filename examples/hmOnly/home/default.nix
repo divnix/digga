@@ -1,4 +1,5 @@
-{ self, ... }: let
+{ self, ... }:
+let
   imp = self.inputs.digga.lib.importers;
 in
 {

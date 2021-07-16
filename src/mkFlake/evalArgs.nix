@@ -116,11 +116,12 @@ let
       };
 
       channelNameOpt = required: {
-        channelName = mkOption {
-          description = ''
-            Channel this host should follow
-          '';
-        }
+        channelName = mkOption
+          {
+            description = ''
+              Channel this host should follow
+            '';
+          }
         //
         (
           if required then {
