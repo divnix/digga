@@ -92,7 +92,7 @@
       # .. also: <repo-root>/ufr-polyfills
 
       # Super Stupid Flakes (ssf) / System As an Input - Style:
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin"];
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
       ufrContract = import ./ufr-polyfills/ufrContract.nix;
 
       # Dependency Groups - Style
@@ -108,37 +108,39 @@
 
     {
       # what you came for ...
-      lib = let
+      lib =
+        let
 
-        fupLib = with utils.lib; {
+          fupLib = with utils.lib; {
 
-          inherit
-           systemFlake
-           exporters
-           ;
+            inherit
+              systemFlake
+              exporters
+              ;
 
-        };
+          };
 
-        diggaLib = with lib; {
+          diggaLib = with lib; {
 
-          inherit
-            modules
-            importers
-            ;
+            inherit
+              modules
+              importers
+              ;
 
-          inherit (lib)
-            mkFlake
-            mkDeployNodes
-            mkHomeConfigurations
-            ;
+            inherit (lib)
+              mkFlake
+              mkDeployNodes
+              mkHomeConfigurations
+              ;
 
-          inherit (lib.tests)
-            mkTest
-            ;
+            inherit (lib.tests)
+              mkTest
+              ;
 
-        };
+          };
 
-      in fupLib // diggaLib;
+        in
+        fupLib // diggaLib;
 
       # a little extra service ...
       overlays = {
@@ -149,8 +151,8 @@
       };
 
       # digga-local use
-      jobs =     ufrContract supportedSystems ./jobs      jobsInputs;
-      checks =   ufrContract supportedSystems ./checks    checksInputs;
+      jobs = ufrContract supportedSystems ./jobs jobsInputs;
+      checks = ufrContract supportedSystems ./checks checksInputs;
       devShell = ufrContract supportedSystems ./shell.nix devShellInputs;
     };
 

@@ -1,9 +1,12 @@
 { inputs, system ? builtins.currentSystem }:
 let
 
-  pkgs = import inputs.nixpkgs { inherit system; config = { }; overlays = [
-    (import ./patched)
-  ]; };
+  pkgs = import inputs.nixpkgs {
+    inherit system; config = { };
+    overlays = [
+      (import ./patched)
+    ];
+  };
   devshell = import inputs.devshell { inherit pkgs system; };
 
   withCategory = category: attrset: attrset // { inherit category; };
@@ -40,7 +43,7 @@ let
         local ret=$?
         cleanup
         echo -e \
-         "\033[1m\033[31m""exit $ret: \033[0m\033[1m""command [$BASH_COMMAND] failed""\033[0m"
+          "\033[1m\033[31m""exit $ret: \033[0m\033[1m""command [$BASH_COMMAND] failed""\033[0m"
       }
 
       is () { [ "$1" -eq "0" ]; }
@@ -75,7 +78,7 @@ devshell.mkShell {
     {
       name = "NIX_CONFIG";
       value =
-      ''extra-experimental-features = nix-command flakes ca-references
+        ''extra-experimental-features = nix-command flakes ca-references
         extra-substituters = https://nrdxp.cachix.org https://nix-community.cachix.org
         extra-trusted-public-keys = nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs='';
     }
