@@ -113,7 +113,8 @@ devshell.mkShell {
 
     (test "downstream")
     (test "groupByConfig")
-    (test "all" // { command = "check-downstream && check-groupByConfig"; })
+    (test "hmOnly")
+    (test "all" // { command = "check-downstream && check-groupByConfig && check-hmOnly"; })
 
   ];
 }

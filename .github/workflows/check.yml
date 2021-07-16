@@ -32,3 +32,4 @@ jobs:
     # Check /examples/*
     - run: nix develop --command -- check-downstream --show-trace
     - run: nix develop --command -- check-groupByConfig --show-trace
+    - run: nix develop --command -- check-hmOnly --show-trace
