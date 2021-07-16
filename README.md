@@ -33,10 +33,6 @@ Also, have a look at [_flake.nix_][toc]. If anything is not immediately
 discoverable from there through [`digga`][digga] library's [`mkFlake`][mk-flake],
 please file a bug report.
 
-## In the Wild
-The author maintains his own branch, so you can take inspiration, direction, or
-make critical comments about the [code][please]. 😜
-
 ## Motivation
 NixOS provides an amazing abstraction to manage our environment, but that new
 power can sometimes bring feelings of overwhelm and confusion. Having a turing
@@ -46,16 +42,9 @@ and its satellite projects, from which best practices can evolve.
 
 ___The future is declarative! 🎉___
 
-## Community Profiles
-There are two branches from which to choose: [core][core] and
-[community][community]. The community branch builds on core and includes
-several ready-made profiles for discretionary use.
-
-Every package and NixOS profile declared in community is uploaded to
-[cachix](./integrations/cachix.md), so everything provided is available
-without building anything. This is especially useful for the packages that are
-[overridden](./concepts/overrides.md) from master, as without the cache,
-rebuilds are quite frequent.
+## Examples in the Wild
+The author maintains his own branch, so you can take inspiration, direction, or
+make critical comments about the [code][please]. 😜
 
 ## Shoulders
 This work does not reinvent the wheel. It stands on the [shoulders of the

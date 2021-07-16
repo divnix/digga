@@ -1,10 +1,10 @@
 # get
 The `get` subcommand is useful for getting a bare copy of devos without the
-git history. You can pull either the core or community branches.
+git history.
 
 ## Usage
 ```sh
-flk get BRANCH DEST-DIR
+flk get DEST-DIR
 ```
 
-If DEST-DIR is ommitted, it defaults to _./flk_.
+If DEST-DIR is ommitted, it defaults to _./devos_.

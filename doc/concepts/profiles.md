@@ -5,9 +5,6 @@ Profiles are a convenient shorthand for the [_definition_][definition] of
 built into the NixOS module system for a reason: to elegantly provide a clear
 separation of concerns.
 
-If you need guidance, a community [branch](https://github.com/divnix/devos/tree/community/profiles)
-is maintained to help get up to speed on their usage.
-
 ## Creation
 Profiles are created with the `rakeLeaves` function which recursively collects
 `.nix` files from within a folder. The recursion stops at folders with a `default.nix` 
