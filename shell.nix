@@ -71,6 +71,16 @@ devshell.mkShell {
     nixUnstable
   ];
 
+  env = [
+    {
+      name = "NIX_CONFIG";
+      value =
+      ''extra-experimental-features = nix-command flakes ca-references
+        extra-substituters = https://nrdxp.cachix.org https://nix-community.cachix.org
+        extra-trusted-public-keys = nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs='';
+    }
+  ];
+
   # tempfix: remove when merged https://github.com/numtide/devshell/pull/123
   devshell.startup.load_profiles = pkgs.lib.mkForce (pkgs.lib.noDepEntry ''
     # PATH is devshell's exorbitant privilige:
