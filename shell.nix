@@ -12,9 +12,9 @@ let
   withCategory = category: attrset: attrset // { inherit category; };
   util = withCategory "utils";
 
-  test = name: withCategory "tests" {
+  test = type: name: withCategory "tests" {
     name = "check-${name}";
-    help = "Checks ${name} example";
+    help = "Checks ${name} ${type}";
     command = ''
       set -e
 
@@ -52,7 +52,7 @@ let
 
       # --------------------------------------------------------------------------------
 
-      cd $DEVSHELL_ROOT/examples/${name}
+      cd $DEVSHELL_ROOT/${type}/${name}
 
       digga_fixture
 
@@ -116,10 +116,10 @@ devshell.mkShell {
       command = "fd --extension nix --exec nix-instantiate --parse --quiet {} >/dev/null";
     }
 
-    (test "downstream")
-    (test "groupByConfig")
-    (test "hmOnly")
-    (test "all" // { command = "check-downstream && check-groupByConfig && check-hmOnly"; })
+    (test "examples" "downstream")
+    (test "examples" "groupByConfig")
+    (test "examples" "hmOnly")
+    (test "examples" "all" // { command = "check-downstream && check-groupByConfig && check-hmOnly"; })
 
   ];
 }
