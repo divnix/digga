@@ -5,7 +5,6 @@ let
   argOpts = with lib; { config, ... }:
     let
       cfg = config;
-      inherit (args) self;
 
       # #############
       # Resolver
@@ -199,8 +198,8 @@ let
       inputOpt = name: {
         input = mkOption {
           type = flakeType;
-          default = self.inputs.${name};
-          defaultText = "self.inputs.<name>";
+          default = cfg.self.inputs.${name};
+          defaultText = "cfg.self.inputs.<name>";
           description = ''
             nixpkgs flake input to use for this channel
           '';
@@ -320,7 +319,7 @@ let
       };
 
       nixosType = with types; submoduleWith {
-        specialArgs = { inherit self; };
+        specialArgs.self = cfg.self;
         modules = [
           { options = (hostsOpt "nixos") // (hostDefaultsOpt "nixos") // importablesOpt; }
           legacyImportablesMod
@@ -328,7 +327,7 @@ let
       };
 
       homeType = with types; submoduleWith {
-        specialArgs = { inherit self; };
+        specialArgs.self = cfg.self;
         modules = [
           { options = externalModulesOpt // (exportedModulesOpt "home") // importablesOpt // usersOpt; }
           legacyImportablesMod
@@ -336,7 +335,7 @@ let
       };
 
       devshellType = with types; submoduleWith {
-        specialArgs = { inherit self; };
+        specialArgs.self = cfg.self;
         modules = [
           { options = externalModulesOpt // exportedDevshellModulesOpt; }
         ];
@@ -359,6 +358,7 @@ let
       options = with types; {
         self = mkOption {
           type = flakeType;
+          readOnly = true;
           description = "The flake to create the devos outputs for";
         };
         supportedSystems = mkOption {
