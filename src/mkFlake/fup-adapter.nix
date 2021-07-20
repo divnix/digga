@@ -1,5 +1,5 @@
 # constructor dependencies
-{ lib, ... }:
+{ lib, flake-utils-plus, internal-modules, ... }:
 
 {
   # evaluated digga configuration
@@ -23,11 +23,11 @@ let
   ];
 
   defaultHostModules = [
-    (lib.modules.hmNixosDefaults {
+    (internal-modules.hmNixosDefaults {
       specialArgs = config.home.importables;
       modules = config.home.modules ++ config.home.externalModules;
     })
-    (lib.modules.globalDefaults {
+    (internal-modules.globalDefaults {
       self = config.self;
       hmUsers = config.home.users;
     })
@@ -40,7 +40,7 @@ let
       ''
         { });
     })
-    lib.modules.customBuilds
+    internal-modules.customBuilds
   ];
 
   unifyOverlays = channels: map (o: if builtins.isFunction (o null null) then o channels else o);
@@ -57,10 +57,12 @@ let
     "externalModules"
   ];
 
-in
-lib.systemFlake (lib.mergeAny
-  {
-    inherit (config) self inputs channelsConfig supportedSystems;
+  diggaFupArgs = {
+    inherit (config)
+      self
+      inputs
+      channelsConfig
+      supportedSystems;
     inherit sharedOverlays;
 
     hosts = builtins.mapAttrs (_: stripHost) config.nixos.hosts;
@@ -74,18 +76,18 @@ lib.systemFlake (lib.mergeAny
       )
       config.channels;
 
-    hostDefaults = lib.mergeAny (stripHost config.nixos.hostDefaults) {
+    hostDefaults = flake-utils-plus.lib.mergeAny (stripHost config.nixos.hostDefaults) {
       specialArgs = config.nixos.importables;
       modules = config.nixos.hostDefaults.externalModules ++ defaultHostModules;
     };
 
-    nixosModules = lib.exporters.modulesFromList config.nixos.hostDefaults.modules;
+    nixosModules = flake-utils-plus.lib.exportModules config.nixos.hostDefaults.modules;
 
-    homeModules = lib.exporters.modulesFromList config.home.modules;
+    homeModules = flake-utils-plus.lib.exportModules config.home.modules;
 
-    devshellModules = lib.exporters.modulesFromList config.devshell.modules;
+    devshellModules = flake-utils-plus.lib.exportModules config.devshell.modules;
 
-    overlays = lib.exporters.internalOverlays {
+    overlays = flake-utils-plus.lib.exporters.internalOverlays {
       # since we can't detect overlays owned by self
       # we have to filter out ones exported by the inputs
       # optimally we would want a solution for NixOS/nix#4740
@@ -94,8 +96,14 @@ lib.systemFlake (lib.mergeAny
     };
 
     outputsBuilder = channels:
-      lib.mergeAny (defaultOutputsBuilder channels) (config.outputsBuilder channels);
+      flake-utils-plus.lib.mergeAny (defaultOutputsBuilder channels) (config.outputsBuilder channels);
 
-  }
-  extraArgs # for overlays list order
-)
+  };
+
+in
+flake-utils-plus.lib.mkFlake
+  (
+    flake-utils-plus.lib.mergeAny
+      diggaFupArgs
+      extraArgs # for overlays list order
+  )

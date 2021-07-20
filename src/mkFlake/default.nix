@@ -1,4 +1,4 @@
-{ lib, deploy, devshell, home-manager } @ injectedDeps:
+{ lib, deploy, devshell, home-manager, flake-utils-plus, flake-utils, internal-modules, tests } @ injectedDeps:
 
 { self, inputs, ... } @ args:
 let
@@ -9,12 +9,7 @@ let
   fupAdapter' = import ./fup-adapter.nix injectedDeps';
   defaultOutputsBuilder' = import ./outputs-builder.nix injectedDeps';
 
-  evaled = lib.evalModules {
-    modules = [
-      args
-      options'
-    ];
-  };
+  evaled = lib.evalModules { modules = [ args options' ]; };
 
   defaultOutputsBuilder = defaultOutputsBuilder' evaled.config;
 

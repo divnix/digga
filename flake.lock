@@ -86,6 +86,27 @@
         "type": "github"
       }
     },
+    "flake-utils-plus": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ]
+      },
+      "locked": {
+        "lastModified": 1626825599,
+        "narHash": "sha256-hgjuzvLE+jlt9z6k5MDbc0Fod4k5frZGnN7zArrlpd4=",
+        "owner": "gytis-ivaskevicius",
+        "repo": "flake-utils-plus",
+        "rev": "ea46e02fb86785d3c883d658b194d69799386673",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gytis-ivaskevicius",
+        "ref": "staging",
+        "repo": "flake-utils-plus",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -173,34 +194,13 @@
         "deploy": "deploy",
         "devshell": "devshell",
         "flake-utils": "flake-utils",
+        "flake-utils-plus": "flake-utils-plus",
         "home-manager": "home-manager",
         "nixlib": [
           "nixpkgs"
         ],
         "nixos-generators": "nixos-generators",
-        "nixpkgs": "nixpkgs",
-        "utils": "utils"
-      }
-    },
-    "utils": {
-      "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ]
-      },
-      "locked": {
-        "lastModified": 1626288344,
-        "narHash": "sha256-TioHDqWJkw37jjx4DVrH6LCzwrUfAqXbWl4rKR91fpA=",
-        "owner": "gytis-ivaskevicius",
-        "repo": "flake-utils-plus",
-        "rev": "5c6ee69f6957afc2fe22c094717d6d78516418b5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "gytis-ivaskevicius",
-        "ref": "staging",
-        "repo": "flake-utils-plus",
-        "type": "github"
+        "nixpkgs": "nixpkgs"
       }
     }
   },

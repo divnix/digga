@@ -1,5 +1,5 @@
 # constructor dependencies
-{ lib, deploy, devshell, home-manager, ... }:
+{ lib, deploy, devshell, home-manager, flake-utils-plus, tests, ... }:
 config: channels:
 let
 
@@ -47,7 +47,7 @@ in
 
   inherit homeConfigurationsPortable;
 
-  packages = lib.exporters.fromOverlays config.self.overlays channels;
+  packages = flake-utils-plus.lib.exportPackages config.self.overlays channels;
 
   devShell = (import devshell { inherit system pkgs; }).mkShell {
     name = lib.mkDefault config.nixos.hostDefaults.channelName;
@@ -115,7 +115,7 @@ in
 
           createProfilesTestOp = n: host: {
             name = "allProfilesTestFor-${n}";
-            value = lib.tests.profilesTest {
+            value = tests.profilesTest {
               inherit host pkgs;
             };
           };

@@ -18,7 +18,7 @@
       home-manager.inputs.nixpkgs.follows = "nixlib";
 
       devshell.url = "github:numtide/devshell";
-      utils.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
+      flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
 
       nixos-generators.url = "github:nix-community/nixos-generators";
       nixos-generators.inputs.nixpkgs.follows = "blank";
@@ -29,7 +29,7 @@
       # remove after https://github.com/NixOS/nix/pull/4641
       # and uncomment the poper lines using "utils/flake-utils" above
       flake-utils.url = "github:numtide/flake-utils";
-      utils.inputs.flake-utils.follows = "flake-utils";
+      flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
       deploy.inputs.utils.follows = "flake-utils";
       nixos-generators.inputs.utils.follows = "flake-utils";
       # end ANTI CORRUPTION LAYER
@@ -41,45 +41,34 @@
     , nixpkgs
     , deploy
     , devshell
-    , utils
+    , flake-utils-plus
     , nixos-generators
     , home-manager
     , ...
     }@inputs:
     let
 
-      lib = nixlib.lib.makeExtensible (self:
-        let combinedLib = nixlib.lib // self; in
-        with self;
-        utils.lib // {
-          tests = import ./src/tests.nix { lib = combinedLib; };
+      tests = import ./src/tests.nix { inherit (nixpkgs) lib; };
 
-          modules = import ./src/modules.nix {
-            lib = combinedLib;
-            inherit nixos-generators;
-          };
+      internal-modules = import ./src/modules.nix {
+        inherit (nixpkgs) lib;
+        inherit nixos-generators;
+      };
 
-          importers = import ./src/importers.nix {
-            lib = combinedLib;
-          };
+      importers = import ./src/importers.nix {
+        inherit (nixpkgs) lib;
+      };
 
-          generators = import ./src/generators.nix {
-            lib = combinedLib;
-            inherit deploy;
-          };
+      generators = import ./src/generators.nix {
+        inherit (nixpkgs) lib;
+        inherit deploy;
+      };
 
-          mkFlake = import ./src/mkFlake {
-            inherit deploy devshell home-manager;
-            lib = combinedLib;
-          };
-
-          inherit (attrs) mapFilterAttrs genAttrs' concatAttrs;
-          inherit (lists) unifyOverlays;
-          inherit (strings) rgxToString;
-          inherit (importers) profileMap flattenTree rakeLeaves mkProfileAttrs maybeImportDevshellModule;
-          inherit (generators) mkSuites mkDeployNodes mkHomeConfigurations;
-        }
-      );
+      mkFlake = import ./src/mkFlake {
+        inherit (nixpkgs) lib;
+        inherit (flake-utils-plus.inputs) flake-utils;
+        inherit deploy devshell home-manager flake-utils-plus internal-modules tests;
+      };
 
       # Unofficial Flakes Roadmap - Polyfills
       # .. see: https://demo.hedgedoc.org/s/_W6Ve03GK#
@@ -90,7 +79,7 @@
       ufrContract = import ./ufr-polyfills/ufrContract.nix;
 
       # Dependency Groups - Style
-      checksInputs = { inherit nixpkgs lib; nixlib = nixlib.lib; };
+      checksInputs = { inherit nixpkgs; digga = self; };
       jobsInputs = { inherit nixpkgs; digga = self; };
       devShellInputs = { inherit nixpkgs devshell; };
 
@@ -98,43 +87,36 @@
       # .. it's adopted by a growing number of projects.
       # Please consider adopting it if you want to help to improve flakes.
 
+      # DEPRECATED - will be removed timely
+      deprecated = import ./deprecated.nix {
+        inherit (nixpkgs) lib;
+        inherit (self) nixosModules;
+        inherit flake-utils-plus internal-modules importers;
+      };
+
     in
 
     {
       # what you came for ...
-      lib =
-        let
+      lib = {
+        inherit (flake-utils-plus.inputs.flake-utils) defaultSystems eachSystem eachDefaultSystem filterPackages;
+        inherit (flake-utils-plus) exportModules exportOverlays exportPackages;
+        inherit mkFlake;
+        inherit (tests) mkTest;
+        inherit (importers) flattenTree rakeLeaves importOverlays importModules importHosts;
+        inherit (generators) mkDeployNodes mkHomeConfigurations;
 
-          fupLib = with utils.lib; {
+        # DEPRECATED - will be removed soon
+        inherit (deprecated)
+          mkSuites
+          profileMap
+          mkProfileAttrs
+          exporters
+          modules
+          importers
+          ;
 
-            inherit
-              systemFlake
-              exporters
-              ;
-
-          };
-
-          diggaLib = with lib; {
-
-            inherit
-              modules
-              importers
-              ;
-
-            inherit (lib)
-              mkFlake
-              mkDeployNodes
-              mkHomeConfigurations
-              ;
-
-            inherit (lib.tests)
-              mkTest
-              ;
-
-          };
-
-        in
-        fupLib // diggaLib;
+      };
 
       # a little extra service ...
       overlays = import ./overlays;

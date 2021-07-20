@@ -1,5 +1,5 @@
 # constructor dependencies
-{ lib, devshell, self, inputs, ... }:
+{ lib, devshell, flake-utils, self, inputs, ... }:
 
 with lib;
 
@@ -370,7 +370,7 @@ in
     };
     supportedSystems = mkOption {
       type = listOf str;
-      default = lib.defaultSystems;
+      default = flake-utils.lib.defaultSystems;
       description = ''
         The systems supported by this flake
       '';
