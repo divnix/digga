@@ -33,7 +33,7 @@
       nvfetcher.url = "github:berberman/nvfetcher";
       nvfetcher.inputs.nixpkgs.follows = "latest";
       nvfetcher.inputs.flake-compat.follows = "digga/deploy/flake-compat";
-      nvfetcher.inputs.flake-utils.follows = "digga/utils/flake-utils";
+      nvfetcher.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
 
       ci-agent.url = "github:hercules-ci/hercules-ci-agent";
       ci-agent.inputs.nix-darwin.follows = "darwin";
@@ -51,7 +51,7 @@
       nixpkgs.follows = "nixos";
       nixlib.follows = "digga/nixlib";
       blank.follows = "digga/blank";
-      utils.follows = "digga/utils";
+      flake-utils-plus.follows = "digga/flake-utils-plus";
       flake-utils.follows = "digga/flake-utils";
       # end ANTI CORRUPTION LAYER
     };
@@ -81,7 +81,7 @@
 
         channels = {
           nixos = {
-            imports = [ (digga.lib.importers.overlays ./overlays) ];
+            imports = [ (digga.lib.importOverlays ./overlays) ];
             overlays = [
               digga.overlays.patchedNix
               nur.overlay
@@ -109,7 +109,7 @@
           hostDefaults = {
             system = "x86_64-linux";
             channelName = "nixos";
-            imports = [ (digga.lib.importers.modules ./modules) ];
+            imports = [ (digga.lib.importModules ./modules) ];
             externalModules = [
               { lib.our = self.lib; }
               digga.nixosModules.nixConfig
@@ -120,14 +120,14 @@
             ];
           };
 
-          imports = [ (digga.lib.importers.hosts ./hosts) ];
+          imports = [ (digga.lib.importHosts ./hosts) ];
           hosts = {
             /* set host specific properties here */
             NixOS = { };
           };
           importables = rec {
-            profiles = digga.lib.importers.rakeLeaves ./profiles // {
-              users = digga.lib.importers.rakeLeaves ./users;
+            profiles = digga.lib.rakeLeaves ./profiles // {
+              users = digga.lib.rakeLeaves ./users;
             };
             suites = with profiles; rec {
               base = [ core users.nixos users.root ];
@@ -136,10 +136,10 @@
         };
 
         home = {
-          imports = [ (digga.lib.importers.modules ./users/modules) ];
+          imports = [ (digga.lib.importModules ./users/modules) ];
           externalModules = [ ];
           importables = rec {
-            profiles = digga.lib.importers.rakeLeaves ./users/profiles;
+            profiles = digga.lib.rakeLeaves ./users/profiles;
             suites = with profiles; rec {
               base = [ direnv git ];
             };

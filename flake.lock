@@ -159,6 +159,7 @@
         "deploy": "deploy",
         "devshell": "devshell",
         "flake-utils": "flake-utils",
+        "flake-utils-plus": "flake-utils-plus",
         "home-manager": [
           "home"
         ],
@@ -168,15 +169,14 @@
         "nixos-generators": "nixos-generators",
         "nixpkgs": [
           "nixos"
-        ],
-        "utils": "utils"
+        ]
       },
       "locked": {
-        "lastModified": 1626470112,
-        "narHash": "sha256-hC5I3A1HxfGi45avpYBf8zXi1hQkHYWgRgUM4sF9byI=",
+        "lastModified": 1626826189,
+        "narHash": "sha256-Ao4zLLMvs0Q8mDMtTbi7JyUHZAPUkZpo1OArgKLTOzA=",
         "owner": "divnix",
         "repo": "digga",
-        "rev": "f25928ed0bf05ab20af5a8231d264ae01b42ab34",
+        "rev": "e97d0ec012df585529eefe0381e087d73261e76e",
         "type": "github"
       },
       "original": {
@@ -214,6 +214,28 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils-plus": {
+      "inputs": {
+        "flake-utils": [
+          "digga",
+          "flake-utils"
+        ]
+      },
+      "locked": {
+        "lastModified": 1626825599,
+        "narHash": "sha256-hgjuzvLE+jlt9z6k5MDbc0Fod4k5frZGnN7zArrlpd4=",
+        "owner": "gytis-ivaskevicius",
+        "repo": "flake-utils-plus",
+        "rev": "ea46e02fb86785d3c883d658b194d69799386673",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gytis-ivaskevicius",
+        "ref": "staging",
+        "repo": "flake-utils-plus",
         "type": "github"
       }
     },
@@ -373,7 +395,7 @@
         ],
         "flake-utils": [
           "digga",
-          "utils",
+          "flake-utils-plus",
           "flake-utils"
         ],
         "nixpkgs": [
@@ -429,6 +451,10 @@
           "digga",
           "flake-utils"
         ],
+        "flake-utils-plus": [
+          "digga",
+          "flake-utils-plus"
+        ],
         "home": "home",
         "latest": "latest",
         "naersk": "naersk_2",
@@ -442,33 +468,7 @@
           "nixos"
         ],
         "nur": "nur",
-        "nvfetcher": "nvfetcher",
-        "utils": [
-          "digga",
-          "utils"
-        ]
-      }
-    },
-    "utils": {
-      "inputs": {
-        "flake-utils": [
-          "digga",
-          "flake-utils"
-        ]
-      },
-      "locked": {
-        "lastModified": 1626288344,
-        "narHash": "sha256-TioHDqWJkw37jjx4DVrH6LCzwrUfAqXbWl4rKR91fpA=",
-        "owner": "gytis-ivaskevicius",
-        "repo": "flake-utils-plus",
-        "rev": "5c6ee69f6957afc2fe22c094717d6d78516418b5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "gytis-ivaskevicius",
-        "ref": "staging",
-        "repo": "flake-utils-plus",
-        "type": "github"
+        "nvfetcher": "nvfetcher"
       }
     }
   },
