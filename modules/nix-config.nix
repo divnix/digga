@@ -20,9 +20,10 @@ in
   # package and option is from fup
   nix.generateRegistryFromInputs = lib.mkDefault true;
 
+  # missing merge semantics in this option force us to use extra-* for now
   nix.extraOptions = ''
-    experimental-features = ${lib.concatStringsSep " " experimental-features }
-    substituters = ${lib.concatStringsSep " " substituters }
-    trusted-public-keys = ${lib.concatStringsSep " " trusted-public-keys }
+    extra-experimental-features = ${lib.concatStringsSep " " experimental-features }
+    extra-substituters = ${lib.concatStringsSep " " substituters }
+    extra-trusted-public-keys = ${lib.concatStringsSep " " trusted-public-keys }
   '';
 }
