@@ -68,15 +68,9 @@
             inherit deploy;
           };
 
-          mkFlake = {
-            __functor = import ./src/mkFlake {
-              inherit deploy devshell home-manager;
-              lib = combinedLib;
-            };
-            evalArgs = import ./src/mkFlake/evalArgs.nix {
-              lib = combinedLib;
-              inherit devshell;
-            };
+          mkFlake = import ./src/mkFlake {
+            inherit deploy devshell home-manager;
+            lib = combinedLib;
           };
 
           inherit (attrs) mapFilterAttrs genAttrs' concatAttrs;
