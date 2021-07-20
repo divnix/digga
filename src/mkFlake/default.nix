@@ -1,6 +1,6 @@
 { lib, deploy, devshell, home-manager } @ injectedDeps:
 
-{ self, ... } @ args:
+{ self, inputs, ... } @ args:
 let
 
   options' = import ./options.nix injectedDeps;

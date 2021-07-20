@@ -100,6 +100,7 @@ let
   legacySuitesType = with types; functionTo attrs;
   suitesType = with types; attrsOf (coercedListOf path);
   usersType = with types; attrsOf userType;
+  inputsType = with types; attrsOf flakeType;
 
   # #############
   # Options
@@ -320,7 +321,10 @@ let
   };
 
   nixosType = with types; submoduleWith {
-    specialArgs.self = config.self;
+    specialArgs = {
+      self = config.self;
+      inputs = config.inputs;
+    };
     modules = [
       { options = (hostsOpt "nixos") // (hostDefaultsOpt "nixos") // importablesOpt; }
       legacyImportablesMod
@@ -328,7 +332,10 @@ let
   };
 
   homeType = with types; submoduleWith {
-    specialArgs.self = config.self;
+    specialArgs = {
+      self = config.self;
+      inputs = config.inputs;
+    };
     modules = [
       { options = externalModulesOpt // (exportedModulesOpt "home") // importablesOpt // usersOpt; }
       legacyImportablesMod
@@ -336,7 +343,10 @@ let
   };
 
   devshellType = with types; submoduleWith {
-    specialArgs.self = config.self;
+    specialArgs = {
+      self = config.self;
+      inputs = config.inputs;
+    };
     modules = [
       { options = externalModulesOpt // exportedDevshellModulesOpt; }
     ];
@@ -361,6 +371,11 @@ in
       type = flakeType;
       readOnly = true;
       description = "The flake to create the devos outputs for";
+    };
+    inputs = mkOption {
+      type = inputsType;
+      readOnly = true;
+      description = "The flake's inputs";
     };
     supportedSystems = mkOption {
       type = listOf str;

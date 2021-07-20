@@ -60,8 +60,7 @@ let
 in
 lib.systemFlake (lib.mergeAny
   {
-    inherit (config) self channelsConfig supportedSystems;
-    inherit (config.self) inputs;
+    inherit (config) self inputs channelsConfig supportedSystems;
     inherit sharedOverlays;
 
     hosts = builtins.mapAttrs (_: stripHost) config.nixos.hosts;

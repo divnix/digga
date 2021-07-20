@@ -1,6 +1,6 @@
-{ self, ... }:
+{ self, inputs, ... }:
 let
-  imp = self.inputs.digga.lib.importers;
+  imp = inputs.digga.lib.importers;
 in
 {
   imports = [ (imp.modules ./modules) ];
