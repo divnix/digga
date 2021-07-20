@@ -1,5 +1,5 @@
 # constructor dependencies
-{ lib, deploy, devshell, home-manager }:
+{ lib, deploy, devshell, home-manager, ... }:
 config: channels:
 let
 

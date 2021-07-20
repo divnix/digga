@@ -89,7 +89,8 @@ lib.systemFlake (lib.mergeAny
       # since we can't detect overlays owned by self
       # we have to filter out ones exported by the inputs
       # optimally we would want a solution for NixOS/nix#4740
-      inherit (config.self) pkgs inputs;
+      inherit (config.self) pkgs;
+      inherit (config) inputs;
     };
 
     outputsBuilder = channels:

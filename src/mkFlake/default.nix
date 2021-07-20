@@ -2,10 +2,12 @@
 
 { self, inputs, ... } @ args:
 let
+  # avoid infinite recursions w.r.t. using self or inputs in imports
+  injectedDeps' = injectedDeps // { inherit (args) self inputs; };
 
-  options' = import ./options.nix injectedDeps;
-  fupAdapter' = import ./fup-adapter.nix injectedDeps;
-  defaultOutputsBuilder' = import ./outputs-builder.nix injectedDeps;
+  options' = import ./options.nix injectedDeps';
+  fupAdapter' = import ./fup-adapter.nix injectedDeps';
+  defaultOutputsBuilder' = import ./outputs-builder.nix injectedDeps';
 
   evaled = lib.evalModules {
     modules = [

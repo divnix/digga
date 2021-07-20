@@ -1,5 +1,5 @@
 # constructor dependencies
-{ lib, devshell, ... }:
+{ lib, devshell, self, inputs, ... }:
 
 with lib;
 
@@ -321,10 +321,7 @@ let
   };
 
   nixosType = with types; submoduleWith {
-    specialArgs = {
-      self = config.self;
-      inputs = config.inputs;
-    };
+    specialArgs = { inherit self inputs; };
     modules = [
       { options = (hostsOpt "nixos") // (hostDefaultsOpt "nixos") // importablesOpt; }
       legacyImportablesMod
@@ -332,10 +329,7 @@ let
   };
 
   homeType = with types; submoduleWith {
-    specialArgs = {
-      self = config.self;
-      inputs = config.inputs;
-    };
+    specialArgs = { inherit self inputs; };
     modules = [
       { options = externalModulesOpt // (exportedModulesOpt "home") // importablesOpt // usersOpt; }
       legacyImportablesMod
@@ -343,10 +337,7 @@ let
   };
 
   devshellType = with types; submoduleWith {
-    specialArgs = {
-      self = config.self;
-      inputs = config.inputs;
-    };
+    specialArgs = { inherit self inputs; };
     modules = [
       { options = externalModulesOpt // exportedDevshellModulesOpt; }
     ];
