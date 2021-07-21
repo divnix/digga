@@ -70,9 +70,6 @@
     , deploy
     , ...
     } @ inputs:
-    let
-      bud' = bud self; # rebind to access self.budModules
-    in
     digga.lib.mkFlake
       {
         inherit self inputs;
@@ -117,7 +114,7 @@
               ci-agent.nixosModules.agent-profile
               home.nixosModules.home-manager
               agenix.nixosModules.age
-              (bud.nixosModules.bud bud')
+              bud.nixosModules.bud
             ];
           };
 
@@ -150,7 +147,7 @@
           }; # digga.lib.importers.rakeLeaves ./users/hm;
         };
 
-        devshell.modules = [ (import ./shell bud') ];
+        devshell = ./shell;
 
         homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
 
