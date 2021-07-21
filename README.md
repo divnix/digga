@@ -1,40 +1,86 @@
 [![Bors enabled](https://bors.tech/images/badge_small.svg)](https://app.bors.tech/repositories/33905)
 [![MIT License](https://img.shields.io/github/license/divnix/devos)][mit]
 [![NixOS](https://img.shields.io/badge/NixOS-unstable-blue.svg?style=flat&logo=NixOS&logoColor=white)](https://nixos.org)
+[![Chat](https://img.shields.io/badge/chat-join%20us-brightgreen.svg?style=flat&logo=matrix&logoColor=white)](https://matrix.to/#/#devos:nixos.org)
 
 > #### ⚠ Advisory ⚠
-> DevOS requires the [flakes][flakes] feature available via an _experimental_
+> Digga requires the [flakes][flakes] feature available via an _experimental_
 > branch of [nix][nix]. Until nix 3.0 is released, this project
 > should be considered unstable, though quite usable as flakes have been
-> maturing _well_ [for a while](https://github.com/divnix/devos/tree/17713c22d07c54525c728c62060a0428b76dee3b).
+> maturing _well_ for a while.
 
 
-Digga is the underlying library implementation for the
-[DevOS template](https://github.com/divnix/devos). There is an API to create
-productive personal and professional flakes in a clean and organized manner.
-By using this library your creations will be part of a community-first sharing
-model.
+Digga &mdash; slangy german for "good friend" &mdash; is a flake utility library
+that helps you declaratively craft and manage all three layers of your system
+environment within a single [nix flakes][flakes] repository:
+
+- development shells (via [`numtide/devshell`][devshell]),
+- home environments (via [`nix-community/home-manager`][home-manager]), and
+- host configurations (via [`NixOS/nixpkgs/nixos`][nixpkgs]).
+
+This library is based on [flake-utils-plus][].
 
 # Usage
-The best way to make use of library is with the [Official template](https://github.com/divnix/devos).
-The primary function to make use of is `mkFlake` to create your devos flake.
-To learn about `mkFlake`'s options, take a look at the [mkFlake options doc](./doc/mkFlakeOptions.md)
+The best way to make use of library is with the [Official template][template].
 
-This library is based on [flake-utils-plus](https://github.com/gytis-ivaskevicius/flake-utils-plus).
+You can also have a look at the different [examples][].
+
+# Philosophy
+
+In it's `lib.mkFlake` function, _digga_ implements a well-secified API
+interface comprising four API containers that allow you to:
+
+1. configure **nixpkgs channels** including internal and external overlays,
+
+2. define **nixos hosts** including internal and external nixos modules as well as
+   host defaults that apply to all hosts in the environment,
+
+3. specify **user home environments** including internal and external home-manager
+   modules, and
+
+4. setup & combine a series of **devshells** that you like to have available in
+   your projects.
+
+## Modules, Profiles & Suites
+For nixos- & home-manager-modules, _digga_ allows you to distinguish between
+_modules_, _profiles_ and _suites_.
+
+- **Modules** are abstract configurations that, while holding the implementation, do not
+set any system state.
+
+- **Profiles** are concrete configurations that set system state within the profile domain.
+
+- **Suites** are a composable, clean and discoverable mechanism for profile aggregation.
+
+## Internal Art vs External Art
+Overlays and modules can be defined internally coming form your repo or externally
+coming from an upstream flake. This distinction serves the library to only export
+your own work as the public flake output.
+
+Downstream consumers of your flake can now more easily tell your art apart from
+other upstream art.
 
 # Contributing
 We encourage contributions of any kind. The simplest way to get involved is to
-start posting your opinions on the issue or discussion threads. To craft well
-thought out APIs we need all the thoughts regarding new ideas.
+join the [chat][] or report problems and ideas on the [issue thread][issues].
 
-Pull Requests are just as amazing. To keep the library stable, all changes should
-target the `develop` branch. Only minor bug-fixes or release PRs can target master.
+To craft well thought out APIs we need all the thoughts regarding new ideas.
+
+Pull Requests are just as amazing.
 
 # License
+
 Digga is licensed under the [MIT License][mit].
 
-[nix]: https://nixos.org/manual/nix/stable
-[mit]: https://mit-license.org
+[chat]: https://matrix.to/#/#devos:nixos.org
+[devshell]: https://github.com/numtide/devshell
+[examples]: https://github.com/divnix/digga/tree/main/examples
 [flakes]: https://nixos.wiki/wiki/Flakes
-
+[flake-utils-plus]: https://github.com/gytis-ivaskevicius/flake-utils-plus
+[home-manager]: https://github.com/nix-community/home-manager
+[issues]: https://github.com/divnix/digga/issues
+[mit]: https://mit-license.org
+[nix]: https://nixos.org/manual/nix/stable
+[nixpkgs]: https://github.com/nixos/nixpkgs
+[template]: https://github.com/divnix/devos
 

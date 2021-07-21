@@ -10,7 +10,31 @@ let
   devshell = import inputs.devshell { inherit pkgs system; };
 
   withCategory = category: attrset: attrset // { inherit category; };
-  util = withCategory "utils";
+  utils = withCategory "utils";
+  docs = withCategory "docs";
+
+  makeDocs = {
+    name = "make-docs";
+    help = "Execute the docs creating jobs and place the results in ./doc";
+    command = ''
+      nix build "$DEVSHELL_ROOT#jobs.${pkgs.system}.mkApiReferenceTopLevel" \
+        && cp result "$DEVSHELL_ROOT/doc/api-reference.md" \
+        && chmod 755 "$DEVSHELL_ROOT//doc/api-reference.md"
+      nix build "$DEVSHELL_ROOT#jobs.${pkgs.system}.mkApiReferenceChannels" \
+        && cp result "$DEVSHELL_ROOT/doc/api-reference-channels.md" \
+        && chmod 755 "$DEVSHELL_ROOT//doc/api-reference-channels.md"
+      nix build "$DEVSHELL_ROOT#jobs.${pkgs.system}.mkApiReferenceHome" \
+        && cp result "$DEVSHELL_ROOT/doc/api-reference-home.md" \
+        && chmod 755 "$DEVSHELL_ROOT//doc/api-reference-home.md"
+      nix build "$DEVSHELL_ROOT#jobs.${pkgs.system}.mkApiReferenceDevshell" \
+        && cp result "$DEVSHELL_ROOT/doc/api-reference-devshell.md" \
+        && chmod 755 "$DEVSHELL_ROOT//doc/api-reference-devshell.md"
+      nix build "$DEVSHELL_ROOT#jobs.${pkgs.system}.mkApiReferenceNixos" \
+        && cp result "$DEVSHELL_ROOT/doc/api-reference-nixos.md" \
+        && chmod 755 "$DEVSHELL_ROOT//doc/api-reference-nixos.md"
+    '';
+
+  };
 
   test = type: name: withCategory "tests" {
     name = "check-${name}";
@@ -100,26 +124,28 @@ devshell.mkShell {
   '');
 
   commands = [
-    {
+    (utils {
       command = "git rm --ignore-unmatch -f $DEVSHELL_ROOT/{tests,examples}/*/flake.lock";
       help = "Remove all lock files";
       name = "rm-locks";
-    }
-    {
+    })
+    (utils {
       name = "fmt";
       help = "Check Nix formatting";
       command = "nixpkgs-fmt \${@} $DEVSHELL_ROOT";
-    }
-    {
+    })
+    (utils {
       name = "evalnix";
       help = "Check Nix parsing";
       command = "fd --extension nix --exec nix-instantiate --parse --quiet {} >/dev/null";
-    }
+    })
 
     (test "examples" "downstream")
     (test "examples" "groupByConfig")
     (test "examples" "hmOnly")
     (test "examples" "all" // { command = "check-downstream && check-groupByConfig && check-hmOnly"; })
+    (docs { package = pkgs.mdbook;})
+    (docs makeDocs)
 
   ];
 }

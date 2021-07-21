@@ -1,0 +1,10 @@
+[book]
+authors = [
+  "Timothy DeHerrera",
+  "Parthiv Seetharaman",
+  "David Arnold",
+]
+language = "en"
+multilingual = false
+src = "."
+title = "Digga Library Docs"
