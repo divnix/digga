@@ -172,16 +172,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1626835448,
+        "lastModified": 1626836850,
         "narHash": "sha256-qMZ4T0ig9bBHsiu1nEnYzI6JjXjpJv2fnBexpJ8cw+0=",
         "owner": "divnix",
         "repo": "digga",
-        "rev": "372910fa131fdd51edc695b3eb2ce3992b905460",
+        "rev": "af700c53c6c955a46ae834c1e6e7c6bb5cb1adeb",
         "type": "github"
       },
       "original": {
         "owner": "divnix",
-        "ref": "develop",
         "repo": "digga",
         "type": "github"
       }
