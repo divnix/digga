@@ -28,7 +28,6 @@ let
       modules = config.home.modules ++ config.home.externalModules;
     })
     (internal-modules.globalDefaults {
-      self = config.self;
       hmUsers = config.home.users;
     })
     ({ ... }@args: {
@@ -77,7 +76,8 @@ let
       config.channels;
 
     hostDefaults = flake-utils-plus.lib.mergeAny (stripHost config.nixos.hostDefaults) {
-      specialArgs = config.nixos.importables;
+      # add `self` & `inputs` as specialargs so their libs can be used in imports
+      specialArgs = config.nixos.importables // { inherit (config) self inputs; };
       modules = config.nixos.hostDefaults.externalModules ++ defaultHostModules;
     };
 

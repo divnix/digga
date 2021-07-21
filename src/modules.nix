@@ -41,8 +41,8 @@
       };
     };
 
-  globalDefaults = { self, hmUsers }:
-    { config, pkgs, ... }: {
+  globalDefaults = { hmUsers }:
+    { config, pkgs, self, ... }: {
       users.mutableUsers = lib.mkDefault false;
 
       hardware.enableRedistributableFirmware = lib.mkDefault true;
@@ -53,7 +53,7 @@
       };
 
       _module.args = {
-        inherit self hmUsers;
+        inherit hmUsers;
         hosts = builtins.mapAttrs (_: host: host.config)
           (removeAttrs self.nixosConfigurations [ config.networking.hostName ]);
       };
