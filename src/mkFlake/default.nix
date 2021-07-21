@@ -18,7 +18,7 @@ let
 in
 {
 
-  __functor = _: fupAdapter' {
+  flake = fupAdapter' {
     inherit (evaled) config;
     inherit extraArgs defaultOutputsBuilder;
   };

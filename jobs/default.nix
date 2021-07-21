@@ -7,7 +7,7 @@ let
   digga = inputs.digga;
   pkgs = import nixpkgs { inherit system; config = { }; overlays = [ ]; };
 
-  docOptions = (digga.lib.mkFlake { self = { }; inputs = { }; }).options;
+  docOptions = digga.lib.mkFlake.options { self = { }; inputs = { }; };
   evaledOptions = (pkgs.lib.evalModules { modules = [ docOptions ]; }).options;
 
   mkDocPartMd = part: title: intro:

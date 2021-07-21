@@ -64,11 +64,18 @@
         inherit deploy;
       };
 
-      mkFlake = import ./src/mkFlake {
-        inherit (nixpkgs) lib;
-        inherit (flake-utils-plus.inputs) flake-utils;
-        inherit deploy devshell home-manager flake-utils-plus internal-modules tests;
-      };
+      mkFlake =
+        let
+          mkFlake' = import ./src/mkFlake {
+            inherit (nixpkgs) lib;
+            inherit (flake-utils-plus.inputs) flake-utils;
+            inherit deploy devshell home-manager flake-utils-plus internal-modules tests;
+          };
+        in
+        {
+          __functor = _: args: (mkFlake' args).flake;
+          options = args: (mkFlake' args).options;
+        };
 
       # Unofficial Flakes Roadmap - Polyfills
       # .. see: https://demo.hedgedoc.org/s/_W6Ve03GK#

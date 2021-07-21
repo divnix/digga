@@ -201,7 +201,7 @@ by passing a module or `rec` set to `importables`, suites can access profiles.
 Example:
 ```
 importables = rec {
-  profiles = digga.lib.importers.rakeLeaves ./profiles;
+  profiles = digga.lib.rakeLeaves ./profiles;
   suites = with profiles; { };
 }
 ```
@@ -227,7 +227,7 @@ by passing a module or `rec` set to `importables`, suites can access profiles.
 Example:
 ```
 importables = rec {
-  profiles = digga.lib.importers.rakeLeaves ./profiles;
+  profiles = digga.lib.rakeLeaves ./profiles;
   suites = with profiles; { };
 }
 ```
