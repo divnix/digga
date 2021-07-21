@@ -41,7 +41,6 @@ let
       })
       config.home.users;
 
-
 in
 {
 
@@ -49,10 +48,18 @@ in
 
   packages = flake-utils-plus.lib.exportPackages config.self.overlays channels;
 
-  devShell = (import devshell { inherit system pkgs; }).mkShell {
-    name = lib.mkDefault config.nixos.hostDefaults.channelName;
-    imports = config.devshell.modules ++ config.devshell.externalModules;
-  };
+  devShell =
+    let
+      eval = import "${devshell}/modules" pkgs;
+      configuration = {
+        name = lib.mkDefault config.nixos.hostDefaults.channelName;
+        imports = config.devshell.modules ++ config.devshell.externalModules;
+      };
+    in
+    (eval {
+      inherit configuration;
+      extraSpecialArgs = { inherit (config) self inputs; };
+    }).shell;
 
   checks =
     (
