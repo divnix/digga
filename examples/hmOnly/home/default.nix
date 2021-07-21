@@ -1,15 +1,15 @@
 { self, inputs, ... }:
 let
-  imp = inputs.digga.lib.importers;
+  lib = inputs.digga.lib;
 in
 {
-  imports = [ (imp.modules ./modules) ];
+  imports = [ (lib.importModules ./modules) ];
   externalModules = [ ];
   importables = rec {
-    profiles = imp.rakeLeaves ./profiles;
+    profiles = lib.rakeLeaves ./profiles;
     suites = with profiles; {
       shell = with shell; [ direnv ];
     };
   };
-  users = imp.rakeLeaves ./users;
+  users = lib.rakeLeaves ./users;
 }
