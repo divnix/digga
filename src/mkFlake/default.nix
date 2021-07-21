@@ -15,7 +15,8 @@ let
 
   extraArgs = removeAttrs args (builtins.attrNames evaled.options);
 
-in {
+in
+{
 
   __functor = _: fupAdapter' {
     inherit (evaled) config;

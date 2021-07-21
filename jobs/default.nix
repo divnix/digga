@@ -7,7 +7,7 @@ let
   digga = inputs.digga;
   pkgs = import nixpkgs { inherit system; config = { }; overlays = [ ]; };
 
-  docOptions = (digga.lib.mkFlake { self = {}; inputs = {};}).options;
+  docOptions = (digga.lib.mkFlake { self = { }; inputs = { }; }).options;
   evaledOptions = (pkgs.lib.evalModules { modules = [ docOptions ]; }).options;
 
   mkDocPartMd = part: title: intro:
@@ -46,20 +46,20 @@ in
   '';
 
   mkApiReferenceChannels = mkDocPartMd "channels" "Channels API Container" ''
-  Configure your channels that you can use throughout your configurations.
+    Configure your channels that you can use throughout your configurations.
 
-  > #### ⚠ Gotcha ⚠
-  > Devshell & Home-Manager `pkgs` instances are rendered off the
-  > `nixos.hostDefaults.channelName` (default) channel.
+    > #### ⚠ Gotcha ⚠
+    > Devshell & Home-Manager `pkgs` instances are rendered off the
+    > `nixos.hostDefaults.channelName` (default) channel.
   '';
   mkApiReferenceDevshell = mkDocPartMd "devshell" "Devshell API Container" ''
-  Configure your devshell module collections of your environment.
+    Configure your devshell module collections of your environment.
   '';
   mkApiReferenceHome = mkDocPartMd "home" "Home-Manager API Container" ''
-  Configure your home manager modules, profiles & suites.
+    Configure your home manager modules, profiles & suites.
   '';
   mkApiReferenceNixos = mkDocPartMd "nixos" "NixOS API Container" ''
-  Configure your nixos modules, profiles & suites.
+    Configure your nixos modules, profiles & suites.
   '';
 
 }

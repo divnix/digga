@@ -144,7 +144,7 @@ devshell.mkShell {
     (test "examples" "groupByConfig")
     (test "examples" "hmOnly")
     (test "examples" "all" // { command = "check-downstream && check-groupByConfig && check-hmOnly"; })
-    (docs { package = pkgs.mdbook;})
+    (docs { package = pkgs.mdbook; })
     (docs makeDocs)
 
   ];

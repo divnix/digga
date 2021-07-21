@@ -239,7 +239,7 @@ let
     Example:
     ```
     importables = rec {
-      profiles = digga.lib.importers.rakeLeaves ./profiles;
+      profiles = digga.lib.rakeLeaves ./profiles;
       suites = with profiles; { };
     }
     ```

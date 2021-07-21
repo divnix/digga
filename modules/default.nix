@@ -1,4 +1,4 @@
 {
   nixConfig = import ./nix-config.nix;
-  bootstapIso = import ./boostrap-iso.nix;
+  bootstrapIso = import ./boostrap-iso.nix;
 }

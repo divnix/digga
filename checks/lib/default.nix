@@ -2,7 +2,7 @@
 with lib;
 lib.runTests {
   testRakeLeaves = {
-    expr = importers.rakeLeaves ./profiles;
+    expr = rakeLeaves ./profiles;
     expected = {
       f = ./profiles/f.nix;
       foo = ./profiles/foo;
@@ -13,7 +13,7 @@ lib.runTests {
   };
 
   testFlattenTree = {
-    expr = importers.flattenTree (importers.rakeLeaves ./profiles);
+    expr = flattenTree (rakeLeaves ./profiles);
     expected = {
       f = ./profiles/f.nix;
       foo = ./profiles/foo;
