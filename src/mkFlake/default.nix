@@ -15,8 +15,13 @@ let
 
   extraArgs = removeAttrs args (builtins.attrNames evaled.options);
 
-in
-fupAdapter' {
-  inherit (evaled) config;
-  inherit extraArgs defaultOutputsBuilder;
+in {
+
+  __functor = _: fupAdapter' {
+    inherit (evaled) config;
+    inherit extraArgs defaultOutputsBuilder;
+  };
+
+  options = options';
+
 }

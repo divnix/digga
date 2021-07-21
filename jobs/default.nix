@@ -10,10 +10,13 @@ let
 in
 {
 
-  mkFlakeDoc = pkgs.writeText "mkFlakeOptions.md"
+  mkApiReference = let
+    inherit (digga.lib.mkFlake { self = {}; inputs = {};}) options;
+  in
+  pkgs.writeText "mkFlakeOptions.md"
     (
       pkgs.nixosOptionsDoc {
-        inherit (digga.lib.mkFlake.evalArgs { args = { }; }) options;
+        inherit (pkgs.lib.evalModules { modules = [ options]; } ) options;
       }
     ).optionsMDDoc;
 

@@ -3,7 +3,7 @@ nixpkgs channels to create
 
 
 *_Type_*:
-attribute set of submodules
+attribute set of submodules or path convertible to it
 
 
 *_Default_*
@@ -40,7 +40,7 @@ nix flake
 
 *_Default_*
 ```
-"self.inputs.<name>"
+"config.self.inputs.<name>"
 ```
 
 
@@ -54,7 +54,7 @@ will be filtered out
 
 
 *_Type_*:
-list of valid Nixpkgs overlay or path convertible to its or anything convertible to it
+list of valid Nixpkgs overlay or path convertible to its or anything convertible to it or path convertible to it
 
 
 *_Default_*
@@ -87,7 +87,7 @@ will be exported under the `devshellModules` output
 
 
 *_Type_*:
-submodule
+submodule or path convertible to it
 
 
 *_Default_*
@@ -104,7 +104,7 @@ meant importing modules from external flakes
 
 
 *_Type_*:
-list of valid module or path convertible to its or anything convertible to it
+list of valid modules or anything convertible to it
 
 
 *_Default_*
@@ -120,7 +120,7 @@ modules to include in all hosts and export to devshellModules output
 
 
 *_Type_*:
-list of path to a modules or anything convertible to it or path convertible to it
+list of valid module or path convertible to its or anything convertible to it
 
 
 *_Default_*
@@ -136,7 +136,7 @@ hosts, modules, suites, and profiles for home-manager
 
 
 *_Type_*:
-submodule
+submodule or path convertible to it
 
 
 *_Default_*
@@ -153,7 +153,7 @@ meant importing modules from external flakes
 
 
 *_Type_*:
-list of valid module or path convertible to its or anything convertible to it
+list of valid modules or anything convertible to it
 
 
 *_Default_*
@@ -185,9 +185,13 @@ collections of profiles
 
 
 *_Type_*:
-attribute set of list of paths or anything convertible to its
+null or attribute set of list of paths or anything convertible to its or path convertible to it
 
 
+*_Default_*
+```
+null
+```
 
 
 
@@ -197,7 +201,7 @@ modules to include in all hosts and export to homeModules output
 
 
 *_Type_*:
-list of path to a modules or anything convertible to it or path convertible to it
+list of valid modules or anything convertible to it
 
 
 *_Default_*
@@ -223,7 +227,7 @@ See https://github.com/divnix/digga/pull/30 for more details
 
 
 *_Type_*:
-list of paths
+list of paths or path convertible to it
 
 
 *_Default_*
@@ -256,12 +260,39 @@ function that evaluates to a(n) attrs or path convertible to it
 
 
 
+## home.users
+HM users that can be deployed portably without a host.
+
+
+*_Type_*:
+attribute set of hm user configs
+
+
+*_Default_*
+```
+{}
+```
+
+
+
+
+## inputs
+The flake's inputs
+
+*_Type_*:
+attribute set of nix flakes
+
+
+
+
+
+
 ## nixos
 hosts, modules, suites, and profiles for nixos
 
 
 *_Type_*:
-submodule
+submodule or path convertible to it
 
 
 *_Default_*
@@ -296,13 +327,9 @@ Channel this host should follow
 
 
 *_Type_*:
-a channel defined in `channels`
+channel defined in `channels`
 
 
-*_Default_*
-```
-null
-```
 
 
 
@@ -313,7 +340,7 @@ meant importing modules from external flakes
 
 
 *_Type_*:
-list of valid module or path convertible to its or anything convertible to it
+list of valid modules or anything convertible to it
 
 
 *_Default_*
@@ -329,7 +356,7 @@ modules to include in all hosts and export to nixosModules output
 
 
 *_Type_*:
-list of path to a modules or anything convertible to it or path convertible to it
+list of valid modules or anything convertible to it
 
 
 *_Default_*
@@ -345,7 +372,7 @@ system for this host
 
 
 *_Type_*:
-system defined in `supportedSystems`
+null or system defined in `supportedSystems`
 
 
 *_Default_*
@@ -377,7 +404,7 @@ Channel this host should follow
 
 
 *_Type_*:
-a channel defined in `channels`
+null or channel defined in `channels`
 
 
 *_Default_*
@@ -393,7 +420,7 @@ modules to include
 
 
 *_Type_*:
-list of valid module or path convertible to its or anything convertible to it
+list of valid modules or anything convertible to it
 
 
 *_Default_*
@@ -409,7 +436,7 @@ system for this host
 
 
 *_Type_*:
-system defined in `supportedSystems`
+null or system defined in `supportedSystems`
 
 
 *_Default_*
@@ -441,9 +468,13 @@ collections of profiles
 
 
 *_Type_*:
-attribute set of list of paths or anything convertible to its
+null or attribute set of list of paths or anything convertible to its or path convertible to it
 
 
+*_Default_*
+```
+null
+```
 
 
 
@@ -463,7 +494,7 @@ See https://github.com/divnix/digga/pull/30 for more details
 
 
 *_Type_*:
-list of paths
+list of paths or path convertible to it
 
 
 *_Default_*
@@ -502,7 +533,7 @@ The builder gets passed an attrset of all channels
 
 
 *_Type_*:
-function that evaluates to a(n) attrs
+function that evaluates to a(n) attrs or path convertible to it
 
 
 *_Default_*
