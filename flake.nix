@@ -112,6 +112,7 @@
             imports = [ (digga.lib.importModules ./modules) ];
             externalModules = [
               { lib.our = self.lib; }
+              digga.nixosModules.bootstrapIso
               digga.nixosModules.nixConfig
               ci-agent.nixosModules.agent-profile
               home.nixosModules.home-manager
