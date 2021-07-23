@@ -35,12 +35,6 @@
       nvfetcher.inputs.flake-compat.follows = "digga/deploy/flake-compat";
       nvfetcher.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
 
-      ci-agent.url = "github:hercules-ci/hercules-ci-agent";
-      ci-agent.inputs.nix-darwin.follows = "darwin";
-      ci-agent.inputs.nixos-20_09.follows = "nixos";
-      ci-agent.inputs.nixos-unstable.follows = "latest";
-      ci-agent.inputs.flake-compat.follows = "digga/deploy/flake-compat";
-
       naersk.url = "github:nmattia/naersk";
       naersk.inputs.nixpkgs.follows = "latest";
 
@@ -61,7 +55,6 @@
     , digga
     , bud
     , nixos
-    , ci-agent
     , home
     , nixos-hardware
     , nur
@@ -111,7 +104,6 @@
               { lib.our = self.lib; }
               digga.nixosModules.bootstrapIso
               digga.nixosModules.nixConfig
-              ci-agent.nixosModules.agent-profile
               home.nixosModules.home-manager
               agenix.nixosModules.age
               bud.nixosModules.bud

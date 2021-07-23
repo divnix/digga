@@ -59,38 +59,6 @@
         "type": "github"
       }
     },
-    "ci-agent": {
-      "inputs": {
-        "flake-compat": [
-          "digga",
-          "deploy",
-          "flake-compat"
-        ],
-        "nix-darwin": [
-          "darwin"
-        ],
-        "nixos-20_09": [
-          "nixos"
-        ],
-        "nixos-unstable": [
-          "latest"
-        ],
-        "pre-commit-hooks-nix": "pre-commit-hooks-nix"
-      },
-      "locked": {
-        "lastModified": 1624885917,
-        "narHash": "sha256-CaAEhMKzuTyN9krTLZ1jWW3C5HzvKRZY/doVOezZZx0=",
-        "owner": "hercules-ci",
-        "repo": "hercules-ci-agent",
-        "rev": "5eba6597af97e358542c6f968f6ef680ffd2a401",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "hercules-ci-agent",
-        "type": "github"
-      }
-    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -276,9 +244,7 @@
     "naersk": {
       "inputs": {
         "nixpkgs": [
-          "digga",
-          "deploy",
-          "nixpkgs"
+          "latest"
         ]
       },
       "locked": {
@@ -415,22 +381,6 @@
         "type": "github"
       }
     },
-    "pre-commit-hooks-nix": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1622650193,
-        "narHash": "sha256-qSzUpJDv04ajS9FXoCq6NjVF3qOt9IiGIiGh0P8amyw=",
-        "owner": "cachix",
-        "repo": "pre-commit-hooks.nix",
-        "rev": "0398f0649e0a741660ac5e8216760bae5cc78579",
-        "type": "github"
-      },
-      "original": {
-        "owner": "cachix",
-        "repo": "pre-commit-hooks.nix",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -439,7 +389,6 @@
           "blank"
         ],
         "bud": "bud",
-        "ci-agent": "ci-agent",
         "darwin": "darwin",
         "deploy": [
           "digga",
