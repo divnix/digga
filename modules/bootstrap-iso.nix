@@ -1,5 +1,5 @@
 let
-  protoModule = fullHostConfig: { config, lib, modulesPath, suites, self, ... }@args: {
+  protoModule = fullHostConfig: { config, lib, modulesPath, suites, self, inputs, ... }@args: {
 
     imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" ];
     # avoid unwanted systemd service startups
@@ -24,8 +24,6 @@ let
           there will unnessecarily launch on this installation medium.
         '' [ ];
 
-    nix.registry = lib.mapAttrs (n: v: { flake = v; }) self.inputs;
-
     isoImage.isoBaseName = "nixos-" + config.networking.hostName;
     isoImage.contents = [{
       source = self;
@@ -36,7 +34,7 @@ let
       # include also closures that are "switched off" by the
       # above profile filter on the local config attribute
       fullHostConfig.system.build.toplevel
-    ];
+    ] ++ builtins.attrValues inputs;
     # still pull in tools of deactivated profiles
     environment.systemPackages = fullHostConfig.environment.systemPackages;
 
