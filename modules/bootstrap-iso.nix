@@ -79,7 +79,7 @@ in
 { config, ... }:
 {
   system.build = {
-    boostrapIso = (config.lib.digga.mkBuild
+    bootstrapIso = (config.lib.digga.mkBuild
       (protoModule config)
     ).config.system.build.isoImage;
   };
