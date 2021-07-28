@@ -49,7 +49,7 @@ in
     Configure your channels that you can use throughout your configurations.
 
     > #### ⚠ Gotcha ⚠
-    > Devshell & Home-Manager `pkgs` instances are rendered off the
+    > Devshell & (non-host-specific) Home-Manager `pkgs` instances are rendered off the
     > `nixos.hostDefaults.channelName` (default) channel.
   '';
   mkApiReferenceDevshell = mkDocPartMd "devshell" "Devshell API Container" ''
