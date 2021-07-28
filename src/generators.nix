@@ -1,4 +1,16 @@
 { lib, deploy }:
+let
+  getFqdn = c:
+    let
+      net = c.config.networking;
+      fqdn =
+        if net.domain != null
+        then "${net.hostName}.${net.domain}"
+        else net.hostName;
+    in
+    fqdn;
+
+in
 {
   mkHomeConfigurations = nixosConfigurations:
     /**
@@ -13,16 +25,9 @@
         attrs
         //
         (
-          let
-            net = c.config.networking;
-            fqdn =
-              if net.domain != null
-              then "${net.hostName}.${net.domain}"
-              else net.hostName;
-          in
           lib.mapAttrs'
             (user: v: {
-              name = "${user}@${fqdn}";
+              name = "${user}@${getFqdn c}";
               value = v.home;
             })
             c.config.home-manager.users
@@ -41,13 +46,13 @@
       **/
 
     lib.mapAttrs
-      (_: config: lib.recursiveUpdate
+      (_: c: lib.recursiveUpdate
         {
-          hostname = config.config.networking.hostName;
+          hostname = getFqdn c;
 
           profiles.system = {
             user = "root";
-            path = deploy.lib.${config.config.nixpkgs.system}.activate.nixos config;
+            path = deploy.lib.${c.config.nixpkgs.system}.activate.nixos c;
           };
         }
         extraConfig)
