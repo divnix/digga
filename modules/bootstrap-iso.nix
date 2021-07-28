@@ -1,7 +1,7 @@
 let
   protoModule = fullHostConfig: { config, lib, modulesPath, suites, self, ... }@args: {
 
-    imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal-new-kernel.nix" ];
+    imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" ];
     # avoid unwanted systemd service startups
     disabledModules =
       if (suites != null)
