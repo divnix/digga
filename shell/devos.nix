@@ -41,7 +41,7 @@ in
       category = "devos";
       name = pkgs.nvfetcher-bin.pname;
       help = pkgs.nvfetcher-bin.meta.description;
-      command = "cd $DEVSHELL_ROOT/pkgs; ${pkgs.nvfetcher-bin}/bin/nvfetcher -c ./sources.toml --no-output $@; nixpkgs-fmt _sources/";
+      command = "cd $DEVSHELL_ROOT/pkgs; ${pkgs.nvfetcher-bin}/bin/nvfetcher -c ./sources.toml --no-output $@";
     }
     (linter nixpkgs-fmt)
     (linter editorconfig-checker)
