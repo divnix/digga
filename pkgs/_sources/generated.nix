@@ -12,6 +12,5 @@
       leaveDotGit = false;
       sha256 = "1b7xi8c2drbwzfz70czddc4j33s7g1alirv12dwl91hbqxifx8qs";
     };
-
   };
 }
