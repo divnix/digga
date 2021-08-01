@@ -38,6 +38,6 @@ fetch.git = "https://github.com/mlvzk/manix.git" # responsible for fetching
 > ##### _Note:_
 > Please refer to the [NvFetcher Readme][nvf-readme] for more options.
 
-[nvf: https://github.com/berberman/nvfetcher
+[nvf]: https://github.com/berberman/nvfetcher
 [nvf-readme]: https://github.com/berberman/nvfetcher#readme
 [sources.toml]: https://github.com/divnix/devos/tree/core/pkgs/sources.toml

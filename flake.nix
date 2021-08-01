@@ -152,7 +152,7 @@
       }
     //
     {
-      budModules = { devos = import ./pkgs/bud; };
+      budModules = { devos = import ./bud; };
     }
   ;
 }

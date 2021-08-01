@@ -13,16 +13,6 @@ the supported systems listed in the package's `meta.platforms` attribute.
 And, as usual, every package in the overlay is also available to any NixOS
 [host](../concepts/hosts.md).
 
-## Automatic Source Updates
-There is the added, but optional, convenience of declaring your sources in
-_pkgs/flake.nix_ as an input. You can then access them from the `srcs` package.
-This allows updates to be managed automatically by simply
-[updating](../flk/update.md#updating-package-sources) the lock file. No
-more manually entering sha256 hashes!
-
-As an added bonus, version strings are also generated automatically from either
-the flake ref, or the date and git revision of the source.
-
 ## Example
 pkgs/development/libraries/libinih/default.nix:
 ```nix

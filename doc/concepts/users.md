@@ -1,3 +1,8 @@
+> ##### _Note:_
+> This  section and its semantics need a conceptiual rework.
+> Since recently [portable home configurations][portableuser]
+> that are not bound to any specific host are a thing.
+
 # Users
 
 Users are a special case of [profiles](profiles.md) that define system
@@ -69,3 +74,4 @@ nix build "github:divnix/devos#homeConfigurations.nixos@NixOS.home.activationPac
 
 [home-manager]: https://nix-community.github.io/home-manager
 [modules-list]: https://github.com/divnix/devos/tree/core/users/modules/module-list.nix
+[portableuser]: https://digga.divnix.com/api-reference-home.html#homeusers

@@ -3,7 +3,7 @@ name: Deploy Docs to GitHub Pages
 on:
   push:
     branches:
-      - core
+      - main
 
 jobs:
   deploy:

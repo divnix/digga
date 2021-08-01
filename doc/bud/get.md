@@ -4,7 +4,7 @@ git history.
 
 ## Usage
 ```sh
-flk get DEST-DIR
+bud get DEST-DIR
 ```
 
 If DEST-DIR is ommitted, it defaults to _./devos_.
