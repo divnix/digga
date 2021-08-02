@@ -122,9 +122,7 @@ in
 
           createProfilesTestOp = n: host: {
             name = "allProfilesTestFor-${n}";
-            value = tests.profilesTest {
-              inherit host pkgs;
-            };
+            value = tests.profilesTest host;
           };
 
           profilesTests =

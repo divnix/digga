@@ -1,31 +1,34 @@
 { lib }:
 let
 
-  mkTest = { pkgs, host }:
+  maybeImport = obj:
+    if (builtins.isPath obj || builtins.isString obj) then
+      import obj
+    else obj
+  ;
+
+  maybeCallTest = pkgs: obj:
+    if lib.isFunction obj then
+      pkgs.callPackage obj { }
+    else obj
+  ;
+
+
+  mkTest = host: test:
     let
+      pkgs = host._module.args.pkgs;
       nixosTesting =
         (import "${toString pkgs.path}/nixos/lib/testing-python.nix" {
+          inherit pkgs;
           inherit (pkgs) system;
           inherit (host.config.lib) specialArgs;
-          inherit pkgs;
           extraConfigurations = host._module.args.modules;
         });
     in
-    test:
-    let
-      loadedTest =
-        if builtins.typeOf test == "path"
-        then import test
-        else test;
-      calledTest =
-        if pkgs.lib.isFunction loadedTest
-        then pkgs.callPackage loadedTest { }
-        else loadedTest;
-    in
-    nixosTesting.makeTest calledTest;
+    nixosTesting.makeTest (maybeCallTest pkgs (maybeImport test));
 
-  profilesTest = { host, pkgs }:
-    mkTest { inherit host pkgs; } {
+  profilesTest = host:
+    mkTest host {
       name = "profiles";
 
       machine = { suites ? null, ... }: {
