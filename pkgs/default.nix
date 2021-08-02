@@ -1,9 +1,9 @@
 final: prev:
 let
-  sources = (import ./_sources/generated.nix) { inherit (self) fetchurl fetchgit; };
+  sources = (import ./_sources/generated.nix) { inherit (final) fetchurl fetchgit; };
 
   mkVimPlugin = plugin:
-    self.vimUtils.buildVimPluginFrom2Nix {
+    final.vimUtils.buildVimPluginFrom2Nix {
       inherit (plugin) pname version src;
     };
 
@@ -16,14 +16,14 @@ let
       }.${pkgSet};
 
 
-      pkgsInSources = self.lib.mapAttrs' (name: value: self.lib.nameValuePair (self.lib.removePrefix prefix name) (value)) (self.lib.filterAttrs (n: v: self.lib.hasPrefix prefix n) sources);
+      pkgsInSources = final.lib.mapAttrs' (name: value: final.lib.nameValuePair (final.lib.removePrefix prefix name) (value)) (final.lib.filterAttrs (n: v: final.lib.hasPrefix prefix n) sources);
     in
-    self.lib.mapAttrs (n: v: pkgSetBuilder v) pkgsInSources;
+    final.lib.mapAttrs (n: v: pkgSetBuilder v) pkgsInSources;
 
 in
 {
   inherit sources;
 
-  vimPlugins = super.vimPlugins // (newPkgsSet "vimPlugins");
+  vimPlugins = prev.vimPlugins // (newPkgsSet "vimPlugins");
 
 }
