@@ -2,3 +2,18 @@
 [manix]
 src.git = "https://github.com/mlvzk/manix"
 fetch.github = "mlvzk/manix"
+
+[dotenv]
+src.openvsx = "mikestead.dotenv"
+fetch.openvsx = "mikestead.dotenv"
+passthru = { license = "mit", homepage = "https://github.com/mikestead/vscode-dotenv", description = "Support for dotenv file syntax" }
+
+[rust]
+src.openvsx = "rust-lang.rust"
+fetch.openvsx = "rust-lang.rust"
+passthru = { license = '[ "mit", "asl20" ]', homepage = "https://github.com/rust-lang/rls-vscode", description = "Rust for Visual Studio Code (powered by Rust Language Server/Rust Analyzer). Provides lints, code completion and navigation, formatting and more." }
+
+[nixpkgs-fmt]
+src.vsmarketplace = "B4dM4n.nixpkgs-fmt"
+fetch.vsmarketplace = "B4dM4n.nixpkgs-fmt"
+passthru = { license = "mit" }
