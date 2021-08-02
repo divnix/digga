@@ -140,11 +140,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1627072303,
-        "narHash": "sha256-XMrOWqYLLMVcTiTzzgaugUUSqlIRj3/l4JGrs1cvgMU=",
+        "lastModified": 1627484795,
+        "narHash": "sha256-ZnErne4CWPxN3G6jwEzSeTD++iIXdRa9+5ZTp2IuOQ0=",
         "owner": "divnix",
         "repo": "digga",
-        "rev": "cba3f8f76b7fd6816625d9e2e033bfa3462d7125",
+        "rev": "b52bb1001950eae6aca993232c1a88d0638b1dcf",
         "type": "github"
       },
       "original": {
@@ -245,7 +245,9 @@
     "naersk": {
       "inputs": {
         "nixpkgs": [
-          "latest"
+          "digga",
+          "deploy",
+          "nixpkgs"
         ]
       },
       "locked": {
