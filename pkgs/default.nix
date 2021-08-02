@@ -1,4 +1,4 @@
-self: super:
+final: prev:
 let
   sources = (import ./_sources/generated.nix) { inherit (self) fetchurl fetchgit; };
 
