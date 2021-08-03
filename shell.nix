@@ -61,7 +61,7 @@ let
       digga_fixture() {
         # ensure: replace input
         diggaurl=$({ grep -o '"github:divnix/digga.*"' flake.nix || true; })
-        sed -i "s|$diggaurl|$tempdigga|g" flake.nix
+        [ -z $diggaurl ] || sed -i "s|$diggaurl|$tempdigga|g" flake.nix
       }
 
       trap_err() {
