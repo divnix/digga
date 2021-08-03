@@ -1,4 +1,14 @@
 let
+  getFqdn = config:
+    let
+      net = config.networking;
+      fqdn =
+        if net.domain != null
+        then "${net.hostName}.${net.domain}"
+        else net.hostName;
+    in
+    fqdn;
+
   protoModule = fullHostConfig: { config, lib, modulesPath, suites, self, inputs, ... }@args: {
 
     imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" ];
@@ -24,7 +34,7 @@ let
           there will unnessecarily launch on this installation medium.
         '' [ ];
 
-    isoImage.isoBaseName = "nixos-" + config.networking.hostName;
+    isoImage.isoBaseName = "bootstrap-" + (getFqdn config);
     isoImage.contents = [{
       source = self;
       target = "/devos/";
