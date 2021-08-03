@@ -62,6 +62,11 @@ let
   # Custom Types
   # #############
 
+  nixosTestType = pathToOr (types.anything // {
+    check = x: builtins.isFunction x || builtins.isAttrs x;
+    description = "valid nixos test";
+  });
+
   moduleType = with types; (anything // {
     inherit (submodule { }) check;
     description = "valid module";
@@ -95,6 +100,7 @@ let
 
   overlaysType = with types; coercedListOf overlayType;
   modulesType = with types; coercedListOf moduleType;
+  nixosTestsType = with types; coercedListOf nixosTestType;
   devshellModulesType = with types; coercedListOf devshellModuleType;
   legacyProfilesType = with types; listOf path;
   legacySuitesType = with types; functionTo attrs;
@@ -132,6 +138,35 @@ let
         default = null;
       }
     );
+  };
+
+  nixosTestOpt = {
+    tests = mkOption {
+      type = with types; nixosTestsType;
+      default = [ ];
+      description = ''
+        tests to run
+      '';
+      example = literalExample ''
+        [
+          {
+            name = "testname1";
+            machine = { ... };
+            testScript = '''
+              # ...
+            ''';
+          }
+          ({ corutils, writers, ... }: {
+            name = "testname2";
+            machine = { ... };
+            testScript = '''
+              # ...
+            ''';
+          })
+          ./path/to/test.nix
+        ];
+      '';
+    };
   };
 
   modulesOpt = {
@@ -310,7 +345,7 @@ let
   hostType = with types; attrsOf (submoduleWith {
     modules = [
       # per-host modules not exported, no external modules
-      { options = systemOpt // (channelNameOpt false) // modulesOpt; }
+      { options = systemOpt // (channelNameOpt false) // modulesOpt // nixosTestOpt; }
     ];
   });
 

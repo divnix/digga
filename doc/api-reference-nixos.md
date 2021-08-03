@@ -162,6 +162,26 @@ null
 
 
 
+## nixos.hosts.\<name\>.tests
+tests to run
+
+
+*_Type_*:
+list of valid nixos test or path convertible to its or anything convertible to it
+
+
+*_Default_*
+```
+[]
+```
+
+
+*_Example_*
+```
+{"_type":"literalExample","text":"[\n  {\n    name = \"testname1\";\n    machine = { ... };\n    testScript = ''\n      # ...\n    '';\n  }\n  ({ corutils, writers, ... }: {\n    name = \"testname2\";\n    machine = { ... };\n    testScript = ''\n      # ...\n    '';\n  })\n  ./path/to/test.nix\n];\n"}
+```
+
+
 ## nixos.importables
 Packages of paths to be passed to modules as `specialArgs`.
 

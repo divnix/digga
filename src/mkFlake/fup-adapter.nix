@@ -54,6 +54,7 @@ let
   stripHost = args: removeAttrs (lib.filterAttrs (_: arg: arg != null) args) [
     # arguments in our hosts/hostDefaults api that shouldn't be passed to fup
     "externalModules"
+    "tests"
   ];
 
   diggaFupArgs = {
