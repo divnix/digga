@@ -41,11 +41,12 @@ let
     help = "Checks ${name} ${type}";
     command = ''
       set -e
+      # set -x
 
       diggaurl=
       lockfile_updated=1
       lockfile_present=1
-      tempdigga="\"github:divnix/digga/$(git rev-parse HEAD)\""
+      tempdigga="\"path:$DEVSHELL_ROOT\""
 
       cleanup() {
         if is $lockfile_present; then
@@ -60,7 +61,7 @@ let
       digga_fixture() {
         # ensure: replace input
         diggaurl=$({ grep -o '"github:divnix/digga.*"' flake.nix || true; })
-        sed -i "s|\"github:divnix/digga/.*\"|$tempdigga|g" flake.nix
+        sed -i "s|$diggaurl|$tempdigga|g" flake.nix
       }
 
       trap_err() {
