@@ -10,7 +10,7 @@
 > maturing _well_ for a while.
 
 
-Digga &mdash; slangy german for "good friend" &mdash; is a flake utility library
+Digga &mdash; slangy German for "good friend" &mdash; is a flake utility library
 that helps you declaratively craft and manage all three layers of your system
 environment within a single [nix flakes][flakes] repository:
 
@@ -27,12 +27,12 @@ You can also have a look at the different [examples][].
 
 # Philosophy
 
-In it's `lib.mkFlake` function, _digga_ implements a well-secified API
+In it's `lib.mkFlake` function, _Digga_ implements a well-specified API
 interface comprising four API containers that allow you to:
 
 1. configure **nixpkgs channels** including internal and external overlays,
 
-2. define **nixos hosts** including internal and external nixos modules as well as
+2. define **NixOS hosts** including internal and external NixOS modules as well as
    host defaults that apply to all hosts in the environment,
 
 3. specify **user home environments** including internal and external home-manager
@@ -42,7 +42,7 @@ interface comprising four API containers that allow you to:
    your projects.
 
 ## Modules, Profiles & Suites
-For nixos- & home-manager-modules, _digga_ allows you to distinguish between
+For NixOS- & home-manager-modules, _Digga_ allows you to distinguish between
 _modules_, _profiles_ and _suites_.
 
 - **Modules** are abstract configurations that, while holding the implementation, do not

@@ -1,7 +1,7 @@
 # TL;DR;
 - **Target Branch**: `main`
-- **Merge Policy**: [`bors`][bors] is alwyas right (&rarr; `bors try`)
-- **Docs**: every changeset is expected to contain doc updates
+- **Merge Policy**: [`bors`][bors] is always right (&rarr; `bors try`)
+- **Docs**: every change set is expected to contain doc updates
 - **Commit Msg**: be a poet! Comprehensive and explanatory commit messages 
   should cover the motivation and use case in an easily understandable manner
   even when read after a few months.

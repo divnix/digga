@@ -17,7 +17,7 @@ All your profiles defined in suites will be tested in a NixOS VM.
 You can write integration tests for one or more NixOS VMs that can,
 optionally, be networked together, and yes, it's as awesome as it sounds!
 
-Be sure to use the `mkTest` function from digga, `digga.lib.pkgs-lib.mkTest`
+Be sure to use the `mkTest` function from Digga, `digga.lib.pkgs-lib.mkTest`
 which wraps the official [testing-python][testing-python] function to ensure
 that the system is setup exactly as it is for a bare DevOS system. There are
 already great resources for learning how to use these tests effectively,

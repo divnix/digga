@@ -1,10 +1,10 @@
 # Top Level API
-`digga`'s top level api. API Containers are documented in their respective subchapter:
+`digga`'s top level API. API Containers are documented in their respective sub-chapter:
 
 - [Channels](./api-reference-channels.md)
 - [Home](./api-reference-home.md)
 - [Devshell](./api-reference-devshell.md)
-- [Nixos](./api-reference-nixos.md)
+- [NixOS](./api-reference-nixos.md)
 
 ## channelsConfig
 nixpkgs config for all channels
@@ -51,7 +51,7 @@ function that evaluates to a(n) attrs or path convertible to it
 
 
 ## self
-The flake to create the devos outputs for
+The flake to create the DevOS outputs for
 
 *_Type_*:
 nix flake

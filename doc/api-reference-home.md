@@ -136,7 +136,7 @@ HM users that can be deployed portably without a host.
 
 
 *_Type_*:
-attribute set of hm user configs
+attribute set of HM user configs
 
 
 *_Default_*

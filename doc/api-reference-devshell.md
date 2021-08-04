@@ -3,7 +3,7 @@ Configure your devshell module collections of your environment.
 
 
 ## devshell
-Modules to include in your devos shell. the `modules` argument
+Modules to include in your DevOS shell. the `modules` argument
 will be exported under the `devshellModules` output
 
 

@@ -1,9 +1,9 @@
 # NixOS API Container
-Configure your nixos modules, profiles & suites.
+Configure your NixOS modules, profiles & suites.
 
 
-## nixos
-hosts, modules, suites, and profiles for nixos
+## NixOS
+hosts, modules, suites, and profiles for NixOS
 
 
 *_Type_*:
@@ -167,7 +167,7 @@ tests to run
 
 
 *_Type_*:
-list of valid nixos test or path convertible to its or anything convertible to it
+list of valid NixOS test or path convertible to its or anything convertible to it
 
 
 *_Default_*

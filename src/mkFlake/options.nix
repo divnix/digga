@@ -396,7 +396,7 @@ in
     self = mkOption {
       type = flakeType;
       readOnly = true;
-      description = "The flake to create the devos outputs for";
+      description = "The flake to create the DevOS outputs for";
     };
     inputs = mkOption {
       type = inputsType;
@@ -451,7 +451,7 @@ in
       type = pathToOr devshellType;
       default = { };
       description = ''
-        Modules to include in your devos shell. the `modules` argument
+        Modules to include in your DevOS shell. the `modules` argument
         will be exported under the `devshellModules` output
       '';
     };
