@@ -3,7 +3,7 @@
 
   inputs =
     {
-      nixos.url = "nixpkgs/release-21.05";
+      nixos.url = "github:nixos/nixpkgs/release-21.05";
       digga = {
         url = "path:../../";
         inputs.nixpkgs.follows = "nixos";
