@@ -12,27 +12,6 @@ let
   protoModule = fullHostConfig: { config, lib, modulesPath, suites, self, inputs, ... }@args: {
 
     imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" ];
-    # avoid unwanted systemd service startups
-    disabledModules =
-      if (suites != null)
-      then
-        let
-          allProfiles = lib.foldl
-            (lhs: rhs: lhs ++ rhs) [ ]
-            (builtins.attrValues suites);
-        in
-        # we choose to satisfy the path contract of disabledModules
-        assert
-        lib.assertMsg
-          (builtins.all (p: lib.types.path.check p) allProfiles)
-          "all profiles used in suites must be paths";
-        allProfiles
-      else
-        lib.warn ''
-          Any profiles that you have defined outside 'importables.suites'
-          will not be disabled on this ISO. That means services defined
-          there will unnessecarily launch on this installation medium.
-        '' [ ];
 
     isoImage.isoBaseName = "bootstrap-" + (getFqdn config);
     isoImage.contents = [{
