@@ -43,18 +43,32 @@ in
 
       Generate the `nodes` attribute expected by deploy-rs
       where _nixosConfigurations_ are `nodes`.
+
+      Example input:
+      ```
+      {
+      hostname-1 = {
+      fastConnection = true;
+      sshOpts = [ "-p" "25" ];
+      };
+      hostname-2 = {
+      sshOpts = [ "-p" "19999" ];
+      sshUser = "root";
+      };
+      }
+      ```
       **/
-
-    lib.mapAttrs
-      (_: c: lib.recursiveUpdate
-        {
-          hostname = getFqdn c;
-
-          profiles.system = {
-            user = "root";
-            path = deploy.lib.${c.config.nixpkgs.system}.activate.nixos c;
-          };
-        }
-        extraConfig)
-      hosts;
+    lib.recursiveUpdate
+      (lib.mapAttrs
+        (_: c:
+          {
+            hostname = getFqdn c;
+            profiles.system = {
+              user = "root";
+              path = deploy.lib.${c.config.nixpkgs.system}.activate.nixos c;
+            };
+          }
+        )
+        hosts)
+      extraConfig;
 }
