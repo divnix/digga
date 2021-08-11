@@ -12,7 +12,7 @@ Make an awesome template for NixOS users, with consideration for common tools li
 [devshell][devshell], and [more](./doc/integrations).
 
 ### No. Why _flakes_?
-Flakes are a part of an explicit push to improve [Nix's UX](https://github.com/NixOS/nix/blob/master/doc/manual/src/contributing/cli-guideline.md), and have become an intergral part of that effort. 
+Flakes are a part of an explicit push to improve [Nix's UX](https://github.com/NixOS/nix/blob/master/doc/manual/src/contributing/cli-guideline.md), and have become an integral part of that effort. 
 
 They also make [Nix expressions](https://nixos.org/manual/nix/unstable/expressions/expression-syntax.html) easier to distribute and reuse with convient [flake references](https://github.com/NixOS/nix/blob/master/src/nix/flake.md#flake-references) for building or using packages, modules, and whole systems.
 
