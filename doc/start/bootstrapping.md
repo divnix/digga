@@ -21,6 +21,9 @@ partition to `/mnt/boot`:
 $ mount /dev/disk/by-label/nixos /mnt
 $ mkdir -p /mnt/boot && mount /dev/disk/by-label/boot /mnt/boot # UEFI only
 $ swapon /dev/$your_swap_partition
+# add some extra space to the store, it's running on a tmpfs on your RAM
+$ mkdir -p /mnt/tmpstore/{work,store}
+$ mount -t overlay overlay -olowerdir=/nix/store,upperdir=/mnt/tmpstore/store,workdir=/mnt/tmpstore/work /nix/store
 ```
 
 ## Install
@@ -30,11 +33,8 @@ from the time the iso was built:
 
 ```console
 $ cd /iso/devos
-$ nix develop
-$ flk install NixOS --impure # use same host as above
+$ nixos-install --flake .#NixOS # use same host as above
 ```
-
-<!-- TODO: find out why --impure is necesary / PRs welcome! -->
 
 ## Notes of interest
 
