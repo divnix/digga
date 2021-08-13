@@ -158,15 +158,16 @@ partition to <code>/mnt/boot</code>:</p>
 <pre><code class="language-console">$ mount /dev/disk/by-label/nixos /mnt
 $ mkdir -p /mnt/boot &amp;&amp; mount /dev/disk/by-label/boot /mnt/boot # UEFI only
 $ swapon /dev/$your_swap_partition
+# add some extra space to the store, it's running on a tmpfs on your RAM
+$ mkdir -p /mnt/tmpstore/{work,store}
+$ mount -t overlay overlay -olowerdir=/nix/store,upperdir=/mnt/tmpstore/store,workdir=/mnt/tmpstore/work /nix/store
 </code></pre>
 <h2 id="install"><a class="header" href="#install">Install</a></h2>
 <p>Install using the <code>flk</code> wrapper baked into the iso off of a copy of devos
 from the time the iso was built:</p>
 <pre><code class="language-console">$ cd /iso/devos
-$ nix develop
-$ flk install NixOS --impure # use same host as above
+$ nixos-install --flake .#NixOS # use same host as above
 </code></pre>
-<!-- TODO: find out why --impure is necesary / PRs welcome! -->
 <h2 id="notes-of-interest"><a class="header" href="#notes-of-interest">Notes of interest</a></h2>
 <h3 id="remote-access-to-the-live-installer"><a class="header" href="#remote-access-to-the-live-installer">Remote access to the live installer</a></h3>
 <p>The iso live installer comes preconfigured with a network configuration
