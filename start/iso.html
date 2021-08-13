@@ -144,11 +144,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="iso"><a class="header" href="#iso">ISO</a></h1>
-<p>Making and writing an installable iso for <code>hosts/NixOS.nix</code> is as simple as:</p>
-<pre><code class="language-sh">bud build NixOS bootstrapIso
-
-dd bs=4M if=result/iso/*.iso of=/dev/$your_installation_device \
-  status=progress oflag=sync
+<p>Making and writing an installable iso for <code>hosts/bootstrap.nix</code> is as simple as:</p>
+<pre><code class="language-sh">bud build bootstrap bootstrapIso
+sudo -E $(which bud) burn
 </code></pre>
 <p>This works for any host.</p>
 <h2 id="iso-image-nix-store--cache"><a class="header" href="#iso-image-nix-store--cache">ISO image nix store &amp; cache</a></h2>

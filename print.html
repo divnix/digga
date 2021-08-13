@@ -247,11 +247,9 @@ you can try with sudo: <code>sudo nix-shell -p cachix --run &quot;cachix use nrd
 <li><a href="start/./from-nixos.html">Already on NixOS</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="iso"><a class="header" href="#iso">ISO</a></h1>
-<p>Making and writing an installable iso for <code>hosts/NixOS.nix</code> is as simple as:</p>
-<pre><code class="language-sh">bud build NixOS bootstrapIso
-
-dd bs=4M if=result/iso/*.iso of=/dev/$your_installation_device \
-  status=progress oflag=sync
+<p>Making and writing an installable iso for <code>hosts/bootstrap.nix</code> is as simple as:</p>
+<pre><code class="language-sh">bud build bootstrap bootstrapIso
+sudo -E $(which bud) burn
 </code></pre>
 <p>This works for any host.</p>
 <h2 id="iso-image-nix-store--cache"><a class="header" href="#iso-image-nix-store--cache">ISO image nix store &amp; cache</a></h2>
