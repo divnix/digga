@@ -158,21 +158,22 @@ partition to <code>/mnt/boot</code>:</p>
 <pre><code class="language-console">$ mount /dev/disk/by-label/nixos /mnt
 $ mkdir -p /mnt/boot &amp;&amp; mount /dev/disk/by-label/boot /mnt/boot # UEFI only
 $ swapon /dev/disk/by-label/swap
-# add some extra space to the store, it's running on a tmpfs on your RAM
-$ mkdir -p /mnt/tmpstore/{work,store}
+</code></pre>
+<p>Add some extra space to the store. In the iso, it's running on a tmpfs
+off your RAM:</p>
+<pre><code class="language-console">$ mkdir -p /mnt/tmpstore/{work,store}
 $ mount -t overlay overlay -olowerdir=/nix/store,upperdir=/mnt/tmpstore/store,workdir=/mnt/tmpstore/work /nix/store
 </code></pre>
 <h2 id="install"><a class="header" href="#install">Install</a></h2>
-<p>Install using the <code>flk</code> wrapper baked into the iso off of a copy of devos
-from the time the iso was built:</p>
+<p>Install off of a copy of devos from the time the iso was built:</p>
 <pre><code class="language-console">$ cd /iso/devos
-$ nixos-install --flake .#NixOS # use same host as above
+$ nixos-install --flake .#NixOS
 </code></pre>
 <h2 id="notes-of-interest"><a class="header" href="#notes-of-interest">Notes of interest</a></h2>
 <h3 id="remote-access-to-the-live-installer"><a class="header" href="#remote-access-to-the-live-installer">Remote access to the live installer</a></h3>
 <p>The iso live installer comes preconfigured with a network configuration
 which announces it's hostname via <a href="https://en.wikipedia.org/wiki/Multicast_DNS">MulticastDNS</a> as <code>hostname.local</code>,
-that is <code>NixOS.local</code> in the <a href="./iso">iso example</a>.</p>
+that is <code>bootstrap.local</code> in the <a href="./iso">iso example</a>.</p>
 <p>In the rare case that <a href="https://en.wikipedia.org/wiki/Multicast_DNS">MulticastDNS</a> is not availabe or turned off
 in your network, there is a static link-local IPv6 address configured to
 <code>fe80::47</code>(mnemonic from the letter's position in the english alphabet:
@@ -189,7 +190,7 @@ sudo access)</em>:</p>
 </code></pre>
 <p>You can then ssh into the live installer through one of the
 following options:</p>
-<pre><code class="language-console">ssh root@NixOS.local
+<pre><code class="language-console">ssh root@bootstrap.local
 
 ssh root@fe80::47%eno1  # where eno1 is your network interface on which you are linked to the target
 </code></pre>
