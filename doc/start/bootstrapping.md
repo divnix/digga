@@ -20,7 +20,7 @@ partition to `/mnt/boot`:
 ```console
 $ mount /dev/disk/by-label/nixos /mnt
 $ mkdir -p /mnt/boot && mount /dev/disk/by-label/boot /mnt/boot # UEFI only
-$ swapon /dev/$your_swap_partition
+$ swapon /dev/disk/by-label/swap
 # add some extra space to the store, it's running on a tmpfs on your RAM
 $ mkdir -p /mnt/tmpstore/{work,store}
 $ mount -t overlay overlay -olowerdir=/nix/store,upperdir=/mnt/tmpstore/store,workdir=/mnt/tmpstore/work /nix/store
