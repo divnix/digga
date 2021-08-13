@@ -1,11 +1,9 @@
 # ISO
 
-Making and writing an installable iso for `hosts/NixOS.nix` is as simple as:
+Making and writing an installable iso for `hosts/bootstrap.nix` is as simple as:
 ```sh
-bud build NixOS bootstrapIso
-
-dd bs=4M if=result/iso/*.iso of=/dev/$your_installation_device \
-  status=progress oflag=sync
+bud build bootstrap bootstrapIso
+sudo -E $(which bud) burn
 ```
 
 This works for any host.
