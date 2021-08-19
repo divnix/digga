@@ -19,6 +19,8 @@
 
       devshell.url = "github:numtide/devshell";
       flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
+      nix.url = "github:nixos/nix";
+      nix.inputs.nixpkgs.follows = "nixpkgs";
 
       nixos-generators.url = "github:nix-community/nixos-generators";
       nixos-generators.inputs.nixpkgs.follows = "blank";
@@ -44,6 +46,7 @@
     , flake-utils-plus
     , nixos-generators
     , home-manager
+    , nix
     , ...
     }@inputs:
     let
@@ -88,7 +91,7 @@
       # Dependency Groups - Style
       checksInputs = { inherit nixpkgs; digga = self; };
       jobsInputs = { inherit nixpkgs; digga = self; };
-      devShellInputs = { inherit nixpkgs devshell; };
+      devShellInputs = { inherit nixpkgs devshell nix; };
 
       # .. we hope you like this style.
       # .. it's adopted by a growing number of projects.
@@ -126,7 +129,7 @@
       };
 
       # a little extra service ...
-      overlays = import ./overlays;
+      overlays = import ./overlays { inherit inputs; };
       nixosModules = import ./modules;
 
       # digga-local use
