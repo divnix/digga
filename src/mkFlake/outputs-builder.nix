@@ -112,14 +112,6 @@ in
           systemSieve = _: host: host.config.nixpkgs.system == system;
           hostConfigsOnThisSystem = lib.filterAttrs systemSieve config.self.nixosConfigurations;
 
-          suitesSieve = n: host:
-            lib.warnIf (host.config.lib.specialArgs.suites == null) ''
-              '${n}' will only be tested against all profiles if 'importables.suites'
-              are used to declare your profiles.
-            ''
-              host.config.lib.specialArgs.suites != null;
-          hostConfigsOnThisSystemWithSuites = lib.filterAttrs suitesSieve hostConfigsOnThisSystem;
-
           createCustomTestOp = n: host: test:
             lib.warnIf (!(test ? name)) ''
               '${n}' has a test without a name. To distinguish tests in the flake output
@@ -136,23 +128,12 @@ in
             in
             builtins.listToAttrs (map op config.nixos.hosts.${n}.tests);
 
-          createAllProfilesTestOp = n: host: {
-            name = "allProfilesTestFor-${n}";
-            value = tests.profilesTest host;
-          };
-
-          profilesTests =
-            if (hostConfigsOnThisSystemWithSuites != [ ])
-            then lib.mapAttrs' createAllProfilesTestOp hostConfigsOnThisSystemWithSuites
-            else { };
-
           customTests =
             if (hostConfigsOnThisSystem != [ ])
             then lib.foldl (a: b: a // b) { } (lib.attrValues (lib.mapAttrs createCustomTestsOp hostConfigsOnThisSystem))
             else { };
 
-        in
-        (profilesTests // customTests)
+        in customTests
       else { }
     )
   ;

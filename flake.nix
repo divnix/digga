@@ -113,7 +113,7 @@
         inherit (flake-utils-plus.inputs.flake-utils.lib) defaultSystems eachSystem eachDefaultSystem filterPackages;
         inherit (flake-utils-plus.lib) exportModules exportOverlays exportPackages;
         inherit mkFlake;
-        inherit (tests) mkTest;
+        inherit (tests) mkTest allProfilesTest;
         inherit (importers) flattenTree rakeLeaves importOverlays importModules importHosts;
         inherit (generators) mkDeployNodes mkHomeConfigurations;
 

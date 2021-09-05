@@ -27,23 +27,22 @@ let
     in
     nixosTesting.makeTest (maybeCallTest pkgs (maybeImport test));
 
-  profilesTest = host:
-    mkTest host {
-      name = "profiles";
+  allProfilesTest =  {
+    name = "allProfiles";
 
-      machine = { suites ? null, ... }: {
-        imports =
-          let
-            allProfiles = lib.foldl
-              (lhs: rhs: lhs ++ rhs) [ ]
-              (builtins.attrValues suites);
-          in
-          allProfiles;
-      };
-
-      testScript = ''
-        ${host.config.networking.hostName}.systemctl("is-system-running --wait")
-      '';
+    machine = { suites ? null, ... }: {
+      imports =
+        let
+          allProfiles = lib.foldl
+            (lhs: rhs: lhs ++ rhs) [ ]
+            (builtins.attrValues suites);
+        in
+        allProfiles;
     };
+
+    testScript = ''
+      machines[0].systemctl("is-system-running --wait")
+    '';
+  };
 in
-{ inherit mkTest profilesTest; }
+{ inherit mkTest allProfilesTest; }
