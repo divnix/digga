@@ -1,8 +1,8 @@
 # NixOS API Container
-Configure your NixOS modules, profiles & suites.
+Configure your nixos modules, profiles & suites.
 
 
-## NixOS
+## nixos
 hosts, modules, suites, and profiles for NixOS
 
 

@@ -25,12 +25,12 @@ in
 
   mkApiReferenceTopLevel = pkgs.writeText "api-reference.md" ''
     # Top Level API
-    `digga`'s top level api. API Containers are documented in their respective subchapter:
+    `digga`'s top level API. API Containers are documented in their respective sub-chapter:
 
     - [Channels](./api-reference-channels.md)
     - [Home](./api-reference-home.md)
     - [Devshell](./api-reference-devshell.md)
-    - [Nixos](./api-reference-nixos.md)
+    - [NixOS](./api-reference-nixos.md)
 
     ${( pkgs.nixosOptionsDoc {
         options = {

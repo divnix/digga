@@ -64,7 +64,7 @@ let
 
   nixosTestType = pathToOr (types.anything // {
     check = x: builtins.isFunction x || builtins.isAttrs x;
-    description = "valid nixos test";
+    description = "valid NixOS test";
   });
 
   moduleType = with types; (anything // {
@@ -95,7 +95,7 @@ let
   };
 
   userType = with types; pathToOr (functionTo attrs) // {
-    description = "hm user config";
+    description = "HM user config";
   };
 
   overlaysType = with types; coercedListOf overlayType;
@@ -437,7 +437,7 @@ in
       type = pathToOr nixosType;
       default = { };
       description = ''
-        hosts, modules, suites, and profiles for nixos
+        hosts, modules, suites, and profiles for NixOS
       '';
     };
     home = mkOption {
