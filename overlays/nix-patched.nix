@@ -3,19 +3,10 @@ final: prev: {
 
   __dontExport = true;
 
-  nixUnstable = prev.nixUnstable.overrideAttrs (o: {
-    src = inputs.nix;
-    patches = (o.patches or [ ]) ++ [
-
-      # fixes nested `inputs.<name>.follows` syntax
-      (prev.fetchpatch {
-        name = "fix-follows.diff";
-        url = "https://patch-diff.githubusercontent.com/raw/NixOS/nix/pull/4641.patch";
-        sha256 = "sha256-0xNgbyWFmD3UIHPNFrgKiSejGJfuVj1OjqbS1ReLJRc=";
-      })
-
-    ];
-  });
+  # Use pinned version to guarantee reproducability
+  # with this fast moving target. Flipside: not store
+  # efficient.
+  nixUnstable = inputs.nix.packages.${prev.system}.nix;
 
   nixos-rebuild = prev.nixos-rebuild.override {
     nix = final.nixUnstable;
