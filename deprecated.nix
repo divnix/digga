@@ -69,9 +69,9 @@ rec {
         lib.exporters.internalOverlays -> lib.exportOverlays
     ''
       {
-        modulesFromList = flake-utils-plus.exportModules;
-        fromOverlays = flake-utils-plus.exportPackages;
-        internalOverlays = flake-utils-plus.exportOverlays;
+        modulesFromList = flake-utils-plus.lib.exportModules;
+        fromOverlays = flake-utils-plus.lib.exportPackages;
+        internalOverlays = flake-utils-plus.lib.exportOverlays;
       }
   ;
 
