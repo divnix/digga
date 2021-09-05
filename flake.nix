@@ -18,7 +18,8 @@
       home-manager.inputs.nixpkgs.follows = "nixlib";
 
       devshell.url = "github:numtide/devshell";
-      flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus/staging";
+      # fork with urgent fixes that can't be added quickly upstream in respect of upstream user base
+      flake-utils-plus.url = "github:divnix/flake-utils-plus";
       nix.url = "github:nixos/nix";
       nix.inputs.nixpkgs.follows = "nixpkgs";
 
