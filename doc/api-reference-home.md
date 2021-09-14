@@ -24,7 +24,7 @@ meant importing modules from external flakes
 
 
 *_Type_*:
-list of valid modules or anything convertible to it
+list of valid modules or anything convertible to it or path convertible to it
 
 
 *_Default_*
@@ -72,7 +72,7 @@ modules to include in all hosts and export to homeModules output
 
 
 *_Type_*:
-list of valid modules or anything convertible to it
+list of valid modules or anything convertible to it or path convertible to it
 
 
 *_Default_*

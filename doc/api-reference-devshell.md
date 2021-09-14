@@ -25,7 +25,7 @@ meant importing modules from external flakes
 
 
 *_Type_*:
-list of valid modules or anything convertible to it
+list of valid modules or anything convertible to it or path convertible to it
 
 
 *_Default_*

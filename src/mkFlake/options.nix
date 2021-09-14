@@ -171,7 +171,7 @@ let
 
   modulesOpt = {
     modules = mkOption {
-      type = with types; modulesType;
+      type = with types; pathToOr modulesType;
       default = [ ];
       description = ''
         modules to include
@@ -180,7 +180,7 @@ let
   };
 
   exportedModulesOpt' = name: {
-    type = with types; modulesType;
+    type = with types; pathToOr modulesType;
     default = [ ];
     description = ''
       modules to include in all hosts and export to ${name}Modules output
@@ -200,7 +200,7 @@ let
   # modules in each host don't get exported
   externalModulesOpt = {
     externalModules = mkOption {
-      type = with types; modulesType;
+      type = with types; pathToOr modulesType;
       default = [ ];
       description = ''
         modules to include that won't be exported
