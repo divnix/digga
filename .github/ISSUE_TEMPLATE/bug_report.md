@@ -35,4 +35,4 @@ Please search on the [issue tracker](../) before creating one.
 
 ## Your Environment
 <!--- Include relevant details about the environment you experienced the bug in. -->
-<!--- If you have run `flk update`, for example, post the flake.lock file. -->
+<!--- If you have run `bud update`, for example, post the flake.lock file. -->

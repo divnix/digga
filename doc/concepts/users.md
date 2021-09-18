@@ -48,7 +48,7 @@ argument that gets passed to your home-manager users.
 
 ## External Usage
 You can easily use the defined home-manager configurations outside of NixOS
-using the `homeConfigurations` flake output. The [flk](../flk/index.md) helper
+using the `homeConfigurations` flake output. The [bud](../bud/index.md) helper
 script makes this even easier.
 
 This is great for keeping your environment consistent across Unix systems,
@@ -57,10 +57,10 @@ including OSX.
 ### From within the projects devshell:
 ```sh
 # builds the nixos user defined in the NixOS host
-flk home NixOS nixos
+bud home NixOS nixos
 
 # build and activate
-flk home NixOS nixos switch
+bud home NixOS nixos switch
 ```
 
 ### Manually from outside the project:

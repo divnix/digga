@@ -2,7 +2,7 @@ result
 .direnv
 doc/index.html
 
-# Result of flk commands
+# Result of bud commands
 vm
 iso
 doi

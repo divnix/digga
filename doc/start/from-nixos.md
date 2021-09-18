@@ -4,7 +4,7 @@
 Assuming you're happy with your existing partition layout, you can generate a
 basic NixOS configuration for your system using:
 ```sh
-flk up
+bud up
 ```
 
 This will make a new file `hosts/up-$(hostname).nix`, which you can edit to
@@ -38,7 +38,7 @@ Now might be a good time to read the docs on [suites](../concepts/suites.md) and
 
 Once you're ready to deploy `hosts/my-host.nix`:
 ```sh
-flk my-host switch
+bud my-host switch
 ```
 
 

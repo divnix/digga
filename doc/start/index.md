@@ -6,10 +6,10 @@ Here is a snippet that will get you the template without the git history:
 ```sh
 nix-shell -p cachix --run "cachix use nrdxp"
 
-nix-shell https://github.com/divnix/devos/archive/core.tar.gz -A shell \
-  --run "flk get core"
+nix-shell https://github.com/divnix/devos/archive/master.tar.gz -A shell \
+  --run "bud get master"
 
-cd flk
+cd bud
 
 nix-shell
 
@@ -18,7 +18,7 @@ git add .
 git commit -m init
 ```
 
-This will place you in a new folder named `flk` with git initialized, and a
+This will place you in a new folder named `bud` with git initialized, and a
 nix-shell that provides all the dependencies, including the unstable nix
 version required.
 
