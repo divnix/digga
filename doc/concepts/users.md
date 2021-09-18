@@ -73,5 +73,5 @@ nix build "github:divnix/devos#homeConfigurations.nixos@NixOS.home.activationPac
 ```
 
 [home-manager]: https://nix-community.github.io/home-manager
-[modules-list]: https://github.com/divnix/devos/tree/core/users/modules/module-list.nix
+[modules-list]: https://github.com/divnix/devos/tree/master/users/modules/module-list.nix
 [portableuser]: https://digga.divnix.com/api-reference-home.html#homeusers
