@@ -53,7 +53,7 @@ set any system state.
 - **Suites** are a composable, clean and discoverable mechanism for profile aggregation.
 
 ## Internal Art vs External Art
-Overlays and modules can be defined internally coming form your repo or externally
+Overlays and modules can be defined internally coming from your repo or externally
 coming from an upstream flake. This distinction serves the library to only export
 your own work as the public flake output.
 
