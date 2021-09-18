@@ -1,7 +1,7 @@
 # Pull Requests
 
 ## TL;DR;
-- **Target Branch**: `main`
+- **Target Branch**: `master`
 - **Merge Policy**: [`bors`][bors] is always right (&rarr; `bors try`)
 - **Docs**: every changeset is expected to contain doc updates
 - **Commit Msg**: be a poet! Comprehensive and explanatory commit messages 
