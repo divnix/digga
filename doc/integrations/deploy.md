@@ -40,7 +40,7 @@ And the private key to your user:
 
 And run the deployment:
 ```sh
-deploy "flk#hostName" --hostname host.example.com
+deploy "bud#hostName" --hostname host.example.com
 ```
 
 > ##### _Note:_
