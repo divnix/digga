@@ -692,28 +692,51 @@ which is defined as a simple overlay.</p>
 the supported systems listed in the package's <code>meta.platforms</code> attribute.</p>
 <p>And, as usual, every package in the overlay is also available to any NixOS
 <a href="outputs/../concepts/hosts.html">host</a>.</p>
+<p>Another convenient difference is that it is possible to use 
+<a href="https://github.com/berberman/nvfetcher">nvfetcher</a> to keep packages up to 
+date.
+This is best understood by the simple example below.</p>
 <h2 id="example-4"><a class="header" href="#example-4">Example</a></h2>
-<p>pkgs/development/libraries/libinih/default.nix:</p>
-<pre><code class="language-nix">{ stdenv, meson, ninja, lib, srcs, ... }:
-let inherit (srcs) libinih; in
+<p>It is possible to specify sources separately to keep them up to date semi 
+automatically.
+The basic rules are specified in pkgs/sources.toml:</p>
+<pre><code class="language-toml"># nvfetcher.toml
+[libinih]
+src.github = &quot;benhoyt/inih&quot;
+fetch.github = &quot;benhoyt/inih&quot;
+</code></pre>
+<p>After changes to this file as well as to update the packages specified in there run 
+nvfetcher (for more details see <a href="https://github.com/berberman/nvfetcher">nvfetcher</a>).</p>
+<p>The pkgs overlay is managed in
+pkgs/default.nix:</p>
+<pre><code class="language-nix">final: prev: {
+  # keep sources first, this makes sources available to the pkgs
+  sources = prev.callPackage (import ./_sources/generated.nix) { };
+
+  # then, call packages with `final.callPackage`
+  libinih = prev.callPackage ./development/libraries/libinih { };
+}
+</code></pre>
+<p>Lastly the example package is in
+pkgs/development/libraries/libinih/default.nix:</p>
+<pre><code class="language-nix">{ stdenv, meson, ninja, lib, sources, ... }:
 stdenv.mkDerivation {
   pname = &quot;libinih&quot;;
 
-  # version will resolve to 53, as specified in the final example below
-  inherit (libinih) version;
-
-  src = libinih;
+  # version will resolve to the latest available on gitub
+  inherit (sources.libinih) version src;
 
   buildInputs = [ meson ninja ];
 
   # ...
 }
 </code></pre>
-<p>pkgs/default.nix:</p>
-<pre><code class="language-nix">final: prev: {
-  libinih = prev.callPackage ./development/libraries/libinih { };
-}
-</code></pre>
+<h2 id="migration-from-flake-based-approach"><a class="header" href="#migration-from-flake-based-approach">Migration from flake based approach</a></h2>
+<p>Previous to nvfetcher it was possible to manage sources via a pkgs/flake.nix, the main changes from there are that sources where in the attribute &quot;srcs&quot; (now &quot;sources&quot;) and the contents of the sources where slightly different.
+In order to switch to the new system, rewrite pkgs/flake.nix to a pkgs/sources.toml file using the documentation of nvfetcher,
+add the line that calls the sources at the beginning of pkgs/default.nix, and 
+accomodate the small changes in the packages as can be seen from the example.</p>
+<p>The example package looked like:</p>
 <p>pkgs/flake.nix:</p>
 <pre><code class="language-nix">{
   description = &quot;Package sources&quot;;
@@ -722,6 +745,28 @@ stdenv.mkDerivation {
     libinih.url = &quot;github:benhoyt/inih/r53&quot;;
     libinih.flake = false;
   };
+}
+</code></pre>
+<p>pkgs/default.nix:</p>
+<pre><code class="language-nix">final: prev: {
+  # then, call packages with `final.callPackage`
+  libinih = prev.callPackage ./development/libraries/libinih { };
+}
+</code></pre>
+<p>pkgs/development/libraries/libinih/default.nix:</p>
+<pre><code class="language-nix">{ stdenv, meson, ninja, lib, srcs, ... }:
+let inherit (srcs) libinih; in
+stdenv.mkDerivation {
+  pname = &quot;libinih&quot;;
+
+  # version will resolve to 53, as specified in the flake.nix file
+  inherit (libinih) version;
+
+  src = libinih;
+
+  buildInputs = [ meson ninja ];
+
+  # ...
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="secrets"><a class="header" href="#secrets">Secrets</a></h1>
@@ -965,8 +1010,8 @@ to keep checks passing.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="pull-requests"><a class="header" href="#pull-requests">Pull Requests</a></h1>
 <h2 id="tldr"><a class="header" href="#tldr">TL;DR;</a></h2>
 <ul>
-<li><strong>Target Branch</strong>: <code>main</code></li>
-<li><strong>Merge Policy</strong>: <a href="https://bors.tech"><code>bors</code></a> is alwyas right (→ <code>bors try</code>)</li>
+<li><strong>Target Branch</strong>: <code>master</code></li>
+<li><strong>Merge Policy</strong>: <a href="https://bors.tech"><code>bors</code></a> is always right (→ <code>bors try</code>)</li>
 <li><strong>Docs</strong>: every changeset is expected to contain doc updates</li>
 <li><strong>Commit Msg</strong>: be a poet! Comprehensive and explanatory commit messages 
 should cover the motivation and use case in an easily understandable manner
