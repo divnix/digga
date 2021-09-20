@@ -214,10 +214,10 @@ goals are sufficiently upstreamed into &quot;the Nix&quot;, dissolved.</p>
 <p>Here is a snippet that will get you the template without the git history:</p>
 <pre><code class="language-sh">nix-shell -p cachix --run &quot;cachix use nrdxp&quot;
 
-nix-shell https://github.com/divnix/devos/archive/core.tar.gz -A shell \
-  --run &quot;flk get core&quot;
+nix-shell https://github.com/divnix/devos/archive/master.tar.gz -A shell \
+  --run &quot;bud get master&quot;
 
-cd flk
+cd devos
 
 nix-shell
 
@@ -225,7 +225,7 @@ git init
 git add .
 git commit -m init
 </code></pre>
-<p>This will place you in a new folder named <code>flk</code> with git initialized, and a
+<p>This will place you in a new folder named <code>devos</code> with git initialized, and a
 nix-shell that provides all the dependencies, including the unstable nix
 version required.</p>
 <p>In addition, the <a href="start/../integrations/cachix.html">binary cache</a> is added for faster deployment.</p>
@@ -329,7 +329,7 @@ Under this reservation, though, you may use this EUI-64 to wire up a specific
 <h2 id="generate-configuration"><a class="header" href="#generate-configuration">Generate Configuration</a></h2>
 <p>Assuming you're happy with your existing partition layout, you can generate a
 basic NixOS configuration for your system using:</p>
-<pre><code class="language-sh">flk up
+<pre><code class="language-sh">bud up
 </code></pre>
 <p>This will make a new file <code>hosts/up-$(hostname).nix</code>, which you can edit to
 your liking.</p>
@@ -356,7 +356,7 @@ them directly into a host module of your own making, and commit that instead.</p
 </blockquote>
 <h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
 <p>Once you're ready to deploy <code>hosts/my-host.nix</code>:</p>
-<pre><code class="language-sh">flk my-host switch
+<pre><code class="language-sh">bud my-host switch
 </code></pre>
 <p>This calls <code>nixos-rebuild</code> with sudo to build and install your configuration.</p>
 <blockquote>
@@ -559,7 +559,7 @@ your users. For a fully fleshed out example, check out the developers personal
 <h2 id="home-manager"><a class="header" href="#home-manager">Home Manager</a></h2>
 <p>Home Manager support follows the same principles as regular nixos configurations,
 it even gets its own namespace in your <code>flake.nix</code> as <code>home</code>.</p>
-<p>All modules defined in <a href="https://github.com/divnix/devos/tree/core/users/modules/module-list.nix">user modules</a> will be imported to
+<p>All modules defined in <a href="https://github.com/divnix/devos/tree/master/users/modules/module-list.nix">user modules</a> will be imported to
 Home Manager.
 User profiles can be collected in a similar fashion as system ones into a <code>suites</code>
 argument that gets passed to your home-manager users.</p>
@@ -572,16 +572,16 @@ argument that gets passed to your home-manager users.</p>
 </code></pre>
 <h2 id="external-usage"><a class="header" href="#external-usage">External Usage</a></h2>
 <p>You can easily use the defined home-manager configurations outside of NixOS
-using the <code>homeConfigurations</code> flake output. The <a href="concepts/../flk/index.html">flk</a> helper
+using the <code>homeConfigurations</code> flake output. The <a href="concepts/../bud/index.html">bud</a> helper
 script makes this even easier.</p>
 <p>This is great for keeping your environment consistent across Unix systems,
 including OSX.</p>
 <h3 id="from-within-the-projects-devshell"><a class="header" href="#from-within-the-projects-devshell">From within the projects devshell:</a></h3>
 <pre><code class="language-sh"># builds the nixos user defined in the NixOS host
-flk home NixOS nixos
+bud home NixOS nixos
 
 # build and activate
-flk home NixOS nixos switch
+bud home NixOS nixos switch
 </code></pre>
 <h3 id="manually-from-outside-the-project"><a class="header" href="#manually-from-outside-the-project">Manually from outside the project:</a></h3>
 <pre><code class="language-sh"># build
@@ -944,7 +944,7 @@ the command line.</p>
 }
 </code></pre>
 <p>And run the deployment:</p>
-<pre><code class="language-sh">deploy &quot;flk#hostName&quot; --hostname host.example.com
+<pre><code class="language-sh">deploy '.#hostName' --hostname host.example.com
 </code></pre>
 <blockquote>
 <h5 id="note-6"><a class="header" href="#note-6"><em>Note:</em></a></h5>
@@ -956,7 +956,7 @@ the command line.</p>
 nvfetcher can for example track updates to a specific branch and
 automatically update your nix sources configuration on each run
 to the tip of that branch.</p>
-<p>All package source declaration is done in <a href="https://github.com/divnix/devos/tree/core/pkgs/sources.toml">sources.toml</a>.</p>
+<p>All package source declaration is done in <a href="https://github.com/divnix/devos/tree/master/pkgs/sources.toml">sources.toml</a>.</p>
 <p>From within the devshell of this repo, run <code>nvfetcher</code>, a wrapped
 version of <code>nvfetcher</code> that knows where to find and place its files
 and commit the results.</p>

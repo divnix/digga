@@ -147,7 +147,7 @@
 <h2 id="generate-configuration"><a class="header" href="#generate-configuration">Generate Configuration</a></h2>
 <p>Assuming you're happy with your existing partition layout, you can generate a
 basic NixOS configuration for your system using:</p>
-<pre><code class="language-sh">flk up
+<pre><code class="language-sh">bud up
 </code></pre>
 <p>This will make a new file <code>hosts/up-$(hostname).nix</code>, which you can edit to
 your liking.</p>
@@ -174,7 +174,7 @@ them directly into a host module of your own making, and commit that instead.</p
 </blockquote>
 <h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
 <p>Once you're ready to deploy <code>hosts/my-host.nix</code>:</p>
-<pre><code class="language-sh">flk my-host switch
+<pre><code class="language-sh">bud my-host switch
 </code></pre>
 <p>This calls <code>nixos-rebuild</code> with sudo to build and install your configuration.</p>
 <blockquote>

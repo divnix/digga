@@ -172,7 +172,7 @@ your users. For a fully fleshed out example, check out the developers personal
 <h2 id="home-manager"><a class="header" href="#home-manager">Home Manager</a></h2>
 <p>Home Manager support follows the same principles as regular nixos configurations,
 it even gets its own namespace in your <code>flake.nix</code> as <code>home</code>.</p>
-<p>All modules defined in <a href="https://github.com/divnix/devos/tree/core/users/modules/module-list.nix">user modules</a> will be imported to
+<p>All modules defined in <a href="https://github.com/divnix/devos/tree/master/users/modules/module-list.nix">user modules</a> will be imported to
 Home Manager.
 User profiles can be collected in a similar fashion as system ones into a <code>suites</code>
 argument that gets passed to your home-manager users.</p>
@@ -185,16 +185,16 @@ argument that gets passed to your home-manager users.</p>
 </code></pre>
 <h2 id="external-usage"><a class="header" href="#external-usage">External Usage</a></h2>
 <p>You can easily use the defined home-manager configurations outside of NixOS
-using the <code>homeConfigurations</code> flake output. The <a href="../flk/index.html">flk</a> helper
+using the <code>homeConfigurations</code> flake output. The <a href="../bud/index.html">bud</a> helper
 script makes this even easier.</p>
 <p>This is great for keeping your environment consistent across Unix systems,
 including OSX.</p>
 <h3 id="from-within-the-projects-devshell"><a class="header" href="#from-within-the-projects-devshell">From within the projects devshell:</a></h3>
 <pre><code class="language-sh"># builds the nixos user defined in the NixOS host
-flk home NixOS nixos
+bud home NixOS nixos
 
 # build and activate
-flk home NixOS nixos switch
+bud home NixOS nixos switch
 </code></pre>
 <h3 id="manually-from-outside-the-project"><a class="header" href="#manually-from-outside-the-project">Manually from outside the project:</a></h3>
 <pre><code class="language-sh"># build
