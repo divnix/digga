@@ -18,7 +18,7 @@ They also make [Nix expressions](https://nixos.org/manual/nix/unstable/expressio
 
 ## Getting Started
 Check out the [guide](https://devos.divnix.com/start) to get up and running.
-Also, have a look at [_flake.nix_][toc]. If anything is not immediately 
+Also, have a look at [_flake.nix_](./flake.nix). If anything is not immediately 
 discoverable via "[`digga`][digga]'s [`mkFlake`][mk-flake],
 please file a bug report.
 
@@ -88,4 +88,4 @@ DevOS is licensed under the [MIT License][mit].
 [nixpkgs]: https://github.com/NixOS/nixpkgs
 [nvfetcher]: https://github.com/berberman/nvfetcher
 [please]: https://github.com/nrdxp/devos/tree/nrd
-
+[matrix]: https://matrix.to/#/#devos:nixos.org
