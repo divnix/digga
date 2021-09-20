@@ -40,7 +40,7 @@ And the private key to your user:
 
 And run the deployment:
 ```sh
-deploy "bud#hostName" --hostname host.example.com
+deploy ".#hostName" --hostname host.example.com
 ```
 
 > ##### _Note:_
