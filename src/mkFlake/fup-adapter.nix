@@ -25,7 +25,7 @@ let
   defaultHostModules = [
     (internal-modules.hmNixosDefaults {
       specialArgs = config.home.importables;
-      modules = config.home.modules ++ config.home.externalModules;
+      modules = config.home.modules ++ config.home.exportedModules;
     })
     (internal-modules.globalDefaults {
       hmUsers = config.home.users;
@@ -53,7 +53,8 @@ let
   # but for proper default handling in fup, null args have to be removed
   stripHost = args: removeAttrs (lib.filterAttrs (_: arg: arg != null) args) [
     # arguments in our hosts/hostDefaults api that shouldn't be passed to fup
-    "externalModules"
+    "externalModules" # TODO: remove deprecated option
+    "exportedModules"
     "tests"
   ];
 
@@ -79,14 +80,14 @@ let
     hostDefaults = flake-utils-plus.lib.mergeAny (stripHost config.nixos.hostDefaults) {
       # add `self` & `inputs` as specialargs so their libs can be used in imports
       specialArgs = config.nixos.importables // { inherit (config) self inputs; };
-      modules = config.nixos.hostDefaults.externalModules ++ defaultHostModules;
+      modules = config.nixos.hostDefaults.exportedModules ++ defaultHostModules;
     };
 
-    nixosModules = flake-utils-plus.lib.exportModules config.nixos.hostDefaults.modules;
+    nixosModules = flake-utils-plus.lib.exportModules config.nixos.hostDefaults.exportedModules;
 
-    homeModules = flake-utils-plus.lib.exportModules config.home.modules;
+    homeModules = flake-utils-plus.lib.exportModules config.home.exportedModules;
 
-    devshellModules = flake-utils-plus.lib.exportModules config.devshell.modules;
+    devshellModules = flake-utils-plus.lib.exportModules config.devshell.exportedModules;
 
     overlays = flake-utils-plus.lib.exportOverlays {
       # since we can't detect overlays owned by self

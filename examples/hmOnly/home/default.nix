@@ -3,8 +3,8 @@ let
   lib = inputs.digga.lib;
 in
 {
-  imports = [ (lib.importModules ./modules) ];
-  externalModules = [ ];
+  imports = [ (lib.importExportableModules ./modules) ];
+  modules = [ ];
   importables = rec {
     profiles = lib.rakeLeaves ./profiles;
     suites = with profiles; {

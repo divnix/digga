@@ -114,7 +114,7 @@
         inherit (flake-utils-plus.lib) exportModules exportOverlays exportPackages;
         inherit mkFlake;
         inherit (tests) mkTest allProfilesTest;
-        inherit (importers) flattenTree rakeLeaves importOverlays importModules importHosts;
+        inherit (importers) flattenTree rakeLeaves importOverlays importExportableModules importHosts;
         inherit (generators) mkDeployNodes mkHomeConfigurations;
 
         # DEPRECATED - will be removed soon
@@ -124,6 +124,7 @@
           mkProfileAttrs
           exporters
           modules
+          importModules
           importers
           ;
 

@@ -187,9 +187,9 @@ let
     '';
   };
 
-  exportedModulesOpt = name: { modules = mkOption (exportedModulesOpt' name); };
+  exportedModulesOpt = name: { exportedModules = mkOption (exportedModulesOpt' name); };
   exportedDevshellModulesOpt = {
-    modules = mkOption (
+    exportedModules = mkOption (
       (exportedModulesOpt' "devshell") // {
         type = with types; devshellModulesType;
       }
@@ -198,13 +198,35 @@ let
 
   # This is only needed for hostDefaults
   # modules in each host don't get exported
-  externalModulesOpt = {
-    externalModules = mkOption {
+  regularModulesOpt = {
+    modules = mkOption {
       type = with types; pathToOr modulesType;
       default = [ ];
       description = ''
         modules to include that won't be exported
         meant importing modules from external flakes
+      '';
+    };
+  };
+
+  externalModulesDeprecationMessage = ''
+    The `externalModules` option has been removed.
+    Any modules that should be exported should be defined with the `exportedModules`
+    option and all other modules should just go into the `modules` option.
+  '';
+  legacyExternalModulesMod = { config, options, ... }: {
+    options = {
+      externalModules = mkOption {
+        type = with types; modulesType;
+        default = [ ];
+        description = externalModulesDeprecationMessage;
+      };
+    };
+    config = mkIf (config.externalModules != [ ]) {
+      modules = throw ''
+        ERROR: ${externalModulesDeprecationMessage}
+
+        Value of externalModules: ${config.externalModules}
       '';
     };
   };
@@ -351,7 +373,8 @@ let
 
   hostDefaultsType = name: with types; submoduleWith {
     modules = [
-      { options = systemOpt // (channelNameOpt true) // externalModulesOpt // (exportedModulesOpt name); }
+      { options = systemOpt // (channelNameOpt true) // regularModulesOpt // (exportedModulesOpt name); }
+      legacyExternalModulesMod
     ];
   };
 
@@ -366,7 +389,8 @@ let
   homeType = with types; submoduleWith {
     specialArgs = { inherit self inputs; };
     modules = [
-      { options = externalModulesOpt // (exportedModulesOpt "home") // importablesOpt // usersOpt; }
+      { options = regularModulesOpt // (exportedModulesOpt "home") // importablesOpt // usersOpt; }
+      legacyExternalModulesMod
       legacyImportablesMod
     ];
   };
@@ -374,7 +398,8 @@ let
   devshellType = with types; submoduleWith {
     specialArgs = { inherit self inputs; };
     modules = [
-      { options = externalModulesOpt // exportedDevshellModulesOpt; }
+      { options = regularModulesOpt // exportedDevshellModulesOpt; }
+      legacyExternalModulesMod
     ];
   };
 

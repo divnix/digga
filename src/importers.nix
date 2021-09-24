@@ -126,10 +126,10 @@ in
       overlays = lib.mkAfter (builtins.attrValues (flattenTree (rakeLeaves dir)));
     };
 
-  importModules = dir:
+  importExportableModules = dir:
     {
       # Meant to output a module that sets the modules option
-      modules = builtins.attrValues (flattenTree (rakeLeaves dir));
+      exportedModules = builtins.attrValues (flattenTree (rakeLeaves dir));
     };
 
   importHosts = dir:

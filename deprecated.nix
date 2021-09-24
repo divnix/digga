@@ -90,6 +90,14 @@ rec {
       )
   ;
 
+  importModules =
+    lib.warn ''
+      Deprecated Function: lib.importModules.
+
+      Use lib.importExportableModules instead to set `exportedModules` option
+    ''
+      importers'.importExportableModules;
+
   importers =
     lib.warn ''
       Deprecated Attribute Set: lib.importers.
