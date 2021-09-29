@@ -8,10 +8,11 @@
   inputs =
     {
       nixpkgs.url = "github:nixos/nixpkgs/release-21.05";
+      latest.url = "github:nixos/nixpkgs/nixos-unstable";
       nixlib.follows = "nixpkgs"; # "github:nix-community/nixpkgs.lib";
       blank.url = "github:divnix/blank";
       deploy.url = "github:serokell/deploy-rs";
-      deploy.inputs.nixpkgs.follows = "nixpkgs";
+      deploy.inputs.nixpkgs.follows = "latest";
       # deploy.inputs.utils.follows = "utils/flake-utils";
 
       home-manager.url = "github:nix-community/home-manager";
@@ -42,6 +43,7 @@
     { self
     , nixlib
     , nixpkgs
+    , latest
     , deploy
     , devshell
     , flake-utils-plus
