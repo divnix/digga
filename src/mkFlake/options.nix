@@ -225,8 +225,6 @@ let
     config = mkIf (config.externalModules != [ ]) {
       modules = throw ''
         ERROR: ${externalModulesDeprecationMessage}
-
-        Value of externalModules: ${config.externalModules}
       '';
     };
   };
