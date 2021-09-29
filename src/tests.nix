@@ -27,7 +27,7 @@ let
     in
     nixosTesting.makeTest (maybeCallTest pkgs (maybeImport test));
 
-  allProfilesTest =  {
+  allProfilesTest = {
     name = "allProfiles";
 
     machine = { suites ? null, ... }: {

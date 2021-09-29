@@ -133,7 +133,8 @@ in
             then lib.foldl (a: b: a // b) { } (lib.attrValues (lib.mapAttrs createCustomTestsOp hostConfigsOnThisSystem))
             else { };
 
-        in customTests
+        in
+        customTests
       else { }
     )
   ;
