@@ -17,21 +17,21 @@ let
     name = "make-docs";
     help = "Execute the docs creating jobs and place the results in ./doc";
     command = ''
-      nix build "$DEVSHELL_ROOT#jobs.${pkgs.system}.mkApiReferenceTopLevel" \
-        && cp result "$DEVSHELL_ROOT/doc/api-reference.md" \
-        && chmod 755 "$DEVSHELL_ROOT//doc/api-reference.md"
-      nix build "$DEVSHELL_ROOT#jobs.${pkgs.system}.mkApiReferenceChannels" \
-        && cp result "$DEVSHELL_ROOT/doc/api-reference-channels.md" \
-        && chmod 755 "$DEVSHELL_ROOT//doc/api-reference-channels.md"
-      nix build "$DEVSHELL_ROOT#jobs.${pkgs.system}.mkApiReferenceHome" \
-        && cp result "$DEVSHELL_ROOT/doc/api-reference-home.md" \
-        && chmod 755 "$DEVSHELL_ROOT//doc/api-reference-home.md"
-      nix build "$DEVSHELL_ROOT#jobs.${pkgs.system}.mkApiReferenceDevshell" \
-        && cp result "$DEVSHELL_ROOT/doc/api-reference-devshell.md" \
-        && chmod 755 "$DEVSHELL_ROOT//doc/api-reference-devshell.md"
-      nix build "$DEVSHELL_ROOT#jobs.${pkgs.system}.mkApiReferenceNixos" \
-        && cp result "$DEVSHELL_ROOT/doc/api-reference-nixos.md" \
-        && chmod 755 "$DEVSHELL_ROOT//doc/api-reference-nixos.md"
+      nix build "$PRJ_ROOT#jobs.${pkgs.system}.mkApiReferenceTopLevel" \
+        && cp result "$PRJ_ROOT/doc/api-reference.md" \
+        && chmod 755 "$PRJ_ROOT//doc/api-reference.md"
+      nix build "$PRJ_ROOT#jobs.${pkgs.system}.mkApiReferenceChannels" \
+        && cp result "$PRJ_ROOT/doc/api-reference-channels.md" \
+        && chmod 755 "$PRJ_ROOT//doc/api-reference-channels.md"
+      nix build "$PRJ_ROOT#jobs.${pkgs.system}.mkApiReferenceHome" \
+        && cp result "$PRJ_ROOT/doc/api-reference-home.md" \
+        && chmod 755 "$PRJ_ROOT//doc/api-reference-home.md"
+      nix build "$PRJ_ROOT#jobs.${pkgs.system}.mkApiReferenceDevshell" \
+        && cp result "$PRJ_ROOT/doc/api-reference-devshell.md" \
+        && chmod 755 "$PRJ_ROOT//doc/api-reference-devshell.md"
+      nix build "$PRJ_ROOT#jobs.${pkgs.system}.mkApiReferenceNixos" \
+        && cp result "$PRJ_ROOT/doc/api-reference-nixos.md" \
+        && chmod 755 "$PRJ_ROOT//doc/api-reference-nixos.md"
     '';
 
   };
@@ -46,7 +46,7 @@ let
       diggaurl=
       lockfile_updated=1
       lockfile_present=1
-      tempdigga="\"path:$DEVSHELL_ROOT\""
+      tempdigga="\"path:$PRJ_ROOT\""
 
       cleanup() {
         if is $lockfile_present; then
@@ -77,7 +77,7 @@ let
 
       # --------------------------------------------------------------------------------
 
-      cd $DEVSHELL_ROOT/${type}/${name}
+      cd $PRJ_ROOT/${type}/${name}
 
       digga_fixture
 
@@ -126,14 +126,14 @@ devshell.mkShell {
 
   commands = [
     (utils {
-      command = "git rm --ignore-unmatch -f $DEVSHELL_ROOT/{tests,examples}/*/flake.lock";
+      command = "git rm --ignore-unmatch -f $PRJ_ROOT/{tests,examples}/*/flake.lock";
       help = "Remove all lock files";
       name = "rm-locks";
     })
     (utils {
       name = "fmt";
       help = "Check Nix formatting";
-      command = "nixpkgs-fmt \${@} $DEVSHELL_ROOT";
+      command = "nixpkgs-fmt \${@} $PRJ_ROOT";
     })
     (utils {
       name = "evalnix";
