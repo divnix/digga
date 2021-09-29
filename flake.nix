@@ -77,11 +77,14 @@
               nur.overlay
               agenix.overlay
               nvfetcher.overlay
-              deploy.overlay
               ./pkgs/default.nix
             ];
           };
-          latest = { };
+          latest = {
+            overlays = [
+              deploy.overlay
+            ];
+          };
         };
 
         lib = import ./lib { lib = digga.lib // nixos.lib; };
