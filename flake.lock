@@ -82,10 +82,9 @@
     "deploy": {
       "inputs": {
         "flake-compat": "flake-compat",
-        "naersk": "naersk",
         "nixpkgs": [
           "digga",
-          "nixpkgs"
+          "latest"
         ],
         "utils": [
           "digga",
@@ -93,11 +92,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1628752686,
-        "narHash": "sha256-Lzh9MYUJDsjgif+YEyOErXtj1IH+ci8J1C30g1ms69s=",
+        "lastModified": 1632822684,
+        "narHash": "sha256-lt7eayYmgsD5OQwpb1XYfHpxttn43bWo7G7hIJs+zJw=",
         "owner": "serokell",
         "repo": "deploy-rs",
-        "rev": "e5546f9c2503c26d175f08a81fc0a0f330be4cbe",
+        "rev": "9a02de4373e0ec272d08a417b269a28ac8b961b4",
         "type": "github"
       },
       "original": {
@@ -108,11 +107,11 @@
     },
     "devshell": {
       "locked": {
-        "lastModified": 1629275356,
-        "narHash": "sha256-R17M69EKXP6q8/mNHaK53ECwjFo1pdF+XaJC9Qq8zjg=",
+        "lastModified": 1632436039,
+        "narHash": "sha256-OtITeVWcKXn1SpVEnImpTGH91FycCskGBPqmlxiykv4=",
         "owner": "numtide",
         "repo": "devshell",
-        "rev": "26f25a12265f030917358a9632cd600b51af1d97",
+        "rev": "7a7a7aa0adebe5488e5abaec688fd9ae0f8ea9c6",
         "type": "github"
       },
       "original": {
@@ -131,6 +130,7 @@
         "home-manager": [
           "home"
         ],
+        "latest": "latest",
         "nix": "nix",
         "nixlib": [
           "nixos"
@@ -141,11 +141,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1632784893,
-        "narHash": "sha256-SBmGCObLqF9CrWoF7hrBpiCMPTUFzHiBvAtCJXQrPg4=",
+        "lastModified": 1632959483,
+        "narHash": "sha256-jXogai6e+QRtiZFBOrMmYdeLXejzVT91kuDKu2RuJ10=",
         "owner": "divnix",
         "repo": "digga",
-        "rev": "6316878be3527ef2b27b8e92afb44ce1857830b3",
+        "rev": "6549cf4c87d1a77138cbecbc6bb9483c20572cd7",
         "type": "github"
       },
       "original": {
@@ -157,11 +157,11 @@
     "flake-compat": {
       "flake": false,
       "locked": {
-        "lastModified": 1606424373,
-        "narHash": "sha256-oq8d4//CJOrVj+EcOaSXvMebvuTkmBJuT5tzlfewUnQ=",
+        "lastModified": 1627913399,
+        "narHash": "sha256-hY8g6H2KFL8ownSiFeMOjwPC8P0ueXpCVEbxgda3pko=",
         "owner": "edolstra",
         "repo": "flake-compat",
-        "rev": "99f1c2157fba4bfe6211a321fd0ee43199025dbf",
+        "rev": "12c64ca55c1014cdc1b16ed5a804aa8576601ff2",
         "type": "github"
       },
       "original": {
@@ -229,6 +229,22 @@
     },
     "latest": {
       "locked": {
+        "lastModified": 1632660378,
+        "narHash": "sha256-sjA8eQlnyDjDLyAyq3XlJmN0nqW0ftl/pb7VnMg86L0=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "31ffc50c571e6683e9ecc9dbcbd4a8e9914b4497",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "latest_2": {
+      "locked": {
         "lastModified": 1627942574,
         "narHash": "sha256-guUcGRWvY2mfiVSet2x/zeHIyflm2wgglj0ldg0mMio=",
         "owner": "nixos",
@@ -261,29 +277,6 @@
       }
     },
     "naersk": {
-      "inputs": {
-        "nixpkgs": [
-          "digga",
-          "deploy",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1622810282,
-        "narHash": "sha256-4wmvM3/xfD0hCdNDIXVzRMfL4yB1J+DjH6Zte2xbAxk=",
-        "owner": "nmattia",
-        "repo": "naersk",
-        "rev": "e8061169e1495871b56be97c5c51d310fae01374",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nmattia",
-        "ref": "master",
-        "repo": "naersk",
-        "type": "github"
-      }
-    },
-    "naersk_2": {
       "inputs": {
         "nixpkgs": [
           "latest"
@@ -412,11 +405,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1627523399,
-        "narHash": "sha256-j9CgnUQpWcb8OB4LRzPW8BdxvmoROJptgptDlPA8Heo=",
+        "lastModified": 1632700276,
+        "narHash": "sha256-XABvQUq2qv+YcQxW93DnU8mgtVsGJWyhcznny/Lbp0Q=",
         "owner": "berberman",
         "repo": "nvfetcher",
-        "rev": "fb8f2cc770ad3dd3e29d7ba3004692d4d53fba9b",
+        "rev": "248fe98ed1bc352ce164d08a9e76fdc5f301ba2d",
         "type": "github"
       },
       "original": {
@@ -448,8 +441,8 @@
           "flake-utils-plus"
         ],
         "home": "home",
-        "latest": "latest",
-        "naersk": "naersk_2",
+        "latest": "latest_2",
+        "naersk": "naersk",
         "nixlib": [
           "digga",
           "nixlib"
