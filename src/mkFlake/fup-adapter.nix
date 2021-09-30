@@ -24,7 +24,7 @@ let
 
   defaultHostModules = [
     (internal-modules.hmNixosDefaults {
-      specialArgs = config.home.importables;
+      specialArgs = config.home.importables // { inherit (config) self inputs; };
       modules = config.home.modules ++ config.home.exportedModules;
     })
     (internal-modules.globalDefaults {

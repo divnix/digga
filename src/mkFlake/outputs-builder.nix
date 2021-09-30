@@ -21,7 +21,7 @@ let
       inherit username homeDirectory pkgs system;
 
       extraModules = config.home.modules ++ config.home.exportedModules;
-      extraSpecialArgs = config.home.importables;
+      extraSpecialArgs = config.home.importables // { inherit (config) self inputs; };
 
       configuration = {
         imports = [ configuration ];
