@@ -54,8 +54,10 @@
 
       _module.args = {
         inherit hmUsers;
-        hosts = builtins.mapAttrs (_: host: host.config)
-          (removeAttrs self.nixosConfigurations [ config.networking.hostName ]);
+        hosts = throw ''
+          The `hosts` module argument has been removed, you should instead use
+          `self.nixosConfigurations`, with the `self` module argument.
+        '';
       };
 
       system.configurationRevision = lib.mkIf (self ? rev) self.rev;
