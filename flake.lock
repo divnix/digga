@@ -20,6 +20,29 @@
         "type": "github"
       }
     },
+    "beautysh": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "bud",
+          "nixpkgs"
+        ],
+        "poetry2nix": "poetry2nix"
+      },
+      "locked": {
+        "lastModified": 1630693543,
+        "narHash": "sha256-7Sly3ReaJZw60Qo0rpfN4jF6zy94nwQz6ENgUUFzJfg=",
+        "owner": "lovesegfault",
+        "repo": "beautysh",
+        "rev": "5609593961b70428f58d5c1b4b25cdda43b0d0bd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lovesegfault",
+        "repo": "beautysh",
+        "type": "github"
+      }
+    },
     "blank": {
       "locked": {
         "lastModified": 1625557891,
@@ -37,6 +60,7 @@
     },
     "bud": {
       "inputs": {
+        "beautysh": "beautysh",
         "devshell": [
           "digga",
           "devshell"
@@ -46,11 +70,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1627855680,
-        "narHash": "sha256-snDOrUp8nth2Vs3GeEXr7Xji+HaHy25htZLNvid/U3I=",
+        "lastModified": 1633373878,
+        "narHash": "sha256-9+ziZ8l6rq3yXyY6B0wYXrVdfxr6cdpEbPEGRHywBKc=",
         "owner": "divnix",
         "repo": "bud",
-        "rev": "612228a68d404d559405225427a5d8b3cef9d27c",
+        "rev": "4e709a2fcf19df500ba87d9c3b1b1481401cd53b",
         "type": "github"
       },
       "original": {
@@ -125,7 +149,7 @@
         "blank": "blank",
         "deploy": "deploy",
         "devshell": "devshell",
-        "flake-utils": "flake-utils",
+        "flake-utils": "flake-utils_2",
         "flake-utils-plus": "flake-utils-plus",
         "home-manager": [
           "home"
@@ -203,6 +227,21 @@
       "original": {
         "owner": "divnix",
         "repo": "flake-utils-plus",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
+      "locked": {
+        "lastModified": 1623875721,
+        "narHash": "sha256-A8BU7bjS5GirpAUv4QA+QnJ4CceLHkcXdRp4xITDB0s=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "f7e004a55b120c02ecb6219596820fcd32ca8772",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
         "type": "github"
       }
     },
@@ -415,6 +454,33 @@
       "original": {
         "owner": "berberman",
         "repo": "nvfetcher",
+        "type": "github"
+      }
+    },
+    "poetry2nix": {
+      "inputs": {
+        "flake-utils": [
+          "bud",
+          "beautysh",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "bud",
+          "beautysh",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1625240517,
+        "narHash": "sha256-2E1gaOP+bCplhf3kliVQWK5N1NV2h06mkJk2KTiRTJQ=",
+        "owner": "nix-community",
+        "repo": "poetry2nix",
+        "rev": "e40e8ed0e8c11e709e4c8c7c20174facd265a021",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "poetry2nix",
         "type": "github"
       }
     },
