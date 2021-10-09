@@ -26,7 +26,7 @@ and the examples in [nixpkgs][nixos-tests].
 
 [test-doc]: https://nixos.org/manual/nixos/stable/index.html#sec-nixos-tests
 [test-blog]: https://www.haskellforall.com/2020/11/how-to-use-nixos-for-lightweight.html
-[default]: https://github.com/divnix/devos/tree/master/tests/default.nix
+[default]: https://github.com/divnix/devos/tree/main/tests/default.nix
 [run-test]: https://github.com/NixOS/nixpkgs/blob/6571462647d7316aff8b8597ecdf5922547bf365/lib/debug.nix#L154-L166
 [nixos-tests]: https://github.com/NixOS/nixpkgs/tree/master/nixos/tests
 [testing-python]: https://github.com/NixOS/nixpkgs/tree/master/nixos/lib/testing-python.nix

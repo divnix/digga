@@ -63,5 +63,5 @@ specific belongs in your [host](hosts.md) files instead.
 [definition]: https://nixos.org/manual/nixos/stable/index.html#sec-option-definitions
 [declaration]: https://nixos.org/manual/nixos/stable/index.html#sec-option-declarations
 [options]: https://nixos.org/manual/nixos/stable/index.html#sec-writing-modules
-[spec]: https://github.com/divnix/devos/tree/master/lib/devos/mkProfileAttrs.nix
+[spec]: https://github.com/divnix/devos/tree/main/lib/devos/mkProfileAttrs.nix
 [config]: https://nixos.wiki/wiki/Module#structure
