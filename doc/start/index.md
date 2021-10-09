@@ -6,8 +6,8 @@ Here is a snippet that will get you the template without the git history:
 ```sh
 nix-shell -p cachix --run "cachix use nrdxp"
 
-nix-shell https://github.com/divnix/devos/archive/master.tar.gz -A shell \
-  --run "bud get master"
+nix-shell https://github.com/divnix/devos/archive/main.tar.gz -A shell \
+  --run "bud get main"
 
 cd devos
 

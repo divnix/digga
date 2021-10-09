@@ -40,4 +40,4 @@ fetch.git = "https://github.com/mlvzk/manix.git" # responsible for fetching
 
 [nvf]: https://github.com/berberman/nvfetcher
 [nvf-readme]: https://github.com/berberman/nvfetcher#readme
-[sources.toml]: https://github.com/divnix/devos/tree/master/pkgs/sources.toml
+[sources.toml]: https://github.com/divnix/devos/tree/main/pkgs/sources.toml

@@ -1,1 +1,1 @@
-nix flake new -t "github:divnix/devos/master" "${2:-devos}"
+nix flake new -t "github:divnix/devos/main" "${2:-devos}"
