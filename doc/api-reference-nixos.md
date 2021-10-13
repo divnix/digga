@@ -54,7 +54,7 @@ modules to include in all hosts and export to nixosModules output
 
 
 *_Type_*:
-list of valid modules or anything convertible to it
+list of valid modules or anything convertible to it or path convertible to it
 
 
 *_Default_*
@@ -66,13 +66,13 @@ list of valid modules or anything convertible to it
 
 
 ## nixos.hostDefaults.externalModules
-ERROR: The `externalModules` option has been removed.
+The `externalModules` option has been removed.
 Any modules that should be exported should be defined with the `exportedModules`
 option and all other modules should just go into the `modules` option.
 
 
 *_Type_*:
-list of valid modules or anything convertible to it or path convertible to it
+list of valid modules or anything convertible to it
 
 
 *_Default_*
