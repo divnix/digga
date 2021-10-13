@@ -62,22 +62,22 @@ let
   # Custom Types
   # #############
 
-  nixosTestType = pathToOr (types.anything // {
+  nixosTestType = pathToOr (mkOptionType {
+    name = "test";
     check = x: builtins.isFunction x || builtins.isAttrs x;
     description = "valid NixOS test";
   });
 
-  moduleType = with types; (anything // {
-    inherit (submodule { }) check;
+  moduleType = mkOptionType {
+    name = "module";
+    inherit (types.submodule { }) check;
     description = "valid module";
-  });
+  };
 
-  devshellModuleType = with types; coercedTo path maybeImportDevshellToml (anything // {
-    inherit (submodule { }) check;
-    description = "valid module";
-  });
+  devshellModuleType = with types; coercedTo path maybeImportDevshellToml moduleType;
 
-  overlayType = pathToOr (types.anything // {
+  overlayType = pathToOr (mkOptionType {
+    name = "overlay";
     check = builtins.isFunction;
     description = "valid Nixpkgs overlay";
   });
