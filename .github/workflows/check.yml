@@ -2,7 +2,7 @@ name: "Check & Cachix"
 on:
   push:
     branches:
-      - master
+      - main
       - trying
       - staging
 jobs:
