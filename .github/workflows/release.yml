@@ -19,7 +19,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: master
+          ref: main
       - name: Update Changelog
         uses: heinrichreimer/github-changelog-generator-action@v2.1.1
         with:
@@ -49,7 +49,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: master
+          ref: main
 
       - name: Get Changelog Entry
         id: changelog_reader
