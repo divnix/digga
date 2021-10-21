@@ -82,7 +82,7 @@ DevOS is licensed under the [MIT License][mit].
 [giants]: https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants
 [home-manager]: https://nix-community.github.io/home-manager
 [mit]: https://mit-license.org
-[mk-flake]: https://github.com/divnix/digga/tree/master/src/mkFlake
+[mk-flake]: https://github.com/divnix/digga/tree/main/src/mkFlake
 [nix]: https://nixos.org/manual/nix/stable
 [nixos]: https://nixos.org/manual/nixos/stable
 [nixpkgs]: https://github.com/NixOS/nixpkgs
