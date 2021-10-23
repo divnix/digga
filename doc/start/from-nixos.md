@@ -47,8 +47,5 @@ This calls `nixos-rebuild` with sudo to build and install your configuration.
 > ##### _Notes:_
 > - Instead of `switch`, you can pass `build`, `test`, `boot`, etc just as with
 >   `nixos-rebuild`.
->
-> - It is convenient to have the template living at `/etc/nixos` so you can
->   simply `sudo nixos-rebuild switch` from anywhere on the system, but it is
->   not required.
+
 
