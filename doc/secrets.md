@@ -1,10 +1,7 @@
 # Secrets
-Secrets are managed using [git-crypt][git-crypt] and [agenix][agenix]
+Secrets are managed using [agenix][agenix]
 so you can keep your flake in a public repository like GitHub without
 exposing your password or other sensitive data.
-
-By default, everything in the secrets folder is automatically encrypted. Just
-be sure to run `git-crypt init` before putting anything in here.
 
 ## Agenix
 Currently, there is [no mechanism][secrets-issue] in nix itself to deploy secrets
@@ -104,7 +101,6 @@ secrets get decrypted. You can learn about them by looking at the
 > You can take a look at the [agenix repository][agenix] for more information
 > about the tool.
 
-[git-crypt]: https://github.com/AGWA/git-crypt
 [agenix]: https://github.com/ryantm/agenix
 [age module]: https://github.com/ryantm/agenix/blob/master/modules/age.nix
 [secrets-issue]: https://github.com/NixOS/nix/issues/8
