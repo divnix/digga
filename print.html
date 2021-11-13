@@ -934,6 +934,28 @@ the command line.</p>
 <h5 id="note-6"><a class="header" href="#note-6"><em>Note:</em></a></h5>
 <p>Your user will need <strong>passwordless</strong> sudo access</p>
 </blockquote>
+<h3 id="home-manager-1"><a class="header" href="#home-manager-1">Home Manager</a></h3>
+<p>Digga's <code>lib.mkDeployNodes</code> provides only <code>system</code> profile.
+In order to deploy your <code>home-manager</code> configuration you should provide additional profile(s) to deploy-rs config:</p>
+<pre><code class="language-nix"># Initially, this line looks like this: deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
+deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations
+  {
+    &lt;HOSTNAME&gt; = {
+      profilesOrder = [ &quot;system&quot; &quot;&lt;HM_PROFILE&gt;&quot; &quot;&lt;ANOTHER_HM_PROFILE&gt;&quot;];
+      profiles.&lt;HM_PROFILE&gt; = {
+        user = &quot;&lt;YOUR_USERNAME&gt;&quot;;
+        path = deploy.lib.x86_64-linux.activate.home-manager self.homeConfigurationsPortable.x86_64-linux.&lt;YOUR_USERNAME&gt;;
+      };
+      profiles.&lt;ANOTHER_HM_PROFILE&gt; = {
+        user = &quot;&lt;ANOTHER_USERNAME&gt;&quot;;
+        path = deploy.lib.x86_64-linux.activate.home-manager self.homeConfigurationsPortable.x86_64-linux.&lt;ANOTHER_USERNAME&gt;;
+      };
+    };
+  };
+</code></pre>
+<p>Substitute <code>&lt;HOSTNAME&gt;</code>, <code>&lt;HM_PROFILE&gt;</code> and <code>&lt;YOUR_USERNAME&gt;</code> placeholders (omitting the <code>&lt;&gt;</code>). </p>
+<p><code>&lt;ANOTHER_HM_PROFILE&gt;</code> is there to illustrate deploying multiple <code>home-manager</code> configurations. Either substitute those as well,
+or remove them altogether. Don't forget the <code>profileOrder</code> variable.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="nvfetcher"><a class="header" href="#nvfetcher">nvfetcher</a></h1>
 <p><a href="https://github.com/berberman/nvfetcher">NvFetcher</a> is a workflow companion for updating nix sources.</p>
 <p>You can specify an origin source and an update configuration, and
