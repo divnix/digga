@@ -754,11 +754,9 @@ stdenv.mkDerivation {
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="secrets"><a class="header" href="#secrets">Secrets</a></h1>
-<p>Secrets are managed using <a href="https://github.com/AGWA/git-crypt">git-crypt</a> and <a href="https://github.com/ryantm/agenix">agenix</a>
+<p>Secrets are managed using <a href="https://github.com/ryantm/agenix">agenix</a>
 so you can keep your flake in a public repository like GitHub without
 exposing your password or other sensitive data.</p>
-<p>By default, everything in the secrets folder is automatically encrypted. Just
-be sure to run <code>git-crypt init</code> before putting anything in here.</p>
 <h2 id="agenix"><a class="header" href="#agenix">Agenix</a></h2>
 <p>Currently, there is <a href="https://github.com/NixOS/nix/issues/8">no mechanism</a> in nix itself to deploy secrets
 within the nix store because it is world-readable.</p>
