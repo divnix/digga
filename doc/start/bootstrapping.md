@@ -6,7 +6,7 @@ This will help you boostrap a bare host with the help of the
 _Note: nothing prevents you from remotely executing the boostrapping
 process. See below._
 
-Once your target host has booted into the live iso, you need to partion
+Once your target host has booted into the live iso, you need to partition
 and format your disk according to the [official manual][manual].
 
 ## Mount partitions
