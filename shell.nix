@@ -82,9 +82,9 @@ let
       digga_fixture
 
       test -f flake.lock && lockfile_present=$? || true
-      ${pkgs.nixUnstable}/bin/nix flake lock --update-input digga "$@"; lockfile_updated=$?;
-      ${pkgs.nixUnstable}/bin/nix flake show "$@"
-      ${pkgs.nixUnstable}/bin/nix flake check "$@"
+      ${pkgs.nixStable}/bin/nix flake lock --update-input digga "$@"; lockfile_updated=$?;
+      ${pkgs.nixStable}/bin/nix flake show "$@"
+      ${pkgs.nixStable}/bin/nix flake check "$@"
 
       cleanup
     '';
@@ -96,7 +96,7 @@ devshell.mkShell {
   packages = with pkgs; [
     fd
     nixpkgs-fmt
-    nixUnstable
+    nixStable
   ];
 
   env = [

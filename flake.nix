@@ -21,8 +21,6 @@
       devshell.url = "github:numtide/devshell";
       # fork with urgent fixes that can't be added quickly upstream in respect of upstream user base
       flake-utils-plus.url = "github:divnix/flake-utils-plus";
-      nix.url = "github:nixos/nix";
-      nix.inputs.nixpkgs.follows = "nixpkgs";
 
       nixos-generators.url = "github:nix-community/nixos-generators";
       nixos-generators.inputs.nixpkgs.follows = "blank";
@@ -49,7 +47,6 @@
     , flake-utils-plus
     , nixos-generators
     , home-manager
-    , nix
     , ...
     }@inputs:
     let
@@ -94,7 +91,7 @@
       # Dependency Groups - Style
       checksInputs = { inherit nixpkgs; digga = self; };
       jobsInputs = { inherit nixpkgs; digga = self; };
-      devShellInputs = { inherit nixpkgs devshell nix; };
+      devShellInputs = { inherit nixpkgs latest devshell; };
 
       # .. we hope you like this style.
       # .. it's adopted by a growing number of projects.
