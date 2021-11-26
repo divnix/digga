@@ -3,12 +3,6 @@
 [![NixOS](https://img.shields.io/badge/NixOS-unstable-blue.svg?style=flat&logo=NixOS&logoColor=white)](https://nixos.org)
 [![Chat](https://img.shields.io/badge/chat-join%20us-brightgreen.svg?style=flat&logo=matrix&logoColor=white)](https://matrix.to/#/#devos:nixos.org)
 
-> #### ⚠ Advisory ⚠
-> Digga requires the [flakes][flakes] feature available via an _experimental_
-> branch of [nix][nix]. Until nix 3.0 is released, this project
-> should be considered unstable, though quite usable as flakes have been
-> maturing _well_ for a while.
-
 
 Digga &mdash; slangy German for "good friend" &mdash; is a flake utility library
 that helps you declaratively craft and manage all three layers of your system
@@ -72,7 +66,7 @@ Pull Requests are just as amazing.
 
 Digga is licensed under the [MIT License][mit].
 
-[chat]: https://matrix.to/#/#devos:nixos.org
+[chat]: https://matrix.to/#/#devos:matrix.org
 [devshell]: https://github.com/numtide/devshell
 [examples]: https://github.com/divnix/digga/tree/main/examples
 [flakes]: https://nixos.wiki/wiki/Flakes
