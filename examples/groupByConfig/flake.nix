@@ -5,7 +5,7 @@
     {
       nixos.url = "github:nixos/nixpkgs/release-21.11";
       digga = {
-        url = "path:../../";
+        url = "github:divnix/digga";
         inputs.nixpkgs.follows = "nixos";
       };
       home.url = "github:nix-community/home-manager";
