@@ -1,3 +1,4 @@
 { inputs }: {
-  patchedNix = import ./nix-patched.nix { inherit inputs; };
+  # Example:
+  #patchedNix = import ./nix-patched.nix { inherit inputs; };
 }

@@ -91,7 +91,7 @@
       # Dependency Groups - Style
       checksInputs = { inherit nixpkgs; digga = self; };
       jobsInputs = { inherit nixpkgs; digga = self; };
-      devShellInputs = { inherit nixpkgs latest devshell; };
+      devShellInputs = { inherit nixpkgs devshell; };
 
       # .. we hope you like this style.
       # .. it's adopted by a growing number of projects.
