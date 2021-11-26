@@ -3,9 +3,7 @@ let
 
   pkgs = import inputs.nixpkgs {
     inherit system; config = { };
-    overlays = [
-      (import ./overlays/nix-patched.nix { inherit inputs; })
-    ];
+    overlays = [ ];
   };
   devshell = import inputs.devshell { inherit pkgs system; };
 
