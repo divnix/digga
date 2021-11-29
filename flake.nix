@@ -15,8 +15,8 @@
       deploy.inputs.nixpkgs.follows = "latest";
       # deploy.inputs.utils.follows = "utils/flake-utils";
 
-      home-manager.url = "github:nix-community/home-manager";
-      home-manager.inputs.nixpkgs.follows = "nixlib";
+      home-manager.url = "github:nix-community/home-manager/release-21.11";
+      home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
       devshell.url = "github:numtide/devshell";
       # fork with urgent fixes that can't be added quickly upstream in respect of upstream user base
