@@ -92,11 +92,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1630859749,
-        "narHash": "sha256-qkoU2rIbbP2+T0dfcqXW35GCWNsi0Y1IgN9BELmt4Zo=",
+        "lastModified": 1638994888,
+        "narHash": "sha256-iz/ynGNZlvqKCOnFrEKqGA+BVKGQMG+g2JT+e3OOLN8=",
         "owner": "divnix",
         "repo": "flake-utils-plus",
-        "rev": "a4e267e3fc87e60c5029c6c3855935ff1ff3018e",
+        "rev": "b4f9f517574cb7bd6ee3f19c72c19634c9f536e1",
         "type": "github"
       },
       "original": {
