@@ -4,7 +4,6 @@ let
   experimental-features = [
     "flakes"
     "nix-command"
-    "ca-references"
   ];
   substituters = [
     "https://nrdxp.cachix.org" # quality of life cache from our CI
