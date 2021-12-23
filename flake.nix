@@ -39,15 +39,6 @@
       naersk.inputs.nixpkgs.follows = "latest";
 
       nixos-hardware.url = "github:nixos/nixos-hardware";
-
-      # start ANTI CORRUPTION LAYER
-      # remove after https://github.com/NixOS/nix/pull/4641
-      nixpkgs.follows = "nixos";
-      nixlib.follows = "digga/nixlib";
-      blank.follows = "digga/blank";
-      flake-utils-plus.follows = "digga/flake-utils-plus";
-      flake-utils.follows = "digga/flake-utils";
-      # end ANTI CORRUPTION LAYER
     };
 
   outputs =
