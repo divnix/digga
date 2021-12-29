@@ -1,53 +1,44 @@
 {
   description = "A highly structured configuration database.";
 
-  nixConfig.extra-experimental-features = "nix-command flakes ca-references";
+  nixConfig.extra-experimental-features = "nix-command flakes";
   nixConfig.extra-substituters = "https://nrdxp.cachix.org https://nix-community.cachix.org";
   nixConfig.extra-trusted-public-keys = "nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
 
   inputs =
     {
-      nixos.url = "github:nixos/nixpkgs/release-21.05";
+      nixos.url = "github:nixos/nixpkgs/release-21.11";
       latest.url = "github:nixos/nixpkgs/nixos-unstable";
 
       digga.url = "github:divnix/digga";
       digga.inputs.nixpkgs.follows = "nixos";
       digga.inputs.nixlib.follows = "nixos";
       digga.inputs.home-manager.follows = "home";
+      digga.inputs.deploy.follows = "deploy";
 
       bud.url = "github:divnix/bud";
       bud.inputs.nixpkgs.follows = "nixos";
       bud.inputs.devshell.follows = "digga/devshell";
 
-      home.url = "github:nix-community/home-manager/release-21.05";
+      home.url = "github:nix-community/home-manager/release-21.11";
       home.inputs.nixpkgs.follows = "nixos";
 
       darwin.url = "github:LnL7/nix-darwin";
-      darwin.inputs.nixpkgs.follows = "latest";
+      darwin.inputs.nixpkgs.follows = "nixos";
 
-      deploy.follows = "digga/deploy";
+      deploy.url = "github:input-output-hk/deploy-rs";
+      deploy.inputs.nixpkgs.follows = "nixos";
 
       agenix.url = "github:ryantm/agenix";
-      agenix.inputs.nixpkgs.follows = "latest";
+      agenix.inputs.nixpkgs.follows = "nixos";
 
       nvfetcher.url = "github:berberman/nvfetcher";
-      nvfetcher.inputs.nixpkgs.follows = "latest";
-      nvfetcher.inputs.flake-compat.follows = "digga/deploy/flake-compat";
-      nvfetcher.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
+      nvfetcher.inputs.nixpkgs.follows = "nixos";
 
       naersk.url = "github:nmattia/naersk";
-      naersk.inputs.nixpkgs.follows = "latest";
+      naersk.inputs.nixpkgs.follows = "nixos";
 
       nixos-hardware.url = "github:nixos/nixos-hardware";
-
-      # start ANTI CORRUPTION LAYER
-      # remove after https://github.com/NixOS/nix/pull/4641
-      nixpkgs.follows = "nixos";
-      nixlib.follows = "digga/nixlib";
-      blank.follows = "digga/blank";
-      flake-utils-plus.follows = "digga/flake-utils-plus";
-      flake-utils.follows = "digga/flake-utils";
-      # end ANTI CORRUPTION LAYER
     };
 
   outputs =
@@ -73,18 +64,13 @@
           nixos = {
             imports = [ (digga.lib.importOverlays ./overlays) ];
             overlays = [
-              digga.overlays.patchedNix
               nur.overlay
               agenix.overlay
               nvfetcher.overlay
               ./pkgs/default.nix
             ];
           };
-          latest = {
-            overlays = [
-              deploy.overlay
-            ];
-          };
+          latest = { };
         };
 
         lib = import ./lib { lib = digga.lib // nixos.lib; };
