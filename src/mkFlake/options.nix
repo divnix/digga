@@ -276,6 +276,16 @@ let
     };
   };
 
+  patchesOpt = {
+    patches = mkOption {
+      type = with types; listOf path;
+      default = [ ];
+      description = ''
+        patches to apply to this channel
+      '';
+    };
+  };
+
   configOpt = {
     config = mkOption {
       type = with types; pathToOr attrs;
@@ -403,7 +413,7 @@ let
 
   channelsType = with types; attrsOf (submoduleWith {
     modules = [
-      ({ name, ... }: { options = overlaysOpt // configOpt // (inputOpt name); })
+      ({ name, ... }: { options = overlaysOpt // configOpt // (inputOpt name) // patchesOpt; })
     ];
   });
 
