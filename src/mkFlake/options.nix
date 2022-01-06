@@ -94,7 +94,7 @@ let
     description = "nix flake";
   };
 
-  userType = with types; pathToOr (functionTo attrs) // {
+  userType = with types; pathToOr moduleType // {
     description = "HM user config";
   };
 
