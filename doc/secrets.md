@@ -90,7 +90,7 @@ In any profile that uses a NixOS module that requires a secret you can enable a 
 ```
 
 
-Then you can just pass the path `/run/secrets/mysecret` to the module.
+Then you can just pass the path `/run/agenix/mysecret` to the module.
 
 You can make use of the many options provided by the age module to customize where and how
 secrets get decrypted. You can learn about them by looking at the
