@@ -548,8 +548,9 @@ Home Manager.
 User profiles can be collected in a similar fashion as system ones into a <code>suites</code>
 argument that gets passed to your home-manager users.</p>
 <h3 id="example-2"><a class="header" href="#example-2">Example</a></h3>
+<p><code>flake.nix</code></p>
 <pre><code class="language-nix">{
-  home-manager.users.nixos = { suites, ... }: {
+  home.users.nixos = { suites, ... }: {
     imports = suites.base;
   };
 }
