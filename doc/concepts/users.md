@@ -37,9 +37,10 @@ User profiles can be collected in a similar fashion as system ones into a `suite
 argument that gets passed to your home-manager users.
 
 ### Example
+`flake.nix`
 ```nix
 {
-  home-manager.users.nixos = { suites, ... }: {
+  home.users.nixos = { suites, ... }: {
     imports = suites.base;
   };
 }
