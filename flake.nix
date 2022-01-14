@@ -9,14 +9,14 @@
     {
       nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
       latest.url = "github:nixos/nixpkgs/nixos-unstable";
-      nixlib.follows = "nixpkgs"; # "github:nix-community/nixpkgs.lib";
+      nixlib.url = "github:nix-community/nixpkgs.lib";
       blank.url = "github:divnix/blank";
+
       deploy.url = "github:serokell/deploy-rs";
       deploy.inputs.nixpkgs.follows = "latest";
-      # deploy.inputs.utils.follows = "utils/flake-utils";
 
       home-manager.url = "github:nix-community/home-manager/release-21.11";
-      home-manager.inputs.nixpkgs.follows = "nixpkgs";
+      home-manager.inputs.nixpkgs.follows = "nixlib";
 
       devshell.url = "github:numtide/devshell";
       # fork with urgent fixes that can't be added quickly upstream in respect of upstream user base
@@ -24,17 +24,6 @@
 
       nixos-generators.url = "github:nix-community/nixos-generators";
       nixos-generators.inputs.nixpkgs.follows = "blank";
-      nixos-generators.inputs.nixlib.follows = "nixlib";
-      # nixos-generators.inputs.utils.follows = "utils/flake-utils";
-
-      # start ANTI CORRUPTION LAYER
-      # remove after https://github.com/NixOS/nix/pull/4641
-      # and uncomment the poper lines using "utils/flake-utils" above
-      flake-utils.url = "github:numtide/flake-utils";
-      flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
-      deploy.inputs.utils.follows = "flake-utils";
-      nixos-generators.inputs.utils.follows = "flake-utils";
-      # end ANTI CORRUPTION LAYER
     };
 
   outputs =
@@ -51,26 +40,26 @@
     }@inputs:
     let
 
-      tests = import ./src/tests.nix { inherit (nixpkgs) lib; };
+      tests = import ./src/tests.nix { inherit (nixlib) lib; };
 
       internal-modules = import ./src/modules.nix {
-        inherit (nixpkgs) lib;
+        inherit (nixlib) lib;
         inherit nixos-generators;
       };
 
       importers = import ./src/importers.nix {
-        inherit (nixpkgs) lib;
+        inherit (nixlib) lib;
       };
 
       generators = import ./src/generators.nix {
-        inherit (nixpkgs) lib;
+        inherit (nixlib) lib;
         inherit deploy;
       };
 
       mkFlake =
         let
           mkFlake' = import ./src/mkFlake {
-            inherit (nixpkgs) lib;
+            inherit (nixlib) lib;
             inherit (flake-utils-plus.inputs) flake-utils;
             inherit deploy devshell home-manager flake-utils-plus internal-modules tests;
           };
@@ -99,7 +88,7 @@
 
       # DEPRECATED - will be removed timely
       deprecated = import ./deprecated.nix {
-        inherit (nixpkgs) lib;
+        inherit (nixlib) lib;
         inherit (self) nixosModules;
         inherit flake-utils-plus internal-modules importers;
       };
