@@ -19,8 +19,7 @@
       home-manager.inputs.nixpkgs.follows = "nixlib";
 
       devshell.url = "github:numtide/devshell";
-      # fork with urgent fixes that can't be added quickly upstream in respect of upstream user base
-      flake-utils-plus.url = "github:divnix/flake-utils-plus";
+      flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
 
       nixos-generators.url = "github:nix-community/nixos-generators";
       nixos-generators.inputs.nixpkgs.follows = "blank";
