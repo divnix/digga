@@ -29,7 +29,9 @@ expected. There are unstable versions (0._x_._x_) to help users keep track
 of changes and progress, and a [`develop`](https://github.com/divnix/devos/tree/develop) branch for the brave 😜
 
 ## In the Wild
-* The original [authors][please]
+* @Pacman99: [Personal](https://gitlab.com/coffeetables/lower), [Server](https://gitlab.com/coffeetables/myrdd)
+* [@danielphan2003](https://github.com/danielphan2003/flk) and make sure to also check out [devos-ext-lib][devos-ext-lib]
+* [PubSolarOS](https://git.sr.ht/~b12f/pub-solar-os)
 
 ## Shoulders
 This work does not reinvent the wheel. It stands on the [shoulders of the
@@ -89,3 +91,4 @@ DevOS is licensed under the [MIT License][mit].
 [nvfetcher]: https://github.com/berberman/nvfetcher
 [please]: https://github.com/nrdxp/devos/tree/nrd
 [matrix]: https://matrix.to/#/#devos:nixos.org
+[devos-ext-lib]: https://github.com/divnix/devos-ext-lib
