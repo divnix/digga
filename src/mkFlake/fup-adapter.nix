@@ -1,5 +1,5 @@
 # constructor dependencies
-{ lib, flake-utils-plus, internal-modules, ... }:
+{ lib, self, inputs, flake-utils-plus, internal-modules, ... }:
 
 {
   # evaluated digga configuration
@@ -24,7 +24,7 @@ let
 
   defaultHostModules = [
     (internal-modules.hmNixosDefaults {
-      specialArgs = config.home.importables // { inherit (config) self inputs; };
+      specialArgs = config.home.importables // { inherit self inputs; };
       modules = config.home.modules ++ config.home.exportedModules;
     })
     (internal-modules.globalDefaults {
@@ -60,11 +60,9 @@ let
 
   diggaFupArgs = {
     inherit (config)
-      self
-      inputs
       channelsConfig
       supportedSystems;
-    inherit sharedOverlays;
+    inherit self inputs sharedOverlays;
 
     hosts = builtins.mapAttrs (_: stripHost) config.nixos.hosts;
 
@@ -79,7 +77,7 @@ let
 
     hostDefaults = flake-utils-plus.lib.mergeAny (stripHost config.nixos.hostDefaults) {
       # add `self` & `inputs` as specialargs so their libs can be used in imports
-      specialArgs = config.nixos.importables // { inherit (config) self inputs; };
+      specialArgs = config.nixos.importables // { inherit self inputs; };
       modules = config.nixos.hostDefaults.exportedModules ++ defaultHostModules;
     };
 
@@ -93,8 +91,8 @@ let
       # since we can't detect overlays owned by self
       # we have to filter out ones exported by the inputs
       # optimally we would want a solution for NixOS/nix#4740
-      inherit (config.self) pkgs;
-      inherit (config) inputs;
+      inherit (self) pkgs;
+      inherit inputs;
     };
 
     outputsBuilder = channels:

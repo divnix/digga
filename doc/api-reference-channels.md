@@ -48,7 +48,7 @@ nix flake
 
 *_Default_*
 ```
-"config.self.inputs.<name>"
+"self.inputs.<name>"
 ```
 
 

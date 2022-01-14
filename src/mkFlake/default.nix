@@ -3,7 +3,7 @@
 { self, inputs, ... } @ args:
 let
   # avoid infinite recursions w.r.t. using self or inputs in imports
-  injectedDeps' = injectedDeps // { inherit (args) self inputs; };
+  injectedDeps' = injectedDeps // { inherit self inputs; };
 
   options' = import ./options.nix injectedDeps';
   fupAdapter' = import ./fup-adapter.nix injectedDeps';

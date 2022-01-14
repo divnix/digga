@@ -255,8 +255,8 @@ let
   inputOpt = name: {
     input = mkOption {
       type = flakeType;
-      default = config.self.inputs.${name};
-      defaultText = "config.self.inputs.<name>";
+      default = self.inputs.${name};
+      defaultText = "self.inputs.<name>";
       description = ''
         nixpkgs flake input to use for this channel
       '';

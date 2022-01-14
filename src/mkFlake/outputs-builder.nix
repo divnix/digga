@@ -1,5 +1,5 @@
 # constructor dependencies
-{ lib, deploy, devshell, home-manager, flake-utils-plus, tests, ... }:
+{ lib, self, inputs, deploy, devshell, home-manager, flake-utils-plus, tests, ... }:
 config: channels:
 let
 
@@ -21,7 +21,7 @@ let
       inherit username homeDirectory pkgs system;
 
       extraModules = config.home.modules ++ config.home.exportedModules;
-      extraSpecialArgs = config.home.importables // { inherit (config) self inputs; };
+      extraSpecialArgs = config.home.importables // { inherit self inputs; };
 
       configuration = {
         imports = [ configuration ];
@@ -46,7 +46,7 @@ in
 
   inherit homeConfigurationsPortable;
 
-  packages = flake-utils-plus.lib.exportPackages config.self.overlays channels;
+  packages = flake-utils-plus.lib.exportPackages self.overlays channels;
 
   devShell =
     let
@@ -58,21 +58,21 @@ in
     in
     (eval {
       inherit configuration;
-      extraSpecialArgs = { inherit (config) self inputs; };
+      extraSpecialArgs = { inherit self inputs; };
     }).shell;
 
   checks =
     (
-      # for config.self.homeConfigurations if present & non empty
+      # for self.homeConfigurations if present & non empty
       if (
-        (builtins.hasAttr "homeConfigurations" config.self) &&
-        (config.self.homeConfigurations != { })
+        (builtins.hasAttr "homeConfigurations" self) &&
+        (self.homeConfigurations != { })
       ) then
         let
           seive = _: v: v.system == system; # only test for the appropriate system
           collectActivationPackages = n: v: { name = "user-" + n; value = v.activationPackage; };
         in
-        lib.filterAttrs seive (lib.mapAttrs' collectActivationPackages config.self.homeConfigurations)
+        lib.filterAttrs seive (lib.mapAttrs' collectActivationPackages self.homeConfigurations)
       else { }
     )
     //
@@ -89,13 +89,13 @@ in
     )
     //
     (
-      # for config.self.deploy if present & non-empty
+      # for self.deploy if present & non-empty
       if (
-        (builtins.hasAttr "deploy" config.self) &&
-        (config.self.deploy != { })
+        (builtins.hasAttr "deploy" self) &&
+        (self.deploy != { })
       ) then
         let
-          deployChecks = deploy.lib.${system}.deployChecks config.self.deploy;
+          deployChecks = deploy.lib.${system}.deployChecks self.deploy;
           renameOp = n: v: { name = "deploy-" + n; value = deployChecks.${n}; };
         in
         lib.mapAttrs' renameOp deployChecks
@@ -103,14 +103,14 @@ in
     )
     //
     (
-      # for config.self.nixosConfigurations if present & non-empty
+      # for self.nixosConfigurations if present & non-empty
       if (
-        (builtins.hasAttr "nixosConfigurations" config.self) &&
-        (config.self.nixosConfigurations != { })
+        (builtins.hasAttr "nixosConfigurations" self) &&
+        (self.nixosConfigurations != { })
       ) then
         let
           systemSieve = _: host: host.config.nixpkgs.system == system;
-          hostConfigsOnThisSystem = lib.filterAttrs systemSieve config.self.nixosConfigurations;
+          hostConfigsOnThisSystem = lib.filterAttrs systemSieve self.nixosConfigurations;
 
           createCustomTestOp = n: host: test:
             lib.warnIf (!(test ? name)) ''
