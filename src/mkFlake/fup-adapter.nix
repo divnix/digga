@@ -1,5 +1,5 @@
 # constructor dependencies
-{ lib, self, inputs, flake-utils-plus, internal-modules, ... }:
+{ lib, self, inputs, darwin, flake-utils-plus, internal-modules, ... }:
 
 {
   # evaluated digga configuration

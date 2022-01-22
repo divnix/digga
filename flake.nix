@@ -20,6 +20,10 @@
       home-manager.url = "github:nix-community/home-manager/release-21.11";
       home-manager.inputs.nixpkgs.follows = "nixlib";
 
+      # TODO: update url once https://github.com/LnL7/nix-darwin/pull/429 is merged
+      darwin.url = "github:montchr/nix-darwin/add-toplevel-option-lib";
+      darwin.inputs.nixpkgs.follows = "nixpkgs";
+
       devshell.url = "github:numtide/devshell";
       flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
 
@@ -37,6 +41,7 @@
     , deploy
     , devshell
     , flake-utils-plus
+    , darwin
     , home-manager
     , ...
     }@inputs:
@@ -62,7 +67,7 @@
           mkFlake' = import ./src/mkFlake {
             inherit (nixlib) lib;
             inherit (flake-utils-plus.inputs) flake-utils;
-            inherit deploy devshell home-manager flake-utils-plus internal-modules tests;
+            inherit darwin deploy devshell home-manager flake-utils-plus internal-modules tests;
           };
         in
         {

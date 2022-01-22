@@ -1,4 +1,13 @@
-{ lib, deploy, devshell, home-manager, flake-utils-plus, flake-utils, internal-modules, tests } @ injectedDeps:
+{ lib
+, darwin
+, deploy
+, devshell
+, home-manager
+, flake-utils-plus
+, flake-utils
+, internal-modules
+, tests
+} @ injectedDeps:
 
 { self, inputs, ... } @ args:
 let
