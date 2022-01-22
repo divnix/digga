@@ -17,10 +17,13 @@
         let
           builds = lib.mapAttrs
             (format: module:
-              let build = config.lib.digga.mkBuild module; in
+              let build = config.lib.digga.mkBuild module;
+              in
               build // build.config.system.build.${build.config.formatAttr}
             )
-            nixos-generators.nixosModules;
+            (if (lib.versionAtLeast config.system.stateVersion "22.05") then
+              builtins.removeAttrs nixos-generators.nixosModules [ "vm" ]
+            else nixos-generators);
         in
         # ensure these builds can be overriden by other modules
         lib.mkBefore builds;
@@ -63,4 +66,3 @@
       system.configurationRevision = lib.mkIf (self ? rev) self.rev;
     };
 }
-
