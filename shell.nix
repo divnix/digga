@@ -52,13 +52,13 @@ let
           git rm -f flake.lock
         fi
         # ensure: restore input
-        [ -z $diggaurl ] || sed -i "s|$tempdigga|$diggaurl|g" flake.nix
+        [ -z $diggaurl ] || ${pkgs.gnused}/bin/sed -i "s|$tempdigga|$diggaurl|g" flake.nix
       }
 
       digga_fixture() {
         # ensure: replace input
         diggaurl=$({ grep -o '"github:divnix/digga.*"' flake.nix || true; })
-        [ -z $diggaurl ] || sed -i "s|$diggaurl|$tempdigga|g" flake.nix
+        [ -z $diggaurl ] || ${pkgs.gnused}/bin/sed -i "s|$diggaurl|$tempdigga|g" flake.nix
       }
 
       trap_err() {
