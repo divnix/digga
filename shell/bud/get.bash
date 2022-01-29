@@ -1,1 +1,1 @@
-git clone https://github.com/divnix/devos.git "${2:-devos}"
+ nix flake new -t "github:divnix/devos/main" "${2:-devos}"
