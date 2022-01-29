@@ -26,7 +26,7 @@
             else nixos-generators);
         in
         # ensure these builds can be overriden by other modules
-        lib.mkBefore builds;
+        lib.mkDefault builds;
     };
 
   hmNixosDefaults = { specialArgs, modules }:
