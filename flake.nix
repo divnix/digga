@@ -10,7 +10,7 @@
       nixos.url = "github:nixos/nixpkgs/release-21.11";
       latest.url = "github:nixos/nixpkgs/nixos-unstable";
 
-      digga.url = "github:divnix/digga";
+      digga.url = "github:Pacman99/digga/default-input-detection";
       digga.inputs.nixpkgs.follows = "nixos";
       digga.inputs.nixlib.follows = "nixos";
       digga.inputs.home-manager.follows = "home";
