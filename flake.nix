@@ -123,7 +123,7 @@
       # what you came for ...
       lib = {
         inherit (flake-utils-plus.inputs.flake-utils.lib) defaultSystems eachSystem eachDefaultSystem filterPackages;
-        inherit (flake-utils-plus.lib) exportModules exportOverlays exportPackages;
+        inherit (flake-utils-plus.lib) exportModules exportOverlays exportPackages mergeAny;
         inherit mkFlake;
         inherit (tests) mkTest allProfilesTest;
         inherit (importers) flattenTree rakeLeaves importOverlays importExportableModules importHosts;
