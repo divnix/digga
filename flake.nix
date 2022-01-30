@@ -23,6 +23,11 @@
 
       nixos-generators.url = "github:nix-community/nixos-generators";
       nixos-generators.inputs.nixpkgs.follows = "blank";
+
+      flake-compat = {
+        url = "github:edolstra/flake-compat";
+        flake = false;
+      };
     };
 
   outputs =
@@ -69,21 +74,22 @@
         };
 
       # Unofficial Flakes Roadmap - Polyfills
+      # This project is committed to the Unofficial Flakes Roadmap!
       # .. see: https://demo.hedgedoc.org/s/_W6Ve03GK#
-      # .. also: <repo-root>/ufr-polyfills
 
       # Super Stupid Flakes (ssf) / System As an Input - Style:
       supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
-      ufrContract = import ./ufr-polyfills/ufrContract.nix;
 
-      # Dependency Groups - Style
-      checksInputs = { inherit nixpkgs; digga = self; };
-      jobsInputs = { inherit nixpkgs; digga = self; };
-      devShellInputs = { inherit nixpkgs devshell; };
-
+      # Pass this flake(self) as "digga"
+      polyfillInputs = self.inputs // { digga = self; };
+      polyfillOutput = loc: nixlib.lib.genAttrs supportedSystems (system:
+        import loc { inherit system; inputs = polyfillInputs; }
+      );
       # .. we hope you like this style.
       # .. it's adopted by a growing number of projects.
       # Please consider adopting it if you want to help to improve flakes.
+
+
 
       # DEPRECATED - will be removed timely
       deprecated = import ./deprecated.nix {
@@ -128,10 +134,10 @@
       '';
 
       # digga-local use
-      jobs = ufrContract supportedSystems ./jobs jobsInputs;
-      checks = ufrContract supportedSystems ./checks checksInputs;
-      devShell = ufrContract supportedSystems ./shell.nix devShellInputs;
-
+      # system-space and pass sytem and input to each file
+      jobs = polyfillOutput ./jobs;
+      checks = polyfillOutput ./checks;
+      devShell = polyfillOutput ./shell.nix;
     };
 
 }
