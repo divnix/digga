@@ -4,7 +4,7 @@ let
     let
       net = c.config.networking;
       fqdn =
-        if net.domain != null
+        if (net ? domain) && (net.domain != null)
         then "${net.hostName}.${net.domain}"
         else net.hostName;
     in
