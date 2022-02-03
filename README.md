@@ -58,14 +58,15 @@ following giants][giants]:
 - [devshell](https://github.com/numtide/devshell)
 
 ## Divnix
-The divnix org is an open space that spontaniously formed out of "the Nix".
-It is really just a place where otherwise unrelated people a) get
-together and b) stuff done.
+The divnix org is an open space that spontaneously formed out of "the Nix".
+It is really just a place where otherwise unrelated people work
+together and get stuff done.
 
-It's a place to stop "geeking out in isolation" (or within company boundaries),
-experiment and learn together and iterate quickly on best practices. That's what it is.
+It's a place to stop "geeking out in isolation" (or within company boundaries).
+A place to experiment, learn together, and iterate quickly on best practices.
+That's what it is.
 
-It might eventually become a non-profit if that's not too complicated or if those
+It might eventually become a non-profit if that's not too complicated or, if those
 goals are sufficiently upstreamed into "the Nix", dissolved.
 
 # License
