@@ -35,6 +35,6 @@ jobs:
     - run: nix flake check --show-trace
 
     # Check /examples/*
-    - run: nix develop --command -- check-downstream --show-trace
+    - run: nix develop --command -- check-devos --show-trace
     - run: nix develop --command -- check-groupByConfig --show-trace
     - run: nix develop --command -- check-hmOnly --show-trace

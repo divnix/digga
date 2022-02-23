@@ -139,10 +139,10 @@ devshell.mkShell {
       command = "fd --extension nix --exec nix-instantiate --parse --quiet {} >/dev/null";
     })
 
-    (test "examples" "downstream")
+    (test "examples" "devos")
     (test "examples" "groupByConfig")
     (test "examples" "hmOnly")
-    (test "examples" "all" // { command = "check-downstream && check-groupByConfig && check-hmOnly"; })
+    (test "examples" "all" // { command = "check-devos && check-groupByConfig && check-hmOnly"; })
     (docs { package = pkgs.mdbook; })
     (docs makeDocs)
 
