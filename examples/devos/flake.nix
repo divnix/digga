@@ -134,10 +134,6 @@
 
         deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
 
-        defaultTemplate = self.templates.bud;
-        templates.bud.path = ./.;
-        templates.bud.description = "bud template";
-
       }
     //
     {

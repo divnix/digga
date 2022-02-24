@@ -121,10 +121,17 @@
       overlays = import ./overlays { inherit inputs; };
       nixosModules = import ./modules;
 
+      defaultTemplate = self.templates.devos;
+      templates.devos.path = ./examples/devos;
+      templates.devos.description = ''
+        an awesome template for NixOS users, with consideration for common tools like home-manager, devshell, and more.
+      '';
+
       # digga-local use
       jobs = ufrContract supportedSystems ./jobs jobsInputs;
       checks = ufrContract supportedSystems ./checks checksInputs;
       devShell = ufrContract supportedSystems ./shell.nix devShellInputs;
+
     };
 
 }
