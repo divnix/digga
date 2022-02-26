@@ -1,5 +1,5 @@
 {
-  description = "A highly structured configuration database.";
+  description = "DevOS environment configuriguration library.";
 
   nixConfig.extra-experimental-features = "nix-command flakes";
   nixConfig.extra-substituters = "https://nrdxp.cachix.org https://nix-community.cachix.org";
@@ -7,141 +7,131 @@
 
   inputs =
     {
-      nixos.url = "github:nixos/nixpkgs/release-21.11";
+      nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
       latest.url = "github:nixos/nixpkgs/nixos-unstable";
-
-      digga.url = "github:divnix/digga";
-      digga.inputs.nixpkgs.follows = "nixos";
-      digga.inputs.nixlib.follows = "nixos";
-      digga.inputs.home-manager.follows = "home";
-      digga.inputs.deploy.follows = "deploy";
-
-      bud.url = "github:divnix/bud";
-      bud.inputs.nixpkgs.follows = "nixos";
-      bud.inputs.devshell.follows = "digga/devshell";
-
-      home.url = "github:nix-community/home-manager/release-21.11";
-      home.inputs.nixpkgs.follows = "nixos";
-
-      darwin.url = "github:LnL7/nix-darwin";
-      darwin.inputs.nixpkgs.follows = "nixos";
+      nixlib.url = "github:nix-community/nixpkgs.lib";
+      blank.url = "github:divnix/blank";
 
       deploy.url = "github:serokell/deploy-rs";
-      deploy.inputs.nixpkgs.follows = "nixos";
+      deploy.inputs.nixpkgs.follows = "latest";
 
-      agenix.url = "github:ryantm/agenix";
-      agenix.inputs.nixpkgs.follows = "nixos";
+      home-manager.url = "github:nix-community/home-manager/release-21.11";
+      home-manager.inputs.nixpkgs.follows = "nixlib";
 
-      nvfetcher.url = "github:berberman/nvfetcher";
-      nvfetcher.inputs.nixpkgs.follows = "nixos";
+      devshell.url = "github:numtide/devshell";
+      flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
 
-      naersk.url = "github:nmattia/naersk";
-      naersk.inputs.nixpkgs.follows = "nixos";
-
-      nixos-hardware.url = "github:nixos/nixos-hardware";
+      nixos-generators.url = "github:nix-community/nixos-generators";
+      nixos-generators.inputs.nixpkgs.follows = "blank";
     };
 
   outputs =
     { self
-    , digga
-    , bud
-    , nixos
-    , home
-    , nixos-hardware
-    , nur
-    , agenix
-    , nvfetcher
+    , nixlib
+    , nixpkgs
+    , latest
     , deploy
+    , devshell
+    , flake-utils-plus
+    , nixos-generators
+    , home-manager
     , ...
-    } @ inputs:
-    digga.lib.mkFlake
-      {
-        inherit self inputs;
+    }@inputs:
+    let
 
-        channelsConfig = { allowUnfree = true; };
+      tests = import ./src/tests.nix { inherit (nixlib) lib; };
 
-        channels = {
-          nixos = {
-            imports = [ (digga.lib.importOverlays ./overlays) ];
-            overlays = [
-              nur.overlay
-              agenix.overlay
-              nvfetcher.overlay
-              ./pkgs/default.nix
-            ];
+      internal-modules = import ./src/modules.nix {
+        inherit (nixlib) lib;
+        inherit nixos-generators;
+      };
+
+      importers = import ./src/importers.nix {
+        inherit (nixlib) lib;
+      };
+
+      generators = import ./src/generators.nix {
+        inherit (nixlib) lib;
+        inherit deploy;
+      };
+
+      mkFlake =
+        let
+          mkFlake' = import ./src/mkFlake {
+            inherit (nixlib) lib;
+            inherit (flake-utils-plus.inputs) flake-utils;
+            inherit deploy devshell home-manager flake-utils-plus internal-modules tests;
           };
-          latest = { };
+        in
+        {
+          __functor = _: args: (mkFlake' args).flake;
+          options = args: (mkFlake' args).options;
         };
 
-        lib = import ./lib { lib = digga.lib // nixos.lib; };
+      # Unofficial Flakes Roadmap - Polyfills
+      # .. see: https://demo.hedgedoc.org/s/_W6Ve03GK#
+      # .. also: <repo-root>/ufr-polyfills
 
-        sharedOverlays = [
-          (final: prev: {
-            __dontExport = true;
-            lib = prev.lib.extend (lfinal: lprev: {
-              our = self.lib;
-            });
-          })
-        ];
+      # Super Stupid Flakes (ssf) / System As an Input - Style:
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
+      ufrContract = import ./ufr-polyfills/ufrContract.nix;
 
-        nixos = {
-          hostDefaults = {
-            system = "x86_64-linux";
-            channelName = "nixos";
-            imports = [ (digga.lib.importExportableModules ./modules) ];
-            modules = [
-              { lib.our = self.lib; }
-              digga.nixosModules.bootstrapIso
-              digga.nixosModules.nixConfig
-              home.nixosModules.home-manager
-              agenix.nixosModules.age
-              bud.nixosModules.bud
-            ];
-          };
+      # Dependency Groups - Style
+      checksInputs = { inherit nixpkgs; digga = self; };
+      jobsInputs = { inherit nixpkgs; digga = self; };
+      devShellInputs = { inherit nixpkgs devshell; };
 
-          imports = [ (digga.lib.importHosts ./hosts) ];
-          hosts = {
-            /* set host specific properties here */
-            NixOS = { };
-          };
-          importables = rec {
-            profiles = digga.lib.rakeLeaves ./profiles // {
-              users = digga.lib.rakeLeaves ./users;
-            };
-            suites = with profiles; rec {
-              base = [ core users.nixos users.root ];
-            };
-          };
-        };
+      # .. we hope you like this style.
+      # .. it's adopted by a growing number of projects.
+      # Please consider adopting it if you want to help to improve flakes.
 
-        home = {
-          imports = [ (digga.lib.importExportableModules ./users/modules) ];
-          modules = [ ];
-          importables = rec {
-            profiles = digga.lib.rakeLeaves ./users/profiles;
-            suites = with profiles; rec {
-              base = [ direnv git ];
-            };
-          };
-          users = {
-            nixos = { suites, ... }: { imports = suites.base; };
-          }; # digga.lib.importers.rakeLeaves ./users/hm;
-        };
+      # DEPRECATED - will be removed timely
+      deprecated = import ./deprecated.nix {
+        inherit (nixlib) lib;
+        inherit (self) nixosModules;
+        inherit flake-utils-plus internal-modules importers;
+      };
 
-        devshell = ./shell;
+    in
 
-        homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
-
-        deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
-
-        defaultTemplate = self.templates.bud;
-        templates.bud.path = ./.;
-        templates.bud.description = "bud template";
-
-      }
-    //
     {
-      budModules = { devos = import ./shell/bud; };
-    }
-  ;
+      # what you came for ...
+      lib = {
+        inherit (flake-utils-plus.inputs.flake-utils.lib) defaultSystems eachSystem eachDefaultSystem filterPackages;
+        inherit (flake-utils-plus.lib) exportModules exportOverlays exportPackages;
+        inherit mkFlake;
+        inherit (tests) mkTest allProfilesTest;
+        inherit (importers) flattenTree rakeLeaves importOverlays importExportableModules importHosts;
+        inherit (generators) mkDeployNodes mkHomeConfigurations;
+
+        # DEPRECATED - will be removed soon
+        inherit (deprecated)
+          mkSuites
+          profileMap
+          mkProfileAttrs
+          exporters
+          modules
+          importModules
+          importers
+          ;
+
+      };
+
+      # a little extra service ...
+      overlays = import ./overlays { inherit inputs; };
+      nixosModules = import ./modules;
+
+      defaultTemplate = self.templates.devos;
+      templates.devos.path = ./examples/devos;
+      templates.devos.description = ''
+        an awesome template for NixOS users, with consideration for common tools like home-manager, devshell, and more.
+      '';
+
+      # digga-local use
+      jobs = ufrContract supportedSystems ./jobs jobsInputs;
+      checks = ufrContract supportedSystems ./checks checksInputs;
+      devShell = ufrContract supportedSystems ./shell.nix devShellInputs;
+
+    };
+
 }

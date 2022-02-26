@@ -1,0 +1,4 @@
+{ self, ... }:
+{
+  exportedModules = [ ./python.toml ];
+}

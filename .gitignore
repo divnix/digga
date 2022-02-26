@@ -1,10 +1,2 @@
 result
 .direnv
-doc/index.html
-
-# Result of bud commands
-vm
-iso
-doi
-
-pkgs/_sources/.shake*
