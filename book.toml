@@ -1,6 +1,10 @@
 [book]
-authors = ["Timothy DeHerrera"]
+authors = [
+  "Timothy DeHerrera",
+  "Parthiv Seetharaman",
+  "David Arnold",
+]
 language = "en"
 multilingual = false
 src = "."
-title = "devos docs"
+title = "Digga Library Docs"
