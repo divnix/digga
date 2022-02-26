@@ -39,6 +39,8 @@
       naersk.inputs.nixpkgs.follows = "nixos";
 
       nixos-hardware.url = "github:nixos/nixos-hardware";
+
+      nixos-generators.url = "github:nix-community/nixos-generators";
     };
 
   outputs =
