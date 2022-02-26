@@ -1,11 +1,10 @@
 { system ? builtins.currentSystem
-, inputs ? import ../ufr-polyfills/flake.lock.nix ./.
+, inputs ? (import ../.).inputs
 }:
 let
 
-  nixpkgs = inputs.nixpkgs;
-  digga = inputs.digga;
-  pkgs = import nixpkgs { inherit system; config = { }; overlays = [ ]; };
+  inherit (inputs) digga;
+  pkgs = inputs.nixpkgs.legacyPackages.${system};
 
   docOptions = digga.lib.mkFlake.options { self = { }; inputs = { }; };
   evaledOptions = (pkgs.lib.evalModules { modules = [ docOptions ]; }).options;

@@ -1,12 +1,11 @@
 { system ? builtins.currentSystem
-, inputs # flake style polyfill not possible, since this depends on digga's internals
+, inputs ? (import ../.).inputs
 }:
 let
 
-  nixpkgs = inputs.nixpkgs;
-  digga = inputs.digga;
+  inherit (inputs) digga nixpkgs;
   lib = nixpkgs.lib // digga.lib;
-  pkgs = import nixpkgs { inherit system; config = { }; overlays = [ ]; };
+  pkgs = nixpkgs.legacyPackages.${system};
 
 in
 {

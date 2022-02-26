@@ -1,10 +1,9 @@
-{ inputs, system ? builtins.currentSystem }:
+{ system ? builtins.currentSystem
+, inputs ? (import ./.).inputs
+}:
 let
 
-  pkgs = import inputs.nixpkgs {
-    inherit system; config = { };
-    overlays = [ ];
-  };
+  pkgs = inputs.nixpkgs.legacyPackages.${system};
   devshell = import inputs.devshell { inherit pkgs system; };
 
   withCategory = category: attrset: attrset // { inherit category; };
