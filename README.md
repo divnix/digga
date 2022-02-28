@@ -34,6 +34,7 @@ You can also see digga being actually used:
 * @Pacman99: [Personal](https://gitlab.com/coffeetables/lower), [Server](https://gitlab.com/coffeetables/myrdd)
 * [@danielphan2003](https://github.com/danielphan2003/flk) and make sure to also check out [devos-ext-lib][devos-ext-lib]
 * [PubSolarOS](https://git.sr.ht/~b12f/pub-solar-os)
+* @montchr: [Dotfield](https://github.com/montchr/dotfield) – including darwin configurations
 
 
 # Philosophy
