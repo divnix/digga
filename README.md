@@ -89,20 +89,19 @@ This work does not reinvent the wheel. It stands on the [shoulders of the
 following giants][giants]:
 
 ## :onion: &mdash; like the layers of an onion
-- [`divnix/digga`][digga]
-- [`gytis-ivaskevicius/flake-utils-plus`][fup]
-- [`numtide/flake-utils`][fu]
+- [`gytis-ivaskevicius/flake-utils-plus`](https://github.com/gytis-ivaskevicius/flake-utils-plus)
+- [`numtide/flake-utils`](https://github.com/numtide/flake-utils/)
 
 ## :family: &mdash; like family
-- [`numtide/devshell`][devshell]
-- [`serokell/deploy-rs`][deploy]
-- [`berberman/nvfetcher`][nvfetcher]
-- [`NixOS/nixpkgs`][nixpkgs]
+- [`numtide/devshell`](https://github.com/numtide/devshell)
+- [`serokell/deploy-rs`](https://github.com/serokell/deploy-rs)
+- [`berberman/nvfetcher`](https://github.com/berberman/nvfetcher)
+- [`NixOS/nixpkgs`](https://github.com/NixOS/nixpkgs)
 
 :heart:
 
 ### Inspiration & Art
-- [hlissner/dotfiles][dotfiles]
+- [hlissner/dotfiles](https://github.com/hlissner/dotfiles)
 - [nix-user-chroot](https://github.com/nix-community/nix-user-chroot)
 - [Nickel](https://github.com/tweag/nickel)
 - [Awesome Nix](https://github.com/nix-community/awesome-nix)
