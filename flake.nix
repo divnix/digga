@@ -112,13 +112,7 @@
 
         # DEPRECATED - will be removed soon
         inherit (deprecated)
-          mkSuites
-          profileMap
-          mkProfileAttrs
-          exporters
-          modules
-          importModules
-          importers
+          # Place any deprecated lib functions here
           ;
 
       };

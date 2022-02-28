@@ -297,44 +297,6 @@ let
     };
   };
 
-  suitesDeprecationMessage = ''
-    WARNING: The 'suites' and `profiles` options have been deprecated, you can now create
-    both with the importables option. `rakeLeaves` can be used to create profiles and
-    by passing a module or `rec` set to `importables`, suites can access profiles.
-    Example:
-    ```
-    importables = rec {
-      profiles = digga.lib.rakeLeaves ./profiles;
-      suites = with profiles; { };
-    }
-    ```
-    See https://github.com/divnix/digga/pull/30 for more details
-  '';
-  legacyImportablesMod = { config, options, ... }: {
-    config = {
-      importables = mkIf options.suites.isDefined {
-        suites = builtins.trace suitesDeprecationMessage config.suites;
-      };
-    };
-    options = with types; {
-      # TODO: remove in favor of importables
-      profiles = mkOption {
-        type = pathToOr legacyProfilesType;
-        default = [ ];
-        description = suitesDeprecationMessage;
-      };
-      # TODO: remove in favor of importables
-      suites = mkOption {
-        type = pathToOr legacySuitesType;
-        apply = suites: lib.mkSuites {
-          inherit suites;
-          inherit (config) profiles;
-        };
-        description = suitesDeprecationMessage;
-      };
-    };
-  };
-
   importablesOpt = {
     importables = mkOption {
       type = with types; submoduleWith {
@@ -390,7 +352,6 @@ let
     specialArgs = { inherit self inputs; };
     modules = [
       { options = (hostsOpt "nixos") // (hostDefaultsOpt "nixos") // importablesOpt; }
-      legacyImportablesMod
     ];
   };
 
@@ -399,7 +360,6 @@ let
     modules = [
       { options = regularModulesOpt // (exportedModulesOpt "home") // importablesOpt // usersOpt; }
       legacyExternalModulesMod
-      legacyImportablesMod
     ];
   };
 
