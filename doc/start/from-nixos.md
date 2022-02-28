@@ -7,15 +7,21 @@ basic NixOS configuration for your system using:
 bud up
 ```
 
-This will make a new file `hosts/up-$(hostname).nix`, which you can edit to
+This will make a new folder `hosts/$(hostname)`, which you can edit to
 your liking.
 
 You must then add a host to `nixos.hosts` in flake.nix:
 ```nix
 {
-  nixos.hosts = {
-    modules = hosts/NixOS.nix;
+  # ...
+  nixos = {
+    hosts = {
+      /* set host specific properties here */
+      NixOS = { };
+      $(hostname) = { };
+    };
   };
+  # ...
 }
 ```
 
@@ -36,9 +42,9 @@ Now might be a good time to read the docs on [suites](../concepts/suites.md) and
 > them directly into a host module of your own making, and commit that instead.
 # Installation
 
-Once you're ready to deploy `hosts/my-host.nix`:
+Once you're ready to deploy `hosts/$(hostname)`:
 ```sh
-bud my-host switch
+bud rebuild $(hostname) switch
 ```
 
 
