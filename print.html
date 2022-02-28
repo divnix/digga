@@ -375,13 +375,19 @@ Under this reservation, though, you may use this EUI-64 to wire up a specific
 basic NixOS configuration for your system using:</p>
 <pre><code class="language-sh">bud up
 </code></pre>
-<p>This will make a new file <code>hosts/up-$(hostname).nix</code>, which you can edit to
+<p>This will make a new folder <code>hosts/$(hostname)</code>, which you can edit to
 your liking.</p>
 <p>You must then add a host to <code>nixos.hosts</code> in flake.nix:</p>
 <pre><code class="language-nix">{
-  nixos.hosts = {
-    modules = hosts/NixOS.nix;
+  # ...
+  nixos = {
+    hosts = {
+      /* set host specific properties here */
+      NixOS = { };
+      $(hostname) = { };
+    };
   };
+  # ...
 }
 </code></pre>
 <p>Make sure your <code>i18n.defaultLocale</code> and <code>time.timeZone</code> are set properly for
@@ -399,8 +405,8 @@ invisible to the flake otherwise, but it is best to move what you need from
 them directly into a host module of your own making, and commit that instead.</p>
 </blockquote>
 <h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
-<p>Once you're ready to deploy <code>hosts/my-host.nix</code>:</p>
-<pre><code class="language-sh">bud my-host switch
+<p>Once you're ready to deploy <code>hosts/$(hostname)</code>:</p>
+<pre><code class="language-sh">bud rebuild $(hostname) switch
 </code></pre>
 <p>This calls <code>nixos-rebuild</code> with sudo to build and install your configuration.</p>
 <blockquote>
