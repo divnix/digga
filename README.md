@@ -23,7 +23,7 @@ of changes and progress.
 The best way to make use of library is with the [Official template][template].
 Check out the [guide](https://digga.divnix.com/start) to get up and running.
 Also have a look at devos's [_flake.nix_](./examples/devos/flake.nix).
-If anything is not immediately discoverable via "[`digga`][digga]'s [`mkFlake`][mk-flake], please file a bug report.
+If anything is not immediately discoverable via our [`mkFlake`][mk-flake], please file a bug report.
 
 # Examples
 Make sure to check out all the [examples](./examples) to see the different ways
@@ -123,6 +123,7 @@ goals are sufficiently upstreamed into "the Nix", dissolved.
 # License
 Digga is licensed under the [MIT License][mit].
 
+[mk-flake]: ./src/mkFlake
 [chat]: https://matrix.to/#/#devos:matrix.org
 [devshell]: https://github.com/numtide/devshell
 [examples]: https://github.com/divnix/digga/tree/main/examples
