@@ -10,6 +10,7 @@
       nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
       latest.url = "github:nixos/nixpkgs/nixos-unstable";
       nixlib.url = "github:nix-community/nixpkgs.lib";
+      std.url = "github:divnix/std";
       blank.url = "github:divnix/blank";
 
       deploy.url = "github:serokell/deploy-rs";
@@ -131,7 +132,6 @@
       # system-space and pass sytem and input to each file
       jobs = polyfillOutput ./jobs;
       checks = polyfillOutput ./checks;
-      devShell = polyfillOutput ./shell.nix;
     };
 
 }
