@@ -21,6 +21,7 @@
           main
           devshell
           nixpkgs
+          nixpkgs-unstable
           ;
         inherit
           (main.inputs.std.deSystemize system inputs.main.inputs)
@@ -99,9 +100,9 @@
               digga_fixture
 
               test -f flake.lock && lockfile_present=$? || true
-              ${nixpkgs.legacyPackages.nixUnstable}/bin/nix flake lock --update-input digga "$@"; lockfile_updated=$?;
-              ${nixpkgs.legacyPackages.nixUnstable}/bin/nix flake show "$@"
-              ${nixpkgs.legacyPackages.nixUnstable}/bin/nix flake check "$@"
+              ${nixpkgs-unstable.legacyPackages.nixUnstable}/bin/nix flake lock --update-input digga "$@"; lockfile_updated=$?;
+              ${nixpkgs-unstable.legacyPackages.nixUnstable}/bin/nix flake show "$@"
+              ${nixpkgs-unstable.legacyPackages.nixUnstable}/bin/nix flake check "$@"
 
               cleanup
             '';
@@ -124,7 +125,7 @@
             cellsFrom = "./nix";
             packages = [
               # formatters
-              nixpkgs.legacyPackages.alejandra
+              nixpkgs-unstable.legacyPackages.alejandra
               nixpkgs.legacyPackages.nodePackages.prettier
               nixpkgs.legacyPackages.shfmt
               nixpkgs.legacyPackages.editorconfig-checker
