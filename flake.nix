@@ -11,6 +11,7 @@
       latest.url = "github:nixos/nixpkgs/nixos-unstable";
       nixlib.url = "github:nix-community/nixpkgs.lib";
       std.url = "github:divnix/std";
+      std.inputs.nixpkgs.follows = "nixpkgs";
       blank.url = "github:divnix/blank";
 
       deploy.url = "github:serokell/deploy-rs";
