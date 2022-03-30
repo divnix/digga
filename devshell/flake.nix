@@ -100,7 +100,7 @@
       in {
         devShells.default = devshell.legacyPackages.mkShell (
           {extraModulesPath, ...}: {
-            name = "Digga (formerly DevOS)";
+            name = "digga-fka-devos";
 
             imports = [
               "${extraModulesPath}/git/hooks.nix"
