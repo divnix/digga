@@ -17,9 +17,6 @@ jobs:
         fetch-depth: 0
     - uses: cachix/install-nix-action@v16
       with:
-        # v2.7
-        install_url: https://nixos-nix-install-tests.cachix.org/serve/f85y3fnf7jvxj4wcvp9mz98rbc3m65v3/install
-        install_options: --tarball-url-prefix https://nixos-nix-install-tests.cachix.org/serve
         extra_nix_config: |
           system-features = nixos-test benchmark big-parallel kvm recursive-nix
           substituters = https://nrdxp.cachix.org https://nix-community.cachix.org https://cache.nixos.org
@@ -32,12 +29,12 @@ jobs:
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
     # Quick eval
-    - run: "nix develop --update-input main ./devshell#default --command evalnix"
+    - run: nix develop --command evalnix
 
     # Check the digga library
     - run: nix flake check --show-trace
 
     # Check /examples/*
-    - run: "nix develop --update-input main ./devshell#default --command -- check-devos --show-trace"
-    - run: "nix develop --update-input main ./devshell#default --command -- check-groupByConfig --show-trace"
-    - run: "nix develop --update-input main ./devshell#default --command -- check-hmOnly --show-trace"
+    - run: nix develop --command -- check-devos --show-trace
+    - run: nix develop --command -- check-groupByConfig --show-trace
+    - run: nix develop --command -- check-hmOnly --show-trace
