@@ -1,34 +1,28 @@
 { self, config, lib, pkgs, ... }:
-let inherit (lib) fileContents;
+
+let
+  inherit (lib) fileContents;
+  inherit (pkgs.stdenv.hostPlatform) isDarwin;
 in
+
 {
   # Sets nrdxp.cachix.org binary cache which just speeds up some builds
   imports = [ ../cachix ];
-
-  # For rage encryption, all hosts need a ssh key pair
-  services.openssh = {
-    enable = true;
-    openFirewall = lib.mkDefault false;
-  };
-
-  # This is just a representation of the nix default
-  nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
   environment = {
 
     # Selection of sysadmin tools that can come in handy
     systemPackages = with pkgs; [
+      # TODO: must come from unstable channel
+      # alejandra
       binutils
       coreutils
       curl
       direnv
       dnsutils
-      dosfstools
       fd
       git
       bottom
-      gptfdisk
-      iputils
       jq
       manix
       moreutils
@@ -37,8 +31,6 @@ in
       ripgrep
       skim
       tealdeer
-      usbutils
-      utillinux
       whois
     ];
 
@@ -52,7 +44,10 @@ in
     '';
 
     shellAliases =
-      let ifSudo = lib.mkIf config.security.sudo.enable;
+      let
+        # The `security.sudo.enable` option does not exist on darwin because
+        # sudo is always available.
+        ifSudo = lib.mkIf (isDarwin || config.security.sudo.enable);
       in
       {
         # quick cd
@@ -69,6 +64,7 @@ in
         gi = "grep -i";
 
         # internet ip
+        # TODO: explain this hard-coded IP address
         myip = "dig +short myip.opendns.com @208.67.222.222 2>&1";
 
         # nix
@@ -79,15 +75,12 @@ in
         ns = "n search --no-update-lock-file";
         nf = "n flake";
         nepl = "n repl '<nixpkgs>'";
+        # FIXME: update this to use the correct channel based on host type -- or move to host-specific profile files
         srch = "ns nixos";
         orch = "ns override";
-        nrb = ifSudo "sudo nixos-rebuild";
         mn = ''
           manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | sk --preview="manix '{}'" | xargs manix
         '';
-
-        # fix nixos-option
-        nixos-option = "nixos-option -I nixpkgs=${self}/lib/compat";
 
         # sudo
         s = ifSudo "sudo -E ";
@@ -97,43 +90,18 @@ in
         # top
         top = "btm";
 
-        # systemd
-        ctl = "systemctl";
-        stl = ifSudo "s systemctl";
-        utl = "systemctl --user";
-        ut = "systemctl --user start";
-        un = "systemctl --user stop";
-        up = ifSudo "s systemctl start";
-        dn = ifSudo "s systemctl stop";
-        jtl = "journalctl";
-
       };
   };
 
-  fonts = {
-    fonts = with pkgs; [ powerline-fonts dejavu_fonts ];
-
-    fontconfig.defaultFonts = {
-
-      monospace = [ "DejaVu Sans Mono for Powerline" ];
-
-      sansSerif = [ "DejaVu Sans" ];
-
-    };
-  };
+  fonts.fonts = with pkgs; [ powerline-fonts dejavu_fonts ];
 
   nix = {
 
     # Improve nix store disk usage
-    autoOptimiseStore = true;
     gc.automatic = true;
-    optimise.automatic = true;
 
     # Prevents impurities in builds
     useSandbox = true;
-
-    # give root and @wheel special privileges with nix
-    trustedUsers = [ "root" "@wheel" ];
 
     # Generally useful nix option defaults
     extraOptions = ''
@@ -144,19 +112,5 @@ in
     '';
 
   };
-
-  programs.bash = {
-    # Enable starship
-    promptInit = ''
-      eval "$(${pkgs.starship}/bin/starship init bash)"
-    '';
-    # Enable direnv, a tool for managing shell environments
-    interactiveShellInit = ''
-      eval "$(${pkgs.direnv}/bin/direnv hook bash)"
-    '';
-  };
-
-  # Service that makes Out of Memory Killer more effective
-  services.earlyoom.enable = true;
 
 }
