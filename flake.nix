@@ -10,7 +10,7 @@
       # Track channels with commits tested and built by hydra
       nixpkgs.url = "github:nixos/nixpkgs/nixos-21.11";
       latest.url = "github:nixos/nixpkgs/nixos-unstable";
-
+      nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
       nixlib.url = "github:nix-community/nixpkgs.lib";
       blank.url = "github:divnix/blank";
 
