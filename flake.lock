@@ -221,22 +221,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1647350163,
-        "narHash": "sha256-OcMI+PFEHTONthXuEQNddt16Ml7qGvanL3x8QOl2Aao=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "3eb07eeafb52bcbf02ce800f032f18d666a9498d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "blank": "blank",
@@ -248,27 +232,7 @@
         "latest": "latest",
         "nixlib": "nixlib",
         "nixos-generators": "nixos-generators",
-        "nixpkgs": "nixpkgs",
-        "std": "std"
-      }
-    },
-    "std": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_2",
-        "yants": "yants"
-      },
-      "locked": {
-        "lastModified": 1647235919,
-        "narHash": "sha256-fO4dlRO0zeZtzY1QF7iLatx81jena6QP7HZEA83AJ8E=",
-        "owner": "divnix",
-        "repo": "std",
-        "rev": "133fb0c1cc8d0d477a3d339971ef09fa57a60fd3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "divnix",
-        "repo": "std",
-        "type": "github"
+        "nixpkgs": "nixpkgs"
       }
     },
     "utils": {
@@ -283,27 +247,6 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "yants": {
-      "inputs": {
-        "nixpkgs": [
-          "std",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1645126146,
-        "narHash": "sha256-XQ1eg4gzXoc7Tl8iXak1uCt3KnsTyxqPtLE+vOoDnrQ=",
-        "owner": "divnix",
-        "repo": "yants",
-        "rev": "77df2be1b3cce9f571c6cf451f786b266a6869cc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "divnix",
-        "repo": "yants",
         "type": "github"
       }
     }
