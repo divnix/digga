@@ -1,6 +1,6 @@
 # TL;DR;
 - **Target Branch**: `main`
-- **Merge Policy**: [`bors`][bors] is always right (&rarr; `bors try`)
+- **Merge Policy**: green check: merge away. yellow circle: have patience. red x: try again.
 - **Docs**: every change set is expected to contain doc updates
 - **Commit Msg**: be a poet! Comprehensive and explanatory commit messages 
   should cover the motivation and use case in an easily understandable manner
@@ -11,6 +11,4 @@
 ### Within the Devshell (`nix develop`)
 - **Hooks**: please `git commit` within the devshell
 - **Fail Early**: please run `check-all` from within the devshell on your local machine
-
-[bors]: https://bors.tech
 
