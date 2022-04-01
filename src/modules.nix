@@ -1,34 +1,5 @@
-{ lib, nixos-generators }:
+{ lib }:
 {
-  customBuilds =
-    { lib, pkgs, config, baseModules, modules, ... }@args:
-    {
-      # created in modules system for access to specialArgs and modules
-      lib.digga.mkBuild = buildModule:
-        import "${toString pkgs.path}/nixos/lib/eval-config.nix" {
-          inherit (pkgs) system;
-          inherit baseModules;
-          modules = modules ++ [ buildModule ];
-          # Newer versions of module system pass specialArgs to modules
-          # so try to pass that to eval if possible.
-          specialArgs = args.specialArgs or { };
-        };
-      system.build =
-        let
-          builds = lib.mapAttrs
-            (format: module:
-              let build = config.lib.digga.mkBuild module;
-              in
-              build // build.config.system.build.${build.config.formatAttr}
-            )
-            (if (lib.versionAtLeast config.system.stateVersion "22.05") then
-              builtins.removeAttrs nixos-generators.nixosModules [ "vm" ]
-            else nixos-generators);
-        in
-        # ensure these builds can be overriden by other modules
-        lib.mkDefault builds;
-    };
-
   hmNixosDefaults = { specialArgs, modules }:
     { options, ... }: {
       config = lib.optionalAttrs (options ? home-manager) {

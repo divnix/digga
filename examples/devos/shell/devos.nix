@@ -45,10 +45,11 @@ in
     (docs mdbook)
     (devos inputs.deploy.packages.${pkgs.system}.deploy-rs)
   ]
-
   ++ lib.optional
     (system != "i686-linux")
     (devos cachix)
-
+  ++ lib.optional
+    (system != "aarch64-darwin")
+    (devos inputs.nixos-generators.defaultPackage.${pkgs.system})
   ;
 }

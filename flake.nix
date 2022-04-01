@@ -21,9 +21,6 @@
       devshell.url = "github:numtide/devshell";
       flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
 
-      nixos-generators.url = "github:nix-community/nixos-generators";
-      nixos-generators.inputs.nixpkgs.follows = "blank";
-
       flake-compat = {
         url = "github:edolstra/flake-compat";
         flake = false;
@@ -38,7 +35,6 @@
     , deploy
     , devshell
     , flake-utils-plus
-    , nixos-generators
     , home-manager
     , ...
     }@inputs:
@@ -48,7 +44,6 @@
 
       internal-modules = import ./src/modules.nix {
         inherit (nixlib) lib;
-        inherit nixos-generators;
       };
 
       importers = import ./src/importers.nix {
