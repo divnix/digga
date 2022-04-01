@@ -125,8 +125,8 @@
 
       # a little extra service ...
       overlays = import ./overlays { inherit inputs; };
-      nixosModules = import ./modules;
-      darwinModules = import ./modules;
+      nixosModules = import ./modules/nixos-modules.nix;
+      darwinModules = import ./modules/darwin-modules.nix;
 
       defaultTemplate = self.templates.devos;
       templates.devos.path = ./examples/devos;
