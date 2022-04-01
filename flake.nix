@@ -108,13 +108,10 @@
       # .. it's adopted by a growing number of projects.
       # Please consider adopting it if you want to help to improve flakes.
 
-
-
       # DEPRECATED - will be removed timely
       deprecated = import ./deprecated.nix {
         inherit (nixlib) lib;
-        inherit (self) nixosModules;
-        inherit flake-utils-plus internal-modules importers;
+        inherit importers;
       };
 
     in
