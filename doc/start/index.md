@@ -2,17 +2,18 @@
 The only dependency is nix, so make sure you have it [installed][install-nix].
 
 ## Get the Template
-Here is a snippet that will get you the template without the git history:
+If you currently don't have flakes setup, you can utilize the digga shell to pull the template:
 ```sh
-nix-shell -p cachix --run "cachix use nrdxp"
+nix-shell "https://github.com/divnix/digga/archive/main.tar.gz" \
+  --run "nix flake init -t github:divnix/digga"
+```
+If you already have flakes support, you can directly pull the template:
+```sh
+nix flake init -t github:divnix/digga
+```
 
-nix-shell https://github.com/divnix/devos/archive/main.tar.gz -A shell \
-  --run "bud get main"
-
-cd devos
-
-nix-shell
-
+Then make sure to create the git repository:
+```sh
 git init
 git add .
 git commit -m init

@@ -11,5 +11,8 @@ let
   ) defaultNix;
 in
   # Pass this flake as inputs.digga
-  defaultNix // { inputs = defaultNix.inputs // { digga = defaultNix; }; }
+  defaultNix // {
+    inputs = defaultNix.inputs // { digga = defaultNix; };
+    shell = import ./shell.nix;
+  }
 
