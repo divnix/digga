@@ -20,7 +20,7 @@ of changes and progress.
 
 # Usage
 The best way to make use of library is with the [Official template][template].
-Check out the [guide](https://digga.divnix.com/start) to get up and running.
+Check out the [guide](./doc/start/index.md) to get up and running.
 Also have a look at devos's [_flake.nix_](./examples/devos/flake.nix).
 If anything is not immediately discoverable via our [`mkFlake`][mk-flake], please file a bug report.
 
