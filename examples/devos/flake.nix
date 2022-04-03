@@ -137,9 +137,5 @@
         deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
 
       }
-    //
-    {
-      budModules = { devos = import ./shell/bud; };
-    }
   ;
 }
