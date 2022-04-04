@@ -200,7 +200,6 @@
           (digga.lib.mkHomeConfigurations self.nixosConfigurations)
         ;
 
-        # TODO: does it make sense to include `darwinConfigurations`? i assume no.
         deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
 
       }
