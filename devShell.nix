@@ -4,7 +4,7 @@
 let
   pkgs = inputs.nixpkgs.legacyPackages.${system};
   unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
-  devshell = import inputs.devshell { inherit pkgs system; };
+  devshell = import inputs.devshell { inherit system; };
   nixBin = "${unstablePkgs.nix}/bin/nix";
 
   withCategory = category: attrset: attrset // { inherit category; };

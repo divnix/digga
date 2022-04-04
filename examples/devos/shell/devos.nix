@@ -1,5 +1,16 @@
-{ pkgs, extraModulesPath, inputs, ... }:
+{ pkgs, extraModulesPath, inputs, lib, ... }:
 let
+
+  inherit (pkgs)
+    agenix
+    cachix
+    editorconfig-checker
+    mdbook
+    nixUnstable
+    nixpkgs-fmt
+    nvfetcher-bin
+    system
+    ;
 
   hooks = import ./hooks;
 
@@ -30,14 +41,14 @@ in
     unset _PATH
   '');
 
-  commands = with pkgs; [
+  commands = [
     (devos nixUnstable)
     (devos agenix)
     {
       category = "devos";
-      name = pkgs.nvfetcher-bin.pname;
-      help = pkgs.nvfetcher-bin.meta.description;
-      command = "cd $PRJ_ROOT/pkgs; ${pkgs.nvfetcher-bin}/bin/nvfetcher -c ./sources.toml $@";
+      name = nvfetcher-bin.pname;
+      help = nvfetcher-bin.meta.description;
+      command = "cd $PRJ_ROOT/pkgs; ${nvfetcher-bin}/bin/nvfetcher -c ./sources.toml $@";
     }
     (linter nixpkgs-fmt)
     (linter editorconfig-checker)
