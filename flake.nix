@@ -12,10 +12,12 @@
       latest.url = "github:nixos/nixpkgs/nixos-unstable";
       nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
       nixlib.url = "github:nix-community/nixpkgs.lib";
+
+      # TODO: is this necessary? no references in codebase
       blank.url = "github:divnix/blank";
 
       deploy.url = "github:serokell/deploy-rs";
-      deploy.inputs.nixpkgs.follows = "latest";
+      deploy.inputs.nixpkgs.follows = "nixpkgs";
 
       home-manager.url = "github:nix-community/home-manager/release-21.11";
       home-manager.inputs.nixpkgs.follows = "nixlib";
