@@ -15,9 +15,9 @@ let
   hooks = import ./hooks;
 
   pkgWithCategory = category: package: { inherit package category; };
+  devos = pkgWithCategory "devos";
   linter = pkgWithCategory "linter";
   docs = pkgWithCategory "docs";
-  devos = pkgWithCategory "devos";
 
 in
 {
@@ -44,17 +44,19 @@ in
   commands = [
     (devos nixUnstable)
     (devos agenix)
+    (devos inputs.deploy.packages.${pkgs.system}.deploy-rs)
+
     {
       category = "devos";
       name = nvfetcher-bin.pname;
       help = nvfetcher-bin.meta.description;
       command = "cd $PRJ_ROOT/pkgs; ${nvfetcher-bin}/bin/nvfetcher -c ./sources.toml $@";
     }
+
     (linter nixpkgs-fmt)
     (linter editorconfig-checker)
-    # (docs python3Packages.grip) too many deps
+
     (docs mdbook)
-    (devos inputs.deploy.packages.${pkgs.system}.deploy-rs)
   ]
   ++ lib.optional (!isi686)
     (devos cachix)
