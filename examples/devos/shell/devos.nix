@@ -1,6 +1,7 @@
 { pkgs, extraModulesPath, inputs, lib, ... }:
 let
 
+  inherit (pkgs.stdenv) isi686 isDarwin isLinux;
   inherit (pkgs)
     agenix
     cachix
@@ -9,7 +10,6 @@ let
     nixUnstable
     nixpkgs-fmt
     nvfetcher-bin
-    system
     ;
 
   hooks = import ./hooks;
@@ -56,11 +56,9 @@ in
     (docs mdbook)
     (devos inputs.deploy.packages.${pkgs.system}.deploy-rs)
   ]
-  ++ lib.optional
-    (system != "i686-linux")
+  ++ lib.optional (!isi686)
     (devos cachix)
-  ++ lib.optional
-    (system != "aarch64-darwin")
+  ++ lib.optional (isLinux)
     (devos inputs.nixos-generators.defaultPackage.${pkgs.system})
   ;
 }
