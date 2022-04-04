@@ -27,6 +27,8 @@
       darwin.inputs.nixpkgs.follows = "nixpkgs";
 
       devshell.url = "github:numtide/devshell";
+      devshell.inputs.nixpkgs.follows = "nixpkgs";
+
       flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
 
       flake-compat = {
