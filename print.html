@@ -153,7 +153,7 @@ expected. There are unstable versions (0.<em>x</em>.<em>x</em>) to help users ke
 of changes and progress.</p>
 <h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
 <p>The best way to make use of library is with the <a href=".././examples/devos">Official template</a>.
-Check out the <a href="https://digga.divnix.com/start">guide</a> to get up and running.
+Check out the <a href=".././doc/start/index.html">guide</a> to get up and running.
 Also have a look at devos's <a href=".././examples/devos/flake.nix"><em>flake.nix</em></a>.
 If anything is not immediately discoverable via our <a href=".././src/mkFlake"><code>mkFlake</code></a>, please file a bug report.</p>
 <h1 id="examples"><a class="header" href="#examples">Examples</a></h1>
@@ -254,17 +254,15 @@ goals are sufficiently upstreamed into &quot;the Nix&quot;, dissolved.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h1>
 <p>The only dependency is nix, so make sure you have it <a href="https://nixos.org/manual/nix/stable/#sect-multi-user-installation">installed</a>.</p>
 <h2 id="get-the-template"><a class="header" href="#get-the-template">Get the Template</a></h2>
-<p>Here is a snippet that will get you the template without the git history:</p>
-<pre><code class="language-sh">nix-shell -p cachix --run &quot;cachix use nrdxp&quot;
-
-nix-shell https://github.com/divnix/devos/archive/main.tar.gz -A shell \
-  --run &quot;bud get main&quot;
-
-cd devos
-
-nix-shell
-
-git init
+<p>If you currently don't have flakes setup, you can utilize the digga shell to pull the template:</p>
+<pre><code class="language-sh">nix-shell &quot;https://github.com/divnix/digga/archive/main.tar.gz&quot; \
+  --run &quot;nix flake init -t github:divnix/digga&quot;
+</code></pre>
+<p>If you already have flakes support, you can directly pull the template:</p>
+<pre><code class="language-sh">nix flake init -t github:divnix/digga
+</code></pre>
+<p>Then make sure to create the git repository:</p>
+<pre><code class="language-sh">git init
 git add .
 git commit -m init
 </code></pre>
