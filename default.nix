@@ -13,6 +13,6 @@ in
   # Pass this flake as inputs.digga
   defaultNix // {
     inputs = defaultNix.inputs // { digga = defaultNix; };
-    shell = import ./shell.nix;
+    shell = import ./devShell.nix { };
   }
 
