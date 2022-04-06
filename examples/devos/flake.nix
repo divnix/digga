@@ -7,7 +7,8 @@
 
   inputs =
     {
-      nixos.url = "github:nixos/nixpkgs/release-21.11";
+      # Track channels with commits tested and built by hydra
+      nixos.url = "github:nixos/nixpkgs/nixos-21.11";
       latest.url = "github:nixos/nixpkgs/nixos-unstable";
 
       digga.url = "github:divnix/digga";
