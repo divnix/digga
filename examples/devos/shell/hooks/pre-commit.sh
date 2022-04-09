@@ -10,8 +10,8 @@ fi
 
 diff="git diff-index --name-only --cached $against --diff-filter d"
 
-nix_files=($($diff -- '*.nix'))
-all_files=($($diff))
+mapfile -t nix_files < <($diff -- '*.nix')
+mapfile -t all_files < <($diff)
 
 # Format staged nix files.
 if [[ -n "${nix_files[@]}" ]]; then
