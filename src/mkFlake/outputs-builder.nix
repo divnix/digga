@@ -26,7 +26,7 @@ let
       configuration = {
         imports = [ configuration ];
       } // (
-        if pkgs.stdenv.hostPlatform.isLinux
+        if (pkgs.stdenv.hostPlatform.isLinux && !pkgs.stdenv.buildPlatform.isDarwin)
         then { targets.genericLinux.enable = true; }
         else { }
       );
@@ -35,9 +35,9 @@ let
   homeConfigurationsPortable =
     builtins.mapAttrs
       (n: v: mkPortableHomeManagerConfiguration {
+        inherit pkgs system;
         username = n;
         configuration = v;
-        inherit pkgs system;
       })
       config.home.users;
 
@@ -84,15 +84,17 @@ in
         let
           collectActivationPackages = n: v: { name = "user-" + n; value = v.activationPackage; };
         in
+        # N.B. portable home configurations for Linux/NixOS hosts cannot be built on Darwin!
         lib.mapAttrs' collectActivationPackages homeConfigurationsPortable
       else { }
     )
     //
     (
-      # for self.deploy if present & non-empty
+      # for self.deploy
       if (
         (builtins.hasAttr "deploy" self) &&
-        (self.deploy != { })
+        (self.deploy != { }) &&
+        (!pkgs.stdenv.buildPlatform.isDarwin)
       ) then
         let
           deployChecks = deploy.lib.${system}.deployChecks self.deploy;
@@ -106,7 +108,8 @@ in
       # for self.nixosConfigurations if present & non-empty
       if (
         (builtins.hasAttr "nixosConfigurations" self) &&
-        (self.nixosConfigurations != { })
+        (self.nixosConfigurations != { }) &&
+        (!pkgs.stdenv.buildPlatform.isDarwin)
       ) then
         let
           hostConfigsOnThisSystem = collectors.collectHostsOnSystem self.nixosConfigurations system;
@@ -114,7 +117,7 @@ in
           createCustomTestOp = n: host: test:
             lib.warnIf (!(test ? name)) ''
               '${n}' has a test without a name. To distinguish tests in the flake output
-              all nixos tests must have names.
+              all tests must have names.
             ''
               {
                 name = "customTestFor-${n}-${test.name}";
@@ -126,41 +129,6 @@ in
               op = createCustomTestOp n host;
             in
             builtins.listToAttrs (map op config.nixos.hosts.${n}.tests);
-
-          customTests =
-            if (hostConfigsOnThisSystem != [ ])
-            then lib.foldl (a: b: a // b) { } (lib.attrValues (lib.mapAttrs createCustomTestsOp hostConfigsOnThisSystem))
-            else { };
-
-        in
-        customTests
-      else { }
-    )
-    //
-    (
-      # for self.darwinConfigurations if present & non-empty
-      if (
-        (builtins.hasAttr "darwinConfigurations" self) &&
-        (self.darwinConfigurations != { })
-      ) then
-        let
-          hostConfigsOnThisSystem = collectors.collectHostsOnSystem self.darwinConfigurations system;
-
-          createCustomTestOp = n: host: test:
-            lib.warnIf (!(test ? name)) ''
-              '${n}' has a test without a name. To distinguish tests in the flake output
-              all darwin tests must have names.
-            ''
-              {
-                name = "customTestFor-${n}-${test.name}";
-                value = tests.mkTest host test;
-              };
-
-          createCustomTestsOp = n: host:
-            let
-              op = createCustomTestOp n host;
-            in
-            builtins.listToAttrs (map op config.darwin.hosts.${n}.tests);
 
           customTests =
             if (hostConfigsOnThisSystem != [ ])

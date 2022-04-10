@@ -1,7 +1,6 @@
 { pkgs, extraModulesPath, inputs, lib, ... }:
 let
 
-  inherit (pkgs.stdenv) isi686 isDarwin isLinux;
   inherit (pkgs)
     agenix
     cachix
@@ -58,9 +57,9 @@ in
 
     (docs mdbook)
   ]
-  ++ lib.optional (!isi686)
+  ++ lib.optional (!pkgs.stdenv.buildPlatform.isi686)
     (devos cachix)
-  ++ lib.optional (isLinux)
+  ++ lib.optional (pkgs.stdenv.hostPlatform.isLinux && !pkgs.stdenv.buildPlatform.isDarwin)
     (devos inputs.nixos-generators.defaultPackage.${pkgs.system})
   ;
 }

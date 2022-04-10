@@ -12,10 +12,10 @@ in
   hosts = {
     Darwinia = {
       modules = [ ./Darwinia.nix ];
-      # TODO: should we expect all of these tests to work on darwin? any
-      # platform limitations?
+
+      # TODO: add custom test support for darwin hosts
       # tests = [ allProfilesTest ];
-      tests = [];
+      tests = [ ];
     };
   };
 
