@@ -61,6 +61,10 @@
         inherit (nixlib) lib;
       };
 
+      collectors = import ./src/collectors.nix {
+        inherit (nixlib) lib;
+      };
+
       generators = import ./src/generators.nix {
         inherit (nixlib) lib;
         inherit deploy;
@@ -71,7 +75,16 @@
           mkFlake' = import ./src/mkFlake {
             inherit (nixlib) lib;
             inherit (flake-utils-plus.inputs) flake-utils;
-            inherit darwin deploy devshell home-manager flake-utils-plus internal-modules tests;
+            inherit
+              collectors
+              darwin
+              deploy
+              devshell
+              home-manager
+              flake-utils-plus
+              internal-modules
+              tests
+            ;
           };
         in
         {
@@ -114,7 +127,10 @@
         inherit mkFlake;
         inherit (tests) mkTest allProfilesTest;
         inherit (importers) flattenTree rakeLeaves importOverlays importExportableModules importHosts;
-        inherit (generators) mkDeployNodes mkHomeConfigurations;
+        inherit (generators) mkDeployNodes mkHomeConfigurations ;
+        inherit (collectors)
+          collectHosts
+        ;
 
         # DEPRECATED - will be removed soon
         inherit (deprecated)

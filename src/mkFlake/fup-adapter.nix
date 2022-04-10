@@ -1,5 +1,5 @@
 # constructor dependencies
-{ lib, self, inputs, darwin, flake-utils-plus, internal-modules, ... }:
+{ lib, self, inputs, darwin, flake-utils-plus, collectors, internal-modules, ... }:
 
 {
   # evaluated digga configuration
@@ -106,11 +106,8 @@ let
       supportedSystems;
     inherit self inputs sharedOverlays;
 
-    hosts = builtins.mapAttrs (_: stripHost) (
-      flake-utils-plus.lib.mergeAny
-        nixosHosts
-        darwinHosts
-    );
+    hosts = builtins.mapAttrs (_: stripHost)
+      (collectors.collectHosts nixosHosts darwinHosts);
 
     channels = builtins.mapAttrs
       (name: channel:

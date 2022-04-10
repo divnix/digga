@@ -1,4 +1,5 @@
 { lib
+, collectors
 , darwin
 , deploy
 , devshell
