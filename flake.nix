@@ -127,6 +127,7 @@
         inherit (generators) mkDeployNodes mkHomeConfigurations ;
         inherit (collectors)
           collectHosts
+          collectHostsOnSystem
         ;
 
         # DEPRECATED - will be removed soon

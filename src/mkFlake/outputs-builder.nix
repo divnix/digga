@@ -1,5 +1,5 @@
 # constructor dependencies
-{ lib, self, inputs, deploy, devshell, home-manager, flake-utils-plus, tests, ... }:
+{ lib, self, inputs, collectors, deploy, devshell, home-manager, flake-utils-plus, tests, ... }:
 config: channels:
 let
 
@@ -109,8 +109,7 @@ in
         (self.nixosConfigurations != { })
       ) then
         let
-          systemSieve = _: host: host.config.nixpkgs.system == system;
-          hostConfigsOnThisSystem = lib.filterAttrs systemSieve self.nixosConfigurations;
+          hostConfigsOnThisSystem = collectors.collectHostsOnSystem self.nixosConfigurations system;
 
           createCustomTestOp = n: host: test:
             lib.warnIf (!(test ? name)) ''
@@ -145,8 +144,7 @@ in
         (self.darwinConfigurations != { })
       ) then
         let
-          systemSieve = _: host: host.config.nixpkgs.system == system;
-          hostConfigsOnThisSystem = lib.filterAttrs systemSieve self.darwinConfigurations;
+          hostConfigsOnThisSystem = collectors.collectHostsOnSystem self.darwinConfigurations system;
 
           createCustomTestOp = n: host: test:
             lib.warnIf (!(test ? name)) ''
