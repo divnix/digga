@@ -31,9 +31,6 @@
 
   };
 
-  # TODO: should this be set in common.nix?
-  fonts.enableFontDir = true;
-
   nix = {
 
     nixPath = [
