@@ -15,7 +15,7 @@ jobs:
       with:
         submodules: true
         fetch-depth: 0
-    - uses: cachix/install-nix-action@v16
+    - uses: cachix/install-nix-action@v17
       with:
         extra_nix_config: |
           system-features = nixos-test benchmark big-parallel kvm recursive-nix
