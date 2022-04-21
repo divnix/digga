@@ -1,12 +1,14 @@
-{ pkgs, suites, ... }:
-let
+{
+  pkgs,
+  suites,
+  ...
+}: let
   name = "Test User";
   email = "test@example.com";
-in
-{
+in {
   imports = suites.shell;
 
-  home.packages = [ pkgs.hello ];
+  home.packages = [pkgs.hello];
 
   programs.browserpass.enable = true;
   programs.starship.enable = true;
@@ -15,4 +17,3 @@ in
     userEmail = email;
   };
 }
-

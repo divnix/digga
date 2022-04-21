@@ -1,19 +1,20 @@
-{ pkgs, extraModulesPath, inputs, ... }:
-let
-
+{
+  pkgs,
+  extraModulesPath,
+  inputs,
+  ...
+}: let
   hooks = import ./hooks;
 
-  pkgWithCategory = category: package: { inherit package category; };
+  pkgWithCategory = category: package: {inherit package category;};
   linter = pkgWithCategory "linter";
   docs = pkgWithCategory "docs";
   devos = pkgWithCategory "devos";
-
-in
-{
+in {
   _file = toString ./.;
 
-  imports = [ "${extraModulesPath}/git/hooks.nix" ];
-  git = { inherit hooks; };
+  imports = ["${extraModulesPath}/git/hooks.nix"];
+  git = {inherit hooks;};
 
   # tempfix: remove when merged https://github.com/numtide/devshell/pull/123
   devshell.startup.load_profiles = pkgs.lib.mkForce (pkgs.lib.noDepEntry ''
@@ -30,26 +31,26 @@ in
     unset _PATH
   '');
 
-  commands = with pkgs; [
-    (devos nixUnstable)
-    (devos agenix)
-    {
-      category = "devos";
-      name = pkgs.nvfetcher-bin.pname;
-      help = pkgs.nvfetcher-bin.meta.description;
-      command = "cd $PRJ_ROOT/pkgs; ${pkgs.nvfetcher-bin}/bin/nvfetcher -c ./sources.toml $@";
-    }
-    (linter alejandra)
-    (linter editorconfig-checker)
-    # (docs python3Packages.grip) too many deps
-    (docs mdbook)
-    (devos inputs.deploy.packages.${pkgs.system}.deploy-rs)
-  ]
-  ++ lib.optional
+  commands = with pkgs;
+    [
+      (devos nixUnstable)
+      (devos agenix)
+      {
+        category = "devos";
+        name = pkgs.nvfetcher-bin.pname;
+        help = pkgs.nvfetcher-bin.meta.description;
+        command = "cd $PRJ_ROOT/pkgs; ${pkgs.nvfetcher-bin}/bin/nvfetcher -c ./sources.toml $@";
+      }
+      (linter alejandra)
+      (linter editorconfig-checker)
+      # (docs python3Packages.grip) too many deps
+      (docs mdbook)
+      (devos inputs.deploy.packages.${pkgs.system}.deploy-rs)
+    ]
+    ++ lib.optional
     (system != "i686-linux")
     (devos cachix)
-  ++ lib.optional
+    ++ lib.optional
     (system != "aarch64-darwin")
-    (devos inputs.nixos-generators.defaultPackage.${pkgs.system})
-  ;
+    (devos inputs.nixos-generators.defaultPackage.${pkgs.system});
 }

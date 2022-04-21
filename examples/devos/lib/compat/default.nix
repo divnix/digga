@@ -1,6 +1,7 @@
 let
   rev = "e7e5d481a0e15dcd459396e55327749989e04ce0";
-  flake = (import
+  flake =
+    import
     (
       fetchTarball {
         url = "https://github.com/edolstra/flake-compat/archive/${rev}.tar.gz";
@@ -9,6 +10,6 @@ let
     )
     {
       src = ../../.;
-    });
+    };
 in
-flake
+  flake

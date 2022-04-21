@@ -1,18 +1,24 @@
 let
-  inherit (import
+  inherit
     (
-      let lock = builtins.fromJSON (builtins.readFile ./flake.lock); in
-      fetchTarball {
-        url = "https://github.com/edolstra/flake-compat/archive/${lock.nodes.flake-compat.locked.rev}.tar.gz";
-        sha256 = lock.nodes.flake-compat.locked.narHash;
-      }
+      import
+      (
+        let
+          lock = builtins.fromJSON (builtins.readFile ./flake.lock);
+        in
+          fetchTarball {
+            url = "https://github.com/edolstra/flake-compat/archive/${lock.nodes.flake-compat.locked.rev}.tar.gz";
+            sha256 = lock.nodes.flake-compat.locked.narHash;
+          }
+      )
+      {src = ./.;}
     )
-    { src = ./.; }
-  ) defaultNix;
+    defaultNix
+    ;
 in
   # Pass this flake as inputs.digga
-  defaultNix // {
-    inputs = defaultNix.inputs // { digga = defaultNix; };
-    shell = import ./devShell.nix { };
+  defaultNix
+  // {
+    inputs = defaultNix.inputs // {digga = defaultNix;};
+    shell = import ./devShell.nix {};
   }
-

@@ -1,13 +1,15 @@
-{ system ? builtins.currentSystem
-, inputs ? (import ../.).inputs
-}:
-let
-
+{
+  system ? builtins.currentSystem,
+  inputs ? (import ../.).inputs,
+}: let
   inherit (inputs) digga;
   pkgs = inputs.nixpkgs.legacyPackages.${system};
 
-  docOptions = digga.lib.mkFlake.options { self = { }; inputs = { }; };
-  evaledOptions = (pkgs.lib.evalModules { modules = [ docOptions ]; }).options;
+  docOptions = digga.lib.mkFlake.options {
+    self = {};
+    inputs = {};
+  };
+  evaledOptions = (pkgs.lib.evalModules {modules = [docOptions];}).options;
 
   mkDocPartMd = part: title: intro:
     pkgs.writeText "api-reference-${part}.md" ''
@@ -15,13 +17,11 @@ let
       ${intro}
 
       ${(
-        pkgs.nixosOptionsDoc { options = evaledOptions.${part}; }
-      ).optionsMDDoc}
+          pkgs.nixosOptionsDoc {options = evaledOptions.${part};}
+        )
+        .optionsMDDoc}
     '';
-
-in
-{
-
+in {
   mkApiReferenceTopLevel = pkgs.writeText "api-reference.md" ''
     # Top Level API
     `digga`'s top level API. API Containers are documented in their respective sub-chapter:
@@ -31,17 +31,19 @@ in
     - [Devshell](./api-reference-devshell.md)
     - [NixOS](./api-reference-nixos.md)
 
-    ${( pkgs.nixosOptionsDoc {
+    ${(pkgs.nixosOptionsDoc {
         options = {
-          inherit (evaledOptions)
+          inherit
+            (evaledOptions)
             channelsConfig
             self
             inputs
             outputsBuilder
             supportedSystems
-          ;
+            ;
         };
-      }).optionsMDDoc}
+      })
+      .optionsMDDoc}
   '';
 
   mkApiReferenceChannels = mkDocPartMd "channels" "Channels API Container" ''
@@ -60,5 +62,4 @@ in
   mkApiReferenceNixos = mkDocPartMd "nixos" "NixOS API Container" ''
     Configure your nixos modules, profiles & suites.
   '';
-
 }
