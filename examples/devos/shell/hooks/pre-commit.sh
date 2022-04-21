@@ -15,7 +15,7 @@ all_files=($($diff))
 
 # Format staged nix files.
 if [[ -n "${nix_files[@]}" ]]; then
-  nixpkgs-fmt "${nix_files[@]}" \
+  alejandra "${nix_files[@]}" \
   && git add "${nix_files[@]}"
 fi
 

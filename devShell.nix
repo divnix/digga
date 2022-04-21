@@ -92,7 +92,7 @@ devshell.mkShell {
   name = "digga";
   packages = with pkgs; [
     fd
-    nixpkgs-fmt
+    alejandra
     nixUnstable
   ];
 
@@ -130,7 +130,7 @@ devshell.mkShell {
     (utils {
       name = "fmt";
       help = "Check Nix formatting";
-      command = "nixpkgs-fmt \${@} $PRJ_ROOT";
+      command = "alejandra \${@} $PRJ_ROOT";
     })
     (utils {
       name = "evalnix";

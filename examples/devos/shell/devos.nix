@@ -39,7 +39,7 @@ in
       help = pkgs.nvfetcher-bin.meta.description;
       command = "cd $PRJ_ROOT/pkgs; ${pkgs.nvfetcher-bin}/bin/nvfetcher -c ./sources.toml $@";
     }
-    (linter nixpkgs-fmt)
+    (linter alejandra)
     (linter editorconfig-checker)
     # (docs python3Packages.grip) too many deps
     (docs mdbook)

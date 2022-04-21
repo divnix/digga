@@ -8,14 +8,13 @@
   inputs =
     {
       # Track channels with commits tested and built by hydra
-      nixpkgs.url = "github:nixos/nixpkgs/nixos-21.11";
-      latest.url = "github:nixos/nixpkgs/nixos-unstable";
+      nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
       nixlib.url = "github:nix-community/nixpkgs.lib";
       blank.url = "github:divnix/blank";
 
       deploy.url = "github:serokell/deploy-rs";
-      deploy.inputs.nixpkgs.follows = "latest";
+      deploy.inputs.nixpkgs.follows = "nixpkgs";
 
       home-manager.url = "github:nix-community/home-manager/release-21.11";
       home-manager.inputs.nixpkgs.follows = "nixlib";
@@ -33,7 +32,6 @@
     { self
     , nixlib
     , nixpkgs
-    , latest
     , deploy
     , devshell
     , flake-utils-plus
@@ -125,6 +123,7 @@
       '';
 
       # digga-local use
+      formatter = nixlib.lib.genAttrs supportedSystems (s: nixpkgs.legacyPackages.${s}.alejandra);
       # system-space and pass sytem and input to each file
       jobs = polyfillOutput ./jobs;
       checks = polyfillOutput ./checks;
