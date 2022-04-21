@@ -9,8 +9,8 @@
     {
       # Track channels with commits tested and built by hydra
       nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
-      latest.url = "github:nixos/nixpkgs/nixos-unstable";
-      nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+      nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
       nixlib.url = "github:nix-community/nixpkgs.lib";
 
       # TODO: remove -- no references
@@ -40,7 +40,6 @@
     { self
     , nixlib
     , nixpkgs
-    , latest
     , deploy
     , devshell
     , flake-utils-plus
@@ -148,6 +147,7 @@
       '';
 
       # digga-local use
+      formatter = nixlib.lib.genAttrs supportedSystems (s: nixpkgs.legacyPackages.${s}.alejandra);
       # system-space and pass sytem and input to each file
       jobs = polyfillOutput ./jobs;
       checks = polyfillOutput ./checks;
