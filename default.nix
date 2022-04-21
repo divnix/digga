@@ -7,12 +7,11 @@ let
         sha256 = lock.nodes.flake-compat.locked.narHash;
       }
     )
-    { src = ./.; }
-  ) defaultNix;
+    { src = ./.; }) defaultNix;
 in
-  # Pass this flake as inputs.digga
-  defaultNix // {
-    inputs = defaultNix.inputs // { digga = defaultNix; };
-    shell = import ./devShell.nix { };
-  }
+# Pass this flake as inputs.digga
+defaultNix // {
+  inputs = defaultNix.inputs // { digga = defaultNix; };
+  shell = import ./devShell.nix { };
+}
 

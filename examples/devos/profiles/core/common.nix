@@ -75,20 +75,17 @@ in
         ns = "n search --no-update-lock-file";
         nf = "n flake";
         nepl = "n repl '<nixpkgs>'";
-        # FIXME: update this to use the correct channel based on host type -- or move to host-specific profile files
         srch = "ns nixos";
         orch = "ns override";
         mn = ''
           manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | sk --preview="manix '{}'" | xargs manix
         '';
+        top = "btm";
 
         # sudo
         s = ifSudo "sudo -E ";
         si = ifSudo "sudo -i";
         se = ifSudo "sudoedit";
-
-        # top
-        top = "btm";
 
       };
   };
@@ -102,6 +99,9 @@ in
 
     # Prevents impurities in builds
     useSandbox = true;
+
+    # Give root user and wheel group special Nix privileges.
+    trustedUsers = [ "root" "@wheel" ];
 
     # Generally useful nix option defaults
     extraOptions = ''

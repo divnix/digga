@@ -13,7 +13,7 @@
       nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
       nixlib.url = "github:nix-community/nixpkgs.lib";
 
-      # TODO: is this necessary? no references in codebase
+      # TODO: remove -- no references
       blank.url = "github:divnix/blank";
 
       deploy.url = "github:serokell/deploy-rs";
@@ -22,7 +22,7 @@
       home-manager.url = "github:nix-community/home-manager/release-21.11";
       home-manager.inputs.nixpkgs.follows = "nixlib";
 
-      # TODO: update url once https://github.com/LnL7/nix-darwin/pull/429 is merged
+      # FIXME: update url once https://github.com/LnL7/nix-darwin/pull/429 is merged
       darwin.url = "github:montchr/nix-darwin/add-toplevel-option-lib";
       darwin.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -84,7 +84,7 @@
               flake-utils-plus
               internal-modules
               tests
-            ;
+              ;
           };
         in
         {
@@ -124,11 +124,11 @@
         inherit mkFlake;
         inherit (tests) mkTest allProfilesTest;
         inherit (importers) flattenTree rakeLeaves importOverlays importExportableModules importHosts;
-        inherit (generators) mkDeployNodes mkHomeConfigurations ;
+        inherit (generators) mkDeployNodes mkHomeConfigurations;
         inherit (collectors)
           collectHosts
           collectHostsOnSystem
-        ;
+          ;
 
         # DEPRECATED - will be removed soon
         inherit (deprecated)

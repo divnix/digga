@@ -50,9 +50,6 @@
     autoOptimiseStore = true;
     optimise.automatic = true;
     allowedUsers = [ "@wheel" ];
-
-    # Give root and @wheel special privileges with nix
-    trustedUsers = [ "root" "@wheel" ];
   };
 
   programs.bash = {

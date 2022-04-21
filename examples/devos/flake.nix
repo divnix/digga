@@ -10,12 +10,17 @@
       # Track channels with commits tested and built by hydra
       nixos.url = "github:nixos/nixpkgs/nixos-21.11";
       latest.url = "github:nixos/nixpkgs/nixos-unstable";
+      # For darwin hosts: it can be helpful to track this darwin-specific stable
+      # channel equivalent to the `nixos-*` channels for NixOS. For one, these
+      # channels are more likely to provide cached binaries for darwin systems.
+      # But, perhaps even more usefully, it provides a place for adding
+      # darwin-specific overlays and packages which could otherwise cause build
+      # failures on Linux systems.
       nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-21.11-darwin";
 
       digga.url = "github:divnix/digga/darwin-support";
       digga.inputs.nixpkgs.follows = "nixos";
       digga.inputs.nixlib.follows = "nixos";
-      # digga.inputs.darwin.follows = "darwin";
       digga.inputs.home-manager.follows = "home";
       digga.inputs.deploy.follows = "deploy";
 

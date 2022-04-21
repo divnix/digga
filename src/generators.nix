@@ -55,14 +55,14 @@ in
 
       ```
       {
-        hostname-1 = {
-          fastConnection = true;
-          sshOpts = [ "-p" "25" ];
-        };
-        hostname-2 = {
-          sshOpts = [ "-p" "19999" ];
-          sshUser = "root";
-        };
+      hostname-1 = {
+      fastConnection = true;
+      sshOpts = [ "-p" "25" ];
+      };
+      hostname-2 = {
+      sshOpts = [ "-p" "19999" ];
+      sshUser = "root";
+      };
       }
       ```
       **/

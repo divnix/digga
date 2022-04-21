@@ -1,10 +1,10 @@
-{ config, pkgs, suites, ... }:
+{ lib, pkgs, config, suites, ... }: {
+  # TODO: remove manually-imported suites and profiles once custom test support
+  # is added for darwin
+  imports = with suites;
+    base;
 
-{
-  imports = suites.base;
-
-  # On darwin, sudoers/admins are added to the `admin` group, not `wheel` as
-  # they would be on Linux.
+  # On Darwin, admins are added to the `admin` group.
   nix.trustedUsers = [ "@admin" "sosumi" ];
 
   # https://daiderd.com/nix-darwin/manual/index.html#opt-system.stateVersion

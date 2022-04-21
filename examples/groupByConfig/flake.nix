@@ -6,10 +6,11 @@
     nixos.url = "github:nixos/nixpkgs/nixos-21.11";
 
     # For darwin hosts: it can be helpful to track this darwin-specific stable
-    # channel akin to the NixOS release channel. For one, it's more likely to
-    # provide cached binaries for darwin systems. But, perhaps even more
-    # usefully, it provides a place for adding darwin-specific overlays and
-    # packages which could otherwise cause build failures on Linux systems.
+    # channel equivalent to the `nixos-*` channels for NixOS. For one, these
+    # channels are more likely to provide cached binaries for darwin systems.
+    # But, perhaps even more usefully, it provides a place for adding
+    # darwin-specific overlays and packages which could otherwise cause build
+    # failures on Linux systems.
     nixpkgs-darwin-stable.url = "github:NixOS/nixpkgs/nixpkgs-21.11-darwin";
 
     digga = {
