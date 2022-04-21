@@ -8,9 +8,8 @@ channels: final: prev: {
     discord
     element-desktop
     rage
-    nix-index
-    nixpkgs-fmt
     qutebrowser
+    alejandra
     signal-desktop
     starship
     deploy-rs
