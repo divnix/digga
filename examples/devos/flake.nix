@@ -72,30 +72,17 @@
 
         channelsConfig = { allowUnfree = true; };
 
-        channels =
-          let
-            # TODO: any reason to avoid applying these to `latest` via `sharedOverlays`?
-            commonOverlays = [
-              nur.overlay
-              agenix.overlay
-              nvfetcher.overlay
-              ./pkgs/default.nix
-            ];
-          in
-          {
-            nixos = {
-              imports = [ (digga.lib.importOverlays ./overlays) ];
-              overlays = commonOverlays ++ [ ];
-            };
-            nixpkgs-darwin = {
-              imports = [ (digga.lib.importOverlays ./overlays) ];
-              overlays = commonOverlays ++ [
-                # TODO: create if necessary -- or perhaps a placeholder for both host types
-                # ./pkgs/darwin
-              ];
-            };
-            latest = { };
+        channels = {
+          nixos = {
+            imports = [ (digga.lib.importOverlays ./overlays) ];
+            overlays = [ ];
           };
+          nixpkgs-darwin = {
+            imports = [ (digga.lib.importOverlays ./overlays) ];
+            overlays = [ ];
+          };
+          latest = { };
+        };
 
         lib = import ./lib { lib = digga.lib // nixos.lib; };
 
@@ -106,6 +93,12 @@
               our = self.lib;
             });
           })
+
+          nur.overlay
+          agenix.overlay
+          nvfetcher.overlay
+
+          (import ./pkgs)
         ];
 
         nixos = {
