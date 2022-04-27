@@ -22,16 +22,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1646015191,
-        "narHash": "sha256-+gemBNsqBiSwR5OJA2F/0eZc3xWOsxLDbFNu7/nMcxw=",
-        "owner": "montchr",
+        "lastModified": 1650976225,
+        "narHash": "sha256-PGM65SQHS63Dd5MmLJo3GJsZP9lJVZmpWxluQoG1Dt8=",
+        "owner": "LnL7",
         "repo": "nix-darwin",
-        "rev": "3bb62d40a2ef5c7c1b5634c58c47dd4a239d7618",
+        "rev": "bb3baef6e115ae47bc2ab4973bd3a486488485b0",
         "type": "github"
       },
       "original": {
-        "owner": "montchr",
-        "ref": "add-toplevel-option-lib",
+        "owner": "LnL7",
         "repo": "nix-darwin",
         "type": "github"
       }
