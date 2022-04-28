@@ -1082,6 +1082,7 @@ to keep checks passing.</p>
 <li><a href="./api-reference-home.html">Home</a></li>
 <li><a href="./api-reference-devshell.html">Devshell</a></li>
 <li><a href="./api-reference-nixos.html">NixOS</a></li>
+<li><a href="./api-reference-darwin.html">Darwin</a></li>
 </ul>
 <h2 id="channelsconfig"><a class="header" href="#channelsconfig">channelsConfig</a></h2>
 <p>nixpkgs config for all channels</p>
@@ -1098,7 +1099,7 @@ attribute set of nix flakes</p>
 <p>builder for flake system-spaced outputs
 The builder gets passed an attrset of all channels</p>
 <p><em><em>Type</em></em>:
-function that evaluates to a(n) attrs or path convertible to it</p>
+function that evaluates to a(n) attribute set or path convertible to it</p>
 <p><em><em>Default</em></em></p>
 <pre><code>&quot;channels: { }&quot;
 </code></pre>
@@ -1144,10 +1145,17 @@ nix flake</p>
 <h2 id="channelsnameoverlays"><a class="header" href="#channelsnameoverlays">channels.&lt;name&gt;.overlays</a></h2>
 <p>overlays to apply to this channel
 these will get exported under the 'overlays' flake output
-as &lt;channel&gt;/&lt;name&gt; and any overlay pulled from ${inputs}
+as &lt;channel&gt;/&lt;name&gt; and any overlay pulled from &lt;inputs&gt;
 will be filtered out</p>
 <p><em><em>Type</em></em>:
 list of valid Nixpkgs overlay or path convertible to its or anything convertible to it or path convertible to it</p>
+<p><em><em>Default</em></em></p>
+<pre><code>[]
+</code></pre>
+<h2 id="channelsnamepatches"><a class="header" href="#channelsnamepatches">channels.&lt;name&gt;.patches</a></h2>
+<p>patches to apply to this channel</p>
+<p><em><em>Type</em></em>:
+list of paths</p>
 <p><em><em>Default</em></em></p>
 <pre><code>[]
 </code></pre>
@@ -1198,35 +1206,6 @@ list of valid modules or anything convertible to it or path convertible to it</p
 <p><em><em>Default</em></em></p>
 <pre><code>[]
 </code></pre>
-<h2 id="homeprofiles"><a class="header" href="#homeprofiles">home.profiles</a></h2>
-<p>WARNING: The 'suites' and <code>profiles</code> options have been deprecated, you can now create
-both with the importables option. <code>rakeLeaves</code> can be used to create profiles and
-by passing a module or <code>rec</code> set to <code>importables</code>, suites can access profiles.
-Example:</p>
-<pre><code>importables = rec {
-  profiles = digga.lib.rakeLeaves ./profiles;
-  suites = with profiles; { };
-}
-</code></pre>
-<p>See https://github.com/divnix/digga/pull/30 for more details</p>
-<p><em><em>Type</em></em>:
-list of paths or path convertible to it</p>
-<p><em><em>Default</em></em></p>
-<pre><code>[]
-</code></pre>
-<h2 id="homesuites"><a class="header" href="#homesuites">home.suites</a></h2>
-<p>WARNING: The 'suites' and <code>profiles</code> options have been deprecated, you can now create
-both with the importables option. <code>rakeLeaves</code> can be used to create profiles and
-by passing a module or <code>rec</code> set to <code>importables</code>, suites can access profiles.
-Example:</p>
-<pre><code>importables = rec {
-  profiles = digga.lib.rakeLeaves ./profiles;
-  suites = with profiles; { };
-}
-</code></pre>
-<p>See https://github.com/divnix/digga/pull/30 for more details</p>
-<p><em><em>Type</em></em>:
-function that evaluates to a(n) attrs or path convertible to it</p>
 <h2 id="homeusers"><a class="header" href="#homeusers">home.users</a></h2>
 <p>HM users that can be deployed portably without a host.</p>
 <p><em><em>Type</em></em>:
@@ -1374,35 +1353,6 @@ null or attribute set of list of paths or anything convertible to its or path co
 <p><em><em>Default</em></em></p>
 <pre><code>null
 </code></pre>
-<h2 id="nixosprofiles"><a class="header" href="#nixosprofiles">nixos.profiles</a></h2>
-<p>WARNING: The 'suites' and <code>profiles</code> options have been deprecated, you can now create
-both with the importables option. <code>rakeLeaves</code> can be used to create profiles and
-by passing a module or <code>rec</code> set to <code>importables</code>, suites can access profiles.
-Example:</p>
-<pre><code>importables = rec {
-  profiles = digga.lib.rakeLeaves ./profiles;
-  suites = with profiles; { };
-}
-</code></pre>
-<p>See https://github.com/divnix/digga/pull/30 for more details</p>
-<p><em><em>Type</em></em>:
-list of paths or path convertible to it</p>
-<p><em><em>Default</em></em></p>
-<pre><code>[]
-</code></pre>
-<h2 id="nixossuites"><a class="header" href="#nixossuites">nixos.suites</a></h2>
-<p>WARNING: The 'suites' and <code>profiles</code> options have been deprecated, you can now create
-both with the importables option. <code>rakeLeaves</code> can be used to create profiles and
-by passing a module or <code>rec</code> set to <code>importables</code>, suites can access profiles.
-Example:</p>
-<pre><code>importables = rec {
-  profiles = digga.lib.rakeLeaves ./profiles;
-  suites = with profiles; { };
-}
-</code></pre>
-<p>See https://github.com/divnix/digga/pull/30 for more details</p>
-<p><em><em>Type</em></em>:
-function that evaluates to a(n) attrs or path convertible to it</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="tldr"><a class="header" href="#tldr">TL;DR;</a></h1>
 <ul>
 <li><strong>Target Branch</strong>: <code>main</code></li>

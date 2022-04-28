@@ -165,10 +165,17 @@ nix flake</p>
 <h2 id="channelsnameoverlays"><a class="header" href="#channelsnameoverlays">channels.&lt;name&gt;.overlays</a></h2>
 <p>overlays to apply to this channel
 these will get exported under the 'overlays' flake output
-as &lt;channel&gt;/&lt;name&gt; and any overlay pulled from ${inputs}
+as &lt;channel&gt;/&lt;name&gt; and any overlay pulled from &lt;inputs&gt;
 will be filtered out</p>
 <p><em><em>Type</em></em>:
 list of valid Nixpkgs overlay or path convertible to its or anything convertible to it or path convertible to it</p>
+<p><em><em>Default</em></em></p>
+<pre><code>[]
+</code></pre>
+<h2 id="channelsnamepatches"><a class="header" href="#channelsnamepatches">channels.&lt;name&gt;.patches</a></h2>
+<p>patches to apply to this channel</p>
+<p><em><em>Type</em></em>:
+list of paths</p>
 <p><em><em>Default</em></em></p>
 <pre><code>[]
 </code></pre>
