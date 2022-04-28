@@ -13,11 +13,8 @@
     # failures on Linux systems.
     nixpkgs-darwin-stable.url = "github:NixOS/nixpkgs/nixpkgs-21.11-darwin";
 
-    digga = {
-      # TODO: revert before merging
-      url = "github:divnix/digga/darwin-support";
-      inputs.nixpkgs.follows = "nixos";
-    };
+    digga.url = "github:divnix/digga";
+    digga.inputs.nixpkgs.follows = "nixos";
 
     darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs-darwin-stable";
