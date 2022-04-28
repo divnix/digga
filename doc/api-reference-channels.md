@@ -57,12 +57,28 @@ nix flake
 ## channels.\<name\>.overlays
 overlays to apply to this channel
 these will get exported under the 'overlays' flake output
-as \<channel\>/\<name\> and any overlay pulled from ${inputs}
+as \<channel\>/\<name\> and any overlay pulled from \<inputs\>
 will be filtered out
 
 
 *_Type_*:
 list of valid Nixpkgs overlay or path convertible to its or anything convertible to it or path convertible to it
+
+
+*_Default_*
+```
+[]
+```
+
+
+
+
+## channels.\<name\>.patches
+patches to apply to this channel
+
+
+*_Type_*:
+list of paths
 
 
 *_Default_*

@@ -5,6 +5,7 @@
 - [Home](./api-reference-home.md)
 - [Devshell](./api-reference-devshell.md)
 - [NixOS](./api-reference-nixos.md)
+- [Darwin](./api-reference-darwin.md)
 
 ## channelsConfig
 nixpkgs config for all channels
@@ -39,7 +40,7 @@ The builder gets passed an attrset of all channels
 
 
 *_Type_*:
-function that evaluates to a(n) attrs or path convertible to it
+function that evaluates to a(n) attribute set or path convertible to it
 
 
 *_Default_*

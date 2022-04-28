@@ -30,6 +30,7 @@ in
     - [Home](./api-reference-home.md)
     - [Devshell](./api-reference-devshell.md)
     - [NixOS](./api-reference-nixos.md)
+    - [Darwin](./api-reference-darwin.md)
 
     ${( pkgs.nixosOptionsDoc {
         options = {
@@ -59,6 +60,9 @@ in
   '';
   mkApiReferenceNixos = mkDocPartMd "nixos" "NixOS API Container" ''
     Configure your nixos modules, profiles & suites.
+  '';
+  mkApiReferenceDarwin = mkDocPartMd "darwin" "Darwin API Container" ''
+    Configure your darwin/macOS modules, profiles & suites.
   '';
 
 }

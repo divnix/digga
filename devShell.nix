@@ -2,9 +2,10 @@
 , inputs ? (import ./.).inputs
 }:
 let
-
   pkgs = inputs.nixpkgs.legacyPackages.${system};
-  devshell = import inputs.devshell { inherit pkgs system; };
+  unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
+  devshell = import inputs.devshell { inherit system; };
+  nixBin = "${unstablePkgs.nix}/bin/nix";
 
   withCategory = category: attrset: attrset // { inherit category; };
   utils = withCategory "utils";
@@ -79,9 +80,9 @@ let
       digga_fixture
 
       test -f flake.lock && lockfile_present=$? || true
-      ${pkgs.nixUnstable}/bin/nix flake lock --update-input digga "$@"; lockfile_updated=$?;
-      ${pkgs.nixUnstable}/bin/nix flake show "$@"
-      ${pkgs.nixUnstable}/bin/nix flake check "$@"
+      ${nixBin} flake lock --update-input digga "$@"; lockfile_updated=$?;
+      ${nixBin} flake show "$@"
+      ${nixBin} flake check "$@"
 
       cleanup
     '';
@@ -93,7 +94,8 @@ devshell.mkShell {
   packages = with pkgs; [
     fd
     nixpkgs-fmt
-    nixUnstable
+    # Use the latest stable version of nix
+    unstablePkgs.nix
   ];
 
   env = [

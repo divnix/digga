@@ -1,4 +1,4 @@
-{ lib, flake-utils-plus, internal-modules, importers, nixosModules }:
+{ lib, importers }:
 lib.warn ''
   You are accessing a deprecated item of the digga lib.
   Please update timely, it will be remove soon.
