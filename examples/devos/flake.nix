@@ -169,12 +169,11 @@
 
         devshell = ./shell;
 
-        # TODO: similar to the above note: does it make sense to make all of
-        # these users available on all systems?
-        homeConfigurations = digga.lib.mergeAny
-          (digga.lib.mkHomeConfigurations self.darwinConfigurations)
-          (digga.lib.mkHomeConfigurations self.nixosConfigurations)
-        ;
+        homeConfigurations =
+          digga.lib.mkHomeConfigurations
+          (digga.lib.collectHosts
+            self.nixosConfigurations
+            self.darwinConfigurations);
 
         deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
 
