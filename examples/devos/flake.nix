@@ -147,7 +147,7 @@
               users = digga.lib.rakeLeaves ./users;
             };
             suites = with profiles; rec {
-              base = [ core.darwin users.darwin ];
+              base = [ core.darwin users.admin ];
             };
           };
         };
@@ -162,24 +162,9 @@
             };
           };
           users = {
-            # TODO: does this naming convention still make sense with darwin support?
-            #
-            # - it doesn't make sense to make a 'nixos' user available on
-            #   darwin, and vice versa
-            #
-            # - the 'nixos' user might have special significance as the default
-            #   user for fresh systems
-            #
-            # - perhaps a system-agnostic home-manager user is more appropriate?
-            #   something like 'primaryuser'?
-            #
-            # all that said, these only exist within the `hmUsers` attrset, so
-            # it could just be left to the developer to determine what's
-            # appropriate. after all, configuring these hm users is one of the
-            # first steps in customizing the template.
             nixos = { suites, ... }: { imports = suites.base; };
-            darwin = { suites, ... }: { imports = suites.base; };
-          }; # digga.lib.importers.rakeLeaves ./users/hm;
+            primary = { suites, ... }: { imports = suites.base; };
+          };
         };
 
         devshell = ./shell;
