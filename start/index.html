@@ -149,9 +149,15 @@
 git add .
 git commit -m init
 </code></pre>
-<p>This will place you in a new folder named <code>devos</code> with git initialized, and a
-nix-shell that provides all the dependencies, including the unstable nix
-version required.</p>
+<p>To drop into a nix-shell, if you don't have flakes setup, use the digga shell to create a <code>flake.lock</code>:</p>
+<pre><code class="language-sh">nix-shell &quot;https://github.com/divnix/digga/archive/main.tar.gz&quot; \
+  --run &quot;nix flake lock&quot;
+</code></pre>
+<p>Or if you do have flakes support, just run:</p>
+<pre><code class="language-sh">nix flake lock
+</code></pre>
+<p>Finally, run <code>nix-shell</code> to get to an interactive shell with all the dependencies, including the unstable nix
+version required. You can run <code>menu</code> to confirm that you are using digga (expected output includes [docs], [general commands], [linter], etc.).</p>
 <p>In addition, the <a href="../integrations/cachix.html">binary cache</a> is added for faster deployment.</p>
 <blockquote>
 <h5 id="notes"><a class="header" href="#notes"><em>Notes:</em></a></h5>
