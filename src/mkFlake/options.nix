@@ -7,9 +7,9 @@ with lib;
 let
   cfg = config;
 
-  # #############
-  # Resolver
-  # #############
+  #============
+  # Resolvers
+  #============
 
   /**
     Synopsis: maybeImport <path|string or obj>
@@ -58,20 +58,20 @@ let
     coercedTo anything (x: flatten (singleton x)) (listOf elemType);
 
 
-  # #############
+  #================
   # Custom Types
-  # #############
+  #================
 
   nixosTestType = pathToOr (mkOptionType {
     name = "test";
     check = x: builtins.isFunction x || builtins.isAttrs x;
-    description = "valid NixOS test";
+    description = "Valid NixOS test";
   });
 
   moduleType = mkOptionType {
     name = "module";
     inherit (types.submodule { }) check;
-    description = "valid module";
+    description = "Valid module";
   };
 
   devshellModuleType = with types; coercedTo path maybeImportDevshellToml moduleType;
@@ -79,19 +79,21 @@ let
   overlayType = pathToOr (mkOptionType {
     name = "overlay";
     check = builtins.isFunction;
-    description = "valid Nixpkgs overlay";
+    description = "Valid channel overlay";
   });
 
   systemType = (types.enum config.supportedSystems) // {
-    description = "system defined in `supportedSystems`";
+    description = "One of the systems defined in `supportedSystems`";
   };
 
   channelType = (types.enum (builtins.attrNames config.channels)) // {
-    description = "channel defined in `channels`";
+    description = "One of the channels defined in `channels`";
   };
 
+  # TODO: does checking whether an attrset exists in the store indicate that the
+  # attrset is a flake?
   flakeType = with types; (addCheck attrs lib.isStorePath) // {
-    description = "nix flake";
+    description = "Valid flake";
   };
 
   overlaysType = with types; coercedListOf overlayType;
@@ -106,16 +108,16 @@ let
     description = "HM user config";
   });
 
-  # #############
+  #===========
   # Options
-  # #############
+  #===========
 
   systemOpt = {
     system = mkOption {
       type = with types; nullOr systemType;
       default = null;
       description = ''
-        system for this host
+        System for this host.
       '';
     };
   };
@@ -124,7 +126,7 @@ let
     channelName = mkOption
       {
         description = ''
-          Channel this host should follow
+          Channel this host should follow.
         '';
       }
     //
@@ -143,7 +145,7 @@ let
       type = with types; nixosTestsType;
       default = [ ];
       description = ''
-        tests to run
+        Tests to run for this host.
       '';
       example = literalExample ''
         [
@@ -172,7 +174,7 @@ let
       type = with types; pathToOr modulesType;
       default = [ ];
       description = ''
-        modules to include
+        Modules to include for this specific host only.
       '';
     };
   };
@@ -181,7 +183,7 @@ let
     type = with types; pathToOr modulesType;
     default = [ ];
     description = ''
-      modules to include in all hosts and export to ${name}Modules output
+      Modules to include and export to the ${name}Modules flake output.
     '';
   };
 
@@ -194,15 +196,15 @@ let
     );
   };
 
-  # This is only needed for hostDefaults
-  # modules in each host don't get exported
   regularModulesOpt = {
     modules = mkOption {
       type = with types; pathToOr modulesType;
       default = [ ];
       description = ''
-        modules to include that won't be exported
-        meant importing modules from external flakes
+        Default modules to import for all hosts.
+
+        These modules will not be exported via flake outputs.
+        Primarily useful for importing modules from external flakes.
       '';
     };
   };
@@ -233,9 +235,6 @@ let
       default = { };
       description = ''
         Defaults for all hosts.
-        the modules passed under hostDefaults will be exported
-        to the '${name}Modules' flake output.
-        They will also be added to all hosts.
       '';
     };
   };
@@ -245,7 +244,7 @@ let
       type = with types; hostType;
       default = { };
       description = ''
-        configurations to include in the ${name}Configurations output
+        Configurations to export via the ${name}Configurations flake output.
       '';
     };
   };
@@ -256,7 +255,7 @@ let
       default = self.inputs.${name};
       defaultText = "self.inputs.<name>";
       description = ''
-        nixpkgs flake input to use for this channel
+        Nixpkgs flake input to use for this channel.
       '';
     };
   };
@@ -266,10 +265,12 @@ let
       type = with types; pathToOr overlaysType;
       default = [ ];
       description = escape [ "<" ">" ] ''
-        overlays to apply to this channel
-        these will get exported under the 'overlays' flake output
-        as <channel>/<name> and any overlay pulled from <inputs>
-        will be filtered out
+        Overlays to apply to this channel and export via the 'overlays' flake output.
+
+        The attributes in the 'overlays' output will be named following the
+        '<channel>/<name>' format.
+
+        Any overlay pulled from <inputs> will not be exported.
       '';
     };
   };
@@ -279,7 +280,7 @@ let
       type = with types; listOf path;
       default = [ ];
       description = ''
-        patches to apply to this channel
+        Patches to apply to this channel.
       '';
     };
   };
@@ -290,7 +291,7 @@ let
       default = { };
       apply = lib.recursiveUpdate cfg.channelsConfig;
       description = ''
-        nixpkgs config for this channel
+        Nixpkgs config for this channel.
       '';
     };
   };
@@ -305,7 +306,7 @@ let
               type = nullOr (pathToOr suitesType);
               default = null;
               description = ''
-                collections of profiles
+                Collections of profiles.
               '';
             };
           };
@@ -313,7 +314,7 @@ let
       };
       default = { };
       description = ''
-        Packages of paths to be passed to modules as `specialArgs`.
+        Packages of paths to be passed to modules as additional args.
       '';
     };
   };
@@ -323,14 +324,20 @@ let
       type = with types; usersType;
       default = { };
       description = ''
-        HM users that can be deployed portably without a host.
+        home-manager users that can be deployed portably to any host.
+
+        These configurations must work on *all* supported systems.
+
+        Generic Linux systems only support these portable home-manager
+        configurations. They cannot be configured as hosts like NixOS or
+        nix-darwin systems.
       '';
     };
   };
 
-  # #############
-  # Aggreagate types
-  # #############
+  #==================
+  # Composite Types
+  #==================
 
   hostType = with types; attrsOf (submoduleWith {
     modules = [
@@ -386,40 +393,41 @@ let
 
 in
 {
-  # this does not get propagated to submodules
-  # to allow passing flake outputs directly to mkFlake
+  # Allow passing flake outputs directly to `mkFlake`.
+  #
+  # This does not get propagated to submodules.
   config._module.check = false;
 
   options = with types; {
     self = mkOption {
       type = flakeType;
       readOnly = true;
-      description = "The flake to create the DevOS outputs for";
+      description = "The flake itself.";
     };
     inputs = mkOption {
       type = inputsType;
       readOnly = true;
-      description = "The flake's inputs";
+      description = "The flake's inputs.";
     };
     supportedSystems = mkOption {
       type = listOf str;
       default = flake-utils.lib.defaultSystems;
       description = ''
-        The systems supported by this flake
+        The systems supported by this flake.
       '';
     };
     channelsConfig = mkOption {
       type = pathToOr attrs;
       default = { };
       description = ''
-        nixpkgs config for all channels
+        Nixpkgs configuration shared between all channels.
       '';
     };
     channels = mkOption {
       type = pathToOr channelsType;
       default = { };
       description = ''
-        nixpkgs channels to create
+        Nixpkgs channels to create.
       '';
     };
     outputsBuilder = mkOption {
@@ -427,37 +435,35 @@ in
       default = channels: { };
       defaultText = "channels: { }";
       description = ''
-        builder for flake system-spaced outputs
-        The builder gets passed an attrset of all channels
+        Builder for flake system-spaced outputs.
       '';
     };
     nixos = mkOption {
       type = pathToOr nixosType;
       default = { };
       description = ''
-        hosts, modules, suites, and profiles for NixOS
+        NixOS host configurations.
       '';
     };
     darwin = mkOption {
       type = pathToOr darwinType;
       default = { };
       description = ''
-        hosts, modules, suites, and profiles for darwin
+        Darwin host configurations.
       '';
     };
     home = mkOption {
       type = pathToOr homeType;
       default = { };
       description = ''
-        hosts, modules, suites, and profiles for home-manager
+        home-manager user configurations.
       '';
     };
     devshell = mkOption {
       type = pathToOr devshellType;
       default = { };
       description = ''
-        Modules to include in your DevOS shell. the `modules` argument
-        will be exported under the `devshellModules` output
+        Modules to include in our development shell.
       '';
     };
   };
