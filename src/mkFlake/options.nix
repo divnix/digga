@@ -94,10 +94,6 @@ let
     description = "nix flake";
   };
 
-  userType = with types; pathToOr moduleType // {
-    description = "HM user config";
-  };
-
   overlaysType = with types; coercedListOf overlayType;
   modulesType = with types; coercedListOf moduleType;
   nixosTestsType = with types; coercedListOf nixosTestType;
@@ -105,8 +101,10 @@ let
   legacyProfilesType = with types; listOf path;
   legacySuitesType = with types; functionTo attrs;
   suitesType = with types; attrsOf (coercedListOf path);
-  usersType = with types; attrsOf userType;
   inputsType = with types; attrsOf flakeType;
+  usersType = with types; attrsOf (pathToOr moduleType // {
+    description = "HM user config";
+  });
 
   # #############
   # Options
