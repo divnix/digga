@@ -3,7 +3,7 @@ Configure your nixos modules, profiles & suites.
 
 
 ## nixos
-hosts, modules, suites, and profiles for NixOS
+NixOS host configurations.
 
 
 *_Type_*:
@@ -20,9 +20,6 @@ submodule or path convertible to it
 
 ## nixos.hostDefaults
 Defaults for all hosts.
-the modules passed under hostDefaults will be exported
-to the 'nixosModules' flake output.
-They will also be added to all hosts.
 
 
 *_Type_*:
@@ -38,11 +35,11 @@ submodule
 
 
 ## nixos.hostDefaults.channelName
-Channel this host should follow
+Channel this host should follow.
 
 
 *_Type_*:
-channel defined in `channels`
+One of the channels defined in `channels`
 
 
 
@@ -50,11 +47,11 @@ channel defined in `channels`
 
 
 ## nixos.hostDefaults.exportedModules
-modules to include in all hosts and export to nixosModules output
+Modules to include and export to the nixosModules flake output.
 
 
 *_Type_*:
-list of valid modules or anything convertible to it or path convertible to it
+list of Valid modules or anything convertible to it or path convertible to it
 
 
 *_Default_*
@@ -72,7 +69,7 @@ option and all other modules should just go into the `modules` option.
 
 
 *_Type_*:
-list of valid modules or anything convertible to it
+list of Valid modules or anything convertible to it
 
 
 *_Default_*
@@ -84,12 +81,14 @@ list of valid modules or anything convertible to it
 
 
 ## nixos.hostDefaults.modules
-modules to include that won't be exported
-meant importing modules from external flakes
+Default modules to import for all hosts.
+
+These modules will not be exported via flake outputs.
+Primarily useful for importing modules from external flakes.
 
 
 *_Type_*:
-list of valid modules or anything convertible to it or path convertible to it
+list of Valid modules or anything convertible to it or path convertible to it
 
 
 *_Default_*
@@ -101,11 +100,11 @@ list of valid modules or anything convertible to it or path convertible to it
 
 
 ## nixos.hostDefaults.system
-system for this host
+System for this host.
 
 
 *_Type_*:
-null or system defined in `supportedSystems`
+null or One of the systems defined in `supportedSystems`
 
 
 *_Default_*
@@ -117,7 +116,7 @@ null
 
 
 ## nixos.hosts
-configurations to include in the nixosConfigurations output
+Configurations to export via the nixosConfigurations flake output.
 
 
 *_Type_*:
@@ -133,11 +132,11 @@ attribute set of submodules
 
 
 ## nixos.hosts.\<name\>.channelName
-Channel this host should follow
+Channel this host should follow.
 
 
 *_Type_*:
-null or channel defined in `channels`
+null or One of the channels defined in `channels`
 
 
 *_Default_*
@@ -149,11 +148,11 @@ null
 
 
 ## nixos.hosts.\<name\>.modules
-modules to include
+Modules to include for this specific host only.
 
 
 *_Type_*:
-list of valid modules or anything convertible to it or path convertible to it
+list of Valid modules or anything convertible to it or path convertible to it
 
 
 *_Default_*
@@ -165,11 +164,11 @@ list of valid modules or anything convertible to it or path convertible to it
 
 
 ## nixos.hosts.\<name\>.system
-system for this host
+System for this host.
 
 
 *_Type_*:
-null or system defined in `supportedSystems`
+null or One of the systems defined in `supportedSystems`
 
 
 *_Default_*
@@ -181,11 +180,11 @@ null
 
 
 ## nixos.hosts.\<name\>.tests
-tests to run
+Tests to run for this host.
 
 
 *_Type_*:
-list of valid NixOS test or path convertible to its or anything convertible to it
+list of Valid NixOS test or path convertible to its or anything convertible to it
 
 
 *_Default_*
@@ -201,7 +200,7 @@ list of valid NixOS test or path convertible to its or anything convertible to i
 
 
 ## nixos.importables
-Packages of paths to be passed to modules as `specialArgs`.
+Packages of paths to be passed to modules as additional args.
 
 
 *_Type_*:
@@ -217,7 +216,7 @@ attribute set
 
 
 ## nixos.importables.suites
-collections of profiles
+Collections of profiles.
 
 
 *_Type_*:

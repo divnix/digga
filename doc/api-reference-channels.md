@@ -7,7 +7,7 @@ Configure your channels that you can use throughout your configurations.
 
 
 ## channels
-nixpkgs channels to create
+Nixpkgs channels to create.
 
 
 *_Type_*:
@@ -23,7 +23,7 @@ attribute set of submodules or path convertible to it
 
 
 ## channels.\<name\>.config
-nixpkgs config for this channel
+Nixpkgs config for this channel.
 
 
 *_Type_*:
@@ -39,11 +39,11 @@ attribute set or path convertible to it
 
 
 ## channels.\<name\>.input
-nixpkgs flake input to use for this channel
+Nixpkgs flake input to use for this channel.
 
 
 *_Type_*:
-nix flake
+Valid flake
 
 
 *_Default_*
@@ -55,14 +55,16 @@ nix flake
 
 
 ## channels.\<name\>.overlays
-overlays to apply to this channel
-these will get exported under the 'overlays' flake output
-as \<channel\>/\<name\> and any overlay pulled from \<inputs\>
-will be filtered out
+Overlays to apply to this channel and export via the 'overlays' flake output.
+
+The attributes in the 'overlays' output will be named following the
+'\<channel\>/\<name\>' format.
+
+Any overlay pulled from \<inputs\> will not be exported.
 
 
 *_Type_*:
-list of valid Nixpkgs overlay or path convertible to its or anything convertible to it or path convertible to it
+list of Valid channel overlay or path convertible to its or anything convertible to it or path convertible to it
 
 
 *_Default_*
@@ -74,7 +76,7 @@ list of valid Nixpkgs overlay or path convertible to its or anything convertible
 
 
 ## channels.\<name\>.patches
-patches to apply to this channel
+Patches to apply to this channel.
 
 
 *_Type_*:

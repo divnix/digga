@@ -65,9 +65,11 @@ let
       Recursively collect the nix files of _path_ into attrs.
 
       Output Format:
-      An attribute set where all `.nix` files and directories with `default.nix` in them
-      are mapped to keys that are either the file with .nix stripped or the folder name.
-      All other directories are recursed further into nested attribute sets with the same format.
+
+      An attribute set where all `.nix` files and directories with `default.nix`
+      in them are mapped to keys that are either the file with .nix stripped or
+      the folder name. All other directories are recursed further into nested
+      attribute sets with the same format.
 
       Example file structure:
       ```

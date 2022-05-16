@@ -8,7 +8,7 @@
 - [Darwin](./api-reference-darwin.md)
 
 ## channelsConfig
-nixpkgs config for all channels
+Nixpkgs configuration shared between all channels.
 
 
 *_Type_*:
@@ -24,10 +24,10 @@ attribute set or path convertible to it
 
 
 ## inputs
-The flake's inputs
+The flake's inputs.
 
 *_Type_*:
-attribute set of nix flakes
+attribute set of Valid flakes
 
 
 
@@ -35,8 +35,7 @@ attribute set of nix flakes
 
 
 ## outputsBuilder
-builder for flake system-spaced outputs
-The builder gets passed an attrset of all channels
+Builder for flake system-spaced outputs.
 
 
 *_Type_*:
@@ -52,10 +51,10 @@ function that evaluates to a(n) attribute set or path convertible to it
 
 
 ## self
-The flake to create the DevOS outputs for
+The flake itself.
 
 *_Type_*:
-nix flake
+Valid flake
 
 
 
@@ -63,7 +62,7 @@ nix flake
 
 
 ## supportedSystems
-The systems supported by this flake
+The systems supported by this flake.
 
 
 *_Type_*:

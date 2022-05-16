@@ -28,7 +28,8 @@ let
   /**
     Synopsis: maybeImportDevshellToml <path|string or obj>
 
-    Returns an imported path or string if the filename ends in `toml` or the object or path otherwise.
+    Returns an imported path or string if the filename ends in `toml` or the
+    object or path otherwise.
 
     Use only for devshell modules, as an apply function.
     **/
@@ -43,16 +44,16 @@ let
 
     Type resolver: types maybeImport's <obj>.
 
-    Use in type declarations.
+    For use within type declarations.
     **/
   pathToOr = elemType: with types; coercedTo path maybeImport elemType;
 
   /**
     Synopsis: coercedListOf <type>
 
-    Type resolver & list flattner: flattens a (evtl. arbitrarily nested) list of type <type>.
+    Flattens and validates an arbitrarily-nested list of type <type>.
 
-    Use in type declarations.
+    For use within type declarations.
     **/
   coercedListOf = elemType: with types;
     coercedTo anything (x: flatten (singleton x)) (listOf elemType);

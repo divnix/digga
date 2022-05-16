@@ -3,7 +3,7 @@ Configure your home manager modules, profiles & suites.
 
 
 ## home
-hosts, modules, suites, and profiles for home-manager
+home-manager user configurations.
 
 
 *_Type_*:
@@ -19,11 +19,11 @@ submodule or path convertible to it
 
 
 ## home.exportedModules
-modules to include in all hosts and export to homeModules output
+Modules to include and export to the homeModules flake output.
 
 
 *_Type_*:
-list of valid modules or anything convertible to it or path convertible to it
+list of Valid modules or anything convertible to it or path convertible to it
 
 
 *_Default_*
@@ -41,7 +41,7 @@ option and all other modules should just go into the `modules` option.
 
 
 *_Type_*:
-list of valid modules or anything convertible to it
+list of Valid modules or anything convertible to it
 
 
 *_Default_*
@@ -53,7 +53,7 @@ list of valid modules or anything convertible to it
 
 
 ## home.importables
-Packages of paths to be passed to modules as `specialArgs`.
+Packages of paths to be passed to modules as additional args.
 
 
 *_Type_*:
@@ -69,7 +69,7 @@ attribute set
 
 
 ## home.importables.suites
-collections of profiles
+Collections of profiles.
 
 
 *_Type_*:
@@ -85,12 +85,14 @@ null
 
 
 ## home.modules
-modules to include that won't be exported
-meant importing modules from external flakes
+Default modules to import for all hosts.
+
+These modules will not be exported via flake outputs.
+Primarily useful for importing modules from external flakes.
 
 
 *_Type_*:
-list of valid modules or anything convertible to it or path convertible to it
+list of Valid modules or anything convertible to it or path convertible to it
 
 
 *_Default_*
@@ -102,7 +104,13 @@ list of valid modules or anything convertible to it or path convertible to it
 
 
 ## home.users
-HM users that can be deployed portably without a host.
+home-manager users that can be deployed portably to any host.
+
+These configurations must work on *all* supported systems.
+
+Generic Linux systems only support these portable home-manager
+configurations. They cannot be configured as hosts like NixOS or
+nix-darwin systems.
 
 
 *_Type_*:
