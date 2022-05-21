@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- **BREAKING CHANGE:** Remove exported overlays to unblock usage of `emacs-overlay` [\#469](https://github.com/divnix/digga/pull/469)
+
 ## [v0.11.0](https://github.com/divnix/digga/tree/v0.11.0) (2022-04-01)
 
 **Implemented enhancements:**
