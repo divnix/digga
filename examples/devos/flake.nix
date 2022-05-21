@@ -40,6 +40,8 @@
       agenix.url = "github:ryantm/agenix";
       agenix.inputs.nixpkgs.follows = "nixos";
 
+      emacs-overlay.url = "github:nix-community/emacs-overlay";
+
       nvfetcher.url = "github:berberman/nvfetcher";
       nvfetcher.inputs.nixpkgs.follows = "nixos";
 
@@ -62,6 +64,7 @@
     , agenix
     , nvfetcher
     , deploy
+    , emacs-overlay
     , nixpkgs
     , ...
     } @ inputs:
@@ -96,6 +99,7 @@
           nur.overlay
           agenix.overlay
           nvfetcher.overlay
+          emacs-overlay.overlay
 
           (import ./pkgs)
         ];
