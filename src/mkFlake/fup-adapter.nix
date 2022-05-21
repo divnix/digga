@@ -126,14 +126,6 @@ let
 
     devshellModules = flake-utils-plus.lib.exportModules config.devshell.exportedModules;
 
-    overlays = flake-utils-plus.lib.exportOverlays {
-      # since we can't detect overlays owned by self
-      # we have to filter out ones exported by the inputs
-      # optimally we would want a solution for NixOS/nix#4740
-      inherit (self) pkgs;
-      inherit inputs;
-    };
-
     outputsBuilder = channels:
       flake-utils-plus.lib.mergeAny
         (defaultOutputsBuilder channels)

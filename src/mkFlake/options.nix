@@ -268,10 +268,7 @@ let
       type = with types; pathToOr overlaysType;
       default = [ ];
       description = escape [ "<" ">" ] ''
-        overlays to apply to this channel
-        these will get exported under the 'overlays' flake output
-        as <channel>/<name> and any overlay pulled from <inputs>
-        will be filtered out
+        Overlays to apply to this channel.
       '';
     };
   };

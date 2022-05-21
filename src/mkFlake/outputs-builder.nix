@@ -46,6 +46,7 @@ in
 
   inherit homeConfigurationsPortable;
 
+  # TODO: Should this really happen automatically?
   packages = flake-utils-plus.lib.exportPackages self.overlays channels;
 
   devShell =
