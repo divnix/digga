@@ -3,8 +3,6 @@
 - [Introduction](../README.md)
 - [Quick Start](./start/index.md)
   - [ISO](./start/iso.md)
-  - [Bootstrapping](./start/bootstrapping.md)
-  - [From NixOS](./start/from-nixos.md)
 - [Key Concepts](./concepts/index.md)
   - [Hosts](./concepts/hosts.md)
   - [Overrides](./concepts/overrides.md)
