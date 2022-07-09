@@ -48,22 +48,11 @@ argument that gets passed to your home-manager users.
 
 ## External Usage
 You can easily use the defined home-manager configurations outside of NixOS
-using the `homeConfigurations` flake output. The [bud](../bud/index.md) helper
-script makes this even easier.
+using the `homeConfigurations` flake output. 
 
-This is great for keeping your environment consistent across Unix systems,
-including OSX.
+This is great for keeping your environment consistent across Unix-like systems,
+including macOS.
 
-### From within the projects devshell:
-```sh
-# builds the nixos user defined in the NixOS host
-bud home NixOS nixos
-
-# build and activate
-bud home NixOS nixos switch
-```
-
-### Manually from outside the project:
 ```sh
 # build
 nix build "github:divnix/devos#homeConfigurations.nixos@NixOS.home.activationPackage"
