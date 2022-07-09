@@ -18,8 +18,6 @@
 - [Concerns]()
   - [Secrets](./secrets.md)
   - [Tests](./tests.md)
-- [Helper Script – `bud`](./bud/index.md)
-  - [get](./bud/get.md)
 - [Integrations](./integrations/index.md)
   - [Cachix](./integrations/cachix.md)
   - [Deploy RS](./integrations/deploy.md)

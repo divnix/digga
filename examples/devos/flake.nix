@@ -24,10 +24,6 @@
       digga.inputs.home-manager.follows = "home";
       digga.inputs.deploy.follows = "deploy";
 
-      bud.url = "github:divnix/bud";
-      bud.inputs.nixpkgs.follows = "nixos";
-      bud.inputs.devshell.follows = "digga/devshell";
-
       home.url = "github:nix-community/home-manager/release-22.05";
       home.inputs.nixpkgs.follows = "nixos";
 
@@ -54,7 +50,6 @@
   outputs =
     { self
     , digga
-    , bud
     , nixos
     , home
     , nixos-hardware
@@ -111,7 +106,6 @@
               digga.nixosModules.nixConfig
               home.nixosModules.home-manager
               agenix.nixosModules.age
-              bud.nixosModules.bud
             ];
           };
 
