@@ -8,8 +8,7 @@
 Users are a special case of [profiles](profiles.md) that define system
 users and [home-manager][home-manager] configurations. For your convenience,
 home manager is wired in by default so all you have to worry about is declaring
-your users. For a fully fleshed out example, check out the developers personal
-[branch](https://github.com/divnix/devos/tree/nrd/users/nrd/default.nix).
+your users.
 
 ## Basic Usage
 `users/myuser/default.nix`:
@@ -74,5 +73,5 @@ nix build "github:divnix/devos#homeConfigurations.nixos@NixOS.home.activationPac
 ```
 
 [home-manager]: https://nix-community.github.io/home-manager
-[modules-list]: https://github.com/divnix/devos/tree/main/users/modules/module-list.nix
+[modules-list]: https://github.com/divnix/digga/tree/main/users/modules/module-list.nix
 [portableuser]: https://digga.divnix.com/api-reference-home.html#homeusers
