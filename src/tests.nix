@@ -30,7 +30,7 @@ let
   allProfilesTest = {
     name = "allProfiles";
 
-    machine = { suites ? null, ... }: {
+    nodes.machine = { suites ? null, ... }: {
       imports =
         let
           allProfiles = lib.foldl
@@ -41,7 +41,7 @@ let
     };
 
     testScript = ''
-      machines[0].systemctl("is-system-running --wait")
+      machine.systemctl("is-system-running --wait")
     '';
   };
 in
