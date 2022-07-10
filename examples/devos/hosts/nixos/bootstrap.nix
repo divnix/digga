@@ -1,9 +1,5 @@
 { profiles, ... }:
 {
-  # build with: `bud build bootstrap bootstrapIso`
-  # reachable on the local link via ssh root@fe80::47%eno1
-  # where 'eno1' is replaced by your own machine's network
-  # interface that has the local link to the target machine
   imports = [
     # profiles.networking
     profiles.core.nixos
@@ -13,6 +9,6 @@
 
   boot.loader.systemd-boot.enable = true;
 
-  # will be overridden by the bootstrapIso instrumentation
+  # Required, but will be overridden in the resulting installer ISO.
   fileSystems."/" = { device = "/dev/disk/by-label/nixos"; };
 }
