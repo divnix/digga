@@ -43,7 +43,6 @@ in
   commands = [
     (devos nixUnstable)
     (devos agenix)
-    (devos inputs.deploy.packages.${pkgs.system}.deploy-rs)
 
     {
       category = "devos";
@@ -57,9 +56,12 @@ in
 
     (docs mdbook)
   ]
-  ++ lib.optional (!pkgs.stdenv.buildPlatform.isi686)
+  ++ lib.optionals (!pkgs.stdenv.buildPlatform.isi686) [
     (devos cachix)
-  ++ lib.optional (pkgs.stdenv.hostPlatform.isLinux && !pkgs.stdenv.buildPlatform.isDarwin)
+  ]
+  ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && !pkgs.stdenv.buildPlatform.isDarwin) [
     (devos inputs.nixos-generators.defaultPackage.${pkgs.system})
+    (devos inputs.deploy.packages.${pkgs.system}.deploy-rs)
+  ]
   ;
 }

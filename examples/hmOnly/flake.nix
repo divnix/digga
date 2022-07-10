@@ -2,11 +2,11 @@
   description = "A DevOS example. And also a digga test bed.";
 
   inputs = {
-    nixos.url = "github:nixos/nixpkgs/nixos-21.11";
+    nixos.url = "github:nixos/nixpkgs/nixos-22.05";
     digga.url = "github:divnix/digga";
     digga.inputs.nixpkgs.follows = "nixos";
     digga.inputs.home-manager.follows = "home";
-    home.url = "github:nix-community/home-manager/release-21.11";
+    home.url = "github:nix-community/home-manager/release-22.05";
     home.inputs.nixpkgs.follows = "nixos";
   };
 

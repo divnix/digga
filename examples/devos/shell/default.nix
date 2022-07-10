@@ -1,8 +1,6 @@
 { self, inputs, ... }:
 {
-  modules = with inputs; [
-    bud.devshellModules.bud
-  ];
+  modules = with inputs; [];
   exportedModules = [
     ./devos.nix
   ];
