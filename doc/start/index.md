@@ -43,9 +43,8 @@ In addition, the [binary cache](../integrations/cachix.md) is added for faster d
 >   you can try with sudo: `sudo nix-shell -p cachix --run "cachix use nrdxp"`
 
 ## Next Steps:
+
 - [Make installable ISO](./iso.md)
-- [Bootstrap Host](./bootstrapping.md)
-- [Already on NixOS](./from-nixos.md)
 
 
 [install-nix]: https://nixos.org/manual/nix/stable/#sect-multi-user-installation
