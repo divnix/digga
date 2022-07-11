@@ -21,19 +21,20 @@ let
 
       extraSpecialArgs = config.home.importables // { inherit self inputs; };
 
-      modules = [ configuration
-                  {
-                    home = {
-                      inherit username homeDirectory;
-                      stateVersion = "22.05";
-                    };
-                  }
-                ] ++ config.home.exportedModules
-                  ++ config.home.modules
-                  ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && !pkgs.stdenv.buildPlatform.isDarwin)
-                  [
-                    {targets.genericLinux.enable = true;}
-                  ];
+      modules = [
+        configuration
+        {
+          home = {
+            inherit username homeDirectory;
+            stateVersion = "22.05";
+          };
+        }
+      ] ++ config.home.exportedModules
+      ++ config.home.modules
+      ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && !pkgs.stdenv.buildPlatform.isDarwin)
+        [
+          { targets.genericLinux.enable = true; }
+        ];
     };
 
   homeConfigurationsPortable =
