@@ -17,7 +17,8 @@
 
   globalDefaults = { hmUsers }:
     { config, pkgs, self, ... }: {
-      # digga lib can be accessed in modules directly as config.lib.digga
+      # Digga's library functions can be accessed directly through the module
+      # system as `config.lib.digga`.
       lib = {
         inherit (pkgs.lib) digga;
       };
@@ -32,6 +33,10 @@
     };
 
   nixosDefaults = { self, ... }: {
+    # N.B. If users are not explicitly defined in configuration, they will be
+    # removed from the resulting system. This could result in data loss if
+    # you're not starting from a fresh install -- even if you are currently
+    # logged in!
     users.mutableUsers = lib.mkDefault false;
     hardware.enableRedistributableFirmware = lib.mkDefault true;
     system.configurationRevision = lib.mkIf (self ? rev) self.rev;

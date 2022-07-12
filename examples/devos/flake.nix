@@ -119,7 +119,11 @@
               users = digga.lib.rakeLeaves ./users;
             };
             suites = with profiles; rec {
-              base = [ core.nixos users.nixos users.root ];
+              base = [
+                core.nixos
+                users.root
+                users.primary
+              ];
             };
           };
         };
@@ -147,7 +151,10 @@
               users = digga.lib.rakeLeaves ./users;
             };
             suites = with profiles; rec {
-              base = [ core.darwin users.admin ];
+              base = [
+                core.darwin
+                users.primary
+              ];
             };
           };
         };
@@ -162,7 +169,6 @@
             };
           };
           users = {
-            nixos = { suites, ... }: { imports = suites.base; };
             primary = { suites, ... }: { imports = suites.base; };
           };
         };
