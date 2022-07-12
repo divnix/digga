@@ -4,4 +4,5 @@ let
 in
 {
   imports = [ (lib.importExportableModules ./modules) ];
+  home.stateVersion = "22.05";
 }
