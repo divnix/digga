@@ -10,6 +10,7 @@
       # Track channels with commits tested and built by hydra
       nixos.url = "github:nixos/nixpkgs/nixos-22.05";
       latest.url = "github:nixos/nixpkgs/nixos-unstable";
+
       # For darwin hosts: it can be helpful to track this darwin-specific stable
       # channel equivalent to the `nixos-*` channels for NixOS. For one, these
       # channels are more likely to provide cached binaries for darwin systems.
@@ -24,7 +25,9 @@
       digga.inputs.home-manager.follows = "home";
       digga.inputs.deploy.follows = "deploy";
 
-      home.url = "github:nix-community/home-manager/release-22.05";
+      # FIXME: use 22.11 release
+      home.url = "github:nix-community/home-manager";
+      # home.url = "github:nix-community/home-manager/release-22.11";
       home.inputs.nixpkgs.follows = "nixos";
 
       darwin.url = "github:LnL7/nix-darwin";

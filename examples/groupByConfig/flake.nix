@@ -19,7 +19,9 @@
     darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs-darwin-stable";
 
-    home.url = "github:nix-community/home-manager/release-22.05";
+    # FIXME: use 22.11 release
+    home.url = "github:nix-community/home-manager";
+    # home.url = "github:nix-community/home-manager/release-22.11";
     home.inputs.nixpkgs.follows = "nixos";
   };
 
