@@ -7,7 +7,6 @@
 
   inputs =
     {
-      # Track channels with commits tested and built by hydra
       nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
       latest.url = "github:nixos/nixpkgs/nixos-unstable";
       nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -19,8 +18,11 @@
       deploy.url = "github:serokell/deploy-rs";
       deploy.inputs.nixpkgs.follows = "nixpkgs";
 
-      home-manager.url = "github:nix-community/home-manager/release-22.05";
+      # FIXME: use 22.11 release
+      home-manager.url = "github:nix-community/home-manager";
+      # home-manager.url = "github:nix-community/home-manager/release-22.11";
       home-manager.inputs.nixpkgs.follows = "nixlib";
+      home-manager.inputs.utils.follows = "flake-utils-plus/flake-utils";
 
       darwin.url = "github:LnL7/nix-darwin";
       darwin.inputs.nixpkgs.follows = "nixpkgs";
