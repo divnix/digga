@@ -34,5 +34,10 @@ Please search on the [issue tracker](../) before creating one.
 <!--- Providing context helps us come up with a solution that is most useful in the real world. -->
 
 ## Your Environment
+<!---Please run `nix-shell -p nix-info --run "nix-info -m"` and paste the result. -->
+```console
+[user@system:~]$ nix-shell -p nix-info --run "nix-info -m"
+output here
+```
 <!--- Include relevant details about the environment you experienced the bug in. -->
 <!--- If you have run `flk update`, for example, post the flake.lock file. -->
