@@ -20,7 +20,10 @@ if (( ${#nix_files[@]} != 0 )); then
 fi
 
 # check editorconfig
-editorconfig-checker -- "${all_files[@]}"
+if (( ${#all_files[@]} != 0 )); then
+  editorconfig-checker -- "${all_files[@]}"
+fi
+
 if [[ $? != '0' ]]; then
   printf "%b\n" \
     "\nCode is not aligned with .editorconfig" \
