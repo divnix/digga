@@ -14,7 +14,7 @@ nix_files=($($diff -- '*.nix'))
 all_files=($($diff))
 
 # Format staged nix files.
-if [[ -n "${nix_files[@]}" ]]; then
+if (( ${#nix_files[@]} != 0 )); then
   nixpkgs-fmt "${nix_files[@]}" \
   && git add "${nix_files[@]}"
 fi
