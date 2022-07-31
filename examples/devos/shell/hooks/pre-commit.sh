@@ -14,13 +14,16 @@ nix_files=($($diff -- '*.nix'))
 all_files=($($diff))
 
 # Format staged nix files.
-if [[ -n "${nix_files[@]}" ]]; then
+if (( ${#nix_files[@]} != 0 )); then
   nixpkgs-fmt "${nix_files[@]}" \
   && git add "${nix_files[@]}"
 fi
 
 # check editorconfig
-editorconfig-checker -- "${all_files[@]}"
+if (( ${#all_files[@]} != 0 )); then
+  editorconfig-checker -- "${all_files[@]}"
+fi
+
 if [[ $? != '0' ]]; then
   printf "%b\n" \
     "\nCode is not aligned with .editorconfig" \
