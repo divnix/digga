@@ -1,38 +1,53 @@
 ---
 name: Bug report
-about: Create a report to help improve
+about: Create a report to help us improve
 title: ''
 labels: 'bug'
 assignees: ''
-
 ---
 
-Your issue may already be reported!
-Please search on the [issue tracker](../) before creating one.
-
 ## Expected Behavior
-<!--- What should happen? -->
-<!--- How it should work? -->
+
+<!--
+A clear and concise description of what you expected to happen.
+-->
 
 ## Current Behavior
-<!--- What happens instead of the expected behavior? -->
 
-## Possible Solution
-<!--- Not obligatory, but suggest a fix/reason for the bug, -->
-<!--- or ideas how to implement the addition or change -->
+<!--
+What happens instead of the expected behavior?
+-->
 
 ## Steps to Reproduce
-<!--- An unambiguous set of steps to reproduce this bug. -->
-<!--- Linked fork or gist if needed. -->
-1.
-2.
-3.
-4.
 
-## Context
-<!--- How has this issue affected you? What are you trying to accomplish? -->
-<!--- Providing context helps us come up with a solution that is most useful in the real world. -->
+<!--
+An unambiguous set of steps to reproduce the behavior.
+Without this, others may find it difficult to see what you are seeing.
+Provide a link to repo or gist if you think it could be helpful.
+-->
+
+1. ...
+2. ...
+3. ...
+
+## Additional Context
+
+<!--
+For example:
+- How has this issue affected you?
+- What are you trying to accomplish?
+- Do you have an idea about what may have caused the issue?
+- Provide a link to your related code in a repo or gist.
+- If applicable, add screenshots to help explain your problem.
+-->
 
 ## Your Environment
-<!--- Include relevant details about the environment you experienced the bug in. -->
-<!--- If you have run `flk update`, for example, post the flake.lock file. -->
+
+<!--
+Please run `nix run nixpkgs#nix-info -- -m; nix flake metadata` and paste the result:
+-->
+
+```console
+[user@system:~]$ nix run nixpkgs#nix-info -- -m; nix flake metadata
+output here
+```
