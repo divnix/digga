@@ -2,9 +2,10 @@
 , inputs ? (import ./.).inputs
 }:
 let
-
   pkgs = inputs.nixpkgs.legacyPackages.${system};
-  devshell = import inputs.devshell { inherit pkgs system; };
+  unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
+  devshell = import inputs.devshell { inherit system; };
+  nixBin = "${unstablePkgs.nix}/bin/nix";
 
   withCategory = category: attrset: attrset // { inherit category; };
   utils = withCategory "utils";
@@ -40,30 +41,10 @@ let
       set -e
       # set -x
 
-      diggaurl=
-      lockfile_updated=1
-      lockfile_present=1
-      tempdigga="\"path:$PRJ_ROOT\""
-
-      cleanup() {
-        if is $lockfile_present; then
-          git checkout -- flake.lock
-        elif is $lockfile_updated; then
-          git rm -f flake.lock
-        fi
-        # ensure: restore input
-        [ -z $diggaurl ] || ${pkgs.gnused}/bin/sed -i "s|$tempdigga|$diggaurl|g" flake.nix
-      }
-
-      digga_fixture() {
-        # ensure: replace input
-        diggaurl=$({ grep -o '"github:divnix/digga.*"' flake.nix || true; })
-        [ -z $diggaurl ] || ${pkgs.gnused}/bin/sed -i "s|$diggaurl|$tempdigga|g" flake.nix
-      }
+      tempdigga=path:$PRJ_ROOT
 
       trap_err() {
         local ret=$?
-        cleanup
         echo -e \
           "\033[1m\033[31m""exit $ret: \033[0m\033[1m""command [$BASH_COMMAND] failed""\033[0m"
       }
@@ -76,14 +57,8 @@ let
 
       cd $PRJ_ROOT/${type}/${name}
 
-      digga_fixture
-
-      test -f flake.lock && lockfile_present=$? || true
-      ${pkgs.nixUnstable}/bin/nix flake lock --update-input digga "$@"; lockfile_updated=$?;
-      ${pkgs.nixUnstable}/bin/nix flake show "$@"
-      ${pkgs.nixUnstable}/bin/nix flake check "$@"
-
-      cleanup
+      ${nixBin} flake show "$@" --override-input digga $tempdigga
+      ${nixBin} flake check "$@" --override-input digga $tempdigga
     '';
   };
 
@@ -93,7 +68,8 @@ devshell.mkShell {
   packages = with pkgs; [
     fd
     nixpkgs-fmt
-    nixUnstable
+    # Use the latest stable version of nix
+    unstablePkgs.nix
   ];
 
   env = [

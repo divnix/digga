@@ -270,7 +270,7 @@ let
       description = escape [ "<" ">" ] ''
         overlays to apply to this channel
         these will get exported under the 'overlays' flake output
-        as <channel>/<name> and any overlay pulled from ''\${inputs}
+        as <channel>/<name> and any overlay pulled from <inputs>
         will be filtered out
       '';
     };
@@ -355,6 +355,13 @@ let
     ];
   };
 
+  darwinType = with types; submoduleWith {
+    specialArgs = { inherit self inputs; };
+    modules = [
+      { options = (hostsOpt "darwin") // (hostDefaultsOpt "darwin") // importablesOpt; }
+    ];
+  };
+
   homeType = with types; submoduleWith {
     specialArgs = { inherit self inputs; };
     modules = [
@@ -431,6 +438,13 @@ in
       default = { };
       description = ''
         hosts, modules, suites, and profiles for NixOS
+      '';
+    };
+    darwin = mkOption {
+      type = pathToOr darwinType;
+      default = { };
+      description = ''
+        hosts, modules, suites, and profiles for darwin
       '';
     };
     home = mkOption {

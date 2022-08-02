@@ -14,7 +14,7 @@ mapfile -t nix_files < <($diff -- '*.nix')
 mapfile -t all_files < <($diff)
 
 # Format staged nix files
-if [[ -n "${nix_files[@]}" ]]; then
+if (( ${#nix_files[@]} != 0 )); then
   # Stash only unstaged changes, keeping staged changes
   old_stash=$(git rev-parse --quiet --verify refs/stash)
   git stash push --quiet --keep-index -m 'Unstaged changes before pre-commit hook'
@@ -31,7 +31,11 @@ if [[ -n "${nix_files[@]}" ]]; then
 fi
 
 # Check editorconfig
-if ! editorconfig-checker -- "${all_files[@]}"; then
+if (( ${#all_files[@]} != 0 )); then
+  editorconfig-checker -- "${all_files[@]}"
+fi
+
+if [[ $? != '0' ]]; then
   printf "%b\n" \
     "\nCode is not aligned with .editorconfig" \
     "Review the output and commit your fixes" >&2

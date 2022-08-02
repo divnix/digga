@@ -1,5 +1,5 @@
 # constructor dependencies
-{ lib, self, inputs, deploy, devshell, home-manager, flake-utils-plus, tests, ... }:
+{ lib, self, inputs, collectors, deploy, devshell, home-manager, flake-utils-plus, tests, ... }:
 config: channels:
 let
 
@@ -26,7 +26,7 @@ let
       configuration = {
         imports = [ configuration ];
       } // (
-        if pkgs.stdenv.hostPlatform.isLinux
+        if (pkgs.stdenv.hostPlatform.isLinux && !pkgs.stdenv.buildPlatform.isDarwin)
         then { targets.genericLinux.enable = true; }
         else { }
       );
@@ -35,9 +35,9 @@ let
   homeConfigurationsPortable =
     builtins.mapAttrs
       (n: v: mkPortableHomeManagerConfiguration {
+        inherit pkgs system;
         username = n;
         configuration = v;
-        inherit pkgs system;
       })
       config.home.users;
 
@@ -84,15 +84,17 @@ in
         let
           collectActivationPackages = n: v: { name = "user-" + n; value = v.activationPackage; };
         in
+        # N.B. portable home configurations for Linux/NixOS hosts cannot be built on Darwin!
         lib.mapAttrs' collectActivationPackages homeConfigurationsPortable
       else { }
     )
     //
     (
-      # for self.deploy if present & non-empty
+      # for self.deploy
       if (
         (builtins.hasAttr "deploy" self) &&
-        (self.deploy != { })
+        (self.deploy != { }) &&
+        (!pkgs.stdenv.buildPlatform.isDarwin)
       ) then
         let
           deployChecks = deploy.lib.${system}.deployChecks self.deploy;
@@ -106,16 +108,16 @@ in
       # for self.nixosConfigurations if present & non-empty
       if (
         (builtins.hasAttr "nixosConfigurations" self) &&
-        (self.nixosConfigurations != { })
+        (self.nixosConfigurations != { }) &&
+        (!pkgs.stdenv.buildPlatform.isDarwin)
       ) then
         let
-          systemSieve = _: host: host.config.nixpkgs.system == system;
-          hostConfigsOnThisSystem = lib.filterAttrs systemSieve self.nixosConfigurations;
+          hostConfigsOnThisSystem = collectors.collectHostsOnSystem self.nixosConfigurations system;
 
           createCustomTestOp = n: host: test:
             lib.warnIf (!(test ? name)) ''
               '${n}' has a test without a name. To distinguish tests in the flake output
-              all nixos tests must have names.
+              all tests must have names.
             ''
               {
                 name = "customTestFor-${n}-${test.name}";

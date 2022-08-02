@@ -4,7 +4,7 @@ let
     let
       net = c.config.networking;
       fqdn =
-        if net.domain != null
+        if (net ? domain) && (net.domain != null)
         then "${net.hostName}.${net.domain}"
         else net.hostName;
     in
@@ -12,12 +12,12 @@ let
 
 in
 {
-  mkHomeConfigurations = nixosConfigurations:
+  mkHomeConfigurations = systemConfigurations:
     /**
-      Synopsis: mkHomeConfigurations _nixosConfigurations_
+      Synopsis: mkHomeConfigurations _systemConfigurations_
 
-      Generate the `homeConfigurations` attribute expected by
-      `home-manager` cli from _nixosConfigurations_ in the form
+      Generate the `homeConfigurations` attribute expected by `home-manager` cli
+      from _nixosConfigurations_ or _darwinConfigurations_ in the form
       _user@hostname_.
       **/
     let
@@ -35,16 +35,24 @@ in
       ;
       mkHmConfigs = lib.foldl op { };
     in
-    mkHmConfigs (builtins.attrValues nixosConfigurations);
+    mkHmConfigs (builtins.attrValues systemConfigurations);
 
-  mkDeployNodes = hosts: extraConfig:
+  mkDeployNodes = systemConfigurations: extraConfig:
     /**
-      Synopsis: mkNodes _nixosConfigurations_
+      Synopsis: mkNodes _systemConfigurations_ _extraConfig_
 
       Generate the `nodes` attribute expected by deploy-rs
-      where _nixosConfigurations_ are `nodes`.
+      where _systemConfigurations_ are `nodes`.
 
-      Example input:
+      _systemConfigurations_ should take the form of a flake's
+      _nixosConfigurations_. Note that deploy-rs does not currently support
+      deploying to darwin hosts.
+
+      _extraConfig_, if specified, will be merged into each of the
+      nodes' configurations.
+
+      Example _systemConfigurations_ input:
+
       ```
       {
       hostname-1 = {
@@ -69,6 +77,6 @@ in
             };
           }
         )
-        hosts)
+        systemConfigurations)
       extraConfig;
 }

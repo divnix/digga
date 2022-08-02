@@ -19,9 +19,18 @@ git add .
 git commit -m init
 ```
 
-This will place you in a new folder named `devos` with git initialized, and a
-nix-shell that provides all the dependencies, including the unstable nix
-version required.
+To drop into a nix-shell, if you don't have flakes setup, use the digga shell to create a `flake.lock`:
+```sh
+nix-shell "https://github.com/divnix/digga/archive/main.tar.gz" \
+  --run "nix flake lock"
+```
+Or if you do have flakes support, just run:
+```sh
+nix flake lock
+```
+
+Finally, run `nix-shell` to get to an interactive shell with all the dependencies, including the unstable nix
+version required. You can run `menu` to confirm that you are using digga (expected output includes [docs], [general commands], [linter], etc.).
 
 In addition, the [binary cache](../integrations/cachix.md) is added for faster deployment.
 
@@ -34,9 +43,8 @@ In addition, the [binary cache](../integrations/cachix.md) is added for faster d
 >   you can try with sudo: `sudo nix-shell -p cachix --run "cachix use nrdxp"`
 
 ## Next Steps:
+
 - [Make installable ISO](./iso.md)
-- [Bootstrap Host](./bootstrapping.md)
-- [Already on NixOS](./from-nixos.md)
 
 
 [install-nix]: https://nixos.org/manual/nix/stable/#sect-multi-user-installation
