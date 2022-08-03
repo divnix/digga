@@ -41,7 +41,13 @@ let
     })
   ];
 
-  unifyOverlays = channels: map (o: if builtins.isFunction (o null null) then o channels else o);
+  unifyOverlays = channels:
+    let
+      getChannel = inputs."${channelName}".legacyPackages."${system}";
+      system = config.nixos.hostDefaults.system;
+      channelName = config.nixos.hostDefaults.channelName;
+    in
+    map (o: if builtins.isFunction (o getChannel getChannel) then o channels else o);
 
   stripChannel = channel: removeAttrs channel [
     # arguments in our channels api that shouldn't be passed to fup
