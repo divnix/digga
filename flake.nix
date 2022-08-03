@@ -28,7 +28,7 @@
       devshell.url = "github:numtide/devshell";
       devshell.inputs.nixpkgs.follows = "nixpkgs";
 
-      flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
+      flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus/?ref=refs/pull/120/head";
 
       flake-compat = {
         url = "github:edolstra/flake-compat";

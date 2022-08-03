@@ -78,7 +78,7 @@
               # `importOverlays` will import everything under the path given
               (channels: final: prev: {
                 inherit (channels.latest) mas;
-              })
+              } // prev.lib.optionalAttrs true { })
             ];
           };
           latest = { };
