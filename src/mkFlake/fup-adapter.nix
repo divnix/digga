@@ -43,9 +43,8 @@ let
 
   unifyOverlays = channels:
     let
-      getChannel = inputs."${channelName}".legacyPackages."${system}";
-      system = config.nixos.hostDefaults.system;
-      channelName = config.nixos.hostDefaults.channelName;
+      getChannel = inputs."${channelName}".legacyPackages.x86_64-linux;
+      channelName = builtins.elemAt (builtins.attrNames channels) 0;
     in
     map (o: if builtins.isFunction (o getChannel getChannel) then o channels else o);
 
