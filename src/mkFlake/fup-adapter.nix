@@ -41,7 +41,12 @@ let
     })
   ];
 
-  unifyOverlays = channels: map (o: if builtins.isFunction (o null null) then o channels else o);
+  unifyOverlays = channels:
+    let
+      getChannel = inputs."${channelName}".legacyPackages.x86_64-linux;
+      channelName = builtins.elemAt (builtins.attrNames channels) 0;
+    in
+    map (o: if builtins.isFunction (o getChannel getChannel) then o channels else o);
 
   stripChannel = channel: removeAttrs channel [
     # arguments in our channels api that shouldn't be passed to fup

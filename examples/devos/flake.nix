@@ -73,7 +73,13 @@
           };
           nixpkgs-darwin-stable = {
             imports = [ (digga.lib.importOverlays ./overlays) ];
-            overlays = [ ];
+            overlays = [
+              # TODO: restructure overlays directory for per-channel overrides
+              # `importOverlays` will import everything under the path given
+              (channels: final: prev: {
+                inherit (channels.latest) mas;
+              } // prev.lib.optionalAttrs true { })
+            ];
           };
           latest = { };
         };
