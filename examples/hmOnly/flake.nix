@@ -14,6 +14,9 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixos-unstable";
 
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
     nixpkgs.follows = "nixos-unstable";
   };
 
@@ -21,6 +24,7 @@
     self
     , digga
     , nixos-unstable
+    , emacs-overlay
     , home-manager
     , nixpkgs
     , ...
@@ -34,6 +38,9 @@
         nixos-trunk = {};
       };
 
+      sharedOverlays = [
+        emacs-overlay.overlay
+      ];
 
       # FIXME: should probably not be required, but it is.
       nixos.hostDefaults.channelName = "nixos";
