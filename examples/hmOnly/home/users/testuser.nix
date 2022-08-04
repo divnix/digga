@@ -6,7 +6,10 @@ in
 {
   imports = suites.shell;
 
-  home.packages = [ pkgs.hello ];
+  home.packages = with pkgs; [
+    # Python packages often fail to build on unstable channels.
+    httpie
+  ];
 
   programs.browserpass.enable = true;
   programs.starship.enable = true;
