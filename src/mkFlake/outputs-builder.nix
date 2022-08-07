@@ -112,7 +112,11 @@ in
         (!pkgs.stdenv.buildPlatform.isDarwin)
       ) then
         let
-          hostConfigsOnThisSystem = collectors.collectHostsOnSystem self.nixosConfigurations system;
+          hostConfigsOnThisSystem =
+            let
+              configs = collectors.collectHostsOnSystem self.nixosConfigurations system;
+            in
+            lib.filterAttrs (n: v: lib.hasAttr n config.nixos.hosts) configs;
 
           createCustomTestOp = n: host: test:
             lib.warnIf (!(test ? name)) ''
