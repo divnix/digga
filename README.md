@@ -34,6 +34,7 @@ You can also see digga being actually used:
 * [@danielphan2003](https://github.com/danielphan2003/flk) and make sure to also check out [devos-ext-lib](https://github.com/divnix/devos-ext-lib)
 * [PubSolarOS](https://git.sr.ht/~b12f/pub-solar-os)
 * @montchr: [Dotfield](https://github.com/montchr/dotfield) – including darwin configurations
+* [@sweenu](https://github.com/sweenu/nixfiles): pc, server and RaspberryPi deployment in one repo
 
 
 # Philosophy
