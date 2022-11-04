@@ -1,2 +1,3 @@
 result
 .direnv
+examples/**/flake.lock
