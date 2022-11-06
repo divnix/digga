@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 let
-  lib = inputs.digga.lib;
+  inherit (inputs.digga) lib;
 in
 {
   imports = [ (lib.importExportableModules ./modules) ];
