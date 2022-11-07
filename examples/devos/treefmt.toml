@@ -1,3 +1,21 @@
 [formatter.nix]
 command = "alejandra"
 includes = ["*.nix"]
+
+[formatter.prettier]
+command = "prettier"
+options = ["--write"]
+includes = [
+         "*.json",
+         "*.yaml",
+         "*.md",
+]
+
+[formatter.shell]
+command = "shfmt"
+options = [
+        "-s",
+        "-w",
+        "-i 2",
+]
+includes = ["*.sh"]

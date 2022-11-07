@@ -7,7 +7,7 @@ let
     editorconfig-checker
     mdbook
     nixUnstable
-    nixpkgs-fmt
+    treefmt
     nvfetcher-bin
     ;
 
