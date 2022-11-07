@@ -67,6 +67,7 @@ devshell.mkShell {
   name = "digga";
   packages = with pkgs; [
     fd
+    treefmt
     alejandra
     # Use the latest stable version of nix
     unstablePkgs.nix
@@ -105,8 +106,8 @@ devshell.mkShell {
     })
     (utils {
       name = "fmt";
-      help = "Check Nix formatting";
-      command = "alejandra \${@} $PRJ_ROOT";
+      help = "Check formatting";
+      command = "treefmt \${@} $PRJ_ROOT";
     })
     (utils {
       name = "evalnix";

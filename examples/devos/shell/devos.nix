@@ -35,7 +35,7 @@ in
       help = nvfetcher-bin.meta.description;
       command = "cd $PRJ_ROOT/pkgs; ${nvfetcher-bin}/bin/nvfetcher -c ./sources.toml $@";
     }
-    (linter alejandra)
+    (linter treefmt)
     (linter editorconfig-checker)
 
     (docs mdbook)

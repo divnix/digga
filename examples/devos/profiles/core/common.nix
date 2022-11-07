@@ -13,8 +13,7 @@ in
 
     # Selection of sysadmin tools that can come in handy
     systemPackages = with pkgs; [
-      # TODO: must come from unstable channel
-      # alejandra
+      alejandra
       binutils
       coreutils
       curl

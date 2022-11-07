@@ -144,7 +144,8 @@
       '';
 
       # digga-local use
-      formatter = nixlib.lib.genAttrs supportedSystems (s: nixpkgs.legacyPackages.${s}.alejandra);
+      ## This doesn't appear to be used?
+      formatter = nixlib.lib.genAttrs supportedSystems (s: nixpkgs.legacyPackages.${s}.treefmt);
       # system-space and pass sytem and input to each file
       jobs = polyfillOutput ./jobs;
       checks = polyfillOutput ./checks;
