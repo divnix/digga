@@ -69,6 +69,9 @@ devshell.mkShell {
     fd
     treefmt
     alejandra
+    nodePackages.prettier
+    shellcheck
+    shfmt
     # Use the latest stable version of nix
     unstablePkgs.nix
   ];
