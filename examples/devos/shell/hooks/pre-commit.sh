@@ -9,13 +9,12 @@ fi
 
 diff="git diff-index --name-only --cached $against --diff-filter d"
 
-nix_files=($($diff -- '*.nix'))
 all_files=($($diff))
 
-# Format staged nix files.
-if ((${#nix_files[@]} != 0)); then
-  alejandra "${nix_files[@]}" &&
-    git add "${nix_files[@]}"
+# Format staged files.
+if ((${#all_files[@]} != 0)); then
+  treefmt "${all_files[@]}" &&
+    git add "${all_files[@]}"
 fi
 
 # check editorconfig
