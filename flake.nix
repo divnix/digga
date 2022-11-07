@@ -13,9 +13,6 @@
 
       nixlib.url = "github:nix-community/nixpkgs.lib";
 
-      # TODO: remove -- no references
-      blank.url = "github:divnix/blank";
-
       deploy.url = "github:serokell/deploy-rs";
       deploy.inputs.nixpkgs.follows = "nixpkgs";
 
