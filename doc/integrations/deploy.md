@@ -1,4 +1,5 @@
 # deploy-rs
+
 [Deploy-rs][d-rs] is a tool for managing NixOS remote machines. It was
 chosen for devos after the author experienced some frustrations with the
 stateful nature of nixops' db. It was also designed from scratch to support
@@ -11,6 +12,7 @@ the command line.
 ## Usage
 
 Just add your ssh key to the host:
+
 ```nix
 { ... }:
 {
@@ -21,6 +23,7 @@ Just add your ssh key to the host:
 ```
 
 And the private key to your user:
+
 ```nix
 { ... }:
 {
@@ -39,16 +42,20 @@ And the private key to your user:
 ```
 
 And run the deployment:
+
 ```sh
 deploy '.#hostName' --hostname host.example.com
 ```
 
 > ##### _Note:_
+>
 > Your user will need **passwordless** sudo access
+
 ### Home Manager
 
 Digga's `lib.mkDeployNodes` provides only `system` profile.
 In order to deploy your `home-manager` configuration you should provide additional profile(s) to deploy-rs config:
+
 ```nix
 # Initially, this line looks like this: deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
 deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations
@@ -67,10 +74,9 @@ deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations
   };
 ```
 
-Substitute `<HOSTNAME>`, `<HM_PROFILE>` and `<YOUR_USERNAME>` placeholders (omitting the `<>`). 
+Substitute `<HOSTNAME>`, `<HM_PROFILE>` and `<YOUR_USERNAME>` placeholders (omitting the `<>`).
 
 `<ANOTHER_HM_PROFILE>` is there to illustrate deploying multiple `home-manager` configurations. Either substitute those as well,
 or remove them altogether. Don't forget the `profileOrder` variable.
-
 
 [d-rs]: https://github.com/serokell/deploy-rs

@@ -1,17 +1,21 @@
 # constructor dependencies
-{ lib, self, inputs, darwin, flake-utils-plus, collectors, internal-modules, ... }:
-
 {
+  lib,
+  self,
+  inputs,
+  darwin,
+  flake-utils-plus,
+  collectors,
+  internal-modules,
+  ...
+}: {
   # evaluated digga configuration
-  config
+  config,
   # extra arguments that are passed down to fup
-, extraArgs
+  extraArgs,
   # pass a custom default fup outputs builder
-, defaultOutputsBuilder
-}:
-
-let
-
+  defaultOutputsBuilder,
+}: let
   sharedOverlays = [
     (final: prev: {
       __dontExport = true;
@@ -24,102 +28,122 @@ let
 
   defaultHostModules = [
     (internal-modules.hmNixosDefaults {
-      specialArgs = config.home.importables // { inherit self inputs; };
+      specialArgs = config.home.importables // {inherit self inputs;};
       modules = config.home.modules ++ config.home.exportedModules;
     })
     (internal-modules.globalDefaults {
       hmUsers = config.home.users;
     })
-    ({ ... }@args: {
-      lib.specialArgs = args.specialArgs or (builtins.trace ''
-        WARNING: specialArgs is not accessibly by the module system which means you
-        are likely using NixOS 20.09. Profiles testing and custom builds (ex: iso)
-        are not supported in 20.09 and using them could result in infinite
-        recursion errors. It is recommended to update to 21.05 to use either feature.
-      ''
-        { });
+    ({...} @ args: {
+      lib.specialArgs =
+        args.specialArgs
+        or (builtins.trace ''
+            WARNING: specialArgs is not accessibly by the module system which means you
+            are likely using NixOS 20.09. Profiles testing and custom builds (ex: iso)
+            are not supported in 20.09 and using them could result in infinite
+            recursion errors. It is recommended to update to 21.05 to use either feature.
+          ''
+          {});
     })
   ];
 
-  unifyOverlays = channels:
-    let
-      getChannel = inputs."${channelName}".legacyPackages.x86_64-linux;
-      channelName = builtins.elemAt (builtins.attrNames channels) 0;
-    in
-    map (o: if builtins.isFunction (o getChannel getChannel) then o channels else o);
+  unifyOverlays = channels: let
+    getChannel = inputs."${channelName}".legacyPackages.x86_64-linux;
+    channelName = builtins.elemAt (builtins.attrNames channels) 0;
+  in
+    map (o:
+      if builtins.isFunction (o getChannel getChannel)
+      then o channels
+      else o);
 
-  stripChannel = channel: removeAttrs channel [
-    # arguments in our channels api that shouldn't be passed to fup
-    "overlays"
-  ];
+  stripChannel = channel:
+    removeAttrs channel [
+      # arguments in our channels api that shouldn't be passed to fup
+      "overlays"
+    ];
 
   # evalArgs sets channelName and system to null by default
   # but for proper default handling in fup, null args have to be removed
   stripNull = args: (lib.filterAttrs (_: arg: arg != null) args);
 
-  stripHost = args: removeAttrs (stripNull args) [
-    # arguments in our hosts/hostDefaults api that shouldn't be passed to fup
-    "externalModules" # TODO: remove deprecated option
-    "exportedModules"
-    "tests"
-  ];
+  stripHost = args:
+    removeAttrs (stripNull args) [
+      # arguments in our hosts/hostDefaults api that shouldn't be passed to fup
+      "externalModules" # TODO: remove deprecated option
+      "exportedModules"
+      "tests"
+    ];
 
-  nixosHostDefaults = flake-utils-plus.lib.mergeAny
+  nixosHostDefaults =
+    flake-utils-plus.lib.mergeAny
     {
       system = "x86_64-linux";
       output = "nixosConfigurations";
 
       # add `self` & `inputs` as specialArgs so their libs can be used in imports
-      specialArgs = config.nixos.importables // { inherit (config) self inputs; };
+      specialArgs = config.nixos.importables // {inherit (config) self inputs;};
 
-      modules = config.nixos.hostDefaults.exportedModules ++ defaultHostModules ++ [
-        internal-modules.nixosDefaults
-      ];
+      modules =
+        config.nixos.hostDefaults.exportedModules
+        ++ defaultHostModules
+        ++ [
+          internal-modules.nixosDefaults
+        ];
     }
     (stripNull config.nixos.hostDefaults);
-  nixosHosts = lib.mapAttrs
+  nixosHosts =
+    lib.mapAttrs
     (
       _: hostConfig:
         flake-utils-plus.lib.mergeAny
-          nixosHostDefaults
-          (stripNull hostConfig)
+        nixosHostDefaults
+        (stripNull hostConfig)
     )
     config.nixos.hosts;
 
-  darwinHostDefaults = flake-utils-plus.lib.mergeAny
+  darwinHostDefaults =
+    flake-utils-plus.lib.mergeAny
     {
       system = "x86_64-darwin";
       output = "darwinConfigurations";
       builder = darwin.lib.darwinSystem;
 
       # add `self` & `inputs` as specialArgs so their libs can be used in imports
-      specialArgs = config.darwin.importables // { inherit (config) self inputs; };
+      specialArgs = config.darwin.importables // {inherit (config) self inputs;};
       modules = config.darwin.hostDefaults.exportedModules ++ defaultHostModules;
     }
     (stripNull config.darwin.hostDefaults);
-  darwinHosts = lib.mapAttrs
+  darwinHosts =
+    lib.mapAttrs
     (
-      _: hostConfig: flake-utils-plus.lib.mergeAny
+      _: hostConfig:
+        flake-utils-plus.lib.mergeAny
         darwinHostDefaults
         (stripNull hostConfig)
     )
     config.darwin.hosts;
 
   diggaFupArgs = {
-    inherit (config)
+    inherit
+      (config)
       channelsConfig
-      supportedSystems;
+      supportedSystems
+      ;
     inherit self inputs sharedOverlays;
 
-    hosts = builtins.mapAttrs (_: stripHost)
+    hosts =
+      builtins.mapAttrs (_: stripHost)
       (collectors.collectHosts nixosHosts darwinHosts);
 
-    channels = builtins.mapAttrs
-      (name: channel:
-        stripChannel (channel // {
-          # pass channels if "overlay" has three arguments
-          overlaysBuilder = channels: unifyOverlays channels channel.overlays;
-        })
+    channels =
+      builtins.mapAttrs
+      (
+        name: channel:
+          stripChannel (channel
+            // {
+              # pass channels if "overlay" has three arguments
+              overlaysBuilder = channels: unifyOverlays channels channel.overlays;
+            })
       )
       config.channels;
 
@@ -141,13 +165,12 @@ let
 
     outputsBuilder = channels:
       flake-utils-plus.lib.mergeAny
-        (defaultOutputsBuilder channels)
-        (config.outputsBuilder channels);
+      (defaultOutputsBuilder channels)
+      (config.outputsBuilder channels);
   };
-
 in
-flake-utils-plus.lib.mkFlake (
-  flake-utils-plus.lib.mergeAny
+  flake-utils-plus.lib.mkFlake (
+    flake-utils-plus.lib.mergeAny
     diggaFupArgs
     extraArgs # for overlays list order
-)
+  )

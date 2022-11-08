@@ -1,91 +1,76 @@
 # Channels API Container
+
 Configure your channels that you can use throughout your configurations.
 
 > #### ⚠ Gotcha ⚠
+>
 > Devshell & (non-host-specific) Home-Manager `pkgs` instances are rendered off the
 > `nixos.hostDefaults.channelName` (default) channel.
 
-
 ## channels
+
 nixpkgs channels to create
 
-
-*_Type_*:
+_*Type*_:
 attribute set of submodules or path convertible to it
 
+_*Default*_
 
-*_Default_*
 ```
 {}
 ```
-
-
-
 
 ## channels.\<name\>.config
+
 nixpkgs config for this channel
 
-
-*_Type_*:
+_*Type*_:
 attribute set or path convertible to it
 
+_*Default*_
 
-*_Default_*
 ```
 {}
 ```
 
-
-
-
 ## channels.\<name\>.input
+
 nixpkgs flake input to use for this channel
 
-
-*_Type_*:
+_*Type*_:
 nix flake
 
+_*Default*_
 
-*_Default_*
 ```
 "self.inputs.<name>"
 ```
 
-
-
-
 ## channels.\<name\>.overlays
+
 overlays to apply to this channel
 these will get exported under the 'overlays' flake output
 as \<channel\>/\<name\> and any overlay pulled from \<inputs\>
 will be filtered out
 
-
-*_Type_*:
+_*Type*_:
 list of valid Nixpkgs overlay or path convertible to its or anything convertible to it or path convertible to it
 
+_*Default*_
 
-*_Default_*
 ```
 []
 ```
-
-
-
 
 ## channels.\<name\>.patches
+
 patches to apply to this channel
 
-
-*_Type_*:
+_*Type*_:
 list of paths
 
+_*Default*_
 
-*_Default_*
 ```
 []
 ```
-
-
-
-

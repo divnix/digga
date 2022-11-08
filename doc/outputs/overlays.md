@@ -1,4 +1,5 @@
 # Overlays
+
 Writing overlays is a common occurence when using a NixOS system. Therefore,
 we want to keep the process as simple and straightforward as possible.
 
@@ -9,7 +10,9 @@ exported via `overlays.<channel>/<pkgName>` _as well as_
 write it.
 
 ## Example
+
 overlays/kakoune.nix:
+
 ```nix
 final: prev: {
   kakoune = prev.kakoune.override {

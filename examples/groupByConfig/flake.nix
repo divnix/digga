@@ -23,29 +23,27 @@
     home.inputs.nixpkgs.follows = "nixos";
   };
 
-  outputs =
-    inputs @ { self
-    , nixos
-    , nixpkgs
-    , nixpkgs-darwin-stable
-    , darwin
-    , digga
-    , home
-    , ...
-    }:
+  outputs = inputs @ {
+    self,
+    nixos,
+    nixpkgs,
+    nixpkgs-darwin-stable,
+    darwin,
+    digga,
+    home,
+    ...
+  }:
     digga.lib.mkFlake {
-
       inherit self inputs;
 
       channels = {
-        nixos = { };
-        nixpkgs-darwin-stable = { };
+        nixos = {};
+        nixpkgs-darwin-stable = {};
       };
 
       nixos = ./nixos;
       darwin = ./darwin;
       home = ./home;
       devshell = ./devshell;
-
     };
 }

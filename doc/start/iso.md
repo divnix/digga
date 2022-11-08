@@ -31,6 +31,6 @@ custom-made for your target host will maximise those local cache hits. For hosts
 that don't differ too much, a single USB stick might be ok, whereas when there
 are bigger differences, a custom-made USB stick will be considerably faster.
 
-[nixos-generators]: https://github.com/nix-community/nixos-generators 
+[nixos-generators]: https://github.com/nix-community/nixos-generators
 [burn]: https://nixos.org/manual/nixos/stable/index.html#sec-booting-from-usb
 [formats]: https://github.com/nix-community/nixos-generators/tree/master/formats

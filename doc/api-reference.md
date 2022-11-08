@@ -1,4 +1,5 @@
 # Top Level API
+
 `digga`'s top level API. API Containers are documented in their respective sub-chapter:
 
 - [Channels](./api-reference-channels.md)
@@ -8,73 +9,55 @@
 - [Darwin](./api-reference-darwin.md)
 
 ## channelsConfig
+
 nixpkgs config for all channels
 
-
-*_Type_*:
+_*Type*_:
 attribute set or path convertible to it
 
+_*Default*_
 
-*_Default_*
 ```
 {}
 ```
 
-
-
-
 ## inputs
+
 The flake's inputs
 
-*_Type_*:
+_*Type*_:
 attribute set of nix flakes
 
-
-
-
-
-
 ## outputsBuilder
+
 builder for flake system-spaced outputs
 The builder gets passed an attrset of all channels
 
-
-*_Type_*:
+_*Type*_:
 function that evaluates to a(n) attribute set or path convertible to it
 
+_*Default*_
 
-*_Default_*
 ```
 "channels: { }"
 ```
 
-
-
-
 ## self
+
 The flake to create the DevOS outputs for
 
-*_Type_*:
+_*Type*_:
 nix flake
 
-
-
-
-
-
 ## supportedSystems
+
 The systems supported by this flake
 
-
-*_Type_*:
+_*Type*_:
 list of strings
 
+_*Default*_
 
-*_Default_*
 ```
 ["aarch64-linux","aarch64-darwin","i686-linux","x86_64-darwin","x86_64-linux"]
 ```
-
-
-
-

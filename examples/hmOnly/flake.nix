@@ -10,16 +10,19 @@
     home.inputs.nixpkgs.follows = "nixos";
   };
 
-  outputs = inputs @ { self, nixos, digga, home }:
+  outputs = inputs @ {
+    self,
+    nixos,
+    digga,
+    home,
+  }:
     digga.lib.mkFlake {
-
       inherit self inputs;
 
-      channels.nixos = { };
+      channels.nixos = {};
 
       nixos.hostDefaults.channelName = "nixos";
 
       home = ./home;
-
     };
 }

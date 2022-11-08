@@ -1,6 +1,10 @@
 let
-  lock = builtins.fromJSON (builtins.readFile builtins.path { path = ../../flake.lock; name = "lockPath"; });
-  flake = (import
+  lock = builtins.fromJSON (builtins.readFile builtins.path {
+    path = ../../flake.lock;
+    name = "lockPath";
+  });
+  flake =
+    import
     (
       fetchTarball {
         url = "https://github.com/edolstra/flake-compat/archive/${lock.nodes.flake-compat.locked.rev}.tar.gz";
@@ -8,7 +12,10 @@ let
       }
     )
     {
-      src = builtins.path { path = ../../.; name = "projectRoot"; };
-    });
+      src = builtins.path {
+        path = ../../.;
+        name = "projectRoot";
+      };
+    };
 in
-flake
+  flake

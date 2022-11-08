@@ -1,1 +1,1 @@
-{ inputs }: { }
+{inputs}: {}
