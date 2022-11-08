@@ -1,13 +1,15 @@
-{ system ? builtins.currentSystem
-, inputs ? (import ../.).inputs
-}:
-let
-
+{
+  system ? builtins.currentSystem,
+  inputs ? (import ../.).inputs,
+}: let
   inherit (inputs) digga;
   pkgs = inputs.nixpkgs.legacyPackages.${system};
 
-  docOptions = digga.lib.mkFlake.options { self = { }; inputs = { }; };
-  evaledOptions = (pkgs.lib.evalModules { modules = [ docOptions ]; }).options;
+  docOptions = digga.lib.mkFlake.options {
+    self = {};
+    inputs = {};
+  };
+  evaledOptions = (pkgs.lib.evalModules {modules = [docOptions];}).options;
 
   mkDocPartMd = part: title: intro:
     pkgs.writeText "api-reference-${part}.md" ''
@@ -15,13 +17,11 @@ let
       ${intro}
 
       ${(
-        pkgs.nixosOptionsDoc { options = evaledOptions.${part}; }
-      ).optionsMDDoc}
+          pkgs.nixosOptionsDoc {options = evaledOptions.${part};}
+        )
+        .optionsMDDoc}
     '';
-
-in
-{
-
+in {
   mkApiReferenceTopLevel = pkgs.writeText "api-reference.md" ''
     # Top Level API
     `digga`'s top level API. API Containers are documented in their respective sub-chapter:
@@ -32,17 +32,19 @@ in
     - [NixOS](./api-reference-nixos.md)
     - [Darwin](./api-reference-darwin.md)
 
-    ${( pkgs.nixosOptionsDoc {
+    ${(pkgs.nixosOptionsDoc {
         options = {
-          inherit (evaledOptions)
+          inherit
+            (evaledOptions)
             channelsConfig
             self
             inputs
             outputsBuilder
             supportedSystems
-          ;
+            ;
         };
-      }).optionsMDDoc}
+      })
+      .optionsMDDoc}
   '';
 
   mkApiReferenceChannels = mkDocPartMd "channels" "Channels API Container" ''
@@ -64,5 +66,4 @@ in
   mkApiReferenceDarwin = mkDocPartMd "darwin" "Darwin API Container" ''
     Configure your darwin/macOS modules, profiles & suites.
   '';
-
 }

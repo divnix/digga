@@ -6,20 +6,23 @@ built into the NixOS module system for a reason: to elegantly provide a clear
 separation of concerns.
 
 ## Creation
+
 Profiles are created with the `rakeLeaves` function which recursively collects
-`.nix` files from within a folder. The recursion stops at folders with a `default.nix` 
+`.nix` files from within a folder. The recursion stops at folders with a `default.nix`
 in them. You end up with an attribute set with leaves(paths to profiles) or
 nodes(attrsets leading to more nodes or leaves).
 
 A profile is used for quick modularization of [interelated bits](./profiles.md#subprofiles).
 
 > ##### _Notes:_
-> * For _declaring_ module options, there's the [modules](../outputs/modules.md) directory.
-> * This directory takes inspiration from
+>
+> - For _declaring_ module options, there's the [modules](../outputs/modules.md) directory.
+> - This directory takes inspiration from
 >   [upstream](https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles)
 >   .
 
 ### Nested profiles
+
 Profiles can be nested in attribute sets due to the recursive nature of `rakeLeaves`.
 This can be useful to have a set of profiles created for a specific purpose. It is
 sometimes useful to have a `common` profile that has high level concerns related
@@ -28,6 +31,7 @@ to all its sister profiles.
 ### Example
 
 profiles/develop/common.nix:
+
 ```nix
 {
   imports = [ ./zsh ];
@@ -36,6 +40,7 @@ profiles/develop/common.nix:
 ```
 
 profiles/develop/zsh.nix:
+
 ```nix
 {  ... }:
 {
@@ -45,6 +50,7 @@ profiles/develop/zsh.nix:
 ```
 
 The examples above will end up with a profiles set like this:
+
 ```nix
 {
   develop = {
@@ -55,6 +61,7 @@ The examples above will end up with a profiles set like this:
 ```
 
 ## Conclusion
+
 Profiles are the most important concept in DevOS. They allow us to keep our
 Nix expressions self contained and modular. This way we can maximize reuse
 across hosts while minimizing boilerplate. Remember, anything machine

@@ -1,5 +1,6 @@
 > ##### _Note:_
-> This  section and its semantics need a conceptiual rework.
+>
+> This section and its semantics need a conceptiual rework.
 > Since recently [portable home configurations][portableuser]
 > that are not bound to any specific host are a thing.
 
@@ -11,7 +12,9 @@ home manager is wired in by default so all you have to worry about is declaring
 your users.
 
 ## Basic Usage
+
 `users/myuser/default.nix`:
+
 ```nix
 { ... }:
 {
@@ -27,6 +30,7 @@ your users.
 ```
 
 ## Home Manager
+
 Home Manager support follows the same principles as regular nixos configurations,
 it even gets its own namespace in your `flake.nix` as `home`.
 
@@ -36,7 +40,9 @@ User profiles can be collected in a similar fashion as system ones into a `suite
 argument that gets passed to your home-manager users.
 
 ### Example
+
 `flake.nix`
+
 ```nix
 {
   home.users.nixos = { suites, ... }: {
@@ -45,10 +51,10 @@ argument that gets passed to your home-manager users.
 }
 ```
 
-
 ## External Usage
+
 You can easily use the defined home-manager configurations outside of NixOS
-using the `homeConfigurations` flake output. 
+using the `homeConfigurations` flake output.
 
 This is great for keeping your environment consistent across Unix-like systems,
 including macOS.

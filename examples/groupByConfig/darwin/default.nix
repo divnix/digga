@@ -1,27 +1,27 @@
-{ self, inputs, ... }:
-
-let
-  inherit (inputs.digga.lib) allProfilesTest;
-in
-
 {
+  self,
+  inputs,
+  ...
+}: let
+  inherit (inputs.digga.lib) allProfilesTest;
+in {
   hostDefaults = {
     channelName = "nixpkgs-darwin-stable";
   };
 
   hosts = {
     Darwinia = {
-      modules = [ ./Darwinia.nix ];
+      modules = [./Darwinia.nix];
 
       # TODO: add custom test support for darwin hosts
       # tests = [ allProfilesTest ];
-      tests = [ ];
+      tests = [];
     };
   };
 
   importables = rec {
     suites = rec {
-      base = [ ];
+      base = [];
     };
   };
 }

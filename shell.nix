@@ -1,1 +1,1 @@
-import ./devShell.nix { }
+import ./devShell.nix {}

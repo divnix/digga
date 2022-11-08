@@ -1,4 +1,5 @@
 # Suites
+
 Suites provide a mechanism for users to easily combine and name collections of
 profiles.
 
@@ -8,6 +9,7 @@ argument (one that can be use in an `imports` line) to your hosts. All lists def
 in `suites` are flattened and type-checked as paths.
 
 ## Definition
+
 ```nix
 rec {
   workstation = [ profiles.develop profiles.graphical users.nixos ];
@@ -16,7 +18,9 @@ rec {
 ```
 
 ## Usage
+
 `hosts/my-laptop.nix`:
+
 ```nix
 { suites, ... }:
 {

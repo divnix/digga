@@ -1,29 +1,39 @@
 let
-  getFqdn = config:
-    let
-      net = config.networking;
-      fqdn =
-        if (net ? domain) && (net.domain != null)
-        then "${net.hostName}.${net.domain}"
-        else net.hostName;
-    in
+  getFqdn = config: let
+    net = config.networking;
+    fqdn =
+      if (net ? domain) && (net.domain != null)
+      then "${net.hostName}.${net.domain}"
+      else net.hostName;
+  in
     fqdn;
 
-  protoModule = fullHostConfig: { config, lib, modulesPath, suites, self, inputs, ... }@args: {
-
-    imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" ];
+  protoModule = fullHostConfig: {
+    config,
+    lib,
+    modulesPath,
+    suites,
+    self,
+    inputs,
+    ...
+  } @ args: {
+    imports = ["${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"];
 
     isoImage.isoBaseName = "bootstrap-" + (getFqdn config);
-    isoImage.contents = [{
-      source = self;
-      target = "/devos/";
-    }];
-    isoImage.storeContents = [
-      self.devShell.${config.nixpkgs.system}
-      # include also closures that are "switched off" by the
-      # above profile filter on the local config attribute
-      fullHostConfig.system.build.toplevel
-    ] ++ builtins.attrValues inputs;
+    isoImage.contents = [
+      {
+        source = self;
+        target = "/devos/";
+      }
+    ];
+    isoImage.storeContents =
+      [
+        self.devShell.${config.nixpkgs.system}
+        # include also closures that are "switched off" by the
+        # above profile filter on the local config attribute
+        fullHostConfig.system.build.toplevel
+      ]
+      ++ builtins.attrValues inputs;
     # still pull in tools of deactivated profiles
     environment.systemPackages = fullHostConfig.environment.systemPackages;
 
@@ -63,12 +73,16 @@ let
     };
   };
 in
-{ config, ... }:
-{
-  system.build = {
-    bootstrapIso = (config.lib.digga.mkBuild
-      (protoModule config)
-    ).config.system.build.isoImage;
-  };
-}
-
+  {config, ...}: {
+    system.build = {
+      bootstrapIso =
+        (
+          config.lib.digga.mkBuild
+          (protoModule config)
+        )
+        .config
+        .system
+        .build
+        .isoImage;
+    };
+  }

@@ -28,10 +28,10 @@ is best saved for [profile modules](./profiles.md).
 This is a good place to import sets of profiles, called [suites](./suites.md),
 that you intend to use on your machine.
 
-
 ## Example
 
 flake.nix:
+
 ```nix
 {
   nixos = {
@@ -47,6 +47,7 @@ flake.nix:
 ```
 
 hosts/librem.nix:
+
 ```nix
 { suites, ... }:
 {

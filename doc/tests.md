@@ -6,12 +6,14 @@ configuration, and, optionally, run them in
 [CI](./integrations/hercules.md).
 
 ## Unit Tests
+
 Unit tests can be created from regular derivations, and they can do
 almost anything you can imagine. By convention, it is best to test your
 packages during their [check phase][check]. All packages and their tests will
 be built during CI.
 
 ## Integration Tests
+
 All your profiles defined in suites can be tested against an individual host.
 Simply use digga's pre-baked `digga.lib.allProfilesTest` like so:
 

@@ -1,4 +1,5 @@
 # Hercules CI
+
 If you start adding your own packages and configurations, you'll probably have
 at least a few binary artifacts. With hercules we can build every package in
 our configuration automatically, on every commit. Additionally, we can have it
@@ -8,6 +9,7 @@ This will work whether your copy is a fork, or a bare template, as long as your
 repo is hosted on GitHub.
 
 ## Setup
+
 Just head over to [hercules-ci.com](https://hercules-ci.com) to make an account.
 
 Then follow the docs to set up an [agent][agent], if you want to deploy to a
@@ -15,6 +17,7 @@ binary cache (and of course you do), be sure _not_ to skip the
 [binary-caches.json][cache].
 
 ## Ready to Use
+
 The repo is already set up with the proper _default.nix_ file, building all
 declared packages, checks, profiles and shells. So you can see if something
 breaks, and never build the same package twice!
@@ -23,6 +26,7 @@ If you want to get fancy, you could even have hercules
 [deploy your configuration](https://docs.hercules-ci.com/hercules-ci-effects/guide/deploy-a-nixos-machine/)!
 
 > ##### _Note:_
+>
 > Hercules doesn't have access to anything encrypted in the
 > [secrets folder](../../secrets), so none of your secrets will accidentally get
 > pushed to a cache by mistake.
