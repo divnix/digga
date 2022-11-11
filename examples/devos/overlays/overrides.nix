@@ -8,6 +8,7 @@ channels: final: prev: {
     discord
     element-desktop
     rage
+    nix-index
     qutebrowser
     alejandra
     signal-desktop
