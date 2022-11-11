@@ -123,12 +123,14 @@
         collectHostsOnSystem
         ;
 
+      # editorconfig-checker-disable
       # DEPRECATED - will be removed soon
       inherit
         (deprecated)
         # Place any deprecated lib functions here
         
         ;
+      # editorconfig-checker-enable
     };
 
     # a little extra service ...
@@ -148,6 +150,6 @@
     # system-space and pass sytem and input to each file
     jobs = polyfillOutput ./jobs;
     checks = polyfillOutput ./checks;
-    devShell = polyfillOutput ./devShell.nix;
+    devShell = polyfillOutput ./shell;
   };
 }

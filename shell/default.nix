@@ -63,9 +63,11 @@
     };
 in
   devshell.mkShell {
+    imports = [(devshell.extraModulesDir + "/git/hooks.nix")];
     name = "digga";
     packages = with pkgs; [
       fd
+      editorconfig-checker
       treefmt
       alejandra
       nodePackages.prettier
@@ -108,4 +110,9 @@ in
       (docs {package = pkgs.mdbook;})
       (docs makeDocs)
     ];
+
+    git.hooks = {
+      enable = true;
+      pre-commit.text = builtins.readFile ./pre-commit.sh;
+    };
   }
