@@ -6,16 +6,17 @@ includes = ["*.nix"]
 command = "prettier"
 options = ["--write"]
 includes = [
-         "*.json",
-         "*.yaml",
-         "*.md",
+  "*.json",
+  "*.yaml",
+  "*.md",
 ]
 
 [formatter.shell]
 command = "shfmt"
 options = [
-        "-s",
-        "-w",
-        "-i 2",
+  "-s",
+  "-w",
+  "-i",
+  "2",
 ]
 includes = ["*.sh"]
