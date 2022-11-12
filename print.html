@@ -215,7 +215,7 @@ join the <a href="https://matrix.to/#/#devos:matrix.org">chat</a> or report prob
 <p>To craft well thought out APIs we need all the thoughts regarding new ideas.</p>
 <p>Pull Requests are just as amazing.</p>
 <h1 id="why-flakes"><a class="header" href="#why-flakes">Why <em>flakes</em>?</a></h1>
-<p>Flakes are a part of an explicit push to improve <a href="https://github.com/NixOS/nix/blob/master/doc/manual/src/contributing/cli-guideline.md">Nix's UX</a>, and have become an integral part of that effort. </p>
+<p>Flakes are a part of an explicit push to improve <a href="https://github.com/NixOS/nix/blob/master/doc/manual/src/contributing/cli-guideline.md">Nix's UX</a>, and have become an integral part of that effort.</p>
 <p>They also make <a href="https://nixos.org/manual/nix/unstable/expressions/expression-syntax.html">Nix expressions</a> easier to distribute and reuse with convient <a href="https://github.com/NixOS/nix/blob/master/src/nix/flake.md#flake-references">flake references</a> for building or using packages, modules, and whole systems.</p>
 <h1 id="shoulders"><a class="header" href="#shoulders">Shoulders</a></h1>
 <p>This work does not reinvent the wheel. It stands on the <a href="https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants">shoulders of the
@@ -385,7 +385,7 @@ of how any overlay can get <code>channels</code> as their first argument.</p>
 overlays. <code>overlays/overrides.nix</code> is the best place to consolidate all package
 overrides and the property is already set for you.</p>
 <h2 id="modules"><a class="header" href="#modules">Modules</a></h2>
-<p>You can also pull modules from other channels. All modules have access to the 
+<p>You can also pull modules from other channels. All modules have access to the
 <code>modulesPath</code> for each channel as <code>&lt;channelName&gt;ModulesPath</code>. And you can use
 <code>disabledModules</code> to remove modules from the current channel.</p>
 <p>To pull zsh module from the <code>latest</code> channel this code can be placed in any module, whether its your host file, a profile, or a module in ./modules etc:</p>
@@ -406,7 +406,7 @@ built into the NixOS module system for a reason: to elegantly provide a clear
 separation of concerns.</p>
 <h2 id="creation"><a class="header" href="#creation">Creation</a></h2>
 <p>Profiles are created with the <code>rakeLeaves</code> function which recursively collects
-<code>.nix</code> files from within a folder. The recursion stops at folders with a <code>default.nix</code> 
+<code>.nix</code> files from within a folder. The recursion stops at folders with a <code>default.nix</code>
 in them. You end up with an attribute set with leaves(paths to profiles) or
 nodes(attrsets leading to more nodes or leaves).</p>
 <p>A profile is used for quick modularization of <a href="concepts/./profiles.html#subprofiles">interelated bits</a>.</p>
@@ -473,7 +473,7 @@ in <code>suites</code> are flattened and type-checked as paths.</p>
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><blockquote>
 <h5 id="note-1"><a class="header" href="#note-1"><em>Note:</em></a></h5>
-<p>This  section and its semantics need a conceptiual rework.
+<p>This section and its semantics need a conceptiual rework.
 Since recently <a href="https://digga.divnix.com/api-reference-home.html#homeusers">portable home configurations</a>
 that are not bound to any specific host are a thing.</p>
 </blockquote>
@@ -513,7 +513,7 @@ argument that gets passed to your home-manager users.</p>
 </code></pre>
 <h2 id="external-usage"><a class="header" href="#external-usage">External Usage</a></h2>
 <p>You can easily use the defined home-manager configurations outside of NixOS
-using the <code>homeConfigurations</code> flake output. </p>
+using the <code>homeConfigurations</code> flake output.</p>
 <p>This is great for keeping your environment consistent across Unix-like systems,
 including macOS.</p>
 <pre><code class="language-sh"># build
@@ -624,12 +624,12 @@ which is defined as a simple overlay.</p>
 the supported systems listed in the package's <code>meta.platforms</code> attribute.</p>
 <p>And, as usual, every package in the overlay is also available to any NixOS
 <a href="outputs/../concepts/hosts.html">host</a>.</p>
-<p>Another convenient difference is that it is possible to use 
-<a href="https://github.com/berberman/nvfetcher">nvfetcher</a> to keep packages up to 
+<p>Another convenient difference is that it is possible to use
+<a href="https://github.com/berberman/nvfetcher">nvfetcher</a> to keep packages up to
 date.
 This is best understood by the simple example below.</p>
 <h2 id="example-4"><a class="header" href="#example-4">Example</a></h2>
-<p>It is possible to specify sources separately to keep them up to date semi 
+<p>It is possible to specify sources separately to keep them up to date semi
 automatically.
 The basic rules are specified in pkgs/sources.toml:</p>
 <pre><code class="language-toml"># nvfetcher.toml
@@ -637,7 +637,7 @@ The basic rules are specified in pkgs/sources.toml:</p>
 src.github = &quot;benhoyt/inih&quot;
 fetch.github = &quot;benhoyt/inih&quot;
 </code></pre>
-<p>After changes to this file as well as to update the packages specified in there run 
+<p>After changes to this file as well as to update the packages specified in there run
 nvfetcher (for more details see <a href="https://github.com/berberman/nvfetcher">nvfetcher</a>).</p>
 <p>The pkgs overlay is managed in
 pkgs/default.nix:</p>
@@ -666,7 +666,7 @@ stdenv.mkDerivation {
 <h2 id="migration-from-flake-based-approach"><a class="header" href="#migration-from-flake-based-approach">Migration from flake based approach</a></h2>
 <p>Previous to nvfetcher it was possible to manage sources via a pkgs/flake.nix, the main changes from there are that sources where in the attribute &quot;srcs&quot; (now &quot;sources&quot;) and the contents of the sources where slightly different.
 In order to switch to the new system, rewrite pkgs/flake.nix to a pkgs/sources.toml file using the documentation of nvfetcher,
-add the line that calls the sources at the beginning of pkgs/default.nix, and 
+add the line that calls the sources at the beginning of pkgs/default.nix, and
 accomodate the small changes in the packages as can be seen from the example.</p>
 <p>The example package looked like:</p>
 <p>pkgs/flake.nix:</p>
@@ -884,7 +884,7 @@ deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations
     };
   };
 </code></pre>
-<p>Substitute <code>&lt;HOSTNAME&gt;</code>, <code>&lt;HM_PROFILE&gt;</code> and <code>&lt;YOUR_USERNAME&gt;</code> placeholders (omitting the <code>&lt;&gt;</code>). </p>
+<p>Substitute <code>&lt;HOSTNAME&gt;</code>, <code>&lt;HM_PROFILE&gt;</code> and <code>&lt;YOUR_USERNAME&gt;</code> placeholders (omitting the <code>&lt;&gt;</code>).</p>
 <p><code>&lt;ANOTHER_HM_PROFILE&gt;</code> is there to illustrate deploying multiple <code>home-manager</code> configurations. Either substitute those as well,
 or remove them altogether. Don't forget the <code>profileOrder</code> variable.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="nvfetcher"><a class="header" href="#nvfetcher">nvfetcher</a></h1>
@@ -1227,11 +1227,11 @@ null or attribute set of list of paths or anything convertible to its or path co
 <li><strong>Target Branch</strong>: <code>main</code></li>
 <li><strong>Merge Policy</strong>: green check: merge away. yellow circle: have patience. red x: try again.</li>
 <li><strong>Docs</strong>: every change set is expected to contain doc updates</li>
-<li><strong>Commit Msg</strong>: be a poet! Comprehensive and explanatory commit messages 
+<li><strong>Commit Msg</strong>: be a poet! Comprehensive and explanatory commit messages
 should cover the motivation and use case in an easily understandable manner
 even when read after a few months.</li>
 <li><strong>Test Driven Development</strong>: please default to test driven development you can
-make use of the <code>./examples</code> &amp; <code>./e2e</code> and wire test up in the devshell. </li>
+make use of the <code>./examples</code> &amp; <code>./e2e</code> and wire test up in the devshell.</li>
 </ul>
 <h3 id="within-the-devshell-nix-develop"><a class="header" href="#within-the-devshell-nix-develop">Within the Devshell (<code>nix develop</code>)</a></h3>
 <ul>

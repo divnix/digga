@@ -145,12 +145,12 @@ which is defined as a simple overlay.</p>
 the supported systems listed in the package's <code>meta.platforms</code> attribute.</p>
 <p>And, as usual, every package in the overlay is also available to any NixOS
 <a href="../concepts/hosts.html">host</a>.</p>
-<p>Another convenient difference is that it is possible to use 
-<a href="https://github.com/berberman/nvfetcher">nvfetcher</a> to keep packages up to 
+<p>Another convenient difference is that it is possible to use
+<a href="https://github.com/berberman/nvfetcher">nvfetcher</a> to keep packages up to
 date.
 This is best understood by the simple example below.</p>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
-<p>It is possible to specify sources separately to keep them up to date semi 
+<p>It is possible to specify sources separately to keep them up to date semi
 automatically.
 The basic rules are specified in pkgs/sources.toml:</p>
 <pre><code class="language-toml"># nvfetcher.toml
@@ -158,7 +158,7 @@ The basic rules are specified in pkgs/sources.toml:</p>
 src.github = &quot;benhoyt/inih&quot;
 fetch.github = &quot;benhoyt/inih&quot;
 </code></pre>
-<p>After changes to this file as well as to update the packages specified in there run 
+<p>After changes to this file as well as to update the packages specified in there run
 nvfetcher (for more details see <a href="https://github.com/berberman/nvfetcher">nvfetcher</a>).</p>
 <p>The pkgs overlay is managed in
 pkgs/default.nix:</p>
@@ -187,7 +187,7 @@ stdenv.mkDerivation {
 <h2 id="migration-from-flake-based-approach"><a class="header" href="#migration-from-flake-based-approach">Migration from flake based approach</a></h2>
 <p>Previous to nvfetcher it was possible to manage sources via a pkgs/flake.nix, the main changes from there are that sources where in the attribute &quot;srcs&quot; (now &quot;sources&quot;) and the contents of the sources where slightly different.
 In order to switch to the new system, rewrite pkgs/flake.nix to a pkgs/sources.toml file using the documentation of nvfetcher,
-add the line that calls the sources at the beginning of pkgs/default.nix, and 
+add the line that calls the sources at the beginning of pkgs/default.nix, and
 accomodate the small changes in the packages as can be seen from the example.</p>
 <p>The example package looked like:</p>
 <p>pkgs/flake.nix:</p>

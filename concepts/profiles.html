@@ -141,7 +141,7 @@ built into the NixOS module system for a reason: to elegantly provide a clear
 separation of concerns.</p>
 <h2 id="creation"><a class="header" href="#creation">Creation</a></h2>
 <p>Profiles are created with the <code>rakeLeaves</code> function which recursively collects
-<code>.nix</code> files from within a folder. The recursion stops at folders with a <code>default.nix</code> 
+<code>.nix</code> files from within a folder. The recursion stops at folders with a <code>default.nix</code>
 in them. You end up with an attribute set with leaves(paths to profiles) or
 nodes(attrsets leading to more nodes or leaves).</p>
 <p>A profile is used for quick modularization of <a href="./profiles.html#subprofiles">interelated bits</a>.</p>
