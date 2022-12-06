@@ -14,4 +14,5 @@ in {
     };
   };
   users = lib.rakeLeaves ./users;
+  home.stateVersion = "22.05";
 }

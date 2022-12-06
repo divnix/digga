@@ -14,5 +14,8 @@
       xdg.configFile."nix/registry.json".text =
         config.environment.etc."nix/registry.json".text;
     }
+    {
+      home.stateVersion = "22.11";
+    }
   ];
 }
