@@ -8,7 +8,10 @@
 in {
   imports = suites.shell;
 
-  home.packages = [pkgs.hello];
+  home = {
+    packages = [pkgs.hello];
+    stateVersion = "22.11";
+  };
 
   programs.browserpass.enable = true;
   programs.starship.enable = true;

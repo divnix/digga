@@ -36,7 +36,7 @@
     digga.inputs.home-manager.follows = "home";
     digga.inputs.deploy.follows = "deploy";
 
-    home.url = "github:nix-community/home-manager/release-22.05";
+    home.url = "github:nix-community/home-manager/release-22.11";
     home.inputs.nixpkgs.follows = "nixos";
 
     darwin.url = "github:LnL7/nix-darwin";
@@ -196,8 +196,16 @@
           # it could just be left to the developer to determine what's
           # appropriate. after all, configuring these hm users is one of the
           # first steps in customizing the template.
-          nixos = {suites, ...}: {imports = suites.base;};
-          darwin = {suites, ...}: {imports = suites.base;};
+          nixos = {suites, ...}: {
+            imports = suites.base;
+
+            home.stateVersion = "22.11";
+          };
+          darwin = {suites, ...}: {
+            imports = suites.base;
+
+            home.stateVersion = "22.11";
+          };
         }; # digga.lib.importers.rakeLeaves ./users/hm;
       };
 
