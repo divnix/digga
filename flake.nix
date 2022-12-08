@@ -15,8 +15,9 @@
     deploy.url = "github:serokell/deploy-rs";
     deploy.inputs.nixpkgs.follows = "nixpkgs";
 
-    home-manager.url = "github:nix-community/home-manager/release-22.05";
+    home-manager.url = "github:nix-community/home-manager/release-22.11";
     home-manager.inputs.nixpkgs.follows = "nixlib";
+    home-manager.inputs.utils.follows = "flake-utils";
 
     darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";

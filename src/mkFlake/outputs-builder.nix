@@ -27,20 +27,27 @@
     homeDirectory = "${homeDirectoryPrefix}/${username}";
   in
     home-manager.lib.homeManagerConfiguration {
-      inherit username homeDirectory pkgs system;
+      inherit pkgs;
 
-      extraModules = config.home.modules ++ config.home.exportedModules;
+      modules =
+        config.home.modules
+        ++ config.home.exportedModules
+        ++ [
+          ({
+              imports = [configuration];
+
+              home = {
+                inherit username homeDirectory;
+              };
+            }
+            // (
+              if (pkgs.stdenv.hostPlatform.isLinux && !pkgs.stdenv.buildPlatform.isDarwin)
+              then {targets.genericLinux.enable = true;}
+              else {}
+            ))
+        ];
+
       extraSpecialArgs = config.home.importables // {inherit self inputs;};
-
-      configuration =
-        {
-          imports = [configuration];
-        }
-        // (
-          if (pkgs.stdenv.hostPlatform.isLinux && !pkgs.stdenv.buildPlatform.isDarwin)
-          then {targets.genericLinux.enable = true;}
-          else {}
-        );
     };
 
   homeConfigurationsPortable =
