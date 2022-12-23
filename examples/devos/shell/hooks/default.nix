@@ -1,4 +1,6 @@
 {
-  enable = true;
-  pre-commit.text = builtins.readFile ./pre-commit.sh;
+  git.hooks = {
+    enable = true;
+    pre-commit.text = builtins.readFile ./pre-commit.sh;
+  };
 }
