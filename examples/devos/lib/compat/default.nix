@@ -1,8 +1,8 @@
 let
-  lock = builtins.fromJSON (builtins.readFile builtins.path {
+  lock = builtins.fromJSON (builtins.readFile (builtins.path {
     path = ../../flake.lock;
     name = "lockPath";
-  });
+  }));
   flake =
     import
     (
