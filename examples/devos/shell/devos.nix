@@ -8,41 +8,41 @@
   inherit
     (pkgs)
     agenix
+    alejandra
     cachix
     editorconfig-checker
-    mdbook
     nixUnstable
+    nodePackages
+    shfmt
     treefmt
     nvfetcher-bin
     ;
 
-  hooks = import ./hooks;
-
   pkgWithCategory = category: package: {inherit package category;};
   devos = pkgWithCategory "devos";
-  linter = pkgWithCategory "linter";
-  docs = pkgWithCategory "docs";
+  formatter = pkgWithCategory "linter";
 in {
-  _file = toString ./.;
+  imports = ["${extraModulesPath}/git/hooks.nix" ./hooks];
 
-  imports = ["${extraModulesPath}/git/hooks.nix"];
-  git = {inherit hooks;};
+  packages = [
+    alejandra
+    nodePackages.prettier
+    shfmt
+    editorconfig-checker
+  ];
 
   commands =
     [
       (devos nixUnstable)
       (devos agenix)
-
       {
         category = "devos";
         name = nvfetcher-bin.pname;
         help = nvfetcher-bin.meta.description;
         command = "cd $PRJ_ROOT/pkgs; ${nvfetcher-bin}/bin/nvfetcher -c ./sources.toml $@";
       }
-      (linter treefmt)
-      (linter editorconfig-checker)
 
-      (docs mdbook)
+      (formatter treefmt)
     ]
     ++ lib.optionals (!pkgs.stdenv.buildPlatform.isi686) [
       (devos cachix)
