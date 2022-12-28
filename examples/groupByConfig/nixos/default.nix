@@ -12,7 +12,8 @@ in {
   hosts = {
     Morty = {
       modules = [./Morty.nix];
-      tests = [allProfilesTest];
+      # FIXME: Causes infinite recursion
+      # tests = [allProfilesTest];
     };
   };
 
