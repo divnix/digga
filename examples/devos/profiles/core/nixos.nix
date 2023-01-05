@@ -51,8 +51,8 @@
       sandbox = true;
 
       # Give root user and wheel group special Nix privileges.
-      trustedUsers = ["root" "@wheel"];
-      allowedUsers = ["@wheel"];
+      trusted-users = ["root" "@wheel"];
+      allowed-users = ["@wheel"];
     };
 
     # Improve nix store disk usage
