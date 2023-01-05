@@ -16,6 +16,7 @@
     shfmt
     treefmt
     nvfetcher-bin
+    nixos-generators
     ;
 
   pkgWithCategory = category: package: {inherit package category;};
@@ -48,7 +49,7 @@ in {
       (devos cachix)
     ]
     ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && !pkgs.stdenv.buildPlatform.isDarwin) [
-      (devos inputs.nixos-generators.defaultPackage.${pkgs.system})
+      (devos nixos-generators)
       (devos inputs.deploy.packages.${pkgs.system}.deploy-rs)
     ];
 }

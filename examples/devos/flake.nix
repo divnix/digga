@@ -1,9 +1,17 @@
 {
   description = "A highly structured configuration database.";
 
-  nixConfig.extra-experimental-features = "nix-command flakes";
-  nixConfig.extra-substituters = "https://nrdxp.cachix.org https://nix-community.cachix.org";
-  nixConfig.extra-trusted-public-keys = "nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
+  nixConfig = {
+    extra-experimental-features = "nix-command flakes";
+    extra-substituters = [
+      "https://nrdxp.cachix.org"
+      "https://nix-community.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
 
   inputs = {
     flake-compat = {
@@ -47,8 +55,6 @@
     naersk.inputs.nixpkgs.follows = "nixos";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
-
-    nixos-generators.url = "github:nix-community/nixos-generators";
   };
 
   outputs = {
@@ -123,9 +129,7 @@
 
         imports = [(digga.lib.importHosts ./hosts/nixos)];
         hosts = {
-          /*
-           set host-specific properties here
-           */
+          # set host-specific properties here
           NixOS = {};
         };
         importables = rec {
@@ -155,9 +159,7 @@
 
         imports = [(digga.lib.importHosts ./hosts/darwin)];
         hosts = {
-          /*
-           set host-specific properties here
-           */
+          # set host-specific properties here
           Mac = {};
         };
         importables = rec {
