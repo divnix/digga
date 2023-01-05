@@ -9,9 +9,6 @@
     ./common.nix
   ];
 
-  # This is just a representation of the nix default
-  nix.systemFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
-
   environment = {
     # Selection of sysadmin tools that can come in handy
     systemPackages = with pkgs; [
@@ -49,10 +46,18 @@
   };
 
   nix = {
+    settings = {
+      # Prevent impurities in builds
+      sandbox = true;
+
+      # Give root user and wheel group special Nix privileges.
+      trustedUsers = ["root" "@wheel"];
+      allowedUsers = ["@wheel"];
+    };
+
     # Improve nix store disk usage
-    autoOptimiseStore = true;
+    settings.auto-optimise-store = true;
     optimise.automatic = true;
-    allowedUsers = ["@wheel"];
   };
 
   programs.bash = {
@@ -60,6 +65,7 @@
     promptInit = ''
       eval "$(${pkgs.starship}/bin/starship init bash)"
     '';
+
     # Enable direnv, a tool for managing shell environments
     interactiveShellInit = ''
       eval "$(${pkgs.direnv}/bin/direnv hook bash)"
