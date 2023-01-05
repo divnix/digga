@@ -2,7 +2,7 @@
 {
   lib,
   devshell,
-  flake-utils,
+  flake-utils-plus,
   self,
   inputs,
   ...
@@ -16,14 +16,12 @@ with lib;
     # #############
 
     /*
+     * Synopsis: maybeImport <path|string or obj>
      *
-     Synopsis: maybeImport <path|string or obj>
-     
-     Returns an imported path or string or the object otherwise.
-     
-     Use when you want to allow specifying an object directly or a path to it.
-     It saves the end user the additional import statement.
+     * Returns an imported path or string or the object otherwise.
      *
+     * Use when you want to allow specifying an object directly or a path to it.
+     * It saves the end user the additional import statement.
      */
     maybeImport = obj:
       if (builtins.isPath obj || builtins.isString obj)
@@ -31,13 +29,11 @@ with lib;
       else obj;
 
     /*
+     * Synopsis: maybeImportDevshellToml <path|string or obj>
      *
-     Synopsis: maybeImportDevshellToml <path|string or obj>
-     
-     Returns an imported path or string if the filename ends in `toml` or the object or path otherwise.
-     
-     Use only for devshell modules, as an apply function.
+     * Returns an imported path or string if the filename ends in `toml` or the object or path otherwise.
      *
+     * Use only for devshell modules, as an apply function.
      */
     maybeImportDevshellToml = obj:
       if ((builtins.isPath obj || builtins.isString obj) && lib.hasSuffix ".toml" obj)
@@ -45,24 +41,20 @@ with lib;
       else obj;
 
     /*
+     * Synopsis: pathToOr <type>
      *
-     Synopsis: pathToOr <type>
-     
-     Type resolver: types maybeImport's <obj>.
-     
-     Use in type declarations.
+     * Type resolver: types maybeImport's <obj>.
      *
+     * Use in type declarations.
      */
     pathToOr = elemType: with types; coercedTo path maybeImport elemType;
 
     /*
+     * Synopsis: coercedListOf <type>
      *
-     Synopsis: coercedListOf <type>
-     
-     Type resolver & list flattner: flattens a (evtl. arbitrarily nested) list of type <type>.
-     
-     Use in type declarations.
+     * Type resolver & list flattner: flattens a (evtl. arbitrarily nested) list of type <type>.
      *
+     * Use in type declarations.
      */
     coercedListOf = elemType:
       with types;
@@ -439,7 +431,7 @@ with lib;
       };
       supportedSystems = mkOption {
         type = listOf str;
-        default = flake-utils.lib.defaultSystems;
+        default = flake-utils-plus.lib.defaultSystems;
         description = ''
           The systems supported by this flake
         '';

@@ -24,7 +24,9 @@
     devshell.url = "github:numtide/devshell";
     devshell.inputs.nixpkgs.follows = "nixpkgs";
 
+    flake-utils.url = "github:numtide/flake-utils";
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus/?ref=refs/pull/120/head";
+    flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
 
     flake-compat = {
       url = "github:edolstra/flake-compat";
@@ -65,7 +67,6 @@
     mkFlake = let
       mkFlake' = import ./src/mkFlake {
         inherit (nixlib) lib;
-        inherit (flake-utils-plus.inputs) flake-utils;
         inherit
           collectors
           darwin
@@ -87,7 +88,7 @@
     # .. see: https://demo.hedgedoc.org/s/_W6Ve03GK#
 
     # Super Stupid Flakes (ssf) / System As an Input - Style:
-    supportedSystems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin"];
+    supportedSystems = flake-utils-plus.lib.defaultSystems;
 
     # Pass this flake(self) as "digga"
     polyfillInputs = self.inputs // {digga = self;};
