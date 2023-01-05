@@ -42,8 +42,11 @@
       "darwin=/etc/nix/inputs/darwin"
     ];
 
-    # Administrative users on Darwin are part of this group.
-    trustedUsers = ["@admin"];
+    # Prevents impurities in builds
+    useSandbox = true;
+
+    # Give special Nix privileges.
+    trustedUsers = ["root" "@wheel" "@admin"];
   };
 
   programs.bash = {

@@ -8,13 +8,12 @@
   inherit (lib) fileContents;
   inherit (pkgs.stdenv.hostPlatform) isDarwin;
 in {
-  # Sets nrdxp.cachix.org binary cache which just speeds up some builds
+  # Sets binary caches which speeds up some builds
   imports = [../cachix];
 
   environment = {
     # Selection of sysadmin tools that can come in handy
     systemPackages = with pkgs; [
-      alejandra
       binutils
       coreutils
       curl
@@ -92,12 +91,6 @@ in {
   nix = {
     # Improve nix store disk usage
     gc.automatic = true;
-
-    # Prevents impurities in builds
-    useSandbox = true;
-
-    # Give root user and wheel group special Nix privileges.
-    trustedUsers = ["root" "@wheel"];
 
     # Generally useful nix option defaults
     extraOptions = ''
