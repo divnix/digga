@@ -6,7 +6,6 @@
   devshell,
   home-manager,
   flake-utils-plus,
-  flake-utils,
   internal-modules,
   tests,
 } @ injectedDeps: {
