@@ -262,7 +262,8 @@ goals are sufficiently upstreamed into &quot;the Nix&quot;, dissolved.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h1>
 <p>The only dependency is nix, so make sure you have it <a href="https://nixos.org/manual/nix/stable/#sect-multi-user-installation">installed</a>.</p>
 <h2 id="get-the-template"><a class="header" href="#get-the-template">Get the Template</a></h2>
-<p>If you currently don't have flakes setup, you can utilize the digga shell to pull the template:</p>
+<p>If you currently don't have flakes setup, you can utilize the digga shell to
+pull the template:</p>
 <pre><code class="language-sh">nix-shell &quot;https://github.com/divnix/digga/archive/main.tar.gz&quot; \
   --run &quot;nix flake init -t github:divnix/digga&quot;
 </code></pre>
@@ -272,30 +273,25 @@ goals are sufficiently upstreamed into &quot;the Nix&quot;, dissolved.</p>
 <p>Then make sure to create the git repository:</p>
 <pre><code class="language-sh">git init
 git add .
-git commit -m init
+git commit
 </code></pre>
-<p>To drop into a nix-shell, if you don't have flakes setup, use the digga shell to create a <code>flake.lock</code>:</p>
-<pre><code class="language-sh">nix-shell &quot;https://github.com/divnix/digga/archive/main.tar.gz&quot; \
-  --run &quot;nix flake lock&quot;
-</code></pre>
-<p>Or if you do have flakes support, just run:</p>
-<pre><code class="language-sh">nix flake lock
-</code></pre>
-<p>Finally, run <code>nix-shell</code> to get to an interactive shell with all the dependencies, including the unstable nix
-version required. You can run <code>menu</code> to confirm that you are using digga (expected output includes [docs], [general commands], [linter], etc.).</p>
+<p>Finally, run <code>nix-shell</code> to get to an interactive shell with all the
+dependencies, including the unstable nix version required. You can run <code>menu</code> to
+confirm that you are using digga (expected output includes [docs], [general
+commands], [linter], etc.).</p>
 <p>In addition, the <a href="start/../integrations/cachix.html">binary cache</a> is added for faster deployment.</p>
 <blockquote>
-<h5 id="notes"><a class="header" href="#notes"><em>Notes:</em></a></h5>
+<h1 id="notes"><a class="header" href="#notes"><em>Notes:</em></a></h1>
 <ul>
 <li>Flakes ignore files that have not been added to git, so be sure to stage new
 files before building the system.</li>
 <li>You can choose to simply clone the repo with git if you want to follow
 upstream changes.</li>
-<li>If the <code>nix-shell -p cachix --run &quot;cachix use nrdxp&quot;</code> line doesn't work
-you can try with sudo: <code>sudo nix-shell -p cachix --run &quot;cachix use nrdxp&quot;</code></li>
+<li>If the <code>nix-shell -p cachix --run &quot;cachix use nrdxp&quot;</code> line doesn't work you
+can try with sudo: <code>sudo nix-shell -p cachix --run &quot;cachix use nrdxp&quot;</code></li>
 </ul>
 </blockquote>
-<h2 id="next-steps"><a class="header" href="#next-steps">Next Steps:</a></h2>
+<h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
 <ul>
 <li><a href="start/./iso.html">Make installable ISO</a></li>
 </ul>
