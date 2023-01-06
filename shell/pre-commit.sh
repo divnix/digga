@@ -11,9 +11,6 @@ diff="git diff-index --name-only --cached $against --diff-filter d"
 
 all_files=($($diff))
 
-# Remove example lock files.
-rm-locks
-
 # Format staged files.
 if ((${#all_files[@]} != 0)); then
   fmt "${all_files[@]}" &&

@@ -39,8 +39,8 @@
       help = "Checks ${name} ${type}";
       command = ''
         set -e
-        # set -x
 
+        flake="$PRJ_ROOT/${type}/${name}"
         tempdigga=path:$PRJ_ROOT
 
         trap_err() {
@@ -57,8 +57,33 @@
 
         cd $PRJ_ROOT/${type}/${name}
 
-        ${nixBin} flake show "$@" --override-input digga $tempdigga
-        ${nixBin} flake check "$@" --override-input digga $tempdigga
+        ${nixBin} flake show $flake "$@" --override-input digga $tempdigga
+        ${nixBin} flake check $flake "$@" --override-input digga $tempdigga
+      '';
+    };
+
+  update = type: name:
+    withCategory "updates" {
+      name = "update-${name}";
+      help = "Updates ${name} ${type}";
+      command = ''
+        set -e
+
+        flake="$PRJ_ROOT/${type}/${name}"
+
+        trap_err() {
+          local ret=$?
+          echo -e \
+            "\033[1m\033[31m""exit $ret: \033[0m\033[1m""command [$BASH_COMMAND] failed""\033[0m"
+        }
+
+        is () { [ "$1" -eq "0" ]; }
+
+        trap 'trap_err' ERR
+
+        # --------------------------------------------------------------------------------
+
+        ${nixBin} flake update $flake "$@"
       '';
     };
 in
@@ -88,11 +113,6 @@ in
 
     commands = [
       (utils {
-        command = "git rm --ignore-unmatch -f $PRJ_ROOT/{tests,examples}/*/flake.lock";
-        help = "Remove all lock files";
-        name = "rm-locks";
-      })
-      (utils {
         name = "fmt";
         help = "Check formatting";
         command = "treefmt \${@} $PRJ_ROOT";
@@ -107,6 +127,12 @@ in
       (test "examples" "groupByConfig")
       (test "examples" "hmOnly")
       (test "examples" "all" // {command = "check-devos && check-groupByConfig && check-hmOnly";})
+
+      (update "examples" "devos")
+      (update "examples" "groupByConfig")
+      (update "examples" "hmOnly")
+      (update "examples" "all" // {command = "update-devos && update-groupByConfig && update-hmOnly";})
+
       (docs {package = pkgs.mdbook;})
       (docs makeDocs)
     ];
