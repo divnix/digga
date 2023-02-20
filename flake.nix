@@ -1,5 +1,5 @@
 {
-  description = "DevOS environment configuriguration library.";
+  description = "Digga configuration library.";
 
   nixConfig.extra-experimental-features = "nix-command flakes";
   nixConfig.extra-substituters = "https://nrdxp.cachix.org https://nix-community.cachix.org";
@@ -7,7 +7,7 @@
 
   inputs = {
     # Track channels with commits tested and built by hydra
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     nixlib.url = "github:nix-community/nixpkgs.lib";
@@ -140,10 +140,15 @@
     nixosModules = import ./modules/nixos-modules.nix;
     darwinModules = import ./modules/darwin-modules.nix;
 
-    defaultTemplate = self.templates.devos;
+    templates.default = self.templates.devos;
     templates.devos.path = ./examples/devos;
     templates.devos.description = ''
-      an awesome template for NixOS users, with consideration for common tools like home-manager, devshell, and more.
+      An awesome template for NixOS users, with consideration for common tools like home-manager, devshell, and more.
+    '';
+
+    templates.minimal.path = ./examples/minimal;
+    templates.minimal.description = ''
+      A stripped-down template for NixOS + home-manager.
     '';
 
     # digga-local use
