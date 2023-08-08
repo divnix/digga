@@ -2,6 +2,10 @@
 [![NixOS](https://img.shields.io/badge/NixOS-unstable-blue.svg?style=flat&logo=NixOS&logoColor=white)](https://nixos.org)
 [![Chat](https://img.shields.io/badge/chat-join%20us-brightgreen.svg?style=flat&logo=matrix&logoColor=white)](https://matrix.to/#/#devos:nixos.org)
 
+# DEPRECATION NOTICE
+This project is no longer maintained and not recommended for any sort of use case. Please see https://github.com/divnix/digga/issues/503 for better alternatives and the reasons behind this decision.
+
+-----
 Digga &mdash; slangy German for "good friend" &mdash; is a flake utility library
 that helps you declaratively craft and manage all three layers of your system
 environment within a single [nix flakes][flakes] repository:
