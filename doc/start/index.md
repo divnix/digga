@@ -2,23 +2,21 @@
 
 The only dependency is nix, so make sure you have it [installed][install-nix].
 
-## Get the Template
+## Get a Template
 
-If you currently don't have flakes setup, you can utilize the digga shell to
-pull the template:
+If you currently don't have flakes support, you can temporarily enable them:
 
 ```sh
-nix-shell "https://github.com/divnix/digga/archive/main.tar.gz" \
-  --run "nix flake init -t github:divnix/digga"
+nix flake init --experimental-features 'nix-command flakes' -t github:divnix/digga
 ```
 
-If you already have flakes support, you can directly pull the template:
+If you already have flakes support, you can simply pull the template:
 
 ```sh
 nix flake init -t github:divnix/digga
 ```
 
-Then make sure to create the git repository:
+Make sure to create the git repository:
 
 ```sh
 git init
@@ -35,15 +33,17 @@ In addition, the [binary cache](../integrations/cachix.md) is added for faster d
 
 > # _Notes:_
 >
-> - Flakes ignore files that have not been added to git, so be sure to stage new
+> - Flakes ignore files that are not tracked by git, so be sure to stage new
 >   files before building the system.
 > - You can choose to simply clone the repo with git if you want to follow
 >   upstream changes.
-> - If the `nix-shell -p cachix --run "cachix use nrdxp"` line doesn't work you
->   can try with sudo: `sudo nix-shell -p cachix --run "cachix use nrdxp"`
+> - There are other templates. The default is `devos`, which is opinionated and
+>   implements the most features. Other templates can be found with
+>   `nix flake show` or by viewing Digga's flake.nix. Other templates can be
+>   used with `nix flake init -t github:divnix/digga#<templateName>`
 
 ## Next Steps
 
-- [Make installable ISO](./iso.md)
+- [Make an installable ISO](./iso.md)
 
 [install-nix]: https://nixos.org/manual/nix/stable/#sect-multi-user-installation

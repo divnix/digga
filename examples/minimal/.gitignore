@@ -1,0 +1,5 @@
+result
+.direnv
+doc/index.html
+
+pkgs/_sources/.shake*
