@@ -144,7 +144,7 @@ Digga is licensed under the [MIT License][mit].
 [chat]: https://matrix.to/#/#devos:matrix.org
 [devshell]: https://github.com/numtide/devshell
 [examples]: https://github.com/divnix/digga/tree/main/examples
-[flakes]: https://nixos.wiki/wiki/Flakes
+[flakes]: https://wiki.nixos.org/wiki/Flakes
 [flake-utils-plus]: https://github.com/gytis-ivaskevicius/flake-utils-plus
 [giants]: https://en.wikipedia.org/wiki/Standing_on_the_shoulders_of_giants
 [home-manager]: https://github.com/nix-community/home-manager
