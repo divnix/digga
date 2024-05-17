@@ -1,17 +1,17 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js light">
+<html lang="en" class="light" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Digga Library Docs</title>
-        <meta name="robots" content="noindex" />
+        <meta name="robots" content="noindex">
 
 
         <!-- Custom HTML head -->
         
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
         <link rel="icon" href="favicon.svg">
         <link rel="shortcut icon" href="favicon.png">
@@ -32,7 +32,7 @@
         <!-- Custom theme stylesheets -->
 
     </head>
-    <body>
+    <body class="sidebar-visible no-js">
     <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
@@ -62,31 +62,38 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('no-js')
             html.classList.remove('light')
             html.classList.add(theme);
-            html.classList.add('js');
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var html = document.querySelector('html');
+            var body = document.querySelector('body');
             var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="start/index.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="start/iso.html"><strong aria-hidden="true">2.1.</strong> ISO</a></li></ol></li><li class="chapter-item expanded "><a href="concepts/index.html"><strong aria-hidden="true">3.</strong> Key Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="concepts/hosts.html"><strong aria-hidden="true">3.1.</strong> Hosts</a></li><li class="chapter-item expanded "><a href="concepts/overrides.html"><strong aria-hidden="true">3.2.</strong> Overrides</a></li><li class="chapter-item expanded "><a href="concepts/profiles.html"><strong aria-hidden="true">3.3.</strong> Profiles</a></li><li class="chapter-item expanded "><a href="concepts/suites.html"><strong aria-hidden="true">3.4.</strong> Suites</a></li><li class="chapter-item expanded "><a href="concepts/users.html"><strong aria-hidden="true">3.5.</strong> Users</a></li></ol></li><li class="chapter-item expanded "><a href="outputs/index.html"><strong aria-hidden="true">4.</strong> Outputs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="outputs/modules.html"><strong aria-hidden="true">4.1.</strong> Modules</a></li><li class="chapter-item expanded "><a href="outputs/overlays.html"><strong aria-hidden="true">4.2.</strong> Overlays</a></li><li class="chapter-item expanded "><a href="outputs/pkgs.html"><strong aria-hidden="true">4.3.</strong> Packages</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> Concerns</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="secrets.html"><strong aria-hidden="true">5.1.</strong> Secrets</a></li><li class="chapter-item expanded "><a href="tests.html"><strong aria-hidden="true">5.2.</strong> Tests</a></li></ol></li><li class="chapter-item expanded "><a href="integrations/index.html"><strong aria-hidden="true">6.</strong> Integrations</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="integrations/cachix.html"><strong aria-hidden="true">6.1.</strong> Cachix</a></li><li class="chapter-item expanded "><a href="integrations/deploy.html"><strong aria-hidden="true">6.2.</strong> Deploy RS</a></li><li class="chapter-item expanded "><a href="integrations/nvfetcher.html"><strong aria-hidden="true">6.3.</strong> NvFetcher</a></li><li class="chapter-item expanded "><a href="integrations/hercules.html"><strong aria-hidden="true">6.4.</strong> Hercules CI</a></li></ol></li><li class="chapter-item expanded "><a href="api-reference.html"><strong aria-hidden="true">7.</strong> API Reference</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="api-reference-channels.html"><strong aria-hidden="true">7.1.</strong> Channels</a></li><li class="chapter-item expanded "><a href="api-reference-home.html"><strong aria-hidden="true">7.2.</strong> Home</a></li><li class="chapter-item expanded "><a href="api-reference-devshell.html"><strong aria-hidden="true">7.3.</strong> Devshell</a></li><li class="chapter-item expanded "><a href="api-reference-nixos.html"><strong aria-hidden="true">7.4.</strong> NixOS</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> Library Reference</div></li><li class="chapter-item expanded "><a href="CONTRIBUTING.html"><strong aria-hidden="true">9.</strong> Contributing</a></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -117,9 +124,9 @@
                                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
-                        </button>
+                        </label>
                         <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
                             <i class="fa fa-paint-brush"></i>
                         </button>
@@ -173,9 +180,9 @@
 <h1 id="deprecation-notice"><a class="header" href="#deprecation-notice">DEPRECATION NOTICE</a></h1>
 <p>This project is no longer maintained and not recommended for any sort of use case. Please see https://github.com/divnix/digga/issues/503 for better alternatives and the reasons behind this decision.</p>
 <hr />
-<p>Digga — slangy German for &quot;good friend&quot; — is a flake utility library
+<p>Digga — slangy German for "good friend" — is a flake utility library
 that helps you declaratively craft and manage all three layers of your system
-environment within a single <a href="https://nixos.wiki/wiki/Flakes">nix flakes</a> repository:</p>
+environment within a single <a href="https://wiki.nixos.org/wiki/Flakes">nix flakes</a> repository:</p>
 <ul>
 <li>development shells (via <a href="https://github.com/numtide/devshell"><code>numtide/devshell</code></a>),</li>
 <li>home environments (via <a href="https://github.com/nix-community/home-manager"><code>nix-community/home-manager</code></a>), and</li>
@@ -277,14 +284,14 @@ following giants</a>:</p>
 <li><a href="https://github.com/numtide/devshell">devshell</a></li>
 </ul>
 <h1 id="divnix"><a class="header" href="#divnix">Divnix</a></h1>
-<p>The divnix org is an open space that spontaneously formed out of &quot;the Nix&quot;.
+<p>The divnix org is an open space that spontaneously formed out of "the Nix".
 It is really just a place where otherwise unrelated people work
 together and get stuff done.</p>
-<p>It's a place to stop &quot;geeking out in isolation&quot; (or within company boundaries).
+<p>It's a place to stop "geeking out in isolation" (or within company boundaries).
 A place to experiment, learn together, and iterate quickly on best practices.
 That's what it is.</p>
 <p>It might eventually become a non-profit if that's not too complicated or, if those
-goals are sufficiently upstreamed into &quot;the Nix&quot;, dissolved.</p>
+goals are sufficiently upstreamed into "the Nix", dissolved.</p>
 <h1 id="license"><a class="header" href="#license">License</a></h1>
 <p>Digga is licensed under the <a href="https://mit-license.org">MIT License</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h1>
@@ -292,8 +299,8 @@ goals are sufficiently upstreamed into &quot;the Nix&quot;, dissolved.</p>
 <h2 id="get-the-template"><a class="header" href="#get-the-template">Get the Template</a></h2>
 <p>If you currently don't have flakes setup, you can utilize the digga shell to
 pull the template:</p>
-<pre><code class="language-sh">nix-shell &quot;https://github.com/divnix/digga/archive/main.tar.gz&quot; \
-  --run &quot;nix flake init -t github:divnix/digga&quot;
+<pre><code class="language-sh">nix-shell "https://github.com/divnix/digga/archive/main.tar.gz" \
+  --run "nix flake init -t github:divnix/digga"
 </code></pre>
 <p>If you already have flakes support, you can directly pull the template:</p>
 <pre><code class="language-sh">nix flake init -t github:divnix/digga
@@ -315,8 +322,8 @@ commands], [linter], etc.).</p>
 files before building the system.</li>
 <li>You can choose to simply clone the repo with git if you want to follow
 upstream changes.</li>
-<li>If the <code>nix-shell -p cachix --run &quot;cachix use nrdxp&quot;</code> line doesn't work you
-can try with sudo: <code>sudo nix-shell -p cachix --run &quot;cachix use nrdxp&quot;</code></li>
+<li>If the <code>nix-shell -p cachix --run "cachix use nrdxp"</code> line doesn't work you
+can try with sudo: <code>sudo nix-shell -p cachix --run "cachix use nrdxp"</code></li>
 </ul>
 </blockquote>
 <h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
@@ -332,7 +339,7 @@ building machine images. In most cases, you'll probably want to use the
   --format install-iso \
   --flake '.#bootstrap'
 </code></pre>
-<p>Then &quot;burn&quot; the ISO to your USB stick (or CD-R if you like!) following the
+<p>Then "burn" the ISO to your USB stick (or CD-R if you like!) following the
 <a href="https://nixos.org/manual/nixos/stable/index.html#sec-booting-from-usb">instructions in the NixOS manual</a> (or using your preferred USB burner).</p>
 <p>You can also swap out the <code>--format</code> for <a href="https://github.com/nix-community/nixos-generators/tree/master/formats">any of the others</a> supported
 by nixos-generators.</p>
@@ -380,7 +387,7 @@ that you intend to use on your machine.</p>
     imports = [ (devos.lib.importHosts ./hosts) ];
     hosts = {
       librem = {
-        channelName = &quot;latest&quot;;
+        channelName = "latest";
         modules = [ nixos-hardware.nixosModules.purism-librem-13v3 ];
       };
     };
@@ -395,7 +402,7 @@ that you intend to use on your machine.</p>
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  fileSystems.&quot;/&quot; = { device = &quot;/dev/disk/by-label/nixos&quot;; };
+  fileSystems."/" = { device = "/dev/disk/by-label/nixos"; };
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="overrides"><a class="header" href="#overrides">Overrides</a></h1>
@@ -422,8 +429,8 @@ overrides and the property is already set for you.</p>
 <p>To pull zsh module from the <code>latest</code> channel this code can be placed in any module, whether its your host file, a profile, or a module in ./modules etc:</p>
 <pre><code class="language-nix">{ latestModulesPath }:
 {
-  imports = [ &quot;${latestModulesPath}/programs/zsh/zsh.nix&quot; ];
-  disabledModules = [ &quot;programs/zsh/zsh.nix&quot; ];
+  imports = [ "${latestModulesPath}/programs/zsh/zsh.nix" ];
+  disabledModules = [ "programs/zsh/zsh.nix" ];
 }
 </code></pre>
 <blockquote>
@@ -548,7 +555,7 @@ using the <code>homeConfigurations</code> flake output.</p>
 <p>This is great for keeping your environment consistent across Unix-like systems,
 including macOS.</p>
 <pre><code class="language-sh"># build
-nix build &quot;github:divnix/devos#homeConfigurations.nixos@NixOS.home.activationPackage&quot;
+nix build "github:divnix/devos#homeConfigurations.nixos@NixOS.home.activationPackage"
 
 # activate
 ./result/activate &amp;&amp; unlink result
@@ -579,7 +586,7 @@ let
 in
 {
   options.services.myService = {
-    enable = lib.mkEnableOption &quot;Description of my new service.&quot;;
+    enable = lib.mkEnableOption "Description of my new service.";
 
     # additional options ...
   };
@@ -610,7 +617,7 @@ in
 
   outputs = { self, devos, nixpkgs, ... }: {
     nixosConfigurations.myConfig = nixpkgs.lib.nixosSystem {
-      system = &quot;...&quot;;
+      system = "...";
 
       modules = [
         devos.nixosModules.my-service
@@ -665,8 +672,8 @@ automatically.
 The basic rules are specified in pkgs/sources.toml:</p>
 <pre><code class="language-toml"># nvfetcher.toml
 [libinih]
-src.github = &quot;benhoyt/inih&quot;
-fetch.github = &quot;benhoyt/inih&quot;
+src.github = "benhoyt/inih"
+fetch.github = "benhoyt/inih"
 </code></pre>
 <p>After changes to this file as well as to update the packages specified in there run
 nvfetcher (for more details see <a href="https://github.com/berberman/nvfetcher">nvfetcher</a>).</p>
@@ -684,7 +691,7 @@ pkgs/default.nix:</p>
 pkgs/development/libraries/libinih/default.nix:</p>
 <pre><code class="language-nix">{ stdenv, meson, ninja, lib, sources, ... }:
 stdenv.mkDerivation {
-  pname = &quot;libinih&quot;;
+  pname = "libinih";
 
   # version will resolve to the latest available on gitub
   inherit (sources.libinih) version src;
@@ -695,17 +702,17 @@ stdenv.mkDerivation {
 }
 </code></pre>
 <h2 id="migration-from-flake-based-approach"><a class="header" href="#migration-from-flake-based-approach">Migration from flake based approach</a></h2>
-<p>Previous to nvfetcher it was possible to manage sources via a pkgs/flake.nix, the main changes from there are that sources where in the attribute &quot;srcs&quot; (now &quot;sources&quot;) and the contents of the sources where slightly different.
+<p>Previous to nvfetcher it was possible to manage sources via a pkgs/flake.nix, the main changes from there are that sources where in the attribute "srcs" (now "sources") and the contents of the sources where slightly different.
 In order to switch to the new system, rewrite pkgs/flake.nix to a pkgs/sources.toml file using the documentation of nvfetcher,
 add the line that calls the sources at the beginning of pkgs/default.nix, and
 accomodate the small changes in the packages as can be seen from the example.</p>
 <p>The example package looked like:</p>
 <p>pkgs/flake.nix:</p>
 <pre><code class="language-nix">{
-  description = &quot;Package sources&quot;;
+  description = "Package sources";
 
   inputs = {
-    libinih.url = &quot;github:benhoyt/inih/r53&quot;;
+    libinih.url = "github:benhoyt/inih/r53";
     libinih.flake = false;
   };
 }
@@ -720,7 +727,7 @@ accomodate the small changes in the packages as can be seen from the example.</p
 <pre><code class="language-nix">{ stdenv, meson, ninja, lib, srcs, ... }:
 let inherit (srcs) libinih; in
 stdenv.mkDerivation {
-  pname = &quot;libinih&quot;;
+  pname = "libinih";
 
   # version will resolve to 53, as specified in the flake.nix file
   inherit (libinih) version;
@@ -753,8 +760,8 @@ Be extra careful to make sure you only add public keys, you should never share a
 private key!!</p>
 <p>secrets/secrets.nix:</p>
 <pre><code class="language-nix">let
-  system = &quot;&lt;system ssh key&gt;&quot;;
-  user = &quot;&lt;user ssh key&gt;&quot;;
+  system = "&lt;system ssh key&gt;";
+  user = "&lt;user ssh key&gt;";
   allKeys = [ system user ];
 in
 </code></pre>
@@ -780,7 +787,7 @@ to always run <code>agenix</code> while in the <code>secrets/</code> folder, so 
   allKeys = [ system user ];
 in
 {
-  &quot;secret.age&quot;.publicKeys = allKeys;
+  "secret.age".publicKeys = allKeys;
 }
 </code></pre>
 <p>That would tell agenix to create a <code>secret.age</code> file that is encrypted with the <code>system</code>
@@ -798,7 +805,7 @@ to ensure that your secrets end up in <code>/run/secrets</code>.</p>
 <p>In any profile that uses a NixOS module that requires a secret you can enable a particular secret like so:</p>
 <pre><code class="language-nix">{ self, ... }:
 {
-  age.secrets.mysecret.file = &quot;${self}/secrets/mysecret.age&quot;;
+  age.secrets.mysecret.file = "${self}/secrets/mysecret.age";
 }
 </code></pre>
 <p>Then you can just pass the path <code>/run/agenix/mysecret</code> to the module.</p>
@@ -883,7 +890,7 @@ the command line.</p>
       ${host} = {
         host = hostName;
         identityFile = ../secrets/path/to/key;
-        extraOptions = { AddKeysToAgent = &quot;yes&quot;; };
+        extraOptions = { AddKeysToAgent = "yes"; };
       };
     };
   }
@@ -903,13 +910,13 @@ In order to deploy your <code>home-manager</code> configuration you should provi
 deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations
   {
     &lt;HOSTNAME&gt; = {
-      profilesOrder = [ &quot;system&quot; &quot;&lt;HM_PROFILE&gt;&quot; &quot;&lt;ANOTHER_HM_PROFILE&gt;&quot;];
+      profilesOrder = [ "system" "&lt;HM_PROFILE&gt;" "&lt;ANOTHER_HM_PROFILE&gt;"];
       profiles.&lt;HM_PROFILE&gt; = {
-        user = &quot;&lt;YOUR_USERNAME&gt;&quot;;
+        user = "&lt;YOUR_USERNAME&gt;";
         path = deploy.lib.x86_64-linux.activate.home-manager self.homeConfigurationsPortable.x86_64-linux.&lt;YOUR_USERNAME&gt;;
       };
       profiles.&lt;ANOTHER_HM_PROFILE&gt; = {
-        user = &quot;&lt;ANOTHER_USERNAME&gt;&quot;;
+        user = "&lt;ANOTHER_USERNAME&gt;";
         path = deploy.lib.x86_64-linux.activate.home-manager self.homeConfigurationsPortable.x86_64-linux.&lt;ANOTHER_USERNAME&gt;;
       };
     };
@@ -931,18 +938,18 @@ and commit the results.</p>
 <h2 id="usage-5"><a class="header" href="#usage-5">Usage</a></h2>
 <p>Statically fetching (not tracking) a particular tag from a github repo:</p>
 <pre><code class="language-toml">[manix]
-src.manual = &quot;v0.6.3&quot;
-fetch.github = &quot;mlvzk/manix&quot;
+src.manual = "v0.6.3"
+fetch.github = "mlvzk/manix"
 </code></pre>
 <p>Tracking the latest github <em>release</em> from a github repo:</p>
 <pre><code class="language-toml">[manix]
-src.github = &quot;mlvzk/manix&quot; # responsible for tracking
-fetch.github = &quot;mlvzk/manix&quot; # responsible for fetching
+src.github = "mlvzk/manix" # responsible for tracking
+fetch.github = "mlvzk/manix" # responsible for fetching
 </code></pre>
 <p>Tracking the latest commit of a git repository and fetch from a git repo:</p>
 <pre><code class="language-toml">[manix]
-src.git = &quot;https://github.com/mlvzk/manix.git&quot; # responsible for tracking
-fetch.git = &quot;https://github.com/mlvzk/manix.git&quot; # responsible for fetching
+src.git = "https://github.com/mlvzk/manix.git" # responsible for tracking
+fetch.git = "https://github.com/mlvzk/manix.git" # responsible for fetching
 </code></pre>
 <blockquote>
 <h5 id="note-6"><a class="header" href="#note-6"><em>Note:</em></a></h5>
@@ -1001,7 +1008,7 @@ The builder gets passed an attrset of all channels</p>
 <p><em><em>Type</em></em>:
 function that evaluates to a(n) attribute set or path convertible to it</p>
 <p><em><em>Default</em></em></p>
-<pre><code>&quot;channels: { }&quot;
+<pre><code>"channels: { }"
 </code></pre>
 <h2 id="self"><a class="header" href="#self">self</a></h2>
 <p>The flake to create the DevOS outputs for</p>
@@ -1012,7 +1019,7 @@ nix flake</p>
 <p><em><em>Type</em></em>:
 list of strings</p>
 <p><em><em>Default</em></em></p>
-<pre><code>[&quot;aarch64-linux&quot;,&quot;aarch64-darwin&quot;,&quot;x86_64-darwin&quot;,&quot;x86_64-linux&quot;]
+<pre><code>["aarch64-linux","aarch64-darwin","x86_64-darwin","x86_64-linux"]
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="channels-api-container"><a class="header" href="#channels-api-container">Channels API Container</a></h1>
 <p>Configure your channels that you can use throughout your configurations.</p>
@@ -1040,7 +1047,7 @@ attribute set or path convertible to it</p>
 <p><em><em>Type</em></em>:
 nix flake</p>
 <p><em><em>Default</em></em></p>
-<pre><code>&quot;self.inputs.&lt;name&gt;&quot;
+<pre><code>"self.inputs.&lt;name&gt;"
 </code></pre>
 <h2 id="channelsnameoverlays"><a class="header" href="#channelsnameoverlays">channels.&lt;name&gt;.overlays</a></h2>
 <p>overlays to apply to this channel
@@ -1237,7 +1244,7 @@ list of valid NixOS test or path convertible to its or anything convertible to i
 <pre><code>[]
 </code></pre>
 <p><em><em>Example</em></em></p>
-<pre><code>{&quot;_type&quot;:&quot;literalExpression&quot;,&quot;text&quot;:&quot;[\n  {\n    name = \&quot;testname1\&quot;;\n    machine = { ... };\n    testScript = ''\n      # ...\n    '';\n  }\n  ({ corutils, writers, ... }: {\n    name = \&quot;testname2\&quot;;\n    machine = { ... };\n    testScript = ''\n      # ...\n    '';\n  })\n  ./path/to/test.nix\n];\n&quot;}
+<pre><code>{"_type":"literalExpression","text":"[\n  {\n    name = \"testname1\";\n    machine = { ... };\n    testScript = ''\n      # ...\n    '';\n  }\n  ({ corutils, writers, ... }: {\n    name = \"testname2\";\n    machine = { ... };\n    testScript = ''\n      # ...\n    '';\n  })\n  ./path/to/test.nix\n];\n"}
 </code></pre>
 <h2 id="nixosimportables"><a class="header" href="#nixosimportables">nixos.importables</a></h2>
 <p>Packages of paths to be passed to modules as <code>specialArgs</code>.</p>
